@@ -102,16 +102,16 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 
 	m_performanceCounter = WindowsPerformanceCounter::GetInstance();
 
-	//ResourceManager::GetInstance()->SetDevice(m_renderer->GetDevice());
+	ResourceManager::GetInstance()->SetDevice(m_renderer->GetDevice());
 
 	//int *leak = new int();
 
 
 	/////////////
 	//HACK
-	//IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetImageByID(IMAGE_SHIP_ID);
-	//image = new D3DImage(t);				
-	//sprite = new D3DSprite(image, 0, 0, 0);
+	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetImageByID(IMAGE_SHIP_ID);
+	image = new D3DImage(t);				
+	m_sprite = new D3DSprite(image, 0, 0, 0);
 
 	
 
@@ -140,7 +140,7 @@ bool D3DApplication::Render()
 	sprintf_s(msg, "FPS: %.4f", fps);
 
 	m_renderer->RenderText(msg);		
-	//m_renderer->DrawSprite((C3DESprite *) sprite, 0, 0);
+	m_renderer->DrawSprite((C3DESprite *) m_sprite, 0, 0);
 	m_renderer->EndRender();
 
 	

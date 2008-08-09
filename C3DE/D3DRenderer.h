@@ -37,8 +37,6 @@ private:
 	ID3DXFont *m_font;
 	ID3DXSprite *m_sprite;
 
-	IDirect3DTexture9 * dummy;
-	
 
 };
 #endif

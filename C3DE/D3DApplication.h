@@ -44,7 +44,7 @@ private:
 
 	D3DImage * image;
 
-	D3DSprite *sprite;
+	
 
 	D3DSprite *m_sprite;
 	

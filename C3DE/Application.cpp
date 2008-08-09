@@ -15,6 +15,7 @@ Application::Application()
 {	
 	SetupRenderer();
 	SetupWindow();
+	
 }
 
 Application::~Application()

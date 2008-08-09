@@ -77,6 +77,7 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 void D3DRenderer::DrawSprite(C3DESprite *sprite, int x, int y)
 {
+	
 	D3DSprite * d3dSprite = static_cast<D3DSprite *> (sprite);
 	Image * image = sprite->GetImage();
 	D3DImage *tex = static_cast<D3DImage *>(image);
@@ -92,9 +93,27 @@ void D3DRenderer::DrawSprite(C3DESprite *sprite, int x, int y)
 	m_sprite->SetTransform(&(S*T));
 
 	IDirect3DTexture9 * t = tex->GetTexture();
-	//m_sprite->Draw(t, 0, 0, 0, D3DCOLOR_XRGB(255,255,255));
+	m_sprite->Draw(t, 0, 0, 0, D3DCOLOR_XRGB(255,255,255));
 
 	m_sprite->Flush();
+	/**/
+
+	/*
+	D3DXMATRIX texScaling;
+	D3DXMatrixScaling(&texScaling, 10.0f, 10.0f, 0.0f);
+	HR(m_device->SetTransform(D3DTS_TEXTURE0, &texScaling));
+
+	D3DXMATRIX T, S;
+	D3DXMatrixTranslation(&T, 0, 0, 0);
+	D3DXMatrixScaling(&S, 20.0f, 20.0f, 0.0f);
+	HR(m_sprite->SetTransform(&(S*T)));
+
+	IDirect3DTexture9 * dum = ResourceManager::GetInstance()->GetImageByID(2);
+	
+	HR(m_sprite->Draw(dum, 0,0,0, D3DCOLOR_XRGB(255,255,255)));
+
+	m_sprite->Flush();
+	*/
 }
 
 bool D3DRenderer::IsDeviceLost()
@@ -216,6 +235,7 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 
 	delete window;
 
+	//2D stuff
 	D3DXMATRIX V;
 	D3DXVECTOR3 pos(0.0f, 0.0f, -1000.0f);
 	D3DXVECTOR3 up (0.0f, 1.0f, 0.0f);
@@ -245,9 +265,9 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 	HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA));
 	HR(m_device->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2));
 
-	HR(D3DXCreateTextureFromFile(m_device, "Images/bkgd1.bmp", &dummy));
-
-	ResourceManager::GetInstance()->SetDevice(m_device);
+	
+	
+	
 	return true;
 }
 
@@ -266,18 +286,7 @@ bool D3DRenderer::BeginRender()
 	m_device->BeginScene();
 	m_sprite->Begin(D3DXSPRITE_OBJECTSPACE | D3DXSPRITE_DONOTMODIFY_RENDERSTATE);
 
-	D3DXMATRIX texScaling;
-	D3DXMatrixScaling(&texScaling, 10.0f, 10.0f, 0.0f);
-	HR(m_device->SetTransform(D3DTS_TEXTURE0, &texScaling));
-
-	D3DXMATRIX T, S;
-	D3DXMatrixTranslation(&T, 0, 0, 0);
-	D3DXMatrixScaling(&S, 20.0f, 20.0f, 0.0f);
-	HR(m_sprite->SetTransform(&(S*T)));
-
-	IDirect3DTexture9 * dum = ResourceManager::GetInstance()->GetImageByID(2);
 	
-	HR(m_sprite->Draw(dum, 0,0,0, D3DCOLOR_XRGB(255,255,255)));
 	return true;
 }
 

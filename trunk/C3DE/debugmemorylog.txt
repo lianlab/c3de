@@ -1,0 +1,1 @@
+003C71B0:	c:\caio\estudo\c3de\c3de\main.cpp	14 allocated

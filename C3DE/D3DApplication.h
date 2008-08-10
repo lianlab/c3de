@@ -42,7 +42,7 @@ private:
 	D3DRenderer *m_renderer;
 	DirectInput *m_input;
 
-	D3DImage * image;
+	//D3DImage * image;
 
 	
 

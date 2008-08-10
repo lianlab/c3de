@@ -22,7 +22,7 @@ public:
 
 	bool IsDeviceLost();
 
-	void DrawSprite(C3DESprite *sprite, int x, int y);
+	void DrawSprite(Sprite *sprite, int x, int y);
 
 	void SetScreenMode(int newScreenMode);
 

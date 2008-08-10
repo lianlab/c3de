@@ -1,4 +1,4 @@
-10:c:\caio\c3de\c3de\d3dapplication.cpp              :		LINE 113,	ADDRESS 003CBF10	8 unfreed	block 9
-11:c:\caio\c3de\c3de\d3dapplication.cpp              :		LINE 114,	ADDRESS 003CBF58	16 unfreed	block 10
+10:c:\caio\c3de\c3de\d3dapplication.cpp              :		LINE 113,	ADDRESS 003CBF18	8 unfreed	block 9
+11:c:\caio\c3de\c3de\d3dapplication.cpp              :		LINE 114,	ADDRESS 003CBF60	312 unfreed	block 10
 -----------------------------------------------------------
-Total Unfreed: 24 bytes
+Total Unfreed: 320 bytes

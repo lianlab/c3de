@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <vector>
 #include "RendererListener.h"
-#include "C3DESprite.h"
+#include "Sprite.h"
 
 #define SCREEN_MODE_FULL 1
 #define SCREEN_MODE_WINDOWED 2
@@ -33,7 +33,7 @@ public:
 
 	void RemoveListener(RendererListener *listener);
 
-	virtual void DrawSprite(C3DESprite *sprite, int x, int y) = 0;
+	virtual void DrawSprite(Sprite *sprite, int x, int y) = 0;
 	
 protected:
 	ApplicationWindow *m_window;

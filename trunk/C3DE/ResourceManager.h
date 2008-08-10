@@ -7,14 +7,16 @@
 #include "CommonDefs.h"
 
 #include <d3dx9.h>
-#define TOTAL_IMAGES 3
+
 
 
 enum ResourceIDs
 { 
 	IMAGE_SHIP_ID, 
 	IMAGE_SHIP_BULLET_ID, 
-	IMAGE_BACKGROUND_ID
+	IMAGE_BACKGROUND_ID,
+	IMAGE_EXPLOSION_ID,
+	TOTAL_IMAGES
 };
 
 class ResourceManager

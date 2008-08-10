@@ -75,13 +75,19 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 }
 
-void D3DRenderer::DrawSprite(C3DESprite *sprite, int x, int y)
-{
-	
+void D3DRenderer::DrawSprite(Sprite *sprite, int x, int y)
+{	
 	D3DSprite * d3dSprite = static_cast<D3DSprite *> (sprite);
 	Image * image = sprite->GetImage();
 	D3DImage *tex = static_cast<D3DImage *>(image);
 
+	/*
+	D3DXMATRIX T, S;
+	D3DXMatrixTranslation(&T, 320, 240, 0);
+
+	m_sprite->SetTransform(&T);
+	*/
+	/*
 	D3DXMATRIX texScaling;
 	D3DXMatrixScaling(&texScaling, 10.0f, 10.0f, 0.0f);
 	m_device->SetTransform(D3DTS_TEXTURE0, &texScaling);
@@ -90,30 +96,29 @@ void D3DRenderer::DrawSprite(C3DESprite *sprite, int x, int y)
 	D3DXMatrixTranslation(&T, 0, 0, 0);
 	D3DXMatrixScaling(&S, 20.0f, 20.0f, 0.0f);
 
+	
+
 	m_sprite->SetTransform(&(S*T));
+	*/
+	//m_sprite->SetTransform(&T);
+
+	m_sprite->SetTransform(&d3dSprite->GetTransformationMatrix());
 
 	IDirect3DTexture9 * t = tex->GetTexture();
-	m_sprite->Draw(t, 0, 0, 0, D3DCOLOR_XRGB(255,255,255));
+	int colIndex = d3dSprite->GetCurrentFrame() % d3dSprite->GetNumColumns();
+	int rowIndex = d3dSprite->GetCurrentFrame() / d3dSprite->GetNumColumns();
+	int frameWidth = d3dSprite->GetFrameWidth();
+	int frameHeight = d3dSprite->GetFrameHeight();
 
-	m_sprite->Flush();
-	/**/
-
-	/*
-	D3DXMATRIX texScaling;
-	D3DXMatrixScaling(&texScaling, 10.0f, 10.0f, 0.0f);
-	HR(m_device->SetTransform(D3DTS_TEXTURE0, &texScaling));
-
-	D3DXMATRIX T, S;
-	D3DXMatrixTranslation(&T, 0, 0, 0);
-	D3DXMatrixScaling(&S, 20.0f, 20.0f, 0.0f);
-	HR(m_sprite->SetTransform(&(S*T)));
-
-	IDirect3DTexture9 * dum = ResourceManager::GetInstance()->GetImageByID(2);
 	
-	HR(m_sprite->Draw(dum, 0,0,0, D3DCOLOR_XRGB(255,255,255)));
+	RECT src;
+	src.left = colIndex * frameWidth;
+	src.right = (colIndex * frameWidth) + frameWidth;
+	src.top = rowIndex * frameHeight;
+	src.bottom = (rowIndex * frameHeight) + frameHeight;
+	m_sprite->Draw(t, &src, 0, 0, D3DCOLOR_XRGB(255,255,255));
 
-	m_sprite->Flush();
-	*/
+	m_sprite->Flush();	
 }
 
 bool D3DRenderer::IsDeviceLost()
@@ -263,10 +268,7 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 	HR(m_device->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1));
 	HR(m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA));
 	HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA));
-	HR(m_device->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2));
-
-	
-	
+	HR(m_device->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2));		
 	
 	return true;
 }
@@ -284,7 +286,7 @@ void D3DRenderer::Clear()
 bool D3DRenderer::BeginRender()
 {
 	m_device->BeginScene();
-	m_sprite->Begin(D3DXSPRITE_OBJECTSPACE | D3DXSPRITE_DONOTMODIFY_RENDERSTATE);
+	m_sprite->Begin(0/*D3DXSPRITE_OBJECTSPACE | D3DXSPRITE_DONOTMODIFY_RENDERSTATE*/);
 
 	
 	return true;

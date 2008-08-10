@@ -109,10 +109,15 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 
 	/////////////
 	//HACK
-	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetImageByID(IMAGE_SHIP_ID);
-	image = new D3DImage(t);				
-	m_sprite = new D3DSprite(image, 0, 0, 0);
+	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetImageByID(IMAGE_EXPLOSION_ID);
+	D3DImage *image = new D3DImage(t);				
+	m_sprite = new D3DSprite(image, 64, 64, 30, 6, 5, 100);
 
+	//
+
+	m_sprite->SetX(50);
+	m_sprite->SetY(50);
+	
 	
 
 
@@ -139,8 +144,10 @@ bool D3DApplication::Render()
 	float fps = m_performanceCounter->GetFPS();
 	sprintf_s(msg, "FPS: %.4f", fps);
 
+	
+
 	m_renderer->RenderText(msg);		
-	m_renderer->DrawSprite((C3DESprite *) m_sprite, 0, 0);
+	m_renderer->DrawSprite((Sprite *) m_sprite, 0, 0);
 	m_renderer->EndRender();
 
 	
@@ -150,6 +157,7 @@ bool D3DApplication::Render()
 bool D3DApplication::Update(float deltaTime)
 {
 	m_performanceCounter->Update(deltaTime);
+	m_sprite->Update(1);
 	m_input->Update();
 	return true;
 }

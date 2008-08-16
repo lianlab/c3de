@@ -7,13 +7,14 @@
 D3DApplication::D3DApplication()
 {
 	SetupRenderer();
-	SetupWindow();
+	SetupWindow();	
 }
 
 D3DApplication::~D3DApplication()
 {
 	delete m_renderer;
 	delete m_input;
+	delete m_game;
 }
 
 void D3DApplication::SetupRenderer()
@@ -24,34 +25,6 @@ void D3DApplication::SetupRenderer()
 void D3DApplication::SetupWindow()
 {
 
-}
-
-void D3DApplication::OnMouseDown(int button)
-{
-	int fdfd = 878;
-}
-
-void D3DApplication::OnMouseUp(int button)
-{
-	int moueskfd = button;
-}
-
-void D3DApplication::OnMouseMove(int x, int y)
-{
-
-}
-
-void D3DApplication::OnKeyDown(int key)
-{
-	
-}
-
-void D3DApplication::OnKeyUp(int key)
-{
-	if(key == DIK_ESCAPE)
-	{
-		PostQuitMessage(0);
-	}
 }
 
 bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windowed)
@@ -82,44 +55,21 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 	SetCursor(NULL);
 	ShowWindow(m_mainWindow, SW_SHOW);
 	UpdateWindow(m_mainWindow);
-
-	//*D3DRenderer(m_renderer)->Init(m_hInstance, m_mainWindow, width, height, windowed);
-	//D3DRenderer d3dRenderer = D3DRenderer(*m_renderer);
+	
 	WindowsApplicationWindow *window = new WindowsApplicationWindow(m_hInstance, m_mainWindow, width, height);
-	m_renderer->Init(window);
-
-	//m_renderer->SetScreenMode(SCREEN_MODE_WINDOWED);
+	m_renderer->Init(window);	
 	
 	m_input = new DirectInput();
-
-	m_input->Init(m_hInstance, m_mainWindow);
-	m_input->AddKeyboardListener(this);
-	m_input->AddMouseListener(this);
-
-	//int id = SPRITE_SHIP_ID;
-	//C3DESprite * sprite = ResourceManager::GetInstance()->GetSpriteByID(id);
-	//m_sprite = new D3DSprite(sprite->ge
+	m_input->Init(m_hInstance, m_mainWindow);		
 
 	m_performanceCounter = WindowsPerformanceCounter::GetInstance();
 
 	ResourceManager::GetInstance()->SetDevice(m_renderer->GetDevice());
 
-	//int *leak = new int();
+	m_game = new Game(this);
 
-
-	/////////////
-	//HACK
-	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetImageByID(IMAGE_EXPLOSION_ID);
-	D3DImage *image = new D3DImage(t);				
-	m_sprite = new D3DSprite(image, 64, 64, 30, 6, 5, 100);
-
-	//
-
-	m_sprite->SetX(50);
-	m_sprite->SetY(50);
-	
-	
-
+	m_input->AddKeyboardListener((KeyboardListener *)m_game);
+	m_input->AddMouseListener((MouseListener *)m_game);	
 
 	return true;
 }
@@ -144,26 +94,26 @@ bool D3DApplication::Render()
 	float fps = m_performanceCounter->GetFPS();
 	sprintf_s(msg, "FPS: %.4f", fps);
 
-	
-
-	m_renderer->RenderText(msg);		
-	m_renderer->DrawSprite((Sprite *) m_sprite, 0, 0);
+	m_game->Render(m_renderer);
+	m_renderer->RenderText(msg);			
 	m_renderer->EndRender();
-
 	
 	return true;
 }
 
-bool D3DApplication::Update(float deltaTime)
+bool D3DApplication::Update(int deltaTime)
 {
-	m_performanceCounter->Update(deltaTime);
-	m_sprite->Update(1);
+	m_performanceCounter->Update(deltaTime);		
 	m_input->Update();
+	m_game->Update(deltaTime);
 	return true;
 }
 
 bool D3DApplication::Quit()
-{
+{	
+	m_input->RemoveKeyboardListener((KeyboardListener *)m_game);
+	m_input->RemoveMouseListener((MouseListener*)m_game);
+	PostQuitMessage(0);
 	return true;
 }
 

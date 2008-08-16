@@ -7,7 +7,7 @@ public:
 	PerformanceCounter();
 	virtual ~PerformanceCounter();	
 	float GetFPS(){ return m_fps;}
-	virtual void Update(float dt) = 0;
+	virtual void Update(int dt) = 0;
 
 	void SetTriangleCount(int totalTriangles){m_triangles = totalTriangles;}
 	void SetVertexCount(int totalVertices){m_vertices = totalVertices;}

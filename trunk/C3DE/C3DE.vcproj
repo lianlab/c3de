@@ -179,6 +179,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Game.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Main.cpp"
 				>
 			</File>
@@ -261,17 +265,49 @@
 					Name="Sprite"
 					>
 					<File
-						RelativePath=".\C3DESprite.cpp"
+						RelativePath=".\D3DSprite.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\D3DSprite.cpp"
+						RelativePath=".\Sprite.cpp"
 						>
 					</File>
 				</Filter>
 				<Filter
 					Name="Image"
 					>
+				</Filter>
+				<Filter
+					Name="Shape"
+					>
+					<File
+						RelativePath=".\Shape.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Mesh"
+					>
+					<File
+						RelativePath=".\Mesh.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Scene"
+					>
+					<File
+						RelativePath=".\Scene.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Camera"
+					>
+					<File
+						RelativePath=".\Camera.cpp"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -292,6 +328,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\Game.h"
+				>
+			</File>
 			<Filter
 				Name="Debug"
 				>
@@ -379,11 +419,11 @@
 					Name="Sprite"
 					>
 					<File
-						RelativePath=".\C3DESprite.h"
+						RelativePath=".\D3DSprite.h"
 						>
 					</File>
 					<File
-						RelativePath=".\D3DSprite.h"
+						RelativePath=".\Sprite.h"
 						>
 					</File>
 				</Filter>
@@ -396,6 +436,38 @@
 					</File>
 					<File
 						RelativePath=".\Image.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Shape"
+					>
+					<File
+						RelativePath=".\Shape.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Mesh"
+					>
+					<File
+						RelativePath=".\Mesh.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Scene"
+					>
+					<File
+						RelativePath=".\Scene.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Camera"
+					>
+					<File
+						RelativePath=".\Camera.h"
 						>
 					</File>
 				</Filter>

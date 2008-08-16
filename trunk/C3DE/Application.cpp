@@ -30,7 +30,7 @@ bool Application::Init()
 	return true;
 }
 
-bool Application::Update(float deltaTime)
+bool Application::Update(int deltaTime)
 {	
 	return true;
 }
@@ -45,10 +45,12 @@ bool Application::Cleanup()
 	return true;
 }
 
+/*
 bool Application::Quit()
 {
 	return true;
 }
+*/
 
 void Application::SetupRenderer()
 {

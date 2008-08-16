@@ -42,7 +42,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
         {	
 			
 			int t = timeGetTime();
-			float deltaTime = (t - startTime)*0.001f;
+			float deltaTime = (t - startTime);
 
 			//For each frame update and render our app
 			app->Update(deltaTime);

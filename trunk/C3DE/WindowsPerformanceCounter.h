@@ -13,7 +13,7 @@ private:
 public:
 	static WindowsPerformanceCounter *GetInstance();
 	virtual ~WindowsPerformanceCounter();
-	void Update(float dt);
+	void Update(int dt);
 	
 	int GetFPS();
 	

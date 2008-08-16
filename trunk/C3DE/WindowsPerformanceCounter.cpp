@@ -29,16 +29,16 @@ int WindowsPerformanceCounter::GetFPS()
 	return 1;
 }
 
-void WindowsPerformanceCounter::Update(float dt)
+void WindowsPerformanceCounter::Update(int dt)
 {
 	static float numFrames = 0.0f;
 	static float timeElapsed = 0.0f;
 
-	numFrames += 1.0f;
+	numFrames += 1.0f;	
 
-	timeElapsed += dt;
+	timeElapsed += (dt);
 
-	if(timeElapsed >= 1.0f)
+	if(timeElapsed >= 1000.0f)
 	{
 		m_fps = numFrames;
 		m_milliSecondsPerFrame += 1000.0f / m_fps;

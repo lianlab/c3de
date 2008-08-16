@@ -75,32 +75,11 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 }
 
-void D3DRenderer::DrawSprite(Sprite *sprite, int x, int y)
+void D3DRenderer::DrawSprite(Sprite *sprite)
 {	
 	D3DSprite * d3dSprite = static_cast<D3DSprite *> (sprite);
 	Image * image = sprite->GetImage();
-	D3DImage *tex = static_cast<D3DImage *>(image);
-
-	/*
-	D3DXMATRIX T, S;
-	D3DXMatrixTranslation(&T, 320, 240, 0);
-
-	m_sprite->SetTransform(&T);
-	*/
-	/*
-	D3DXMATRIX texScaling;
-	D3DXMatrixScaling(&texScaling, 10.0f, 10.0f, 0.0f);
-	m_device->SetTransform(D3DTS_TEXTURE0, &texScaling);
-
-	D3DXMATRIX T, S;
-	D3DXMatrixTranslation(&T, 0, 0, 0);
-	D3DXMatrixScaling(&S, 20.0f, 20.0f, 0.0f);
-
-	
-
-	m_sprite->SetTransform(&(S*T));
-	*/
-	//m_sprite->SetTransform(&T);
+	D3DImage *tex = static_cast<D3DImage *>(image);	
 
 	m_sprite->SetTransform(&d3dSprite->GetTransformationMatrix());
 
@@ -261,6 +240,7 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 	HR(m_device->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR));
 
 	HR(m_device->SetRenderState(D3DRS_LIGHTING, false));
+	HR(m_device->SetRenderState(D3DRS_ALPHATESTENABLE, true));
 	HR(m_device->SetRenderState(D3DRS_ALPHAREF, 10));
 	HR(m_device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER));
 
@@ -286,8 +266,9 @@ void D3DRenderer::Clear()
 bool D3DRenderer::BeginRender()
 {
 	m_device->BeginScene();
-	m_sprite->Begin(0/*D3DXSPRITE_OBJECTSPACE | D3DXSPRITE_DONOTMODIFY_RENDERSTATE*/);
-
+	//m_sprite->Begin(0/*D3DXSPRITE_OBJECTSPACE | D3DXSPRITE_DONOTMODIFY_RENDERSTATE*/);
+	m_sprite->Begin(0);
+	m_device->DrawPrimitive(D3DPT_TRIANGLELIST, 0 , 4);
 	
 	return true;
 }

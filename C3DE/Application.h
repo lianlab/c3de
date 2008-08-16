@@ -8,20 +8,22 @@
 #include "ResourceManager.h"
 
 
+
 class Application : public RendererListener
 {
 public:
 	Application();
 	virtual ~Application();
 	bool Init();
-	bool Update(float deltaTime);
+	bool Update(int deltaTime);
 	bool Render();
 	bool Cleanup();
-	bool Quit();
+	virtual bool Quit() = 0;
 
 	virtual void OnLostDevice() = 0;
 	virtual void OnResetDevice() = 0;
 
+	
 	
 	
 protected:
@@ -32,9 +34,11 @@ protected:
 	PerformanceCounter *m_performanceCounter;
 	Input *m_input;
 	
+	
 private:
 	virtual void SetupRenderer() = 0;
 	virtual void SetupWindow() = 0;
+	
 	
 };
 

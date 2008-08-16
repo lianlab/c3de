@@ -13,7 +13,7 @@ Sprite((Image *)image, frameWidth, frameHeight, numFrames, numColumns, numRows, 
 
 D3DSprite::~D3DSprite()
 {
-
+	delete m_image;
 }
 
 void D3DSprite::SetX(int x)

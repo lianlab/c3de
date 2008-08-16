@@ -33,7 +33,7 @@ public:
 
 	void RemoveListener(RendererListener *listener);
 
-	virtual void DrawSprite(Sprite *sprite, int x, int y) = 0;
+	virtual void DrawSprite(Sprite *sprite) = 0;
 	
 protected:
 	ApplicationWindow *m_window;

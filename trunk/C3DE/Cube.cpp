@@ -1,4 +1,3 @@
-#if 1
 #include "Cube.h"
 
 Cube::Cube()
@@ -65,4 +64,3 @@ Cube::~Cube()
 	ReleaseCOM(m_vertexDeclaration);
 }
 
-#endif

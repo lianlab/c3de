@@ -1,6 +1,3 @@
-
-#if 1
-
 #include "D3DMesh.h"
 
 IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
@@ -30,5 +27,3 @@ void D3DMesh::SetBuffers(IDirect3DVertexBuffer9 *vertexBuffer, IDirect3DIndexBuf
 	m_vertexBuffer = vertexBuffer;
 	m_indexBuffer = indexBuffer;
 }
-
-#endif

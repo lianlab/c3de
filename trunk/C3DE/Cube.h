@@ -1,4 +1,4 @@
-#if 0
+#if 1
 
 #ifndef CUBE_H
 #define CUBE_H

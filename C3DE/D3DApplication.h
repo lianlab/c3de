@@ -28,6 +28,8 @@ public:
 
 	void drawScene();
 
+	Renderer *GetRenderer(){return (Renderer *)m_renderer;}
+
 
 	
 private:

@@ -10,7 +10,7 @@
 //#include <d3dx9.h>
 
 //testing
-//#include "Cube.h"
+#include "Cube.h"
 
 class Game : public KeyboardListener, MouseListener
 {
@@ -43,10 +43,10 @@ private:
 
 	int m_deltaTime;
 
-	//Renderer *m_renderer;
+	Renderer *m_renderer;
 
 	//testing
-	//Cube *m_testMesh;
+	Cube *m_testMesh;
 	
 
 };

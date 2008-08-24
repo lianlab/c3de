@@ -12,13 +12,13 @@
 
 
 //BOOK
-struct VertexPos
+struct VertexPos2
 {
-	VertexPos():pos(0.0f, 0.0f, 0.0f){}
-	VertexPos(float x, float y, float z):pos(x,y,z){}
-	VertexPos(const D3DXVECTOR3 &v):pos(v){}
+	VertexPos2():pos2(0.0f, 0.0f, 0.0f){}
+	VertexPos2(float x, float y, float z):pos2(x,y,z){}
+	VertexPos2(const D3DXVECTOR3 &v):pos2(v){}
 
-	D3DXVECTOR3 pos;
+	D3DXVECTOR3 pos2;
 	static IDirect3DVertexDeclaration9 *Decl;
 };
 
@@ -61,7 +61,7 @@ private:
 	void BuildVertexBuffer();
 	void BuildIndexBuffer();
 	void BuildProjMtx();
-	//void BuildViewMtx();
+	
 	
 	IDirect3DVertexBuffer9 * m_vb;
 	IDirect3DIndexBuffer9 * m_ib;

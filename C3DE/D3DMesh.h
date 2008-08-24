@@ -1,4 +1,3 @@
-#if 1
 #ifndef D3DMESH_H
 #define D3DMESH_H
 
@@ -47,4 +46,3 @@ protected:
 };
 #endif
 
-#endif

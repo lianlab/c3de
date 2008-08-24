@@ -1,5 +1,3 @@
-#if 1
-
 #ifndef CUBE_H
 #define CUBE_H
 
@@ -13,4 +11,3 @@ public:
 };
 #endif
 
-#endif

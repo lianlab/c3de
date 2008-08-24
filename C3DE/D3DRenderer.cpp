@@ -104,13 +104,15 @@ void D3DRenderer::DrawMesh(Mesh *mes)
 	D3DXMATRIX W;
 	D3DXMatrixIdentity(&W);
 	HR(m_device->SetTransform(D3DTS_WORLD, &W));
-	HR(m_device->SetTransform(D3DTS_VIEW, &m_view));
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
 	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
 	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 8, 0, 12));	
 
 }
 
+#if 0
 void D3DRenderer::BuildViewMtx()
 {
 
@@ -122,6 +124,7 @@ void D3DRenderer::BuildViewMtx()
 	D3DXMatrixLookAtLH(&m_view, &pos, &target, &up);
 
 }
+#endif
 
 
 
@@ -336,12 +339,17 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 
 
 
+	D3DCamera *cam = new D3DCamera();
+	m_camera = (Camera *)cam;	
+	m_camera->SetPosition(0.0f, 0.0f, 0.0f);
+	m_camera->SetTarget(0.0f, 0.0f, 0.0f);
 
-
+#if 0
 	m_cameraRadius = 10.0f;
 	m_cameraRotationY = 1.2 * D3DX_PI;
 	m_cameraHeight = 5.0f;
 
+#endif
 	BuildVertexBuffer();
 	BuildIndexBuffer();
 	
@@ -349,7 +357,7 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 
 	InitAllVertexDeclarations();	
 
-	BuildViewMtx();
+	//BuildViewMtx();
 
 	return true;
 }

@@ -59,12 +59,12 @@ void Game::Update(int deltaTime)
 void Game::Render(Renderer *renderer)
 {
 	//
-#if 0
+
 	D3DCamera * cam = (D3DCamera *)renderer->GetCamera();
 	float x = m_cameraRadius * cosf(m_cameraRotation);
 	float z =  m_cameraRadius * sinf(m_cameraRotation);
 	cam->SetPosition(x, m_cameraHeight, z);
-#endif
+
 	renderer->DrawSprite((Sprite *)m_sprite);
 	renderer->DrawMesh(0);
 }

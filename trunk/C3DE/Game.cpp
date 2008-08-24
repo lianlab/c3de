@@ -25,9 +25,9 @@ Game::Game(Application * app)
 
 	m_cameraHeightIncrease = 0.0f;
 
-	//m_renderer = app->GetRenderer();
+	m_renderer = app->GetRenderer();
 
-	//CreateTestMesh();
+	CreateTestMesh();
 }
 
 Game::~Game()
@@ -108,7 +108,7 @@ void Game::OnKeyDown(int key)
 
 void Game::CreateTestMesh()
 {
-#if 0
+#if 1
 	m_testMesh = new Cube();
 	
 	D3DRenderer *renderer = (D3DRenderer *) m_renderer;

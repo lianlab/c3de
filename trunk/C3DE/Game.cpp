@@ -66,7 +66,7 @@ void Game::Render(Renderer *renderer)
 	cam->SetPosition(x, m_cameraHeight, z);
 
 	renderer->DrawSprite((Sprite *)m_sprite);
-	renderer->DrawMesh(0);
+	renderer->DrawMesh(m_testMesh);
 }
 
 void Game::OnMouseDown(int button)

@@ -23,7 +23,7 @@ public:
 	virtual void OnLostDevice() = 0;
 	virtual void OnResetDevice() = 0;
 
-	
+	virtual Renderer *GetRenderer() = 0;
 	
 	
 protected:

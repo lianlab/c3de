@@ -5,8 +5,7 @@
 #include "ResourceManager.h"
 #include "D3DMesh.h"
 
-// For Demo
-IDirect3DVertexDeclaration9* VertexPos2::Decl = 0;
+
 
 D3DRenderer::D3DRenderer()
 {
@@ -20,12 +19,6 @@ D3DRenderer::~D3DRenderer()
 	{
 		ReleaseCOM(m_font);
 	}
-
-	ReleaseCOM(m_vb);
-	ReleaseCOM(m_ib);
-
-	DestroyAllVertexDeclarations();
-
 
 }
 
@@ -96,14 +89,12 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 }
 
-void D3DRenderer::DrawMesh(Mesh *mes)
+void D3DRenderer::DrawMesh(Mesh *a_mesh)
 {
-	D3DMesh *mesh = (D3DMesh *)mes;
-	//HR(m_device->SetStreamSource(0, m_vb, 0, sizeof(VertexPos2)));
+	D3DMesh *mesh = (D3DMesh *)a_mesh;	
 	HR(m_device->SetStreamSource(0, mesh->GetVertexBuffer(), 0, mesh->GetVertexSize()));
-	//HR(m_device->SetIndices(m_ib));
-	HR(m_device->SetIndices(mesh->GetIndexBuffer()));
-	//HR(m_device->SetVertexDeclaration(VertexPos2::Decl));
+	
+	HR(m_device->SetIndices(mesh->GetIndexBuffer()));	
 	HR(m_device->SetVertexDeclaration(mesh->GetVertexDeclaration()));
 
 	D3DXMATRIX W;
@@ -114,20 +105,6 @@ void D3DRenderer::DrawMesh(Mesh *mes)
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
 	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
 	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 8, 0, 12));	
-
-}
-
-void D3DRenderer::InitAllVertexDeclarations()
-{
-	
-
-	D3DVERTEXELEMENT9 VertexPosElements[] =
-	{
-		{0,0,D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
-		D3DDECL_END()
-	};
-	HR(m_device->CreateVertexDeclaration(VertexPosElements, &VertexPos2::Decl));
-	
 
 }
 
@@ -283,8 +260,7 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 
 	delete window;
 
-	//2D stuff
-	
+	//2D stuff	
 	D3DXMATRIX V;
 	D3DXVECTOR3 pos(0.0f, 0.0f, -1000.0f);
 	D3DXVECTOR3 up (0.0f, 1.0f, 0.0f);
@@ -315,32 +291,13 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 	HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA));
 	HR(m_device->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2));					
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	//end of 2d stuff
 	D3DCamera *cam = new D3DCamera();
 	m_camera = (Camera *)cam;	
 	m_camera->SetPosition(0.0f, 0.0f, 0.0f);
 	m_camera->SetTarget(0.0f, 0.0f, 0.0f);
-
-
-	BuildVertexBuffer();
-	BuildIndexBuffer();
 	
 	BuildProjMtx();
-
-	InitAllVertexDeclarations();	
-
 
 	return true;
 }
@@ -350,65 +307,6 @@ void D3DRenderer::Reset()
 
 }
 
-void D3DRenderer::BuildVertexBuffer()
-{
-
-	HR(m_device->CreateVertexBuffer(8 * sizeof(VertexPos2), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_vb, 0));
-	VertexPos2 *v = 0;
-	HR(m_vb->Lock(0,0,(void**)&v,0));
-
-	v[0] = VertexPos2(-1.0f, -1.0f, -1.0f);
-	v[1] = VertexPos2(-1.0f,  1.0f, -1.0f);
-	v[2] = VertexPos2( 1.0f,  1.0f, -1.0f);
-	v[3] = VertexPos2( 1.0f, -1.0f, -1.0f);
-	v[4] = VertexPos2(-1.0f, -1.0f,  1.0f);
-	v[5] = VertexPos2(-1.0f,  1.0f,  1.0f);
-	v[6] = VertexPos2( 1.0f,  1.0f,  1.0f);
-	v[7] = VertexPos2( 1.0f, -1.0f,  1.0f);
-	HR(m_vb->Unlock());
-
-}
-
-void D3DRenderer::BuildIndexBuffer()
-{
-
-	HR(m_device->CreateIndexBuffer(36 * sizeof(WORD), D3DUSAGE_WRITEONLY,
-		D3DFMT_INDEX16, D3DPOOL_MANAGED, &m_ib, 0));
-	WORD *k = 0;
-
-	HR(m_ib->Lock(0,0,(void**)&k, 0));
-
-	//front face
-	k[0] = 0; k[1] = 1; k[2] = 2;	
-	k[3] = 0; k[4] = 2; k[5] = 3;
-	
-	//back face
-	k[6] = 4; k[7] = 6; k[8] = 5;
-	k[9] = 4; k[10] = 7; k[11] = 6;
-
-	//left face
-	k[12] = 4; k[13] = 5; k[14] = 1;
-	k[15] = 4; k[16] = 1; k[17] = 0;
-
-	//right face
-	k[18] = 3; k[19] = 2; k[20] = 6;
-	k[21] = 3; k[22] = 6; k[23] = 7;
-
-	//top face
-	k[24] = 1; k[25] = 5; k[26] = 6;
-	k[27] = 1; k[28] = 6; k[29] = 2;
-
-	//bottom face
-	k[30] = 4; k[31] = 0; k[32] = 3;
-	k[33] = 4; k[34] = 3; k[35] = 7;
-
-}
-
-
-void D3DRenderer::DestroyAllVertexDeclarations()
-{
-	ReleaseCOM(VertexPos2::Decl);
-}
 
 void D3DRenderer::Clear()
 {	

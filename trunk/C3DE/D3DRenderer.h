@@ -7,6 +7,9 @@
 #include <windows.h>
 #include "D3DCommonDefs.h"
 #include "D3DImage.h"
+#include "D3DCamera.h"
+//#include "D3DMesh.h"
+
 
 //BOOK
 struct VertexPos
@@ -58,7 +61,7 @@ private:
 	void BuildVertexBuffer();
 	void BuildIndexBuffer();
 	void BuildProjMtx();
-	void BuildViewMtx();
+	//void BuildViewMtx();
 	
 	IDirect3DVertexBuffer9 * m_vb;
 	IDirect3DIndexBuffer9 * m_ib;

@@ -5,7 +5,7 @@
 #include "ResourceManager.h"
 
 // For Demo
-IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
+IDirect3DVertexDeclaration9* VertexPos2::Decl = 0;
 
 D3DRenderer::D3DRenderer()
 {
@@ -97,9 +97,9 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 void D3DRenderer::DrawMesh(Mesh *mes)
 {
-	HR(m_device->SetStreamSource(0, m_vb, 0, sizeof(VertexPos)));
+	HR(m_device->SetStreamSource(0, m_vb, 0, sizeof(VertexPos2)));
 	HR(m_device->SetIndices(m_ib));
-	HR(m_device->SetVertexDeclaration(VertexPos::Decl));
+	HR(m_device->SetVertexDeclaration(VertexPos2::Decl));
 
 	D3DXMATRIX W;
 	D3DXMatrixIdentity(&W);
@@ -112,22 +112,6 @@ void D3DRenderer::DrawMesh(Mesh *mes)
 
 }
 
-#if 0
-void D3DRenderer::BuildViewMtx()
-{
-
-	float x = m_cameraRadius * cosf(m_cameraRotationY);
-	float z = m_cameraRadius * sinf(m_cameraRotationY);
-	D3DXVECTOR3 pos(x, m_cameraHeight, z);
-	D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
-	D3DXVECTOR3 up(0.0f, 1.0f, 0.0f);
-	D3DXMatrixLookAtLH(&m_view, &pos, &target, &up);
-
-}
-#endif
-
-
-
 void D3DRenderer::InitAllVertexDeclarations()
 {
 	
@@ -137,7 +121,7 @@ void D3DRenderer::InitAllVertexDeclarations()
 		{0,0,D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
 		D3DDECL_END()
 	};
-	HR(m_device->CreateVertexDeclaration(VertexPosElements, &VertexPos::Decl));
+	HR(m_device->CreateVertexDeclaration(VertexPosElements, &VertexPos2::Decl));
 	
 
 }
@@ -344,12 +328,7 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 	m_camera->SetPosition(0.0f, 0.0f, 0.0f);
 	m_camera->SetTarget(0.0f, 0.0f, 0.0f);
 
-#if 0
-	m_cameraRadius = 10.0f;
-	m_cameraRotationY = 1.2 * D3DX_PI;
-	m_cameraHeight = 5.0f;
 
-#endif
 	BuildVertexBuffer();
 	BuildIndexBuffer();
 	
@@ -357,7 +336,6 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 
 	InitAllVertexDeclarations();	
 
-	//BuildViewMtx();
 
 	return true;
 }
@@ -370,18 +348,18 @@ void D3DRenderer::Reset()
 void D3DRenderer::BuildVertexBuffer()
 {
 
-	HR(m_device->CreateVertexBuffer(8 * sizeof(VertexPos), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_vb, 0));
-	VertexPos *v = 0;
+	HR(m_device->CreateVertexBuffer(8 * sizeof(VertexPos2), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_vb, 0));
+	VertexPos2 *v = 0;
 	HR(m_vb->Lock(0,0,(void**)&v,0));
 
-	v[0] = VertexPos(-1.0f, -1.0f, -1.0f);
-	v[1] = VertexPos(-1.0f,  1.0f, -1.0f);
-	v[2] = VertexPos( 1.0f,  1.0f, -1.0f);
-	v[3] = VertexPos( 1.0f, -1.0f, -1.0f);
-	v[4] = VertexPos(-1.0f, -1.0f,  1.0f);
-	v[5] = VertexPos(-1.0f,  1.0f,  1.0f);
-	v[6] = VertexPos( 1.0f,  1.0f,  1.0f);
-	v[7] = VertexPos( 1.0f, -1.0f,  1.0f);
+	v[0] = VertexPos2(-1.0f, -1.0f, -1.0f);
+	v[1] = VertexPos2(-1.0f,  1.0f, -1.0f);
+	v[2] = VertexPos2( 1.0f,  1.0f, -1.0f);
+	v[3] = VertexPos2( 1.0f, -1.0f, -1.0f);
+	v[4] = VertexPos2(-1.0f, -1.0f,  1.0f);
+	v[5] = VertexPos2(-1.0f,  1.0f,  1.0f);
+	v[6] = VertexPos2( 1.0f,  1.0f,  1.0f);
+	v[7] = VertexPos2( 1.0f, -1.0f,  1.0f);
 	HR(m_vb->Unlock());
 
 }
@@ -424,7 +402,7 @@ void D3DRenderer::BuildIndexBuffer()
 
 void D3DRenderer::DestroyAllVertexDeclarations()
 {
-	ReleaseCOM(VertexPos::Decl);
+	ReleaseCOM(VertexPos2::Decl);
 }
 
 void D3DRenderer::Clear()

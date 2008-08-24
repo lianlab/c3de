@@ -2,6 +2,7 @@
 #define D3DAPPLICATION_H
 
 #include <windows.h>
+
 #include "Application.h"
 #include "D3DRenderer.h"
 #include "DirectInput.h"
@@ -9,7 +10,6 @@
 #include "MouseListener.h"
 #include "D3DSprite.h"
 #include "Game.h"
-
 
 
 class D3DApplication : public Application
@@ -26,6 +26,8 @@ public:
 	void OnLostDevice();
 	void OnResetDevice();
 
+	void drawScene();
+
 
 	
 private:
@@ -36,9 +38,8 @@ private:
 	D3DRenderer *m_renderer;
 	DirectInput *m_input;
 
-	//D3DImage * image;
-	Game *m_game;		
-	
+	D3DImage * image;
+	Game *m_game;	
 	
 };
 

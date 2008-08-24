@@ -1,6 +1,7 @@
 #ifndef D3D_COMMON_DEFFS_H
 #define D3D_COMMON_DEFFS_H
 
+
 #include "dxerr9.h"
 
 #if defined(DEBUG) | defined(_DEBUG)

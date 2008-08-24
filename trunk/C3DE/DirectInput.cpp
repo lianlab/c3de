@@ -18,7 +18,7 @@ DirectInput::~DirectInput()
 void DirectInput::Update()
 {
 	HRESULT hr = m_keyboard->GetDeviceState(sizeof(m_keyboardState), (void**)&m_keyboardState);
-	//m_keyboard->GetDeviceData(
+	
 
 	if(FAILED(hr))
 	{

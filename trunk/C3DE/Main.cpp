@@ -1,7 +1,7 @@
-#include "D3DApplication.h"
-#include "DebugMemory.h"
 #include "CommonDefs.h"
-//#include "Debug.h"
+#include "Debug.h"
+#include "DebugMemory.h"
+#include "D3DApplication.h"
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd)
@@ -16,13 +16,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 	//int *lefdak = new int();
 
 	//Create new window and Initiate Direct3D
-	//if(FAILED(app.Init(hInstance, 640, 480, true)))
-	//	return 0;
+	
 	if(!app->Init(hInstance, SCREEN_WIDTH, SCREEN_HEIGHT, true))
 	{
 		return 0;
 	}
-
+	
 	MSG msg;
 	memset(&msg, 0, sizeof(MSG));
 	int startTime = timeGetTime(); 
@@ -47,7 +46,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 			//For each frame update and render our app
 			app->Update(deltaTime);
 			app->Render();
-
 			
 			startTime = t;
         }
@@ -64,4 +62,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 	DumpUnfreed(TRUE);
 
     return msg.wParam;
+	
 }
+

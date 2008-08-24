@@ -6,6 +6,7 @@
 #include <vector>
 #include "RendererListener.h"
 #include "Sprite.h"
+#include "Mesh.h"
 
 #define SCREEN_MODE_FULL 1
 #define SCREEN_MODE_WINDOWED 2
@@ -34,6 +35,7 @@ public:
 	void RemoveListener(RendererListener *listener);
 
 	virtual void DrawSprite(Sprite *sprite) = 0;
+	virtual void DrawMesh(Mesh *mesh) = 0;
 	
 protected:
 	ApplicationWindow *m_window;

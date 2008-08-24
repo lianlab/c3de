@@ -8,6 +8,7 @@
 #include <dinput.h>
 #include "D3DCommonDefs.h"
 
+
 class DirectInput : public Input
 {
 public:

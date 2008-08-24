@@ -4,10 +4,12 @@
 #include "DirectInput.h"
 #include "DebugMemory.h"
 
+
+
 D3DApplication::D3DApplication()
 {
-	SetupRenderer();
 	SetupWindow();	
+	SetupRenderer();
 }
 
 D3DApplication::~D3DApplication()
@@ -16,6 +18,7 @@ D3DApplication::~D3DApplication()
 	delete m_input;
 	delete m_game;
 }
+
 
 void D3DApplication::SetupRenderer()
 {
@@ -27,8 +30,11 @@ void D3DApplication::SetupWindow()
 
 }
 
+
 bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windowed)
 {	
+
+
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF |
 		_CRTDBG_LEAK_CHECK_DF);
@@ -95,7 +101,9 @@ bool D3DApplication::Render()
 	sprintf_s(msg, "FPS: %.4f", fps);
 
 	m_game->Render(m_renderer);
-	m_renderer->RenderText(msg);			
+	m_renderer->RenderText(msg);	
+	
+
 	m_renderer->EndRender();
 	
 	return true;
@@ -121,5 +129,7 @@ bool D3DApplication::Cleanup()
 {
 	return true;
 }
+
+
 
 

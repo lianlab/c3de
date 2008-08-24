@@ -4,12 +4,7 @@
 #include "WindowsPerformanceCounter.h"
 #include "Debug.h"
 #include "ResourceManager.h"
-
-
 #include "DebugMemory.h"
-
-
-
 
 Application::Application()
 {	

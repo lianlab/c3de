@@ -1,8 +1,8 @@
 #ifndef COMMON_DEFS
 #define COMMON_DEFS
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
 
 #ifndef NULL
 #define NULL 0

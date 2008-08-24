@@ -3,6 +3,7 @@
 #include "D3DSprite.h"
 //#include "DebugMemory.h"
 #include "ResourceManager.h"
+#include "D3DMesh.h"
 
 // For Demo
 IDirect3DVertexDeclaration9* VertexPos2::Decl = 0;
@@ -97,9 +98,13 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 void D3DRenderer::DrawMesh(Mesh *mes)
 {
-	HR(m_device->SetStreamSource(0, m_vb, 0, sizeof(VertexPos2)));
-	HR(m_device->SetIndices(m_ib));
-	HR(m_device->SetVertexDeclaration(VertexPos2::Decl));
+	D3DMesh *mesh = (D3DMesh *)mes;
+	//HR(m_device->SetStreamSource(0, m_vb, 0, sizeof(VertexPos2)));
+	HR(m_device->SetStreamSource(0, mesh->GetVertexBuffer(), 0, mesh->GetVertexSize()));
+	//HR(m_device->SetIndices(m_ib));
+	HR(m_device->SetIndices(mesh->GetIndexBuffer()));
+	//HR(m_device->SetVertexDeclaration(VertexPos2::Decl));
+	HR(m_device->SetVertexDeclaration(mesh->GetVertexDeclaration()));
 
 	D3DXMATRIX W;
 	D3DXMatrixIdentity(&W);

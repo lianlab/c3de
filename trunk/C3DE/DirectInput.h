@@ -26,6 +26,9 @@ private:
 	IDirectInputDevice8 *m_mouse;
 	DIMOUSESTATE2 m_mouseState;
 	DIMOUSESTATE2 m_previousMouseState;
+
+	int m_mouseAbsX;
+	int m_mouseAbsY;
 	
 
 };

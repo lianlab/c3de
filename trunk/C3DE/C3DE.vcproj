@@ -186,6 +186,10 @@
 				RelativePath=".\Main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Math.cpp"
+				>
+			</File>
 			<Filter
 				Name="Debug"
 				>
@@ -289,6 +293,14 @@
 					Name="Mesh"
 					>
 					<File
+						RelativePath=".\Cube.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\D3DMesh.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\Mesh.cpp"
 						>
 					</File>
@@ -296,6 +308,10 @@
 				<Filter
 					Name="Scene"
 					>
+					<File
+						RelativePath=".\D3DScene.cpp"
+						>
+					</File>
 					<File
 						RelativePath=".\Scene.cpp"
 						>
@@ -306,6 +322,10 @@
 					>
 					<File
 						RelativePath=".\Camera.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\D3DCamera.cpp"
 						>
 					</File>
 				</Filter>
@@ -322,6 +342,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="UI"
+				>
+				<File
+					RelativePath=".\Button.cpp"
+					>
+				</File>
+				<Filter
+					Name="Listeners"
+					>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -330,6 +362,10 @@
 			>
 			<File
 				RelativePath=".\Game.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Math.h"
 				>
 			</File>
 			<Filter
@@ -451,6 +487,14 @@
 					Name="Mesh"
 					>
 					<File
+						RelativePath=".\Cube.h"
+						>
+					</File>
+					<File
+						RelativePath=".\D3DMesh.h"
+						>
+					</File>
+					<File
 						RelativePath=".\Mesh.h"
 						>
 					</File>
@@ -458,6 +502,10 @@
 				<Filter
 					Name="Scene"
 					>
+					<File
+						RelativePath=".\D3DScene.h"
+						>
+					</File>
 					<File
 						RelativePath=".\Scene.h"
 						>
@@ -468,6 +516,10 @@
 					>
 					<File
 						RelativePath=".\Camera.h"
+						>
+					</File>
+					<File
+						RelativePath=".\D3DCamera.h"
 						>
 					</File>
 				</Filter>
@@ -491,6 +543,22 @@
 					RelativePath=".\MouseListener.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="UI"
+				>
+				<File
+					RelativePath=".\Button.h"
+					>
+				</File>
+				<Filter
+					Name="Listeners"
+					>
+					<File
+						RelativePath=".\ButtonListener.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

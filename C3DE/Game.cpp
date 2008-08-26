@@ -28,6 +28,41 @@ Game::Game(Application * app)
 	m_renderer = app->GetRenderer();
 
 	CreateTestMesh();
+
+	vector<RECT> *frames = new vector<RECT>;
+	RECT r;
+	r.left = 0;
+	r.right = 50;
+	r.top = 0;
+	r.bottom = 50;
+	frames->push_back(r);
+	r.left = 0;
+	r.right = 50;
+	r.top = 50;
+	r.bottom = 100;
+	frames->push_back(r);
+	r.left = 0;
+	r.right = 150;
+	r.top = 0;
+	r.bottom = 200;
+	frames->push_back(r);
+
+	
+	r.left = 0;
+	r.right = 50;
+	r.top = 0;
+	r.bottom = 50;
+
+	m_button = new Button(image, frames, r);
+	m_button->SetX(50);
+	m_button->SetY(50);
+	
+}
+
+void Game::SetInputer(DirectInput *inputer)
+{
+	m_inputer = inputer;
+	m_inputer->AddMouseListener((MouseListener*)m_button);
 }
 
 Game::~Game()
@@ -67,27 +102,31 @@ void Game::Render(Renderer *renderer)
 
 	renderer->DrawSprite((Sprite *)m_sprite);
 	renderer->DrawMesh(m_testMesh);
+	renderer->DrawSprite(m_button);
 }
 
-void Game::OnMouseDown(int button)
+void Game::OnMouseDown(int button, int x , int y)
 {
 	int fdfd = 878;
 }
 
-void Game::OnMouseUp(int button)
+void Game::OnMouseUp(int button, int x, int y)
 {
 	int moueskfd = button;
 }
 
-void Game::OnMouseMove(int x, int y)
+void Game::OnMouseMove(int x, int y, int dx, int dy)
 {
-	m_cameraRotation += x / 50.0f;
-	m_cameraRadius += y / 50.0f;
+	m_cameraRotation += dx / 50.0f;
+	m_cameraRadius += dy / 50.0f;
 	if(fabsf(m_cameraRotation) >= 2.0f * D3DX_PI)
 		m_cameraRotation = 0.0f;
 
 	if(m_cameraRadius < 5.0f)
 		m_cameraRadius = 5.0f;
+
+	m_sprite->SetX(x);
+	m_sprite->SetY(y);
 }
 
 void Game::OnKeyDown(int key)

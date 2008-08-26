@@ -8,6 +8,8 @@
 #include "D3DImage.h"
 #include "D3DSprite.h"
 //#include <d3dx9.h>
+#include "Button.h"
+#include "DirectInput.h"
 
 //testing
 #include "Cube.h"
@@ -23,10 +25,12 @@ public:
 	void OnKeyDown(int key);
 	void OnKeyUp(int key);
 
-	void OnMouseDown(int button);
-	void OnMouseUp(int button);
-	void OnMouseMove(int x, int y);
+	void OnMouseDown(int button, int x, int y);
+	void OnMouseUp(int button, int x, int y);
+	void OnMouseMove(int x, int y, int dx, int dy);
 	void CreateTestMesh();
+	void SetInputer(DirectInput *inputer);
+	
 private:
 	Application * m_application;
 
@@ -47,7 +51,10 @@ private:
 
 	//testing
 	Cube *m_testMesh;
-	
+
+	Button *m_button;
+
+	DirectInput *m_inputer;
 
 };
 #endif

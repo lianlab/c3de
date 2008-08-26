@@ -53,6 +53,7 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 	wc.lpfnWndProc   = (WNDPROC)::DefWindowProc; 
 	wc.hInstance     = m_hInstance;
 	wc.lpszClassName = "D3DWND";
+	
 
 	//Register Class and Create new Window
 	RegisterClass(&wc);
@@ -76,6 +77,8 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 
 	m_input->AddKeyboardListener((KeyboardListener *)m_game);
 	m_input->AddMouseListener((MouseListener *)m_game);	
+
+	m_game->SetInputer(m_input);
 
 	return true;
 }

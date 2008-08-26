@@ -9,6 +9,27 @@ Sprite((Image *)image, frameWidth, frameHeight, numFrames, numColumns, numRows, 
 	D3DXMatrixIdentity(&m_translationMatrix);
 	D3DXMatrixIdentity(&m_rotationMatrix);
 	D3DXMatrixIdentity(&m_scalingMatrix);
+
+	BuildFrameRects();
+}
+
+void D3DSprite::BuildFrameRects()
+{
+	m_frameRects = new vector<RECT>;
+	
+	for(int i = 0; i < m_numFrames; i++)
+	{		
+		int colIndex = i % m_numColumns;
+		int rowIndex = i / m_numColumns;		
+		
+		RECT src;
+		src.left = colIndex * m_frameWidth;
+		src.right = (colIndex * m_frameWidth) + m_frameWidth;
+		src.top = rowIndex * m_frameHeight;
+		src.bottom = (rowIndex * m_frameHeight) + m_frameHeight;
+
+		m_frameRects->push_back(src);
+	}
 }
 
 D3DSprite::~D3DSprite()

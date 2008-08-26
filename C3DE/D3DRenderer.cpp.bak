@@ -3,9 +3,9 @@
 #include "D3DSprite.h"
 //#include "DebugMemory.h"
 #include "ResourceManager.h"
-#include "D3DMesh.h"
 
-
+// For Demo
+IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
 
 D3DRenderer::D3DRenderer()
 {
@@ -19,6 +19,12 @@ D3DRenderer::~D3DRenderer()
 	{
 		ReleaseCOM(m_font);
 	}
+
+	ReleaseCOM(m_vb);
+	ReleaseCOM(m_ib);
+
+	DestroyAllVertexDeclarations();
+
 
 }
 
@@ -89,22 +95,47 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 }
 
-void D3DRenderer::DrawMesh(Mesh *a_mesh)
+void D3DRenderer::DrawMesh(Mesh *mes)
 {
-	D3DMesh *mesh = (D3DMesh *)a_mesh;	
-	HR(m_device->SetStreamSource(0, mesh->GetVertexBuffer(), 0, mesh->GetVertexSize()));
-	
-	HR(m_device->SetIndices(mesh->GetIndexBuffer()));	
-	HR(m_device->SetVertexDeclaration(mesh->GetVertexDeclaration()));
+	HR(m_device->SetStreamSource(0, m_vb, 0, sizeof(VertexPos)));
+	HR(m_device->SetIndices(m_ib));
+	HR(m_device->SetVertexDeclaration(VertexPos::Decl));
 
 	D3DXMATRIX W;
 	D3DXMatrixIdentity(&W);
 	HR(m_device->SetTransform(D3DTS_WORLD, &W));
-	D3DCamera *cam = (D3DCamera *) m_camera;
-	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
+	HR(m_device->SetTransform(D3DTS_VIEW, &m_view));
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
 	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
 	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 8, 0, 12));	
+
+}
+
+void D3DRenderer::BuildViewMtx()
+{
+
+	float x = m_cameraRadius * cosf(m_cameraRotationY);
+	float z = m_cameraRadius * sinf(m_cameraRotationY);
+	D3DXVECTOR3 pos(x, m_cameraHeight, z);
+	D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 up(0.0f, 1.0f, 0.0f);
+	D3DXMatrixLookAtLH(&m_view, &pos, &target, &up);
+
+}
+
+
+
+void D3DRenderer::InitAllVertexDeclarations()
+{
+	
+
+	D3DVERTEXELEMENT9 VertexPosElements[] =
+	{
+		{0,0,D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+		D3DDECL_END()
+	};
+	HR(m_device->CreateVertexDeclaration(VertexPosElements, &VertexPos::Decl));
+	
 
 }
 
@@ -118,9 +149,7 @@ void D3DRenderer::DrawSprite(Sprite *sprite)
 
 	m_sprite->SetTransform(&d3dSprite->GetTransformationMatrix());
 
-	
 	IDirect3DTexture9 * t = tex->GetTexture();
-	/*
 	int colIndex = d3dSprite->GetCurrentFrame() % d3dSprite->GetNumColumns();
 	int rowIndex = d3dSprite->GetCurrentFrame() / d3dSprite->GetNumColumns();
 	int frameWidth = d3dSprite->GetFrameWidth();
@@ -132,8 +161,6 @@ void D3DRenderer::DrawSprite(Sprite *sprite)
 	src.right = (colIndex * frameWidth) + frameWidth;
 	src.top = rowIndex * frameHeight;
 	src.bottom = (rowIndex * frameHeight) + frameHeight;
-	*/
-	RECT src = d3dSprite->GetFrameRects()->at(d3dSprite->GetCurrentFrame());
 	m_sprite->Draw(t, &src, 0, 0, D3DCOLOR_XRGB(255,255,255));
 
 	m_sprite->Flush();	
@@ -264,7 +291,8 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 
 	delete window;
 
-	//2D stuff	
+	//2D stuff
+	
 	D3DXMATRIX V;
 	D3DXVECTOR3 pos(0.0f, 0.0f, -1000.0f);
 	D3DXVECTOR3 up (0.0f, 1.0f, 0.0f);
@@ -295,13 +323,33 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 	HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA));
 	HR(m_device->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2));					
 
-	//end of 2d stuff
-	D3DCamera *cam = new D3DCamera();
-	m_camera = (Camera *)cam;	
-	m_camera->SetPosition(0.0f, 0.0f, 0.0f);
-	m_camera->SetTarget(0.0f, 0.0f, 0.0f);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	m_cameraRadius = 10.0f;
+	m_cameraRotationY = 1.2 * D3DX_PI;
+	m_cameraHeight = 5.0f;
+
+	BuildVertexBuffer();
+	BuildIndexBuffer();
 	
 	BuildProjMtx();
+
+	InitAllVertexDeclarations();	
+
+	BuildViewMtx();
 
 	return true;
 }
@@ -311,6 +359,65 @@ void D3DRenderer::Reset()
 
 }
 
+void D3DRenderer::BuildVertexBuffer()
+{
+
+	HR(m_device->CreateVertexBuffer(8 * sizeof(VertexPos), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_vb, 0));
+	VertexPos *v = 0;
+	HR(m_vb->Lock(0,0,(void**)&v,0));
+
+	v[0] = VertexPos(-1.0f, -1.0f, -1.0f);
+	v[1] = VertexPos(-1.0f,  1.0f, -1.0f);
+	v[2] = VertexPos( 1.0f,  1.0f, -1.0f);
+	v[3] = VertexPos( 1.0f, -1.0f, -1.0f);
+	v[4] = VertexPos(-1.0f, -1.0f,  1.0f);
+	v[5] = VertexPos(-1.0f,  1.0f,  1.0f);
+	v[6] = VertexPos( 1.0f,  1.0f,  1.0f);
+	v[7] = VertexPos( 1.0f, -1.0f,  1.0f);
+	HR(m_vb->Unlock());
+
+}
+
+void D3DRenderer::BuildIndexBuffer()
+{
+
+	HR(m_device->CreateIndexBuffer(36 * sizeof(WORD), D3DUSAGE_WRITEONLY,
+		D3DFMT_INDEX16, D3DPOOL_MANAGED, &m_ib, 0));
+	WORD *k = 0;
+
+	HR(m_ib->Lock(0,0,(void**)&k, 0));
+
+	//front face
+	k[0] = 0; k[1] = 1; k[2] = 2;	
+	k[3] = 0; k[4] = 2; k[5] = 3;
+	
+	//back face
+	k[6] = 4; k[7] = 6; k[8] = 5;
+	k[9] = 4; k[10] = 7; k[11] = 6;
+
+	//left face
+	k[12] = 4; k[13] = 5; k[14] = 1;
+	k[15] = 4; k[16] = 1; k[17] = 0;
+
+	//right face
+	k[18] = 3; k[19] = 2; k[20] = 6;
+	k[21] = 3; k[22] = 6; k[23] = 7;
+
+	//top face
+	k[24] = 1; k[25] = 5; k[26] = 6;
+	k[27] = 1; k[28] = 6; k[29] = 2;
+
+	//bottom face
+	k[30] = 4; k[31] = 0; k[32] = 3;
+	k[33] = 4; k[34] = 3; k[35] = 7;
+
+}
+
+
+void D3DRenderer::DestroyAllVertexDeclarations()
+{
+	ReleaseCOM(VertexPos::Decl);
+}
 
 void D3DRenderer::Clear()
 {	

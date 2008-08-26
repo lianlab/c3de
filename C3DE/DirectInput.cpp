@@ -3,7 +3,10 @@
 
 DirectInput::DirectInput()
 {
-
+	POINT point;
+	int ret = GetCursorPos(&point);
+	m_mouseAbsX = (int)point.x;
+	m_mouseAbsY = (int)point.y;
 }
 
 DirectInput::~DirectInput()
@@ -19,6 +22,10 @@ void DirectInput::Update()
 {
 	HRESULT hr = m_keyboard->GetDeviceState(sizeof(m_keyboardState), (void**)&m_keyboardState);
 	
+	POINT point;
+	int ret = GetCursorPos(&point);
+	m_mouseAbsX = point.x;
+	m_mouseAbsY = point.y;
 
 	if(FAILED(hr))
 	{
@@ -54,6 +61,8 @@ void DirectInput::Update()
 		
 	}
 
+	
+
 	for(i = 0; i< m_mouseListeners->size(); i++)
 	{
 		MouseListener *mouseListener = m_mouseListeners->at(i);
@@ -62,21 +71,21 @@ void DirectInput::Update()
 		{
 			if(m_mouseState.rgbButtons[j] & 0x80)
 			{
-				mouseListener->OnMouseDown(j);				
+				mouseListener->OnMouseDown(j, m_mouseAbsX, m_mouseAbsY);				
 			}
 			else if(m_previousMouseState.rgbButtons[j] & 0x80)
 			{
-				mouseListener->OnMouseUp(j);
+				mouseListener->OnMouseUp(j, m_mouseAbsX, m_mouseAbsY);
 			}
 
-		}
+		}		
 
 		if(m_mouseState.lX || m_mouseState.lY)
 		{
-			mouseListener->OnMouseMove(m_mouseState.lX, m_mouseState.lY);
-		}
-
-		
+			
+			
+			mouseListener->OnMouseMove(m_mouseAbsX, m_mouseAbsY,m_mouseState.lX, m_mouseState.lY);
+		}		
 		
 	}
 

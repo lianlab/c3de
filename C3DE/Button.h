@@ -19,9 +19,30 @@ public:
 	RECT GetCollisionBox(){return m_collisionBox;}
 	void AddListener(ButtonListener *listener);
 	void RemoveListener(ButtonListener *);
+
+	
+	static const int STATE_OUT = 0;
+	static const int STATE_DOWN = 1;
+	static const int STATE_OVER = 2;
+	static const int STATE_UP = 3;
+	
 private:
 	RECT m_collisionBox;
 	bool IsInRect(int x, int y);
 	vector<ButtonListener *> *m_listeners;
+
+	int m_currentState;
+
+	
+	static const int MOUSE_EVENT_MOVE = 0;
+	static const int MOUSE_EVENT_DOWN = 1;
+	static const int MOUSE_EVENT_UP = 2;
+
+	void NotifyButtonDown();
+	void NotifyButtonOver();
+	void NotifyButtonUp();
+
+	void Update(int mouseEvent, int mouseX, int mouseY);
+
 };
 #endif

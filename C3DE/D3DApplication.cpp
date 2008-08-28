@@ -58,7 +58,7 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 	//Register Class and Create new Window
 	RegisterClass(&wc);
 	
-	m_mainWindow = CreateWindow("D3DWND", "C3DE", WS_EX_TOPMOST, 0, 0, width, height, 0, 0, hInstance, 0); 
+	m_mainWindow = CreateWindow("D3DWND", "C3DE", WS_EX_TOPMOST | WS_POPUPWINDOW, 0, 0, width, height, 0, 0, hInstance, 0); 
 	SetCursor(NULL);
 	ShowWindow(m_mainWindow, SW_SHOW);
 	UpdateWindow(m_mainWindow);
@@ -101,7 +101,7 @@ bool D3DApplication::Render()
 
 	static char msg[256];
 	float fps = m_performanceCounter->GetFPS();
-	sprintf_s(msg, "FPS: %.4f", fps);
+	sprintf_s(msg, "FPS: %.4f\n%d\n%d", fps, m_game->hx, m_game->hy);
 
 	m_game->Render(m_renderer);
 	m_renderer->RenderText(msg);	

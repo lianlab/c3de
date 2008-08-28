@@ -11,6 +11,9 @@ Game::Game(Application * app)
 
 	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetImageByID(IMAGE_EXPLOSION_ID);
 	D3DImage *image = new D3DImage(t);				
+
+	t = ResourceManager::GetInstance()->GetImageByID(IMAGE_BUTTON_ID);
+	D3DImage *image2 = new D3DImage(t);			
 	m_sprite = new D3DSprite(image, 64, 64, 30, 6, 5, 50);
 
 	m_sprite->SetX(50);
@@ -32,31 +35,51 @@ Game::Game(Application * app)
 	vector<RECT> *frames = new vector<RECT>;
 	RECT r;
 	r.left = 0;
-	r.right = 50;
+	r.right = 255;
 	r.top = 0;
-	r.bottom = 50;
+	r.bottom = 85;
 	frames->push_back(r);
 	r.left = 0;
-	r.right = 50;
-	r.top = 50;
-	r.bottom = 100;
+	r.right = 256;
+	r.top = 85;
+	r.bottom = 170;
 	frames->push_back(r);
 	r.left = 0;
-	r.right = 150;
-	r.top = 0;
-	r.bottom = 200;
+	r.right = 255;
+	r.top = 170;
+	r.bottom = 255;
 	frames->push_back(r);
 
 	
 	r.left = 0;
-	r.right = 50;
+	r.right = 256;
 	r.top = 0;
-	r.bottom = 50;
+	r.bottom = 85;
 
-	m_button = new Button(image, frames, r);
+	m_button = new Button(image2, frames, r);
 	m_button->SetX(50);
-	m_button->SetY(50);
+	m_button->SetY(340);
+
+	m_button->AddListener(this);
+
+	hx = 0;
+	hy = 0;
 	
+}
+
+void Game::OnButtonDown(Button *down)
+{
+	int khgfd = 987;
+}
+
+void Game::OnButtonUp(Button *button)
+{
+	int otrte= 987;
+}
+
+void Game::OnButtonOver(Button *button)
+{
+	int hjsfs = 9874324;
 }
 
 void Game::SetInputer(DirectInput *inputer)
@@ -127,6 +150,9 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 
 	m_sprite->SetX(x);
 	m_sprite->SetY(y);
+
+	hx = x;
+	hy = y;
 }
 
 void Game::OnKeyDown(int key)

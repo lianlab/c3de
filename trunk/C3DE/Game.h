@@ -11,10 +11,11 @@
 #include "Button.h"
 #include "DirectInput.h"
 
+
 //testing
 #include "Cube.h"
 
-class Game : public KeyboardListener, MouseListener
+class Game : public KeyboardListener, MouseListener, ButtonListener
 {
 public:
 	Game(Application * app);
@@ -30,7 +31,13 @@ public:
 	void OnMouseMove(int x, int y, int dx, int dy);
 	void CreateTestMesh();
 	void SetInputer(DirectInput *inputer);
+
+	void OnButtonDown(Button *button);
+	void OnButtonUp(Button *button);
+	void OnButtonOver(Button * button);
 	
+	int hx;
+	int hy;
 private:
 	Application * m_application;
 

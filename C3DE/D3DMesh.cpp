@@ -4,12 +4,34 @@ IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
 
 D3DMesh::D3DMesh()
 {
-
+	m_effect = NULL;
 }
 
 D3DMesh::~D3DMesh()
 {
 
+}
+
+void D3DMesh::Update(int deltaTime)
+{
+
+}
+
+
+void D3DMesh::SetEffectHandles()
+{
+ int fdsggffd=987;
+}
+
+
+D3DXHANDLE D3DMesh::GetShaderViewMatrix()
+{
+	return m_shaderViewMatrix;
+}
+
+D3DXHANDLE D3DMesh::GetShaderTechnique()
+{
+	return m_shaderTechnique;
 }
 
 void D3DMesh::Translate(float x, float y, float z)

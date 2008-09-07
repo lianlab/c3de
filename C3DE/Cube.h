@@ -8,6 +8,7 @@ class Cube : public D3DMesh
 public:
 	Cube();
 	~Cube();
+	void SetEffectHandles();
 };
 #endif
 

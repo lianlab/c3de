@@ -31,6 +31,16 @@ public:
 	IDirect3DIndexBuffer9 * GetIndexBuffer();
 	void SetBuffers(IDirect3DVertexBuffer9 *vertexBuffer, IDirect3DIndexBuffer9 *indexBuffer);
 	
+	void Update(int deltaTime);
+
+	void SetEffect(ID3DXEffect * effect){m_effect = effect;SetEffectHandles();}
+
+	ID3DXEffect * GetEffect(){return m_effect;}
+
+	virtual void SetEffectHandles();
+
+	virtual D3DXHANDLE GetShaderViewMatrix();
+	virtual D3DXHANDLE GetShaderTechnique();
 
 	vector<VertexPos> * GetVertices(){return m_vertices;}
 	vector<int> * GetIndices(){return m_indices;}
@@ -48,6 +58,12 @@ protected:
 
 	vector<VertexPos> *m_vertices;
 	vector<int> *m_indices;
+
+	ID3DXEffect *m_effect;
+
+	D3DXHANDLE m_shaderViewMatrix;
+	D3DXHANDLE m_shaderTechnique;
+
 };
 #endif
 

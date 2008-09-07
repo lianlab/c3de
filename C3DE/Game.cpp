@@ -1,5 +1,6 @@
 #include "Game.h"
 //#include "DebugMemory.h"
+#include "ShaderManager.h"
 #include "D3DCamera.h"
 #include "D3DRenderer.h"
 
@@ -125,8 +126,8 @@ void Game::Render(Renderer *renderer)
 	cam->SetPosition(x, m_cameraHeight, z);
 
 	renderer->DrawSprite((Sprite *)m_sprite);
-	//renderer->DrawMesh(m_testMesh);
-	renderer->DrawMesh(m_grid);
+	renderer->DrawMesh(m_testMesh);
+	//renderer->DrawMesh(m_grid);
 	renderer->DrawSprite(m_button);
 }
 
@@ -241,6 +242,8 @@ void Game::InitializeMeshes()
 {
 	m_testMesh = new Cube();
 	CreateMeshBuffers(m_testMesh);
+	//m_testMesh->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_FIRST_ID));
+	
 	m_grid = new Grid(100, 100, 0.2f, 0.2f);
 	CreateMeshBuffers(m_grid);
 

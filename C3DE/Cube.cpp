@@ -2,6 +2,7 @@
 
 Cube::Cube()
 {
+	
 	m_vertices = new vector<VertexPos>;
 	m_indices = new vector<int>;
 

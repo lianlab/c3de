@@ -12,8 +12,10 @@
 #include "DirectInput.h"
 
 
+
 //testing
 #include "Cube.h"
+#include "Grid.h"
 
 class Game : public KeyboardListener, MouseListener, ButtonListener
 {
@@ -29,7 +31,7 @@ public:
 	void OnMouseDown(int button, int x, int y);
 	void OnMouseUp(int button, int x, int y);
 	void OnMouseMove(int x, int y, int dx, int dy);
-	void CreateTestMesh();
+	
 	void SetInputer(DirectInput *inputer);
 
 	void OnButtonDown(Button *button);
@@ -59,9 +61,14 @@ private:
 	//testing
 	Cube *m_testMesh;
 
+	Grid *m_grid;
+
 	Button *m_button;
 
 	DirectInput *m_inputer;
+
+	void CreateMeshBuffers(D3DMesh *mesh);
+	void InitializeMeshes();
 
 };
 #endif

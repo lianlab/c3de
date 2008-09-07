@@ -30,7 +30,8 @@ Game::Game(Application * app)
 
 	m_renderer = app->GetRenderer();
 
-	CreateTestMesh();
+	//CreateTestMesh();
+	InitializeMeshes();
 
 	vector<RECT> *frames = new vector<RECT>;
 	RECT r;
@@ -124,7 +125,8 @@ void Game::Render(Renderer *renderer)
 	cam->SetPosition(x, m_cameraHeight, z);
 
 	renderer->DrawSprite((Sprite *)m_sprite);
-	renderer->DrawMesh(m_testMesh);
+	//renderer->DrawMesh(m_testMesh);
+	renderer->DrawMesh(m_grid);
 	renderer->DrawSprite(m_button);
 }
 
@@ -140,6 +142,7 @@ void Game::OnMouseUp(int button, int x, int y)
 
 void Game::OnMouseMove(int x, int y, int dx, int dy)
 {
+
 	m_cameraRotation += dx / 50.0f;
 	m_cameraRadius += dy / 50.0f;
 	if(fabsf(m_cameraRotation) >= 2.0f * D3DX_PI)
@@ -153,6 +156,7 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 
 	hx = x;
 	hy = y;
+
 }
 
 void Game::OnKeyDown(int key)
@@ -168,20 +172,27 @@ void Game::OnKeyDown(int key)
 	else if(key == 208)
 	{
 		m_cameraHeight -= (0.025f * m_deltaTime);
+	}	
+	else if(key == 205)
+	{
+		m_grid->Translate(0.01f, 0.0f, 0.0f);
+	}
+	else if(key == 203)
+	{
+		m_grid->Translate(-0.01f, 0.0f, 0.0f);
 	}
 }
 
-void Game::CreateTestMesh()
+void Game::CreateMeshBuffers(D3DMesh *mesh)
 {
-#if 1
-	m_testMesh = new Cube();
+	
 	
 	D3DRenderer *renderer = (D3DRenderer *) m_renderer;
 	
 	//indices
 	IDirect3DIndexBuffer9 *ib;
 
-	int indicesSize = m_testMesh->GetIndices()->size();
+	int indicesSize = mesh->GetIndices()->size();
 	
 	HR(renderer->GetDevice()->CreateIndexBuffer(indicesSize * sizeof(WORD), D3DUSAGE_WRITEONLY,
 	D3DFMT_INDEX16, D3DPOOL_MANAGED, &ib, 0));
@@ -191,21 +202,21 @@ void Game::CreateTestMesh()
 
 	for(int i = 0; i < indicesSize; i++)
 	{
-		k[i] = m_testMesh->GetIndices()->at(i);
+		k[i] = mesh->GetIndices()->at(i);
 	}
 
 	HR(ib->Unlock());
 
 	//vertices
 	IDirect3DVertexBuffer9 * vb;
-	int vertexSize = m_testMesh->GetVertices()->size();
-	HR(renderer->GetDevice()->CreateVertexBuffer(vertexSize * m_testMesh->GetVertexSize(), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &vb, 0));
+	int vertexSize = mesh->GetVertices()->size();
+	HR(renderer->GetDevice()->CreateVertexBuffer(vertexSize * mesh->GetVertexSize(), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &vb, 0));
 	VertexPos *v = 0;
 	HR(vb->Lock(0,0,(void**)&v,0));
 
 	for(int i = 0; i < vertexSize; i++)
 	{
-		v[i] = m_testMesh->GetVertices()->at(i);
+		v[i] = mesh->GetVertices()->at(i);
 	}
 	
 	HR(vb->Unlock());
@@ -220,12 +231,21 @@ void Game::CreateTestMesh()
 	IDirect3DVertexDeclaration9 *Decl;
 	HR(renderer->GetDevice()->CreateVertexDeclaration(VertexPosElements, &Decl));
 
-	m_testMesh->SetBuffers(vb, ib);
-	m_testMesh->SetVertexDeclaration(Decl);
+	mesh->SetBuffers(vb, ib);
+	mesh->SetVertexDeclaration(Decl);
 
-#endif
-	
+	mesh->Translate(0.0f, 0.0f, 0.0f);
 }
+
+void Game::InitializeMeshes()
+{
+	m_testMesh = new Cube();
+	CreateMeshBuffers(m_testMesh);
+	m_grid = new Grid(100, 100, 0.2f, 0.2f);
+	CreateMeshBuffers(m_grid);
+
+}
+
 
 void Game::OnKeyUp(int key)
 {

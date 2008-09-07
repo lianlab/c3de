@@ -1,2 +1,5 @@
+10:c:\caio\c3de\c3de\shadermanager.cpp               :		LINE 11,	ADDRESS 013372A8	8 unfreed	block 9
+12:c:\caio\c3de\c3de\d3dsprite.cpp                   :		LINE 18,	ADDRESS 01337580	20 unfreed	block 11
+13:c:\caio\c3de\c3de\d3dsprite.cpp                   :		LINE 18,	ADDRESS 01D0EEC0	20 unfreed	block 12
 -----------------------------------------------------------
-Total Unfreed: 0 bytes
+Total Unfreed: 48 bytes

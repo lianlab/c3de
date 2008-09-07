@@ -12,6 +12,32 @@ D3DMesh::~D3DMesh()
 
 }
 
+void D3DMesh::Translate(float x, float y, float z)
+{
+	m_x = x;
+	m_y = y;
+	m_z = z;
+
+	D3DXMATRIX T;
+	D3DXMatrixTranslation(&T, x, y, z);
+	
+	VertexPos *v = 0;
+	HR(m_vertexBuffer->Lock(0,0,(void**)&v,0));
+
+	int vertexSize = m_vertices->size();
+
+	for(int i = 0; i < vertexSize; i++)
+	{
+		VertexPos vertex = v[i];
+		D3DXVECTOR3 d3dVector = vertex.pos;
+		D3DXVec3TransformCoord(&d3dVector, &d3dVector, &T);
+
+		v[i] = d3dVector;
+	}
+	
+	HR(m_vertexBuffer->Unlock());
+}
+
 IDirect3DVertexBuffer9 * D3DMesh::GetVertexBuffer()
 {
 	return m_vertexBuffer;

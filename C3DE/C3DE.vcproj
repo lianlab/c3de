@@ -248,6 +248,10 @@
 						RelativePath=".\ResourceManager.cpp"
 						>
 					</File>
+					<File
+						RelativePath=".\ShaderManager.cpp"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -298,6 +302,10 @@
 					</File>
 					<File
 						RelativePath=".\D3DMesh.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Grid.cpp"
 						>
 					</File>
 					<File
@@ -434,6 +442,10 @@
 						RelativePath=".\ResourceManager.h"
 						>
 					</File>
+					<File
+						RelativePath=".\ShaderManager.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -492,6 +504,10 @@
 					</File>
 					<File
 						RelativePath=".\D3DMesh.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Grid.h"
 						>
 					</File>
 					<File

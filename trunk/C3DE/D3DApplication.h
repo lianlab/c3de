@@ -10,6 +10,7 @@
 #include "MouseListener.h"
 #include "D3DSprite.h"
 #include "Game.h"
+#include "ShaderManager.h"
 
 
 class D3DApplication : public Application

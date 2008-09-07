@@ -36,6 +36,11 @@ public:
 	vector<int> * GetIndices(){return m_indices;}
 
 	int GetVertexSize(){return sizeof(VertexPos);}
+
+	void Translate(float x, float y, float z);
+	float GetX(){return m_x;}
+	float GetY(){return m_y;}
+	float GetZ(){return m_z;}
 protected:
 	IDirect3DVertexBuffer9 * m_vertexBuffer;
 	IDirect3DIndexBuffer9 * m_indexBuffer;

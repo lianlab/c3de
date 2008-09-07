@@ -40,32 +40,9 @@ private:
 	ID3DXFont *m_font;
 	ID3DXSprite *m_sprite;
 
-	
 	void BuildProjMtx();
 	
 	D3DXMATRIX m_proj;
-
-#if 1
-	DWORD mNumVertices;
-	DWORD mNumTriangles;
-
-	IDirect3DVertexBuffer9* mVB;
-	IDirect3DIndexBuffer9*  mIB;
-
-	void buildGeoBuffers();
-
-	void GenTriGrid(int numVertRows, int numVertCols,
-				float dx, float dz, 
-				const D3DXVECTOR3& center, 
-				std::vector<D3DXVECTOR3>& verts,
-				std::vector<DWORD>& indices);
-
-	
-	
-	void InitAllVertexDeclarations();
-#endif
-
-
 
 };
 #endif

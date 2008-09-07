@@ -74,6 +74,7 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 	ResourceManager::GetInstance()->SetDevice(m_renderer->GetDevice());
 
 	ShaderManager::GetInstance()->SetDevice(m_renderer->GetDevice());
+	
 
 	m_game = new Game(this);
 

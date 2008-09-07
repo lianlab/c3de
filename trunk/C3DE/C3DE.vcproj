@@ -312,6 +312,10 @@
 						RelativePath=".\Mesh.cpp"
 						>
 					</File>
+					<File
+						RelativePath=".\Wave.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="Scene"
@@ -512,6 +516,10 @@
 					</File>
 					<File
 						RelativePath=".\Mesh.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Wave.h"
 						>
 					</File>
 				</Filter>

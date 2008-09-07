@@ -10,6 +10,7 @@ public:
 	virtual float GetY() = 0;
 	virtual float GetZ() = 0;
 	virtual ~Mesh() = 0;
+	virtual void Update(int deltaTime) = 0;
 protected:
 	float m_x;
 	float m_y;

@@ -5,6 +5,11 @@ IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
 D3DMesh::D3DMesh()
 {
 	m_effect = NULL;
+	m_x = 0;
+	m_y = 0;
+	m_z = 0;
+
+	picles = 0.0f;
 }
 
 D3DMesh::~D3DMesh()
@@ -14,13 +19,24 @@ D3DMesh::~D3DMesh()
 
 void D3DMesh::Update(int deltaTime)
 {
-
+	m_updateTime = deltaTime;
+	picles += 0.001f;
 }
 
 
 void D3DMesh::SetEffectHandles()
+{ 
+	if(m_effect)
+	{
+		m_shaderTechnique = m_effect->GetTechniqueByName("HeightColorTech");
+		m_shaderViewMatrix  = m_effect->GetParameterByName(0, "gWVP");
+		m_shaderUpdateTime = m_effect->GetParameterByName(0, "gTime");
+	}	
+}
+
+D3DXHANDLE D3DMesh::GetShaderUpdateTime()
 {
- int fdsggffd=987;
+	return m_shaderUpdateTime;
 }
 
 
@@ -34,30 +50,19 @@ D3DXHANDLE D3DMesh::GetShaderTechnique()
 	return m_shaderTechnique;
 }
 
+D3DXMATRIX D3DMesh::GetTransformMatrix()
+{
+	D3DXMATRIX T;
+	D3DXMatrixTranslation(&T, m_x, m_y, m_z);
+	return T;
+}
+
 void D3DMesh::Translate(float x, float y, float z)
 {
-	m_x = x;
-	m_y = y;
-	m_z = z;
+	m_x += x;
+	m_y += y;
+	m_z += z;
 
-	D3DXMATRIX T;
-	D3DXMatrixTranslation(&T, x, y, z);
-	
-	VertexPos *v = 0;
-	HR(m_vertexBuffer->Lock(0,0,(void**)&v,0));
-
-	int vertexSize = m_vertices->size();
-
-	for(int i = 0; i < vertexSize; i++)
-	{
-		VertexPos vertex = v[i];
-		D3DXVECTOR3 d3dVector = vertex.pos;
-		D3DXVec3TransformCoord(&d3dVector, &d3dVector, &T);
-
-		v[i] = d3dVector;
-	}
-	
-	HR(m_vertexBuffer->Unlock());
 }
 
 IDirect3DVertexBuffer9 * D3DMesh::GetVertexBuffer()

@@ -60,15 +60,18 @@ Cube::Cube()
 
 }
 
+/*
 void Cube::SetEffectHandles()
 {
 	if(m_effect)
 	{
 		m_shaderTechnique = m_effect->GetTechniqueByName("ColorTech");
 		m_shaderViewMatrix  = m_effect->GetParameterByName(0, "gWVP");
+		m_shaderUpdateTime = m_effect->GetParameterByName(0, "gUpdateTime");
 	}
 	
 }
+*/
 
 Cube::~Cube()
 {

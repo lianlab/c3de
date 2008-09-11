@@ -113,6 +113,10 @@ void Game::Update(int deltaTime)
 	m_sprite->Update(deltaTime);
 
 	m_deltaTime = deltaTime;	
+
+	m_testMesh->Update(1);
+
+	m_grid->Update(deltaTime);
 	
 }
 
@@ -127,7 +131,7 @@ void Game::Render(Renderer *renderer)
 
 	renderer->DrawSprite((Sprite *)m_sprite);
 	renderer->DrawMesh(m_testMesh);
-	//renderer->DrawMesh(m_grid);
+	renderer->DrawMesh(m_grid);
 	renderer->DrawSprite(m_button);
 }
 
@@ -177,10 +181,12 @@ void Game::OnKeyDown(int key)
 	else if(key == 205)
 	{
 		m_grid->Translate(0.01f, 0.0f, 0.0f);
+		m_testMesh->Translate(0.01f, 0.0f, 0.0f);
 	}
 	else if(key == 203)
 	{
 		m_grid->Translate(-0.01f, 0.0f, 0.0f);
+		m_testMesh->Translate(-0.01f, 0.0f, 0.0f);
 	}
 }
 
@@ -245,6 +251,7 @@ void Game::InitializeMeshes()
 	//m_testMesh->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_FIRST_ID));
 	
 	m_grid = new Grid(100, 100, 0.2f, 0.2f);
+	m_grid->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_FIRST_ID));
 	CreateMeshBuffers(m_grid);
 
 }

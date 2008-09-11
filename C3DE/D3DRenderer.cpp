@@ -115,7 +115,14 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 	{
 		ID3DXEffect * fx = mesh->GetEffect();
 		HR(fx->SetTechnique(mesh->GetShaderTechnique()));
-		HR(fx->SetMatrix(mesh->GetShaderViewMatrix(), &(cam->GetMatrix()*m_proj)));
+		D3DXMATRIX t_view = cam->GetMatrix();
+		D3DXMATRIX T;
+		D3DXMatrixTranslation(&T, mesh->GetX(), mesh->GetY(), mesh->GetZ());
+		t_view = t_view*T;
+		D3DXMATRIX t_projView = t_view*m_proj;
+		//
+		HR(fx->SetMatrix(mesh->GetShaderViewMatrix(), &t_projView));
+		HR(fx->SetFloat(mesh->GetShaderUpdateTime(), mesh->picles));
 		
 		UINT numPasses = 0;
 		HR(fx->Begin(&numPasses, 0));
@@ -339,7 +346,7 @@ void D3DRenderer::Reset()
 
 void D3DRenderer::Clear()
 {	
-	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffff43ff, 1.0f, 0L );
+	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xff00ffff, 1.0f, 0L );
 }
 
 bool D3DRenderer::BeginRender()

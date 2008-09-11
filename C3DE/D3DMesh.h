@@ -41,16 +41,21 @@ public:
 
 	virtual D3DXHANDLE GetShaderViewMatrix();
 	virtual D3DXHANDLE GetShaderTechnique();
+	virtual D3DXHANDLE GetShaderUpdateTime();
 
 	vector<VertexPos> * GetVertices(){return m_vertices;}
 	vector<int> * GetIndices(){return m_indices;}
 
 	int GetVertexSize(){return sizeof(VertexPos);}
 
+	D3DXMATRIX GetTransformMatrix();
+
 	void Translate(float x, float y, float z);
 	float GetX(){return m_x;}
 	float GetY(){return m_y;}
 	float GetZ(){return m_z;}
+
+	float picles;
 protected:
 	IDirect3DVertexBuffer9 * m_vertexBuffer;
 	IDirect3DIndexBuffer9 * m_indexBuffer;
@@ -62,7 +67,10 @@ protected:
 	ID3DXEffect *m_effect;
 
 	D3DXHANDLE m_shaderViewMatrix;
+	D3DXHANDLE m_shaderUpdateTime;
 	D3DXHANDLE m_shaderTechnique;
+
+	int m_updateTime;
 
 };
 #endif

@@ -8,6 +8,7 @@
 #include "D3DCommonDefs.h"
 #include "D3DImage.h"
 #include "D3DCamera.h"
+#include "Scene.h"
 
 class D3DRenderer : public Renderer
 {
@@ -26,6 +27,8 @@ public:
 	void DrawSprite(Sprite *sprite);
 
 	void DrawMesh(Mesh *mesh);
+
+	void DrawScene(Scene *scene);
 
 	void SetScreenMode(int newScreenMode);
 

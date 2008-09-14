@@ -294,30 +294,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="Mesh"
-					>
-					<File
-						RelativePath=".\Cube.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\D3DMesh.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Grid.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Mesh.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Wave.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
 					Name="Scene"
 					>
 					<File
@@ -328,6 +304,54 @@
 						RelativePath=".\Scene.cpp"
 						>
 					</File>
+					<Filter
+						Name="Mesh"
+						>
+						<File
+							RelativePath=".\Cube.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\D3DMesh.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Grid.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Mesh.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Wave.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Lighting"
+						>
+						<File
+							RelativePath=".\AmbientLight.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\DirectionalLight.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Light.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="PreDefined"
+						>
+						<File
+							RelativePath=".\DefaultScene1.cpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Camera"
@@ -500,30 +524,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="Mesh"
-					>
-					<File
-						RelativePath=".\Cube.h"
-						>
-					</File>
-					<File
-						RelativePath=".\D3DMesh.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Grid.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Mesh.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Wave.h"
-						>
-					</File>
-				</Filter>
-				<Filter
 					Name="Scene"
 					>
 					<File
@@ -534,6 +534,62 @@
 						RelativePath=".\Scene.h"
 						>
 					</File>
+					<Filter
+						Name="Mesh"
+						>
+						<File
+							RelativePath=".\Cube.h"
+							>
+						</File>
+						<File
+							RelativePath=".\D3DMesh.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Grid.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Mesh.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Wave.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Lighting"
+						>
+						<File
+							RelativePath=".\AmbientLight.h"
+							>
+						</File>
+						<File
+							RelativePath=".\DirectionalLight.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Light.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Material"
+						>
+						<File
+							RelativePath=".\Material.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="PreDefined"
+						>
+						<File
+							RelativePath=".\DefaultScene1.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Camera"

@@ -9,7 +9,7 @@ D3DMesh::D3DMesh()
 	m_y = 0;
 	m_z = 0;
 
-	picles = 0.0f;
+	picles = 0;
 }
 
 D3DMesh::~D3DMesh()
@@ -20,7 +20,7 @@ D3DMesh::~D3DMesh()
 void D3DMesh::Update(int deltaTime)
 {
 	m_updateTime = deltaTime;
-	picles += 0.001f;
+	picles = 10;
 }
 
 
@@ -30,14 +30,16 @@ void D3DMesh::SetEffectHandles()
 	{
 		m_shaderTechnique = m_effect->GetTechniqueByName("HeightColorTech");
 		m_shaderViewMatrix  = m_effect->GetParameterByName(0, "gWVP");
-		m_shaderUpdateTime = m_effect->GetParameterByName(0, "gTime");
+		//m_shaderUpdateTime = m_effect->GetParameterByName(0, "gTime");
 	}	
 }
 
+/*
 D3DXHANDLE D3DMesh::GetShaderUpdateTime()
 {
 	return m_shaderUpdateTime;
 }
+*/
 
 
 D3DXHANDLE D3DMesh::GetShaderViewMatrix()

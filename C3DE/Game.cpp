@@ -114,9 +114,9 @@ void Game::Update(int deltaTime)
 
 	m_deltaTime = deltaTime;	
 
-	m_testMesh->Update(1);
+	//m_testMesh->Update(1);
 
-	m_grid->Update(deltaTime);
+	m_grid->Update(10);
 	
 }
 
@@ -130,8 +130,9 @@ void Game::Render(Renderer *renderer)
 	cam->SetPosition(x, m_cameraHeight, z);
 
 	renderer->DrawSprite((Sprite *)m_sprite);
-	renderer->DrawMesh(m_testMesh);
-	renderer->DrawMesh(m_grid);
+	//renderer->DrawMesh(m_testMesh);
+	renderer->DrawScene(m_testScene);
+	//renderer->DrawMesh(m_grid);
 	renderer->DrawSprite(m_button);
 }
 
@@ -254,6 +255,10 @@ void Game::InitializeMeshes()
 	m_grid->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_FIRST_ID));
 	CreateMeshBuffers(m_grid);
 
+	m_testScene = new DefaultScene1();
+	//m_testScene->GetMeshesVector()->push_back((Mesh*)m_testMesh);
+	m_testScene->AddMesh((Mesh*)m_grid);
+	
 }
 
 

@@ -6,7 +6,9 @@
 //=============================================================================
 
 uniform extern float4x4 gWVP;
-uniform extern float gTime;
+uniform extern int gTime;
+
+int totalTime;
 
 struct OutputVS
 {
@@ -32,10 +34,13 @@ float SumOfRadialSineWaves(float x, float z)
 	// as the origin of the local space).
 	float d = sqrt(x*x + z*z);
 	
+	float t_time = (gTime)/1000.0f;
+	totalTime += gTime;
+	
 	// Sum the waves.
 	float sum = 0.0f;
 	for(int i = 0; i < 2; ++i)
-		sum += a[i]*sin(k[i]*d - (gTime)*w[i] + p[i]);
+		sum += a[i]*sin(k[i]*d - totalTime*w[i] + p[i]);
 		
 	return sum;
 }
@@ -64,8 +69,8 @@ OutputVS ColorVS(float3 posL : POSITION0)
 	posL.y = SumOfRadialSineWaves(posL.x, posL.z);
 	
 	// Generate the vertex color based on its height.
-	//outVS.color = GetColorFromHeight(posL.y);
-	outVS.color = float4(1.0f, 0.0f, 0.0f, 1.0f);
+	outVS.color = GetColorFromHeight(posL.y);
+	//outVS.color = float4(1.0f, 0.0f, 0.0f, 1.0f);
 	
 	// Transform to homogeneous clip space.
 	outVS.posH = mul(float4(posL, 1.0f), gWVP);
@@ -90,6 +95,6 @@ technique HeightColorTech
         pixelShader  = compile ps_2_0 ColorPS();
 
 		// Specify the render/device states associated with this pass.
-		FillMode = WireFrame;
+		//FillMode = WireFrame;
     }
 }

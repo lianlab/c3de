@@ -14,7 +14,10 @@
 
 
 //testing
+#include "DefaultScene1.h"
 #include "Cube.h"
+
+
 #include "Grid.h"
 
 class Game : public KeyboardListener, MouseListener, ButtonListener
@@ -69,6 +72,8 @@ private:
 
 	void CreateMeshBuffers(D3DMesh *mesh);
 	void InitializeMeshes();
+
+	DefaultScene1 *m_testScene;
 
 };
 #endif

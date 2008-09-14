@@ -41,7 +41,7 @@ public:
 
 	virtual D3DXHANDLE GetShaderViewMatrix();
 	virtual D3DXHANDLE GetShaderTechnique();
-	virtual D3DXHANDLE GetShaderUpdateTime();
+	//virtual D3DXHANDLE GetShaderUpdateTime();
 
 	vector<VertexPos> * GetVertices(){return m_vertices;}
 	vector<int> * GetIndices(){return m_indices;}
@@ -55,7 +55,7 @@ public:
 	float GetY(){return m_y;}
 	float GetZ(){return m_z;}
 
-	float picles;
+	int picles;
 protected:
 	IDirect3DVertexBuffer9 * m_vertexBuffer;
 	IDirect3DIndexBuffer9 * m_indexBuffer;

@@ -89,6 +89,18 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 }
 
+void D3DRenderer::DrawScene(Scene *scene)
+{
+	int totalMeshes = scene->GetMeshesVector()->size();
+	
+
+	for(int i = 0; i < totalMeshes; i++)
+	{
+		Mesh *mesh = scene->GetMeshesVector()->at(i);
+		DrawMesh(mesh);
+	}
+}
+
 void D3DRenderer::DrawMesh(Mesh *a_mesh)
 {
 
@@ -122,7 +134,7 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 		D3DXMATRIX t_projView = t_view*m_proj;
 		//
 		HR(fx->SetMatrix(mesh->GetShaderViewMatrix(), &t_projView));
-		HR(fx->SetFloat(mesh->GetShaderUpdateTime(), mesh->picles));
+		//HR(fx->SetInt(mesh->GetShaderUpdateTime(), mesh->picles));
 		
 		UINT numPasses = 0;
 		HR(fx->Begin(&numPasses, 0));
@@ -138,6 +150,11 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 	{
 		HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
 	}
+
+	static char msg[256];
+	sprintf_s(msg, "\n\n\n\nmesh: %f\n%d", (float)(mesh->picles/1000.0f), mesh->picles);
+
+	RenderText(msg);	
 }
 
 void D3DRenderer::DrawSprite(Sprite *sprite)

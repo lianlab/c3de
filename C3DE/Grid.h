@@ -8,9 +8,7 @@ class Grid : public D3DMesh
 public:
 	Grid(int numRows, int numCols, float dx, float dz/*, std::vector<D3DXVECTOR3>& verts, std::vector<DWORD>& indices*/);
 	~Grid();
-#if 1
-	
-#endif
+
 };
 
 #endif

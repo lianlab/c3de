@@ -129,11 +129,12 @@ void Game::Render(Renderer *renderer)
 	float z =  m_cameraRadius * sinf(m_cameraRotation);
 	cam->SetPosition(x, m_cameraHeight, z);
 
-	renderer->DrawSprite((Sprite *)m_sprite);
+	
 	//renderer->DrawMesh(m_testMesh);
 	renderer->DrawScene(m_testScene);
 	//renderer->DrawMesh(m_grid);
 	renderer->DrawSprite(m_button);
+	renderer->DrawSprite((Sprite *)m_sprite);
 }
 
 void Game::OnMouseDown(int button, int x , int y)
@@ -233,8 +234,11 @@ void Game::CreateMeshBuffers(D3DMesh *mesh)
 	D3DVERTEXELEMENT9 VertexPosElements[] =
 	{
 		{0,0,D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+		{0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0},
 		D3DDECL_END()
 	};
+
+	
 
 	IDirect3DVertexDeclaration9 *Decl;
 	HR(renderer->GetDevice()->CreateVertexDeclaration(VertexPosElements, &Decl));

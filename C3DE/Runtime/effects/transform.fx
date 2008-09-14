@@ -6,7 +6,13 @@
 //=============================================================================
 
 uniform extern float4x4 gWVP;
+uniform extern float4x4 gWorldInverseTranspose;
 uniform extern int gTime;
+
+uniform extern float4 gAmbientMtrl;
+uniform extern float4 gAmbientLight;
+
+uniform extern float3 gLightVecW;
 
 int totalTime;
 
@@ -59,7 +65,8 @@ float4 GetColorFromHeight(float y)
 		return float4(1.0f, 1.0f, 0.0f, 1.0f);
 }
 
-OutputVS ColorVS(float3 posL : POSITION0)
+//OutputVS ColorVS(float3 posL : POSITION0)
+OutputVS ColorVS(float3 posL : POSITION0, float3 normalL : NORMAL0)
 {
     // Zero out our output.
 	OutputVS outVS = (OutputVS)0;
@@ -68,9 +75,25 @@ OutputVS ColorVS(float3 posL : POSITION0)
 	// summing sine waves.
 	posL.y = SumOfRadialSineWaves(posL.x, posL.z);
 	
+	// Transform normal to world space.
+		
+
+	/*
+	float3 normalW = mul(float4(normalL, 0.0f), gWorldInverseTranspose).xyz;
+	normalW = normalize(normalW);
+	
+	// Compute the color: Equation 10.2.
+	
+	float s = max(dot(gLightVecW, normalW), 0.0f);
+	float3 diffuse = s*(gDiffuseMtrl*gDiffuseLight).rgb;
+	float3 ambient = gAmbientMtrl*gAmbientLight;
+	outVS.color.rgb = ambient + diffuse;
+	outVS.color.a = 1.0f;
+	*/
+	
 	// Generate the vertex color based on its height.
-	outVS.color = GetColorFromHeight(posL.y);
-	//outVS.color = float4(1.0f, 0.0f, 0.0f, 1.0f);
+	//outVS.color = GetColorFromHeight(posL.y);
+	outVS.color = float4(0.2f, 0.3f, 0.7f, 1.0f);
 	
 	// Transform to homogeneous clip space.
 	outVS.posH = mul(float4(posL, 1.0f), gWVP);
@@ -95,6 +118,6 @@ technique HeightColorTech
         pixelShader  = compile ps_2_0 ColorPS();
 
 		// Specify the render/device states associated with this pass.
-		//FillMode = WireFrame;
+		FillMode = WireFrame;
     }
 }

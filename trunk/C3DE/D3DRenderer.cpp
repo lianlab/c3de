@@ -118,7 +118,7 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 	
 	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
-	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
 
 	int numTriangles = mesh->GetIndices()->size() / 3;
 	int numVertices = mesh->GetVertices()->size();		

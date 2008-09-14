@@ -2,7 +2,7 @@
 
 Scene::Scene()
 {
-	m_directionalLights = new vector<DirectionalLight *>;
+	m_pointLights = new vector<PointLight *>;
 	m_ambientLights = new vector<AmbientLight *>;
 	m_meshes = new vector<Mesh *>;
 
@@ -43,16 +43,16 @@ void Scene::RemoveAmbientLight(AmbientLight *light)
 	}
 }
 
-void Scene::RemoveDirectionalLight(DirectionalLight *light)
+void Scene::RemovePointLight(PointLight *light)
 {
-	int totalLights = m_directionalLights->size();
+	int totalLights = m_pointLights->size();
 
 	for(int i = 0; i < totalLights; i++)
 	{
-		DirectionalLight *totalLights = m_directionalLights->at(i);
+		PointLight *totalLights = m_pointLights->at(i);
 		if(light == totalLights)
 		{
-			m_directionalLights->erase(m_directionalLights->begin() + i);
+			m_pointLights->erase(m_pointLights->begin() + i);
 			return;
 		}
 	}

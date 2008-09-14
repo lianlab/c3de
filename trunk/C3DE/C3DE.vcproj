@@ -336,11 +336,11 @@
 							>
 						</File>
 						<File
-							RelativePath=".\DirectionalLight.cpp"
+							RelativePath=".\Light.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\Light.cpp"
+							RelativePath=".\PointLight.cpp"
 							>
 						</File>
 					</Filter>
@@ -566,11 +566,11 @@
 							>
 						</File>
 						<File
-							RelativePath=".\DirectionalLight.h"
+							RelativePath=".\Light.h"
 							>
 						</File>
 						<File
-							RelativePath=".\Light.h"
+							RelativePath=".\PointLight.h"
 							>
 						</File>
 					</Filter>

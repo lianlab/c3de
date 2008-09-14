@@ -9,6 +9,7 @@
 using namespace std;
 
 //BOOK
+#if 0
 struct VertexPos
 {
 	VertexPos():pos(0.0f, 0.0f, 0.0f){}
@@ -18,6 +19,22 @@ struct VertexPos
 	static IDirect3DVertexDeclaration9 *Decl;
 
 	D3DXVECTOR3 pos;	
+};
+#endif
+struct VertexPos
+{
+	VertexPos()
+		:pos(0.0f, 0.0f, 0.0f),
+		normal(0.0f, 0.0f, 0.0f){}
+	VertexPos(float x, float y, float z, 
+		float nx=0.0f, float ny=1.0f, float nz=0.0f):pos(x,y,z), normal(nx,ny,nz){}
+	VertexPos(const D3DXVECTOR3& v, const D3DXVECTOR3& n)
+		:pos(v),normal(n){}
+	
+
+	D3DXVECTOR3 pos;
+	D3DXVECTOR3 normal;
+	static IDirect3DVertexDeclaration9* Decl;
 };
 
 class D3DMesh : public Mesh

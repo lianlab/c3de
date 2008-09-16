@@ -12,6 +12,20 @@ D3DRenderer::D3DRenderer()
 {
 	m_windowed = true;
 	m_font = NULL;
+
+#if 1
+		
+	m_testLight = new SpecularLight();
+	m_testLight->SetDirection(-0.5f, 5.75f, -2.0f);
+	m_testLight->SetColor(Material(1.0f, 0.0f, 0.7f, 1.0f));
+
+	mhWorldInverseTranspose = 0;
+	mhLightVecW             = 0;
+	mhDiffuseMtrl           = 0;
+	mhDiffuseLight          = 0;
+
+	D3DXMatrixIdentity(&mWorld);
+#endif
 }
 
 D3DRenderer::~D3DRenderer()
@@ -126,11 +140,35 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 	if(mesh->GetEffect())
 	{
 		ID3DXEffect * fx = mesh->GetEffect();
+
+#if 1
+		if(!mhWorldInverseTranspose)
+		{
+			mhWorldInverseTranspose = fx->GetParameterByName(0, "gWorldInverseTranspose");
+			mhLightVecW             = fx->GetParameterByName(0, "gLightVecW");
+			mhDiffuseMtrl           = fx->GetParameterByName(0, "gDiffuseMtrl");
+			mhDiffuseLight          = fx->GetParameterByName(0, "gDiffuseLight");
+		}
+
+		D3DXMATRIX worldInverseTranspose;
+		D3DXMatrixInverse(&worldInverseTranspose, 0, &mWorld);
+		D3DXMatrixTranspose(&worldInverseTranspose, &worldInverseTranspose);
+		HR(fx->SetMatrix(mhWorldInverseTranspose, &worldInverseTranspose));
+		
+		D3DXVECTOR3 t_lightVector = m_testLight->GetDirection();
+		HR(fx->SetValue(mhLightVecW, &t_lightVector, sizeof(D3DXVECTOR3)));
+		D3DXCOLOR t_diffuseMtrl = mesh->GetDiffuseMaterialColor();
+		HR(fx->SetValue(mhDiffuseMtrl, &t_diffuseMtrl, sizeof(D3DXCOLOR)));
+		D3DXCOLOR t_diffuseLight = m_testLight->GetD3DColor();
+		HR(fx->SetValue(mhDiffuseLight, &t_diffuseLight, sizeof(D3DXCOLOR)));
+#endif
 		HR(fx->SetTechnique(mesh->GetShaderTechnique()));
 		D3DXMATRIX t_view = cam->GetMatrix();
+#if 0
 		D3DXMATRIX T;
 		D3DXMatrixTranslation(&T, mesh->GetX(), mesh->GetY(), mesh->GetZ());
 		t_view = t_view*T;
+#endif
 		D3DXMATRIX t_projView = t_view*m_proj;
 		//
 		HR(fx->SetMatrix(mesh->GetShaderViewMatrix(), &t_projView));

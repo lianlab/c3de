@@ -10,6 +10,10 @@
 #include "D3DCamera.h"
 #include "Scene.h"
 
+#if 1
+#include "SpecularLight.h"
+#endif
+
 class D3DRenderer : public Renderer
 {
 public:
@@ -46,6 +50,18 @@ private:
 	void BuildProjMtx();
 	
 	D3DXMATRIX m_proj;
+
+#if 1
+	D3DXHANDLE              mhWorldInverseTranspose;
+	D3DXHANDLE              mhLightVecW;
+	D3DXHANDLE              mhDiffuseMtrl;
+	D3DXHANDLE              mhDiffuseLight;
+
+	
+
+	SpecularLight *m_testLight;
+	D3DXMATRIX  mWorld;
+#endif
 
 };
 #endif

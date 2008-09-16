@@ -332,17 +332,37 @@
 						Name="Lighting"
 						>
 						<File
-							RelativePath=".\AmbientLight.cpp"
-							>
-						</File>
-						<File
 							RelativePath=".\Light.cpp"
 							>
 						</File>
-						<File
-							RelativePath=".\PointLight.cpp"
+						<Filter
+							Name="Directional"
 							>
-						</File>
+							<File
+								RelativePath=".\DirectionalLight.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\SpecularLight.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="Point"
+							>
+							<File
+								RelativePath=".\PointLight.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="Ambient"
+							>
+							<File
+								RelativePath=".\AmbientLight.cpp"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="PreDefined"
@@ -562,17 +582,37 @@
 						Name="Lighting"
 						>
 						<File
-							RelativePath=".\AmbientLight.h"
-							>
-						</File>
-						<File
 							RelativePath=".\Light.h"
 							>
 						</File>
-						<File
-							RelativePath=".\PointLight.h"
+						<Filter
+							Name="Directional"
 							>
-						</File>
+							<File
+								RelativePath=".\DirectionalLight.h"
+								>
+							</File>
+							<File
+								RelativePath=".\SpecularLight.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="Point"
+							>
+							<File
+								RelativePath=".\PointLight.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="Ambient"
+							>
+							<File
+								RelativePath=".\AmbientLight.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Material"

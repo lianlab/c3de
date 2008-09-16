@@ -72,6 +72,14 @@ public:
 	float GetY(){return m_y;}
 	float GetZ(){return m_z;}
 
+	D3DXCOLOR GetDiffuseMaterialColor(){return m_diffuseMaterialColor;}
+	D3DXCOLOR GetAmbientMaterialColor(){return m_ambientMaterialColor;}
+	D3DXCOLOR GetSpecularMaterialColor(){return m_specularMaterialColor;}
+
+	void SetAmbientMaterial(Material a_material);
+	void SetDiffuseMaterial(Material d_material);
+	void SetSpecularMaterial(Material s_material);
+
 	int picles;
 protected:
 	IDirect3DVertexBuffer9 * m_vertexBuffer;
@@ -88,6 +96,10 @@ protected:
 	D3DXHANDLE m_shaderTechnique;
 
 	int m_updateTime;
+
+	D3DXCOLOR m_diffuseMaterialColor;
+	D3DXCOLOR m_ambientMaterialColor;
+	D3DXCOLOR m_specularMaterialColor;
 
 };
 #endif

@@ -12,6 +12,8 @@ uniform extern int gTime;
 uniform extern float4 gAmbientMtrl;
 uniform extern float4 gAmbientLight;
 
+uniform extern float4 gDiffuseMtrl;
+uniform extern float4 gDiffuseLight;
 uniform extern float3 gLightVecW;
 
 int totalTime;
@@ -66,6 +68,7 @@ float4 GetColorFromHeight(float y)
 }
 
 //OutputVS ColorVS(float3 posL : POSITION0)
+/*
 OutputVS ColorVS(float3 posL : POSITION0, float3 normalL : NORMAL0)
 {
     // Zero out our output.
@@ -78,7 +81,7 @@ OutputVS ColorVS(float3 posL : POSITION0, float3 normalL : NORMAL0)
 	// Transform normal to world space.
 		
 
-	/*
+	
 	float3 normalW = mul(float4(normalL, 0.0f), gWorldInverseTranspose).xyz;
 	normalW = normalize(normalW);
 	
@@ -89,7 +92,7 @@ OutputVS ColorVS(float3 posL : POSITION0, float3 normalL : NORMAL0)
 	float3 ambient = gAmbientMtrl*gAmbientLight;
 	outVS.color.rgb = ambient + diffuse;
 	outVS.color.a = 1.0f;
-	*/
+	
 	
 	// Generate the vertex color based on its height.
 	//outVS.color = GetColorFromHeight(posL.y);
@@ -103,8 +106,35 @@ OutputVS ColorVS(float3 posL : POSITION0, float3 normalL : NORMAL0)
 	// Done--return the output.
     return outVS;
 }
+*/
 
+OutputVS DiffuseVS(float3 posL : POSITION0, float3 normalL : NORMAL0)
+{
+    // Zero out our output.
+	OutputVS outVS = (OutputVS)0;
+	
+	// Transform normal to world space.
+	float3 normalW = mul(float4(normalL, 0.0f), gWorldInverseTranspose).xyz;
+	normalW = normalize(normalW);
+	
+	// Compute the color: Equation 10.1.
+	float s = max(dot(gLightVecW, normalW), 0.0f);
+	outVS.color.rgb = s*(gDiffuseMtrl*gDiffuseLight).rgb;
+	outVS.color.a   = gDiffuseMtrl.a;
+	
+	// Transform to homogeneous clip space.
+	outVS.posH = mul(float4(posL, 1.0f), gWVP);
+	
+	// Done--return the output.
+    return outVS;
+}
+/*
 float4 ColorPS(float4 c : COLOR0) : COLOR
+{
+    return c;
+}
+*/
+float4 DiffusePS(float4 c : COLOR0) : COLOR
 {
     return c;
 }
@@ -114,10 +144,10 @@ technique HeightColorTech
     pass P0
     {
         // Specify the vertex and pixel shader associated with this pass.
-        vertexShader = compile vs_2_0 ColorVS();
-        pixelShader  = compile ps_2_0 ColorPS();
+        vertexShader = compile vs_2_0 DiffuseVS();
+        pixelShader  = compile ps_2_0 DiffusePS();
 
 		// Specify the render/device states associated with this pass.
-		FillMode = WireFrame;
+		//FillMode = WireFrame;
     }
 }

@@ -10,6 +10,29 @@ D3DMesh::D3DMesh()
 	m_z = 0;
 
 	picles = 0;
+
+	m_diffuseMaterialColor = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
+	m_ambientMaterialColor = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
+	m_specularMaterialColor = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
+}
+
+void D3DMesh::SetAmbientMaterial(Material a_material)
+{
+	m_ambientMaterial = a_material;
+	m_ambientMaterialColor = D3DXCOLOR(a_material.r, a_material.g, a_material.b, a_material.a);
+}
+	
+void D3DMesh::SetDiffuseMaterial(Material d_material)
+{
+	m_diffuseMaterial = d_material;
+	m_diffuseMaterialColor = D3DXCOLOR(d_material.r, d_material.g, d_material.b, d_material.a);
+}
+
+
+void D3DMesh::SetSpecularMaterial(Material s_material)
+{
+	m_specularMaterial = s_material;
+	m_specularMaterialColor = D3DXCOLOR(s_material.r, s_material.g, s_material.b, s_material.a);
 }
 
 D3DMesh::~D3DMesh()

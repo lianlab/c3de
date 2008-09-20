@@ -52,18 +52,10 @@ private:
 	
 	D3DXMATRIX m_proj;
 
-#if 1
-	D3DXHANDLE              mhWorldInverseTranspose;
-	D3DXHANDLE              mhLightVecW;
-	D3DXHANDLE              mhDiffuseMtrl;
-	D3DXHANDLE              mhDiffuseLight;
-
-
-	SpecularLight *m_testLight;
-	SpecularLight *m_testLight2;
-	D3DXMATRIX  mWorld;
-	
-#endif
+	//sets all shader handlers relative to a specific mesh's material for every drawScene pass
+	void SetMeshMaterialShaderHandlers(Scene *scene, Mesh *mesh);
+	//sets all shader handlers for every drawScene pass
+	void SetSceneStepShaderHandlers(Scene *scene);
 
 };
 #endif

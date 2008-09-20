@@ -13,24 +13,7 @@ D3DRenderer::D3DRenderer()
 	m_windowed = true;
 	m_font = NULL;
 
-#if 0
-		
-	m_testLight = new SpecularLight();
-	m_testLight->SetDirection(-0.5f, 4.75f, -2.0f);
-	m_testLight->SetColor(Material(0.0f, 0.0f, 1.0f, 1.0f));
 
-	m_testLight2 = new SpecularLight();
-	m_testLight2->SetDirection(-5.5f, 8.75f, -2.0f);
-	m_testLight2->SetColor(Material(1.0f, 0.0f, 0.0f, 1.0f));
-
-	mhWorldInverseTranspose = 0;
-	mhLightVecW             = 0;
-	mhDiffuseMtrl           = 0;
-	mhDiffuseLight          = 0;
-
-	D3DXMatrixIdentity(&mWorld);
-	
-#endif
 }
 
 D3DRenderer::~D3DRenderer()
@@ -110,6 +93,57 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 bool gAuei = true;
 
+//sets all shader handlers for every drawScene pass
+void D3DRenderer::SetSceneStepShaderHandlers(Scene *scene)
+{
+	D3DScene *t_scene = static_cast<D3DScene *> (scene);
+	ID3DXEffect * effect = t_scene->GetEffect();
+	// Setup the rendering FX		
+		
+	D3DXMATRIX W;		
+	D3DXMatrixIdentity(&W);		
+	HR(effect->SetMatrix(t_scene->GetShaderWorldMatrix(), &W));
+
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	D3DXMATRIX t_view = cam->GetMatrix();
+	D3DXMATRIX t_projView = t_view*m_proj;
+	HR(effect->SetMatrix(t_scene->GetShaderViewMatrix(), &t_projView));
+
+	D3DXMATRIX WIT;
+	D3DXMatrixInverse(&WIT, 0, &W);
+	D3DXMatrixTranspose(&WIT, &WIT);
+	HR(effect->SetMatrix(t_scene->GetShaderWorldInverseTransposeMatrix(), &WIT));
+
+#if 1										
+	
+	
+	HR(effect->SetValue(t_scene->GetShaderEyePosition(), cam->GetPosition(), sizeof(D3DXVECTOR3)));
+
+	// Spotlight position is the same as the camera position.
+	HR(effect->SetValue(t_scene->GetShaderLightPosition(), cam->GetPosition(), sizeof(D3DXVECTOR3)));
+
+	// Spotlight direction is the same as the camera forward direction.
+	D3DXVECTOR3 lightDir = cam->GetTarget() - cam->GetPosition();
+	D3DXVec3Normalize(&lightDir, &lightDir);
+	HR(effect->SetValue(t_scene->GetShaderLightDirection(), &lightDir, sizeof(D3DXVECTOR3)));
+
+	
+
+#endif
+	HR(effect->SetTechnique(t_scene->GetShaderTechnique()));
+}
+
+//sets all shader handlers relative to a specific mesh's material for every drawScene pass
+void D3DRenderer::SetMeshMaterialShaderHandlers(Scene *scene, Mesh *mesh)
+{
+	D3DScene *t_scene = static_cast<D3DScene *> (scene);
+	ID3DXEffect * effect = t_scene->GetEffect();
+	HR(effect->SetValue(t_scene->GetShaderObjectAmbientMaterial(), &mesh->GetMaterial()->GetAmbient(),sizeof(D3DXCOLOR)));
+	HR(effect->SetValue(t_scene->GetShaderObjectDiffuseMaterial(), &mesh->GetMaterial()->GetDiffuse(), sizeof(D3DXCOLOR)));
+	HR(effect->SetValue(t_scene->GetShaderObjectSpecularMaterial(), &mesh->GetMaterial()->GetSpecular(), sizeof(D3DXCOLOR)));
+	HR(effect->SetFloat(t_scene->GetShaderSpecularLightPower(), mesh->GetMaterial()->GetSpecularPower()));
+			
+}
 void D3DRenderer::DrawScene(Scene *scene)
 {
 	int totalMeshes = scene->GetMeshesVector()->size();	
@@ -118,6 +152,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 	ID3DXEffect * effect = t_scene->GetEffect();
 
+	
 	if(gAuei || true)
 	{
 		gAuei = false;
@@ -131,48 +166,14 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 	if(effect  )
 	{
-		// Setup the rendering FX		
-		
-		D3DXMATRIX W;		
-		D3DXMatrixIdentity(&W);		
-		HR(effect->SetMatrix(t_scene->GetShaderWorldMatrix(), &W));
 
-		D3DCamera *cam = (D3DCamera *) m_camera;
-		D3DXMATRIX t_view = cam->GetMatrix();
-		D3DXMATRIX t_projView = t_view*m_proj;
-		HR(effect->SetMatrix(t_scene->GetShaderViewMatrix(), &t_projView));
-
-		D3DXMATRIX WIT;
-		D3DXMatrixInverse(&WIT, 0, &W);
-		D3DXMatrixTranspose(&WIT, &WIT);
-		HR(effect->SetMatrix(t_scene->GetShaderWorldInverseTransposeMatrix(), &WIT));
-
-#if 1										
-		
-		
-		HR(effect->SetValue(t_scene->GetShaderEyePosition(), cam->GetPosition(), sizeof(D3DXVECTOR3)));
-
-		// Spotlight position is the same as the camera position.
-		HR(effect->SetValue(t_scene->GetShaderLightPosition(), cam->GetPosition(), sizeof(D3DXVECTOR3)));
-
-		// Spotlight direction is the same as the camera forward direction.
-		D3DXVECTOR3 lightDir = cam->GetTarget() - cam->GetPosition();
-		D3DXVec3Normalize(&lightDir, &lightDir);
-		HR(effect->SetValue(t_scene->GetShaderLightDirection(), &lightDir, sizeof(D3DXVECTOR3)));
-
-#endif
-		
-		HR(effect->SetTechnique(t_scene->GetShaderTechnique()));
+		SetSceneStepShaderHandlers(scene);						
 
 		for(int i = 0; i < totalMeshes; i++)
 		{
 			Mesh *mesh = scene->GetMeshesVector()->at(i);	
 
-			HR(effect->SetValue(t_scene->GetShaderObjectAmbientMaterial(), &mesh->GetMaterial()->GetAmbient(),sizeof(D3DXCOLOR)));
-			HR(effect->SetValue(t_scene->GetShaderObjectDiffuseMaterial(), &mesh->GetMaterial()->GetDiffuse(), sizeof(D3DXCOLOR)));
-			HR(effect->SetValue(t_scene->GetShaderObjectSpecularMaterial(), &mesh->GetMaterial()->GetSpecular(), sizeof(D3DXCOLOR)));
-			HR(effect->SetFloat(t_scene->GetShaderSpecularLightPower(), mesh->GetMaterial()->GetSpecularPower()));
-			
+			SetMeshMaterialShaderHandlers(scene, mesh);			
 
 			HR(effect->CommitChanges());
 
@@ -226,62 +227,6 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 
 	int numTriangles = mesh->GetIndices()->size() / 3;
 	int numVertices = mesh->GetVertices()->size();		
-/*
-	if(mesh->GetEffect())
-	{
-		ID3DXEffect * fx = mesh->GetEffect();
-
-
-		if(!mhWorldInverseTranspose)
-		{
-			mhWorldInverseTranspose = fx->GetParameterByName(0, "gWorldInverseTranspose");
-			mhLightVecW             = fx->GetParameterByName(0, "gLightVecW");
-			mhDiffuseMtrl           = fx->GetParameterByName(0, "gDiffuseMtrl");
-			mhDiffuseLight          = fx->GetParameterByName(0, "gDiffuseLight");
-		}
-
-		D3DXMATRIX worldInverseTranspose;
-		D3DXMatrixInverse(&worldInverseTranspose, 0, &mWorld);
-		D3DXMatrixTranspose(&worldInverseTranspose, &worldInverseTranspose);
-		HR(fx->SetMatrix(mhWorldInverseTranspose, &worldInverseTranspose));
-		
-		D3DXVECTOR3 *t_lightVector = m_testLight->GetDirection();
-		
-		
-
-		HR(fx->SetValue(mhLightVecW, t_lightVector, sizeof(D3DXVECTOR3)));
-		D3DXCOLOR t_diffuseMtrl = mesh->GetDiffuseMaterialColor();
-		HR(fx->SetValue(mhDiffuseMtrl, &t_diffuseMtrl, sizeof(D3DXCOLOR)));
-		D3DXCOLOR t_diffuseLight = m_testLight->GetD3DColor();
-		HR(fx->SetValue(mhDiffuseLight, &t_diffuseLight, sizeof(D3DXCOLOR)));
-
-		HR(fx->SetTechnique(mesh->GetShaderTechnique()));
-		D3DXMATRIX t_view = cam->GetMatrix();
-#if 0
-		D3DXMATRIX T;
-		D3DXMatrixTranslation(&T, mesh->GetX(), mesh->GetY(), mesh->GetZ());
-		t_view = t_view*T;
-#endif
-		D3DXMATRIX t_projView = t_view*m_proj;
-		//
-		HR(fx->SetMatrix(mesh->GetShaderViewMatrix(), &t_projView));
-		
-		UINT numPasses = 0;
-		
-		HR(fx->Begin(&numPasses, 0));
-		for(UINT i = 0; i < 2; i++)
-		{			
-			HR(fx->BeginPass(0));
-			HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
-			HR(fx->EndPass());
-		}
-		HR(fx->End());
-	}
-	else
-	{
-		HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
-	}
-*/
 	
 	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
 	

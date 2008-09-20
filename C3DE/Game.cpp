@@ -130,9 +130,9 @@ void Game::Render(Renderer *renderer)
 	cam->SetPosition(x, m_cameraHeight, z);
 
 	
-	renderer->DrawMesh(m_testMesh);
-	//renderer->DrawScene(m_testScene);
-	renderer->DrawMesh(m_grid);
+	//renderer->DrawMesh(m_testMesh);
+	renderer->DrawScene(m_testScene);
+	//renderer->DrawMesh(m_grid);
 	renderer->DrawSprite(m_button);
 	renderer->DrawSprite((Sprite *)m_sprite);
 }
@@ -252,16 +252,24 @@ void Game::CreateMeshBuffers(D3DMesh *mesh)
 void Game::InitializeMeshes()
 {
 	m_testMesh = new Cube();
+	Material *t_material = new Material(	D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),
+										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
+	m_testMesh->SetMaterial(t_material);
 	CreateMeshBuffers(m_testMesh);
-	m_testMesh->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_FIRST_ID));
+	//m_testMesh->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_FIRST_ID));
 	
 	m_grid = new Grid(100, 100, 0.2f, 0.2f);
-	m_grid->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_FIRST_ID));
+	m_grid->SetMaterial(t_material);
+	//m_grid->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_FIRST_ID));
 	CreateMeshBuffers(m_grid);
 
 	m_testScene = new DefaultScene1();
 	//m_testScene->GetMeshesVector()->push_back((Mesh*)m_testMesh);
 	m_testScene->AddMesh((Mesh*)m_grid);
+	m_testScene->AddMesh((Mesh*)m_testMesh);
+	m_testScene->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_LIGHTS_ID));
+
+
 	
 }
 

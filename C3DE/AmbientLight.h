@@ -9,4 +9,5 @@ public:
 	AmbientLight();
 	~AmbientLight();
 };
+
 #endif

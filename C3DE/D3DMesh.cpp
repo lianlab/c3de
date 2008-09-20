@@ -4,18 +4,23 @@ IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
 
 D3DMesh::D3DMesh()
 {
-	m_effect = NULL;
+	//m_effect = NULL;
 	m_x = 0;
 	m_y = 0;
 	m_z = 0;
 
-	picles = 0;
+	//picles = 0;
 
+	/*
 	m_diffuseMaterialColor = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
 	m_ambientMaterialColor = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
 	m_specularMaterialColor = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
+	*/
+
+	
 }
 
+/*
 void D3DMesh::SetAmbientMaterial(Material a_material)
 {
 	m_ambientMaterial = a_material;
@@ -34,6 +39,7 @@ void D3DMesh::SetSpecularMaterial(Material s_material)
 	m_specularMaterial = s_material;
 	m_specularMaterialColor = D3DXCOLOR(s_material.r, s_material.g, s_material.b, s_material.a);
 }
+*/
 
 D3DMesh::~D3DMesh()
 {
@@ -43,10 +49,10 @@ D3DMesh::~D3DMesh()
 void D3DMesh::Update(int deltaTime)
 {
 	m_updateTime = deltaTime;
-	picles = 10;
+	//picles = 10;
 }
 
-
+/*
 void D3DMesh::SetEffectHandles()
 { 
 	if(m_effect)
@@ -57,12 +63,7 @@ void D3DMesh::SetEffectHandles()
 	}	
 }
 
-/*
-D3DXHANDLE D3DMesh::GetShaderUpdateTime()
-{
-	return m_shaderUpdateTime;
-}
-*/
+
 
 
 D3DXHANDLE D3DMesh::GetShaderViewMatrix()
@@ -74,13 +75,15 @@ D3DXHANDLE D3DMesh::GetShaderTechnique()
 {
 	return m_shaderTechnique;
 }
-
+*/
 D3DXMATRIX D3DMesh::GetTransformMatrix()
 {
 	D3DXMATRIX T;
 	D3DXMatrixTranslation(&T, m_x, m_y, m_z);
 	return T;
 }
+
+
 
 void D3DMesh::Translate(float x, float y, float z)
 {

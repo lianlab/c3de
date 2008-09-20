@@ -9,11 +9,11 @@ class Light
 public:
 	Light();
 	~Light();
-	void SetColor(Material a_color);
-	Material GetColor(){return m_color;}
-	D3DXCOLOR GetD3DColor(){return m_d3dColor;}
+	void SetColor(D3DXCOLOR a_color){m_color = a_color;}
+	D3DXCOLOR GetColor(){return m_color;}
+	
 protected:
-	Material m_color;
-	D3DXCOLOR m_d3dColor;
+	D3DXCOLOR m_color;
+	
 };
 #endif

@@ -32,7 +32,7 @@ struct OutputVS
 };
 
 
-OutputVS SpotlightVS(float3 posL : POSITION0, float3 normalL : NORMAL0)
+OutputVS LightsVS(float3 posL : POSITION0, float3 normalL : NORMAL0)
 {
     // Zero out our output.
 	OutputVS outVS = (OutputVS)0;
@@ -54,17 +54,22 @@ OutputVS SpotlightVS(float3 posL : POSITION0, float3 normalL : NORMAL0)
 }
 
 //float4 SpotlightPS(float4 c : COLOR0) : COLOR
-float4 SpotlightPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1):COLOR
+float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1):COLOR
 {
     // Unit vector from vertex to light source.
 	float3 lightVecW = normalize(gLightPosW - posW);
 	
 	// Ambient Light Computation.
+	gAmbientMtrl = (0.0f, 0.0f, 1.0f, 1.0f);
+	gAmbientLight = (0.4f, 0.4f, 0.4f, 0.4f);
 	float3 ambient = (gAmbientMtrl*gAmbientLight).rgb;
+	//float3 ambient = (1.0f,1.0f,1.0f);
 	
 	// Diffuse Light Computation.
 	float s = max(dot(normalW, lightVecW), 0.0f);
+	
 	float3 diffuse = s*(gDiffuseMtrl*gDiffuseLight).rgb;
+	
 	
 	// Specular Light Computation.
 	float3 toEyeW   = normalize(gEyePosW - posW);
@@ -80,19 +85,22 @@ float4 SpotlightPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1):COLOR
 	float spot = pow(max(dot(-lightVecW, gLightDirW), 0.0f), gSpotPower);
 	
 	// Everything together.
-	float3 color = spot*(ambient + ((diffuse + spec) / A));
+	//float3 color = spot*(ambient + ((diffuse + spec) / A));
+	float3 color = spot*(ambient + diffuse);
 	
 	// Pass on color and diffuse material alpha.
 	return float4(color, gDiffuseMtrl.a);
+	//return float4(color,1.0f);
+	//return float4(1.0f,1.0f,1.0f,1.0f);
 	//return c;
 }
 
-technique SpotlightTech
+technique LightsTech
 {
     pass P0
     {
         // Specify the vertex and pixel shader associated with this pass.
-        vertexShader = compile vs_2_0 SpotlightVS();
-        pixelShader  = compile ps_2_0 SpotlightPS();
+        vertexShader = compile vs_2_0 LightsVS();
+        pixelShader  = compile ps_2_0 LightsPS();
     }
 }

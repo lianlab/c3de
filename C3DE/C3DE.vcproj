@@ -339,6 +339,10 @@
 							Name="Directional"
 							>
 							<File
+								RelativePath=".\DiffuseLight.cpp"
+								>
+							</File>
+							<File
 								RelativePath=".\DirectionalLight.cpp"
 								>
 							</File>
@@ -369,6 +373,14 @@
 						>
 						<File
 							RelativePath=".\DefaultScene1.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Material"
+						>
+						<File
+							RelativePath=".\Material.cpp"
 							>
 						</File>
 					</Filter>
@@ -588,6 +600,10 @@
 						<Filter
 							Name="Directional"
 							>
+							<File
+								RelativePath=".\DiffuseLight.h"
+								>
+							</File>
 							<File
 								RelativePath=".\DirectionalLight.h"
 								>

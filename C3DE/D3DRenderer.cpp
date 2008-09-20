@@ -13,11 +13,15 @@ D3DRenderer::D3DRenderer()
 	m_windowed = true;
 	m_font = NULL;
 
-#if 1
+#if 0
 		
 	m_testLight = new SpecularLight();
-	m_testLight->SetDirection(-0.5f, 5.75f, -2.0f);
-	m_testLight->SetColor(Material(1.0f, 0.0f, 0.7f, 1.0f));
+	m_testLight->SetDirection(-0.5f, 4.75f, -2.0f);
+	m_testLight->SetColor(Material(0.0f, 0.0f, 1.0f, 1.0f));
+
+	m_testLight2 = new SpecularLight();
+	m_testLight2->SetDirection(-5.5f, 8.75f, -2.0f);
+	m_testLight2->SetColor(Material(1.0f, 0.0f, 0.0f, 1.0f));
 
 	mhWorldInverseTranspose = 0;
 	mhLightVecW             = 0;
@@ -25,6 +29,7 @@ D3DRenderer::D3DRenderer()
 	mhDiffuseLight          = 0;
 
 	D3DXMatrixIdentity(&mWorld);
+	
 #endif
 }
 
@@ -103,17 +108,104 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 }
 
+bool gAuei = true;
+
 void D3DRenderer::DrawScene(Scene *scene)
 {
-	int totalMeshes = scene->GetMeshesVector()->size();
-	
+	int totalMeshes = scene->GetMeshesVector()->size();	
 
-	for(int i = 0; i < totalMeshes; i++)
+	D3DScene *t_scene = static_cast<D3DScene *> (scene);
+
+	ID3DXEffect * effect = t_scene->GetEffect();
+
+	if(gAuei )
 	{
-		Mesh *mesh = scene->GetMeshesVector()->at(i);
-		DrawMesh(mesh);
+		gAuei = false;
+		HR(effect->SetValue(t_scene->GetShaderAmbientLightMaterial(), &t_scene->GetAmbientLight()->GetColor(), sizeof(D3DXCOLOR)));
+		HR(effect->SetValue(t_scene->GetShaderDiffuseLightMaterial(), &t_scene->GetDiffuseLight()->GetColor(), sizeof(D3DXCOLOR)));		
+		HR(effect->SetValue(t_scene->GetShaderSpecularLightMaterial(), &t_scene->GetSpecularLight()->GetColor(), sizeof(D3DXCOLOR)));		
+		HR(effect->SetValue(t_scene->GetShaderLightAttenuation(), t_scene->GetLightAttenuation(), sizeof(D3DXVECTOR3)));
+		HR(effect->SetFloat(t_scene->GetShaderSpotLightPower(), t_scene->GetPointLight()->GetPower()));
+
 	}
+
+	if(effect  )
+	{
+		// Setup the rendering FX		
+		
+#if 1
+		
+
+		D3DXMATRIX W;		
+		D3DXMatrixIdentity(&W);		
+		HR(effect->SetMatrix(t_scene->GetShaderWorldMatrix(), &W));
+
+		D3DCamera *cam = (D3DCamera *) m_camera;
+		D3DXMATRIX t_view = cam->GetMatrix();
+		D3DXMATRIX t_projView = t_view*m_proj;
+		HR(effect->SetMatrix(t_scene->GetShaderViewMatrix(), &t_projView));
+		
+		D3DXMATRIX WIT;
+		D3DXMatrixInverse(&WIT, 0, &W);
+		D3DXMatrixTranspose(&WIT, &WIT);
+		HR(effect->SetMatrix(t_scene->GetShaderWorldInverseTransposeMatrix(), &WIT));
+
+		
+		
+		HR(effect->SetValue(t_scene->GetShaderEyePosition(), cam->GetPosition(), sizeof(D3DXVECTOR3)));
+
+		// Spotlight position is the same as the camera position.
+		HR(effect->SetValue(t_scene->GetShaderLightPosition(), cam->GetPosition(), sizeof(D3DXVECTOR3)));
+
+		// Spotlight direction is the same as the camera forward direction.
+		D3DXVECTOR3 lightDir = cam->GetTarget() - cam->GetPosition();
+		D3DXVec3Normalize(&lightDir, &lightDir);
+		HR(effect->SetValue(t_scene->GetShaderLightDirection(), &lightDir, sizeof(D3DXVECTOR3)));
+
+#endif
+		
+		HR(effect->SetTechnique(t_scene->GetShaderTechnique()));
+
+		for(int i = 0; i < totalMeshes; i++)
+		{
+			Mesh *mesh = scene->GetMeshesVector()->at(i);	
+
+			HR(effect->SetValue(t_scene->GetShaderObjectAmbientMaterial(), &mesh->GetMaterial()->GetAmbient(),sizeof(D3DXCOLOR)));
+			HR(effect->SetValue(t_scene->GetShaderObjectDiffuseMaterial(), &mesh->GetMaterial()->GetDiffuse(), sizeof(D3DXCOLOR)));
+			HR(effect->SetValue(t_scene->GetShaderObjectSpecularMaterial(), &mesh->GetMaterial()->GetSpecular(), sizeof(D3DXCOLOR)));
+			HR(effect->SetFloat(t_scene->GetShaderSpecularLightPower(), mesh->GetMaterial()->GetSpecularPower()));
+			
+
+			HR(effect->CommitChanges());
+
+			// Begin passes.
+
+			UINT numPasses = 0;
+			HR(effect->Begin(&numPasses, 0));
+			for(UINT i = 0; i < numPasses; ++i)
+			{
+				HR(effect->BeginPass(i));
+				DrawMesh(mesh);
+				HR(effect->EndPass());
+			}
+			HR(effect->End());
+
+			
+		}
+
+	}
+	else
+	{
+		for(int i = 0; i < totalMeshes; i++)
+		{
+			Mesh *mesh = scene->GetMeshesVector()->at(i);								
+			DrawMesh(mesh);
+		}
+	}
+
+	
 }
+
 
 void D3DRenderer::DrawMesh(Mesh *a_mesh)
 {
@@ -136,12 +228,12 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 
 	int numTriangles = mesh->GetIndices()->size() / 3;
 	int numVertices = mesh->GetVertices()->size();		
-
+/*
 	if(mesh->GetEffect())
 	{
 		ID3DXEffect * fx = mesh->GetEffect();
 
-#if 1
+
 		if(!mhWorldInverseTranspose)
 		{
 			mhWorldInverseTranspose = fx->GetParameterByName(0, "gWorldInverseTranspose");
@@ -155,13 +247,16 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 		D3DXMatrixTranspose(&worldInverseTranspose, &worldInverseTranspose);
 		HR(fx->SetMatrix(mhWorldInverseTranspose, &worldInverseTranspose));
 		
-		D3DXVECTOR3 t_lightVector = m_testLight->GetDirection();
-		HR(fx->SetValue(mhLightVecW, &t_lightVector, sizeof(D3DXVECTOR3)));
+		D3DXVECTOR3 *t_lightVector = m_testLight->GetDirection();
+		
+		
+
+		HR(fx->SetValue(mhLightVecW, t_lightVector, sizeof(D3DXVECTOR3)));
 		D3DXCOLOR t_diffuseMtrl = mesh->GetDiffuseMaterialColor();
 		HR(fx->SetValue(mhDiffuseMtrl, &t_diffuseMtrl, sizeof(D3DXCOLOR)));
 		D3DXCOLOR t_diffuseLight = m_testLight->GetD3DColor();
 		HR(fx->SetValue(mhDiffuseLight, &t_diffuseLight, sizeof(D3DXCOLOR)));
-#endif
+
 		HR(fx->SetTechnique(mesh->GetShaderTechnique()));
 		D3DXMATRIX t_view = cam->GetMatrix();
 #if 0
@@ -172,13 +267,13 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 		D3DXMATRIX t_projView = t_view*m_proj;
 		//
 		HR(fx->SetMatrix(mesh->GetShaderViewMatrix(), &t_projView));
-		//HR(fx->SetInt(mesh->GetShaderUpdateTime(), mesh->picles));
 		
 		UINT numPasses = 0;
+		
 		HR(fx->Begin(&numPasses, 0));
-		for(UINT i = 0; i < numPasses; ++i)
-		{
-			HR(fx->BeginPass(i));
+		for(UINT i = 0; i < 2; i++)
+		{			
+			HR(fx->BeginPass(0));
 			HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
 			HR(fx->EndPass());
 		}
@@ -188,11 +283,11 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 	{
 		HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
 	}
-
-	static char msg[256];
-	sprintf_s(msg, "\n\n\n\nmesh: %f\n%d", (float)(mesh->picles/1000.0f), mesh->picles);
-
-	RenderText(msg);	
+*/
+	
+	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
+	
+	
 }
 
 void D3DRenderer::DrawSprite(Sprite *sprite)
@@ -401,7 +496,7 @@ void D3DRenderer::Reset()
 
 void D3DRenderer::Clear()
 {	
-	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xff00ffff, 1.0f, 0L );
+	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0L );
 }
 
 bool D3DRenderer::BeginRender()

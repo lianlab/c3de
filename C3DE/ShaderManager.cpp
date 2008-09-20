@@ -33,12 +33,14 @@ void ShaderManager::InitializeResources()
 {
 
 	ID3DXEffect * SHADER_BOOK_FIRST;
+	ID3DXBuffer *errors = 0;	
+	HR(D3DXCreateEffectFromFile(m_device, "effects/transform.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_BOOK_FIRST, &errors));	
+	m_effectResources[SHADER_BOOK_FIRST_ID] = SHADER_BOOK_FIRST;
 
-	ID3DXBuffer *errors = 0;
-	
-	HR(D3DXCreateEffectFromFile(m_device, "effects/transform.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_BOOK_FIRST, &errors));
-	
-	m_effectResources[0] = SHADER_BOOK_FIRST;
+	ID3DXEffect * SHADER_BOOK_LIGHTS;
+	errors = 0;	
+	HR(D3DXCreateEffectFromFile(m_device, "effects/lights.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_BOOK_LIGHTS, &errors));	
+	m_effectResources[SHADER_BOOK_LIGHTS_ID] = SHADER_BOOK_LIGHTS;
 	
 }
 

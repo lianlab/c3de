@@ -50,16 +50,19 @@ public:
 	
 	void Update(int deltaTime);
 
+	/*
 	void SetEffect(ID3DXEffect * effect){m_effect = effect;SetEffectHandles();}
 
+	
 	ID3DXEffect * GetEffect(){return m_effect;}
 
 	virtual void SetEffectHandles();
 
 	virtual D3DXHANDLE GetShaderViewMatrix();
 	virtual D3DXHANDLE GetShaderTechnique();
-	//virtual D3DXHANDLE GetShaderUpdateTime();
+	
 
+	*/
 	vector<VertexPos> * GetVertices(){return m_vertices;}
 	vector<int> * GetIndices(){return m_indices;}
 
@@ -72,6 +75,7 @@ public:
 	float GetY(){return m_y;}
 	float GetZ(){return m_z;}
 
+	/*
 	D3DXCOLOR GetDiffuseMaterialColor(){return m_diffuseMaterialColor;}
 	D3DXCOLOR GetAmbientMaterialColor(){return m_ambientMaterialColor;}
 	D3DXCOLOR GetSpecularMaterialColor(){return m_specularMaterialColor;}
@@ -79,8 +83,14 @@ public:
 	void SetAmbientMaterial(Material a_material);
 	void SetDiffuseMaterial(Material d_material);
 	void SetSpecularMaterial(Material s_material);
+	*/
 
-	int picles;
+	/*
+	void SetMaterial(Material *material){m_material = material;}
+	Material * GetMaterial(){return m_material;}
+
+	*/
+	
 protected:
 	IDirect3DVertexBuffer9 * m_vertexBuffer;
 	IDirect3DIndexBuffer9 * m_indexBuffer;
@@ -89,18 +99,23 @@ protected:
 	vector<VertexPos> *m_vertices;
 	vector<int> *m_indices;
 
+	/*
 	ID3DXEffect *m_effect;
 
 	D3DXHANDLE m_shaderViewMatrix;
 	D3DXHANDLE m_shaderUpdateTime;
 	D3DXHANDLE m_shaderTechnique;
 
+	*/
 	int m_updateTime;
 
+	/*
 	D3DXCOLOR m_diffuseMaterialColor;
 	D3DXCOLOR m_ambientMaterialColor;
 	D3DXCOLOR m_specularMaterialColor;
 
+	*/
+	
 };
 #endif
 

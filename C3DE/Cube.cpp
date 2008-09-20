@@ -3,7 +3,9 @@
 Cube::Cube()
 {
 	
-	SetDiffuseMaterial(Material(0.0f, 0.0f, 1.0f, 1.0f));
+	//SetDiffuseMaterial(Material(1.0f, 0.0f, 1.0f, 1.0f));
+	
+	
 	m_vertices = new vector<VertexPos>;
 	m_indices = new vector<int>;
 

@@ -2,9 +2,13 @@
 
 Scene::Scene()
 {
-	m_pointLights = new vector<PointLight *>;
-	m_ambientLights = new vector<AmbientLight *>;
+
 	m_meshes = new vector<Mesh *>;
+
+	m_ambientLight = new AmbientLight();
+	m_diffuseLight = new DiffuseLight();;
+	m_specularLight = new SpecularLight();;
+	m_pointLight = new PointLight();
 
 }
 
@@ -28,6 +32,7 @@ void Scene::RemoveMesh(Mesh *mesh)
 	}
 }
 
+#if 0
 void Scene::RemoveAmbientLight(AmbientLight *light)
 {
 	int totalLights = m_ambientLights->size();
@@ -57,3 +62,4 @@ void Scene::RemovePointLight(PointLight *light)
 		}
 	}
 }
+#endif

@@ -8,7 +8,7 @@
 #include "D3DCommonDefs.h"
 #include "D3DImage.h"
 #include "D3DCamera.h"
-#include "Scene.h"
+#include "D3DScene.h"
 
 #if 1
 #include "SpecularLight.h"
@@ -30,7 +30,8 @@ public:
 
 	void DrawSprite(Sprite *sprite);
 
-	void DrawMesh(Mesh *mesh);
+	void DrawMesh(Mesh *mesh);//{DrawMesh(mesh,NULL);}
+	//void DrawMesh(Mesh *mesh, ID3DXEffect * effect);
 
 	void DrawScene(Scene *scene);
 
@@ -57,10 +58,11 @@ private:
 	D3DXHANDLE              mhDiffuseMtrl;
 	D3DXHANDLE              mhDiffuseLight;
 
-	
 
 	SpecularLight *m_testLight;
+	SpecularLight *m_testLight2;
 	D3DXMATRIX  mWorld;
+	
 #endif
 
 };

@@ -11,9 +11,9 @@ public:
 	~DirectionalLight();
 
 	void SetDirection(float x, float y, float z);
-	D3DXVECTOR3 GetDirection(){return m_direction;}
+	D3DXVECTOR3 *GetDirection(){return m_direction;}
 	
 protected:
-	D3DXVECTOR3 m_direction;
+	D3DXVECTOR3 *m_direction;
 };
 #endif

@@ -14,6 +14,7 @@
 enum ShaderIDs
 { 
 	SHADER_BOOK_FIRST_ID, 
+	SHADER_BOOK_LIGHTS_ID, 
 	
 	TOTAL_SHADERS
 };

@@ -4,7 +4,7 @@ Grid::Grid(int numCellsRows, int numCellsCols, float dx, float dz)
 {
 
 
-	m_ambientMaterial = Material(0.0f, 0.0f, 1.0f, 1.0f);
+	//m_ambientMaterial = Material(0.0f, 0.0f, 1.0f, 1.0f);
 	int numVertices = (numCellsRows +1)*(numCellsCols + 1);
 	
 	int numTris = numCellsRows*numCellsCols*2;

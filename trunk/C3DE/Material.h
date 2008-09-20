@@ -1,15 +1,27 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-struct Material
+#include <d3dx9.h>
+
+class Material
 {	
-	Material(){r = 0.0f; g = 0.0f;b=0.0f;a=0.0f;}
-	Material(float a_r, float a_g, float a_b, float a_a){r= a_r;g=a_g;b=a_b;a=a_a;}
+public:
 	
-	float r;
-	float g;
-	float b;
-	float a;
+	Material(D3DXCOLOR ambient, D3DXCOLOR  diffuse, D3DXCOLOR specular, float specPower);
+	~Material();
+
+	D3DXCOLOR GetAmbient(){return m_ambient;}
+	D3DXCOLOR GetDiffuse(){return m_diffuse;}
+	D3DXCOLOR GetSpecular(){return m_specular;}
+	float GetSpecularPower(){return m_specularPower;}
+	
+private:
+	D3DXCOLOR m_ambient;
+	D3DXCOLOR m_diffuse;
+	D3DXCOLOR m_specular;
+	float m_specularPower;
+
+	
 };
 
 

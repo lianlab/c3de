@@ -118,7 +118,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 	ID3DXEffect * effect = t_scene->GetEffect();
 
-	if(gAuei )
+	if(gAuei || true)
 	{
 		gAuei = false;
 		HR(effect->SetValue(t_scene->GetShaderAmbientLightMaterial(), &t_scene->GetAmbientLight()->GetColor(), sizeof(D3DXCOLOR)));
@@ -133,9 +133,6 @@ void D3DRenderer::DrawScene(Scene *scene)
 	{
 		// Setup the rendering FX		
 		
-#if 1
-		
-
 		D3DXMATRIX W;		
 		D3DXMatrixIdentity(&W);		
 		HR(effect->SetMatrix(t_scene->GetShaderWorldMatrix(), &W));
@@ -144,12 +141,13 @@ void D3DRenderer::DrawScene(Scene *scene)
 		D3DXMATRIX t_view = cam->GetMatrix();
 		D3DXMATRIX t_projView = t_view*m_proj;
 		HR(effect->SetMatrix(t_scene->GetShaderViewMatrix(), &t_projView));
-		
+
 		D3DXMATRIX WIT;
 		D3DXMatrixInverse(&WIT, 0, &W);
 		D3DXMatrixTranspose(&WIT, &WIT);
 		HR(effect->SetMatrix(t_scene->GetShaderWorldInverseTransposeMatrix(), &WIT));
 
+#if 1										
 		
 		
 		HR(effect->SetValue(t_scene->GetShaderEyePosition(), cam->GetPosition(), sizeof(D3DXVECTOR3)));

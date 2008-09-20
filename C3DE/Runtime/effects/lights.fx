@@ -63,7 +63,6 @@ float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1):COLOR
 	gAmbientMtrl = (0.0f, 0.0f, 1.0f, 1.0f);
 	gAmbientLight = (0.4f, 0.4f, 0.4f, 0.4f);
 	float3 ambient = (gAmbientMtrl*gAmbientLight).rgb;
-	//float3 ambient = (1.0f,1.0f,1.0f);
 	
 	// Diffuse Light Computation.
 	float s = max(dot(normalW, lightVecW), 0.0f);
@@ -90,9 +89,7 @@ float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1):COLOR
 	
 	// Pass on color and diffuse material alpha.
 	return float4(color, gDiffuseMtrl.a);
-	//return float4(color,1.0f);
-	//return float4(1.0f,1.0f,1.0f,1.0f);
-	//return c;
+	
 }
 
 technique LightsTech

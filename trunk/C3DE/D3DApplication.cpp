@@ -51,20 +51,20 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 	memset(&wc, 0, sizeof(WNDCLASS));
 	wc.style         = CS_HREDRAW | CS_VREDRAW;
 	wc.lpfnWndProc   = (WNDPROC)::DefWindowProc; 
-	wc.hInstance     = m_hInstance;
+	wc.hInstance     = m_hInstance;		
 	wc.lpszClassName = "D3DWND";
 	
 
 	//Register Class and Create new Window
 	RegisterClass(&wc);
 	
-	m_mainWindow = CreateWindow("D3DWND", "C3DE", WS_EX_TOPMOST | WS_POPUPWINDOW, 0, 0, width, height, 0, 0, hInstance, 0); 
+	m_mainWindow = CreateWindow("D3DWND", "C3DE", WS_EX_TOPMOST| WS_POPUPWINDOW, 0, 0, width, height, 0, 0, hInstance, 0); 
 	SetCursor(NULL);
 	ShowWindow(m_mainWindow, SW_SHOW);
 	UpdateWindow(m_mainWindow);
 	
 	WindowsApplicationWindow *window = new WindowsApplicationWindow(m_hInstance, m_mainWindow, width, height);
-	m_renderer->Init(window);	
+	m_renderer->Init(window, windowed);	
 	
 	m_input = new DirectInput();
 	m_input->Init(m_hInstance, m_mainWindow);		

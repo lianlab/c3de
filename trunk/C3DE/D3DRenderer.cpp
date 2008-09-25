@@ -10,7 +10,7 @@
 
 D3DRenderer::D3DRenderer()
 {
-	m_windowed = true;
+	
 	m_font = NULL;
 
 
@@ -173,7 +173,11 @@ void D3DRenderer::DrawScene(Scene *scene)
 		{
 			Mesh *mesh = scene->GetMeshesVector()->at(i);	
 
-			SetMeshMaterialShaderHandlers(scene, mesh);			
+			SetMeshMaterialShaderHandlers(scene, mesh);		
+
+			D3DMesh *d3dmesh = (D3DMesh *)mesh;	
+
+			d3dmesh->SetEffectHandles(effect);
 
 			HR(effect->CommitChanges());
 
@@ -226,7 +230,9 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
 
 	int numTriangles = mesh->GetIndices()->size() / 3;
-	int numVertices = mesh->GetVertices()->size();		
+	int numVertices = mesh->GetVertices()->size();	
+
+	
 	
 	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
 	
@@ -325,7 +331,7 @@ void D3DRenderer::RenderText(char *text)
 
 }
 
-bool D3DRenderer::Init(WindowsApplicationWindow *window)
+bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 {
 
 	WindowsApplicationWindow *wnd = window;
@@ -359,15 +365,15 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window)
 
 	//Set D3DPRESENT_PARAMETERS
 	
-	m_d3dpp.BackBufferWidth            = 0;
-	m_d3dpp.BackBufferHeight           = 0;
-	m_d3dpp.BackBufferFormat           = D3DFMT_UNKNOWN;
+	m_d3dpp.BackBufferWidth            = wnd->getWidth();
+	m_d3dpp.BackBufferHeight           = wnd->getHeight();
+	m_d3dpp.BackBufferFormat           = D3DFMT_A8R8G8B8;
 	m_d3dpp.BackBufferCount            = 1;
 	m_d3dpp.MultiSampleType            = D3DMULTISAMPLE_NONE;
 	m_d3dpp.MultiSampleQuality         = 0;
 	m_d3dpp.SwapEffect                 = D3DSWAPEFFECT_DISCARD; 
 	m_d3dpp.hDeviceWindow              = m_mainWindow;
-	m_d3dpp.Windowed                   = m_windowed;
+	m_d3dpp.Windowed                   = windowed;
 	m_d3dpp.EnableAutoDepthStencil     = true; 
 	m_d3dpp.AutoDepthStencilFormat     = D3DFMT_D24S8;
 	m_d3dpp.Flags                      = 0;

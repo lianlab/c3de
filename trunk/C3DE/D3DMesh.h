@@ -5,6 +5,7 @@
 #include <d3dx9.h>
 #include <vector>
 #include "D3DCommonDefs.h"
+#include "D3DImage.h"
 
 using namespace std;
 
@@ -20,7 +21,7 @@ struct VertexPos
 
 	D3DXVECTOR3 pos;	
 };
-#endif
+
 struct VertexPos
 {
 	VertexPos()
@@ -36,6 +37,27 @@ struct VertexPos
 	D3DXVECTOR3 normal;
 	static IDirect3DVertexDeclaration9* Decl;
 };
+#endif
+
+struct VertexPos
+{
+	VertexPos()
+		:pos(0.0f, 0.0f, 0.0f),
+		normal(0.0f, 0.0f, 0.0f),
+		tex0(0.0f, 0.0f){}
+	VertexPos(float x, float y, float z, 
+		float nx = 0.0f, float ny = 1.0f, float nz = 0.0f,
+		float u = 0.0f, float v=0.0f):pos(x,y,z), normal(nx,ny,nz), tex0(u,v){}
+	VertexPos(const D3DXVECTOR3& v, const D3DXVECTOR3& n, const D3DXVECTOR2& uv)
+		:pos(v),normal(n), tex0(uv){}
+
+	D3DXVECTOR3 pos;
+	D3DXVECTOR3 normal;
+	D3DXVECTOR2 tex0;
+
+	static IDirect3DVertexDeclaration9* Decl;
+};
+
 
 class D3DMesh : public Mesh
 {
@@ -50,19 +72,9 @@ public:
 	
 	void Update(int deltaTime);
 
-	/*
-	void SetEffect(ID3DXEffect * effect){m_effect = effect;SetEffectHandles();}
+	void SetTexture(Image *tex){m_texture = tex;}
+	Image * GetTexture(){return m_texture;}
 
-	
-	ID3DXEffect * GetEffect(){return m_effect;}
-
-	virtual void SetEffectHandles();
-
-	virtual D3DXHANDLE GetShaderViewMatrix();
-	virtual D3DXHANDLE GetShaderTechnique();
-	
-
-	*/
 	vector<VertexPos> * GetVertices(){return m_vertices;}
 	vector<int> * GetIndices(){return m_indices;}
 
@@ -70,26 +82,18 @@ public:
 
 	D3DXMATRIX GetTransformMatrix();
 
+	//called for setting shaders variables before drawing in the D3DRenderer
+	virtual void SetEffectHandles(ID3DXEffect*){};
+
+	//initializes any effect Handles
+	virtual void InitializeEffectHandles(ID3DXEffect* fx){}
+
 	void Translate(float x, float y, float z);
 	float GetX(){return m_x;}
 	float GetY(){return m_y;}
 	float GetZ(){return m_z;}
 
-	/*
-	D3DXCOLOR GetDiffuseMaterialColor(){return m_diffuseMaterialColor;}
-	D3DXCOLOR GetAmbientMaterialColor(){return m_ambientMaterialColor;}
-	D3DXCOLOR GetSpecularMaterialColor(){return m_specularMaterialColor;}
-
-	void SetAmbientMaterial(Material a_material);
-	void SetDiffuseMaterial(Material d_material);
-	void SetSpecularMaterial(Material s_material);
-	*/
-
-	/*
-	void SetMaterial(Material *material){m_material = material;}
-	Material * GetMaterial(){return m_material;}
-
-	*/
+	
 	
 protected:
 	IDirect3DVertexBuffer9 * m_vertexBuffer;
@@ -99,22 +103,12 @@ protected:
 	vector<VertexPos> *m_vertices;
 	vector<int> *m_indices;
 
-	/*
-	ID3DXEffect *m_effect;
-
-	D3DXHANDLE m_shaderViewMatrix;
-	D3DXHANDLE m_shaderUpdateTime;
-	D3DXHANDLE m_shaderTechnique;
-
-	*/
+	
 	int m_updateTime;
 
-	/*
-	D3DXCOLOR m_diffuseMaterialColor;
-	D3DXCOLOR m_ambientMaterialColor;
-	D3DXCOLOR m_specularMaterialColor;
+	bool m_fxHandlesInitialized;
 
-	*/
+	
 	
 };
 #endif

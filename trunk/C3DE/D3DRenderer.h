@@ -19,7 +19,7 @@ class D3DRenderer : public Renderer
 public:
 	D3DRenderer();
 	~D3DRenderer();	
-	bool Init(WindowsApplicationWindow *window);
+	bool Init(WindowsApplicationWindow *window, bool windowed);
 	void Reset();
 	void Clear();
 	bool BeginRender();
@@ -44,7 +44,7 @@ private:
 	D3DPRESENT_PARAMETERS m_d3dpp;
 	HINSTANCE m_hInstance;
 	HWND m_mainWindow;
-	bool m_windowed;
+	
 	ID3DXFont *m_font;
 	ID3DXSprite *m_sprite;
 

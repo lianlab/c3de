@@ -231,12 +231,22 @@ void Game::CreateMeshBuffers(D3DMesh *mesh)
 	HR(vb->Unlock());
 
 	//vertexDeclaration
+#if 0
 	D3DVERTEXELEMENT9 VertexPosElements[] =
 	{
 		{0,0,D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
 		{0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0},
 		D3DDECL_END()
 	};
+#endif
+
+	D3DVERTEXELEMENT9 VertexPosElements[] = 
+	{
+		{0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+		{0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0},
+		{0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
+		D3DDECL_END()
+	};	
 
 	
 
@@ -252,14 +262,17 @@ void Game::CreateMeshBuffers(D3DMesh *mesh)
 void Game::InitializeMeshes()
 {
 	m_testMesh = new Cube();
-	Material *t_material = new Material(	D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),
+	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
 	m_testMesh->SetMaterial(t_material);
 	CreateMeshBuffers(m_testMesh);
 	//m_testMesh->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_FIRST_ID));
 	
 	m_grid = new Grid(100, 100, 0.2f, 0.2f);
-	m_grid->SetMaterial(t_material);
+
+	Material *t_material2 = new Material(	D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),
+										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
+	m_grid->SetMaterial(t_material2);
 	//m_grid->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_FIRST_ID));
 	CreateMeshBuffers(m_grid);
 

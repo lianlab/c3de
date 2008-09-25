@@ -8,7 +8,15 @@ class Cube : public D3DMesh
 public:
 	Cube();
 	~Cube();
-	//void SetEffectHandles();
+
+	
+	void SetEffectHandles(ID3DXEffect* fx);
+	void InitializeEffectHandles(ID3DXEffect* fx);
+
+private:
+
+	D3DXHANDLE   m_hTex;
+	
 };
 #endif
 

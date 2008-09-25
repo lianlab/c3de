@@ -17,7 +17,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 
 	//Create new window and Initiate Direct3D
 	
-	if(!app->Init(hInstance, SCREEN_WIDTH, SCREEN_HEIGHT, true))
+	if(!app->Init(hInstance, SCREEN_WIDTH, SCREEN_HEIGHT, WINDOWED))
 	{
 		return 0;
 	}

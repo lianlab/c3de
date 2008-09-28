@@ -83,10 +83,10 @@ public:
 	D3DXMATRIX GetTransformMatrix();
 
 	//called for setting shaders variables before drawing in the D3DRenderer
-	virtual void SetEffectHandles(ID3DXEffect*){};
+	virtual void SetEffectHandles(ID3DXEffect*) = 0;
 
 	//initializes any effect Handles
-	virtual void InitializeEffectHandles(ID3DXEffect* fx){}
+	virtual void InitializeEffectHandles(ID3DXEffect* fx) = 0;
 
 	void Translate(float x, float y, float z);
 	float GetX(){return m_x;}

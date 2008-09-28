@@ -2,6 +2,7 @@
 #define D3DSCENE_H
 
 #include "Scene.h"
+#include "D3DCommonDefs.h"
 
 class D3DScene : public Scene
 {
@@ -34,6 +35,8 @@ public:
 
 	D3DXVECTOR3 * GetLightAttenuation(){return m_lightAttenuation;}
 	void SetLightAttenuation(D3DXVECTOR3 *attenuation){m_lightAttenuation = attenuation;}
+
+	virtual void Initialize(){};
 
 protected:
 	ID3DXEffect *m_effect;

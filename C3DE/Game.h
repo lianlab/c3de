@@ -16,6 +16,7 @@
 //testing
 #include "DefaultScene1.h"
 #include "Cube.h"
+#include "Cube2.h"
 
 
 #include "Grid.h"
@@ -63,6 +64,8 @@ private:
 
 	//testing
 	Cube *m_testMesh;
+
+	Cube2 *m_cube;
 
 	Grid *m_grid;
 

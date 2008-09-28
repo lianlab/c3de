@@ -12,10 +12,9 @@
 
 
 enum ShaderIDs
-{ 
-	SHADER_BOOK_FIRST_ID, 
+{ 	
 	SHADER_BOOK_LIGHTS_ID, 
-	
+	SHADER_LIGHTS_AND_TEXTURES_ID, 	
 	TOTAL_SHADERS
 };
 
@@ -25,16 +24,7 @@ public:
 	static ShaderManager * GetInstance();
 	
 	~ShaderManager();
-
-	//C3DESprite * GetSpriteByID(int id);
-	//IDirect3DTexture9 * GetImageByID(int id);
 	ID3DXEffect * GetEffectById(int id);
-
-
-	
-	
-	//inline static void* m_resources[] = {1,2};
-
 	void SetDevice(IDirect3DDevice9 *device);
 	
 
@@ -44,16 +34,6 @@ private:
 	void InitializeResources();
 	IDirect3DDevice9 *m_device;
 
-	ID3DXEffect * m_effectResources[TOTAL_SHADERS];
-
-	/*
-	IDirect3DTexture9 * temp;
-
-	IDirect3DTexture9 * m_imageResources[TOTAL_IMAGES];
-	
-	
-*/
-	
-
+	ID3DXEffect * m_effectResources[TOTAL_SHADERS];	
 };
 #endif

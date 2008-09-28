@@ -23,26 +23,13 @@ uniform extern float3 gLightDirW;
 uniform extern float3 gAttenuation012; 
 uniform extern float  gSpotPower;
 
-uniform extern texture gTex;
-
-sampler TexS = sampler_state
-{
-	Texture = <gTex>;
-	MinFilter = Anisotropic;
-	MagFilter = LINEAR;
-	MipFilter = LINEAR;
-	MaxAnisotropy = 8;
-	AddressU  = WRAP;
-    AddressV  = WRAP;
-};
-
 
 struct OutputVS
 {
     float4 posH  : POSITION0;
     float3 normalW: TEXCOORD0;
     float3 posW: TEXCOORD1;
-    float2 tex0 : TEXCOORD2;
+    
    
 };
 
@@ -65,17 +52,16 @@ OutputVS LightsVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0
 	// Transform to homogeneous clip space.
 	outVS.posH = mul(float4(posL, 1.0f), gWVP);
 	
-	// Pass on texture coordinates to be interpolated in rasterization.
-	outVS.tex0 = tex0;
+	
 	
 	// Done--return the output.
     return outVS;
 }
 
 //float4 SpotlightPS(float4 c : COLOR0) : COLOR
-float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1, float2 tex0 : TEXCOORD2):COLOR
+float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1):COLOR
 {
-	float3 texColor = tex2D(TexS, tex0).rgb;
+	
 
     // Unit vector from vertex to light source.
 	float3 lightVecW = normalize(gLightPosW - posW);
@@ -108,7 +94,7 @@ float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1, float2 tex0 : T
 	//float3 color = spot*(ambient + ((diffuse + spec) / A));
 	float3 color = spot*(ambient + diffuse);
 	
-	color = color * texColor;
+	
 	
 	// Pass on color and diffuse material alpha.
 	return float4(color, gDiffuseMtrl.a);

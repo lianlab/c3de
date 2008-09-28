@@ -10,9 +10,9 @@
 #include "D3DCamera.h"
 #include "D3DScene.h"
 
-#if 1
+
 #include "SpecularLight.h"
-#endif
+
 
 class D3DRenderer : public Renderer
 {
@@ -38,6 +38,8 @@ public:
 	void SetScreenMode(int newScreenMode);
 
 	IDirect3DDevice9* GetDevice(){ return m_device;}
+
+	//void InitializeScene(Scene *scene);
 	
 private:
 	IDirect3DDevice9* m_device; 
@@ -58,6 +60,6 @@ private:
 	void SetSceneStepShaderHandlers(Scene *scene);
 
 };
+
+
 #endif
-
-

@@ -312,6 +312,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\Cube2.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\D3DMesh.cpp"
 							>
 						</File>
@@ -571,6 +575,10 @@
 						>
 						<File
 							RelativePath=".\Cube.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Cube2.h"
 							>
 						</File>
 						<File

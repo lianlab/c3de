@@ -280,7 +280,18 @@ void Game::InitializeMeshes()
 	//m_testScene->GetMeshesVector()->push_back((Mesh*)m_testMesh);
 	m_testScene->AddMesh((Mesh*)m_grid);
 	m_testScene->AddMesh((Mesh*)m_testMesh);
-	m_testScene->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_LIGHTS_ID));
+	m_testScene->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_LIGHTS_AND_TEXTURES_ID));
+	//m_testScene->SetEffect(ShaderManager::GetInstance()->GetEffectById(SHADER_BOOK_LIGHTS_ID));
+
+	m_cube = new Cube2();
+	Material *t_material3 = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
+										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
+	m_cube->SetMaterial(t_material3);
+	CreateMeshBuffers(m_cube);
+
+	m_testScene->AddMesh((Mesh*)m_cube);
+
+	m_testScene->Initialize();
 
 
 	

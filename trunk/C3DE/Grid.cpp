@@ -61,6 +61,26 @@ Grid::Grid(int numCellsRows, int numCellsCols, float dx, float dz)
 
 }
 
+void Grid::SetEffectHandles(ID3DXEffect* fx)
+{
+	
+	if(!m_fxHandlesInitialized)
+	{
+		InitializeEffectHandles(fx);
+	}
+
+	
+}
+
+void Grid::InitializeEffectHandles(ID3DXEffect* fx)
+{
+
+	
+	m_hTex = fx->GetParameterByName(0, "gTex");
+	m_fxHandlesInitialized = true;
+	
+}
+
 Grid::~Grid()
 {
 	ReleaseCOM(m_vertexDeclaration);

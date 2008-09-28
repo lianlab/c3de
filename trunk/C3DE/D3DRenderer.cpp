@@ -3,17 +3,11 @@
 #include "D3DSprite.h"
 //#include "DebugMemory.h"
 #include "ResourceManager.h"
-
 #include "D3DMesh.h"
 
-
-
 D3DRenderer::D3DRenderer()
-{
-	
+{	
 	m_font = NULL;
-
-
 }
 
 D3DRenderer::~D3DRenderer()
@@ -22,7 +16,6 @@ D3DRenderer::~D3DRenderer()
 	{
 		ReleaseCOM(m_font);
 	}
-
 }
 
 void D3DRenderer::BuildProjMtx()
@@ -91,8 +84,6 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 }
 
-bool gAuei = true;
-
 //sets all shader handlers for every drawScene pass
 void D3DRenderer::SetSceneStepShaderHandlers(Scene *scene)
 {
@@ -112,24 +103,17 @@ void D3DRenderer::SetSceneStepShaderHandlers(Scene *scene)
 	D3DXMATRIX WIT;
 	D3DXMatrixInverse(&WIT, 0, &W);
 	D3DXMatrixTranspose(&WIT, &WIT);
-	HR(effect->SetMatrix(t_scene->GetShaderWorldInverseTransposeMatrix(), &WIT));
-
-#if 1										
-	
+	HR(effect->SetMatrix(t_scene->GetShaderWorldInverseTransposeMatrix(), &WIT));											
 	
 	HR(effect->SetValue(t_scene->GetShaderEyePosition(), cam->GetPosition(), sizeof(D3DXVECTOR3)));
-
 	// Spotlight position is the same as the camera position.
 	HR(effect->SetValue(t_scene->GetShaderLightPosition(), cam->GetPosition(), sizeof(D3DXVECTOR3)));
 
 	// Spotlight direction is the same as the camera forward direction.
 	D3DXVECTOR3 lightDir = cam->GetTarget() - cam->GetPosition();
 	D3DXVec3Normalize(&lightDir, &lightDir);
-	HR(effect->SetValue(t_scene->GetShaderLightDirection(), &lightDir, sizeof(D3DXVECTOR3)));
+	HR(effect->SetValue(t_scene->GetShaderLightDirection(), &lightDir, sizeof(D3DXVECTOR3)));	
 
-	
-
-#endif
 	HR(effect->SetTechnique(t_scene->GetShaderTechnique()));
 }
 
@@ -144,25 +128,14 @@ void D3DRenderer::SetMeshMaterialShaderHandlers(Scene *scene, Mesh *mesh)
 	HR(effect->SetFloat(t_scene->GetShaderSpecularLightPower(), mesh->GetMaterial()->GetSpecularPower()));
 			
 }
+
 void D3DRenderer::DrawScene(Scene *scene)
 {
 	int totalMeshes = scene->GetMeshesVector()->size();	
 
 	D3DScene *t_scene = static_cast<D3DScene *> (scene);
 
-	ID3DXEffect * effect = t_scene->GetEffect();
-
-	
-	if(gAuei || true)
-	{
-		gAuei = false;
-		HR(effect->SetValue(t_scene->GetShaderAmbientLightMaterial(), &t_scene->GetAmbientLight()->GetColor(), sizeof(D3DXCOLOR)));
-		HR(effect->SetValue(t_scene->GetShaderDiffuseLightMaterial(), &t_scene->GetDiffuseLight()->GetColor(), sizeof(D3DXCOLOR)));		
-		HR(effect->SetValue(t_scene->GetShaderSpecularLightMaterial(), &t_scene->GetSpecularLight()->GetColor(), sizeof(D3DXCOLOR)));		
-		HR(effect->SetValue(t_scene->GetShaderLightAttenuation(), t_scene->GetLightAttenuation(), sizeof(D3DXVECTOR3)));
-		HR(effect->SetFloat(t_scene->GetShaderSpotLightPower(), t_scene->GetPointLight()->GetPower()));
-
-	}
+	ID3DXEffect * effect = t_scene->GetEffect();	
 
 	if(effect  )
 	{

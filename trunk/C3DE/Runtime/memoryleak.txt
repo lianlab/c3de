@@ -1,5 +1,5 @@
-10:.\ShaderManager.cpp                               :		LINE 11,	ADDRESS 003CAD08	12 unfreed	block 9
-12:.\D3DSprite.cpp                                   :		LINE 18,	ADDRESS 003CAF30	16 unfreed	block 11
-13:.\D3DSprite.cpp                                   :		LINE 18,	ADDRESS 018EF500	16 unfreed	block 12
+10:c:\caio\c3de\c3de\shadermanager.cpp               :		LINE 11,	ADDRESS 003CBF68	12 unfreed	block 9
+12:c:\caio\c3de\c3de\d3dsprite.cpp                   :		LINE 18,	ADDRESS 003CC248	20 unfreed	block 11
+13:c:\caio\c3de\c3de\d3dsprite.cpp                   :		LINE 18,	ADDRESS 01C70578	20 unfreed	block 12
 -----------------------------------------------------------
-Total Unfreed: 44 bytes
+Total Unfreed: 52 bytes

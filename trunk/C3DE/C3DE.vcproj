@@ -324,6 +324,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\LightMesh.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\Mesh.cpp"
 							>
 						</File>
@@ -587,6 +591,10 @@
 						</File>
 						<File
 							RelativePath=".\Grid.h"
+							>
+						</File>
+						<File
+							RelativePath=".\LightMesh.h"
 							>
 						</File>
 						<File

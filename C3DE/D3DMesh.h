@@ -93,6 +93,12 @@ public:
 	float GetY(){return m_y;}
 	float GetZ(){return m_z;}
 
+	virtual D3DXHANDLE *GetShaderViewMatrix(){return m_shaderViewMatrix;}
+	virtual D3DXHANDLE *GetShaderTechnique(){return m_shaderTechnique;}
+	virtual D3DXHANDLE *GetShaderWorldMatrix(){return m_shaderWorldMatrix;}
+	virtual D3DXHANDLE *GetShaderWorldInverseTransposeMatrix(){return m_shaderWorldInverseTransposeMatrix;}
+	virtual D3DXHANDLE *GetShaderEyePosition(){return m_shaderEyePosition;}
+
 	
 	
 protected:
@@ -107,6 +113,14 @@ protected:
 	int m_updateTime;
 
 	bool m_fxHandlesInitialized;
+
+	ID3DXEffect * m_effect;
+
+	D3DXHANDLE *m_shaderWorldMatrix;//gWorld
+	D3DXHANDLE *m_shaderWorldInverseTransposeMatrix;//gWorldInverseTranspose
+	D3DXHANDLE *m_shaderEyePosition;//gEyePosW
+	D3DXHANDLE *m_shaderViewMatrix;//gWVP	
+	D3DXHANDLE *m_shaderTechnique;
 
 	
 	

@@ -52,12 +52,11 @@ private:
 
 	void BuildProjMtx();
 	
-	D3DXMATRIX m_proj;
+	D3DXMATRIX m_proj;	
 
-	//sets all shader handlers relative to a specific mesh's material for every drawScene pass
-	void SetMeshMaterialShaderHandlers(Scene *scene, Mesh *mesh);
-	//sets all shader handlers for every drawScene pass
-	void SetSceneStepShaderHandlers(Scene *scene);
+	void SetMeshLights(Scene * scene, Mesh *d3dmesh);
+
+	void SetMeshWorldHandlers(Scene *scene, Mesh *d3dmesh);
 
 };
 

@@ -26,12 +26,5 @@ DefaultScene1::~DefaultScene1()
 
 void DefaultScene1::Initialize()
 {
-	
-	ID3DXEffect * effect = this->GetEffect();
 
-	HR(effect->SetValue(this->GetShaderAmbientLightMaterial(), &this->GetAmbientLight()->GetColor(), sizeof(D3DXCOLOR)));
-	HR(effect->SetValue(this->GetShaderDiffuseLightMaterial(), &this->GetDiffuseLight()->GetColor(), sizeof(D3DXCOLOR)));		
-	HR(effect->SetValue(this->GetShaderSpecularLightMaterial(), &this->GetSpecularLight()->GetColor(), sizeof(D3DXCOLOR)));		
-	HR(effect->SetValue(this->GetShaderLightAttenuation(), this->GetLightAttenuation(), sizeof(D3DXVECTOR3)));
-	HR(effect->SetFloat(this->GetShaderSpotLightPower(), this->GetPointLight()->GetPower()));	
 }

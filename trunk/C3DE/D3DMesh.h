@@ -6,6 +6,7 @@
 #include <vector>
 #include "D3DCommonDefs.h"
 #include "D3DImage.h"
+#include "ShaderManager.h"
 
 using namespace std;
 
@@ -82,26 +83,34 @@ public:
 
 	D3DXMATRIX GetTransformMatrix();
 
-	//called for setting shaders variables before drawing in the D3DRenderer
-	virtual void SetEffectHandles(ID3DXEffect*) = 0;
-
-	//initializes any effect Handles
-	virtual void InitializeEffectHandles(ID3DXEffect* fx) = 0;
-
 	void Translate(float x, float y, float z);
 	float GetX(){return m_x;}
 	float GetY(){return m_y;}
-	float GetZ(){return m_z;}
+	float GetZ(){return m_z;}	
 
-	virtual D3DXHANDLE *GetShaderViewMatrix(){return m_shaderViewMatrix;}
-	virtual D3DXHANDLE *GetShaderTechnique(){return m_shaderTechnique;}
-	virtual D3DXHANDLE *GetShaderWorldMatrix(){return m_shaderWorldMatrix;}
-	virtual D3DXHANDLE *GetShaderWorldInverseTransposeMatrix(){return m_shaderWorldInverseTransposeMatrix;}
-	virtual D3DXHANDLE *GetShaderEyePosition(){return m_shaderEyePosition;}
+	virtual void SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
+							D3DXCOLOR specularLightColor, D3DXVECTOR3 lightPosition, 
+							D3DXVECTOR3 lightDirection, D3DXVECTOR3 lightAttenuation,
+							float spotLightPower){};
+	
+	virtual void SetWorldParameters(D3DXMATRIX worldMatrix, D3DXMATRIX worldViewProjection,
+									D3DXMATRIX worldInverseTranspose, D3DXVECTOR3 eyePosition){};
 
-	
-	
+	virtual void SetPreRenderEffectHandles() = 0;
+	virtual void CommitEffectHandles() = 0;
+
+
+	int GetNumShaderPasses(){return m_numShaderPasses;}
+
+	virtual void BeginShaderPass(int pass){}
+	virtual void EndShaderPass(int pass){}
+	virtual void BeginShader(){}
+	virtual void EndShader(){}
+
+									
+
 protected:
+	UINT m_numShaderPasses;
 	IDirect3DVertexBuffer9 * m_vertexBuffer;
 	IDirect3DIndexBuffer9 * m_indexBuffer;
 	IDirect3DVertexDeclaration9 *m_vertexDeclaration;
@@ -116,14 +125,27 @@ protected:
 
 	ID3DXEffect * m_effect;
 
-	D3DXHANDLE *m_shaderWorldMatrix;//gWorld
-	D3DXHANDLE *m_shaderWorldInverseTransposeMatrix;//gWorldInverseTranspose
-	D3DXHANDLE *m_shaderEyePosition;//gEyePosW
-	D3DXHANDLE *m_shaderViewMatrix;//gWVP	
-	D3DXHANDLE *m_shaderTechnique;
+	D3DXHANDLE m_shaderWorldMatrix;//gWorld R
+	D3DXHANDLE m_shaderWorldInverseTransposeMatrix;//gWorldInverseTranspose R
+	D3DXHANDLE m_shaderEyePosition;//gEyePosW R
+	D3DXHANDLE m_shaderViewMatrix;//gWVP	R
+	D3DXHANDLE m_shaderTechnique; //R
 
-	
-	
+	D3DXHANDLE m_shaderAmbientLightMaterial;//gAmbientLigh
+	D3DXHANDLE m_shaderDiffuseLightMaterial;//gDiffuseLight
+	D3DXHANDLE m_shaderSpecularLightMaterial;//gSpecularLight
+	D3DXHANDLE m_shaderLightPosition;//gLightPosW R
+	D3DXHANDLE m_shaderLightDirection;//gLightDirW R
+	D3DXHANDLE m_shaderLightAttenuation;//gAttenuation012
+	D3DXHANDLE m_shaderSpotLightPower;//gSpotPower
+
+
+
+	D3DXHANDLE m_shaderObjectAmbientMaterial;//gAmbientMtrl
+	D3DXHANDLE m_shaderObjectDiffuseMaterial;//gDiffuseMtrl
+	D3DXHANDLE m_shaderObjectSpecularMaterial;//gSpecMtrl
+	D3DXHANDLE m_shaderSpecularLightPower;//gSpecPower
+
 };
 #endif
 

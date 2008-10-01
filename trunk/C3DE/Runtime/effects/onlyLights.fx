@@ -75,9 +75,6 @@ OutputVS LightsVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0
 //float4 SpotlightPS(float4 c : COLOR0) : COLOR
 float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1, float2 tex0 : TEXCOORD2):COLOR
 {
-	
-	
-	
 	float3 texColor = tex2D(TexS, tex0).rgb;
 	
 	
@@ -114,12 +111,13 @@ float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1, float2 tex0 : T
 	float3 color = spot*(ambient + diffuse);
 	
 	
-	color = color * texColor;		
+	color = color;// * texColor;
+	
+	
 	
 	
 	// Pass on color and diffuse material alpha.
 	return float4(color, gDiffuseMtrl.a);
-	
 	
 }
 

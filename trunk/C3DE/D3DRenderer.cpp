@@ -84,101 +84,67 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 }
 
-//sets all shader handlers for every drawScene pass
-void D3DRenderer::SetSceneStepShaderHandlers(Scene *scene)
+
+void D3DRenderer::SetMeshLights(Scene * scene, Mesh *mesh)
 {
 	D3DScene *t_scene = static_cast<D3DScene *> (scene);
-	ID3DXEffect * effect = t_scene->GetEffect();
-	// Setup the rendering FX		
-		
+	D3DMesh *d3dmesh = static_cast<D3DMesh *> (mesh);
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	D3DXVECTOR3 lightDir = cam->GetTarget() - cam->GetPosition();
+	D3DXVec3Normalize(&lightDir, &lightDir);
+
+	d3dmesh->SetLightParameters(t_scene->GetAmbientLight()->GetColor(), t_scene->GetDiffuseLight()->GetColor(),
+								t_scene->GetSpecularLight()->GetColor(), cam->GetPosition(), lightDir, 
+								*t_scene->GetLightAttenuation(), t_scene->GetPointLight()->GetPower());
+}
+void D3DRenderer::SetMeshWorldHandlers(Scene *scene, Mesh *mesh)
+{
+	D3DScene *t_scene = static_cast<D3DScene *> (scene);
+	D3DMesh *d3dmesh = static_cast<D3DMesh *> (mesh);
 	D3DXMATRIX W;		
-	D3DXMatrixIdentity(&W);		
-	HR(effect->SetMatrix(t_scene->GetShaderWorldMatrix(), &W));
+	D3DXMatrixIdentity(&W);			
 
 	D3DCamera *cam = (D3DCamera *) m_camera;
 	D3DXMATRIX t_view = cam->GetMatrix();
-	D3DXMATRIX t_projView = t_view*m_proj;
-	HR(effect->SetMatrix(t_scene->GetShaderViewMatrix(), &t_projView));
+	D3DXMATRIX t_projView = t_view*m_proj;	
 
 	D3DXMATRIX WIT;
 	D3DXMatrixInverse(&WIT, 0, &W);
-	D3DXMatrixTranspose(&WIT, &WIT);
-	HR(effect->SetMatrix(t_scene->GetShaderWorldInverseTransposeMatrix(), &WIT));											
+	D3DXMatrixTranspose(&WIT, &WIT);														
 	
-	HR(effect->SetValue(t_scene->GetShaderEyePosition(), cam->GetPosition(), sizeof(D3DXVECTOR3)));
-	// Spotlight position is the same as the camera position.
-	HR(effect->SetValue(t_scene->GetShaderLightPosition(), cam->GetPosition(), sizeof(D3DXVECTOR3)));
-
-	// Spotlight direction is the same as the camera forward direction.
-	D3DXVECTOR3 lightDir = cam->GetTarget() - cam->GetPosition();
-	D3DXVec3Normalize(&lightDir, &lightDir);
-	HR(effect->SetValue(t_scene->GetShaderLightDirection(), &lightDir, sizeof(D3DXVECTOR3)));	
-
-	HR(effect->SetTechnique(t_scene->GetShaderTechnique()));
-}
-
-//sets all shader handlers relative to a specific mesh's material for every drawScene pass
-void D3DRenderer::SetMeshMaterialShaderHandlers(Scene *scene, Mesh *mesh)
-{
-	D3DScene *t_scene = static_cast<D3DScene *> (scene);
-	ID3DXEffect * effect = t_scene->GetEffect();
-	HR(effect->SetValue(t_scene->GetShaderObjectAmbientMaterial(), &mesh->GetMaterial()->GetAmbient(),sizeof(D3DXCOLOR)));
-	HR(effect->SetValue(t_scene->GetShaderObjectDiffuseMaterial(), &mesh->GetMaterial()->GetDiffuse(), sizeof(D3DXCOLOR)));
-	HR(effect->SetValue(t_scene->GetShaderObjectSpecularMaterial(), &mesh->GetMaterial()->GetSpecular(), sizeof(D3DXCOLOR)));
-	HR(effect->SetFloat(t_scene->GetShaderSpecularLightPower(), mesh->GetMaterial()->GetSpecularPower()));
-			
+	d3dmesh->SetWorldParameters(W, t_projView,WIT,cam->GetPosition());
 }
 
 void D3DRenderer::DrawScene(Scene *scene)
 {
 	int totalMeshes = scene->GetMeshesVector()->size();	
 
-	D3DScene *t_scene = static_cast<D3DScene *> (scene);
+	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
 
-	ID3DXEffect * effect = t_scene->GetEffect();	
-
-	if(effect  )
+	for(int i = 0; i < totalMeshes; i++)
 	{
+		Mesh *mesh = scene->GetMeshesVector()->at(i);	
+		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
 
-		SetSceneStepShaderHandlers(scene);						
+		d3dmesh->SetPreRenderEffectHandles();
 
-		for(int i = 0; i < totalMeshes; i++)
+		SetMeshLights(scene,mesh);
+		SetMeshWorldHandlers(scene, mesh);
+		d3dmesh->CommitEffectHandles();
+
+		// Begin passes.
+
+		UINT numPasses = d3dmesh->GetNumShaderPasses();
+		d3dmesh->BeginShader();
+		for(UINT i = 0; i < numPasses; ++i)
 		{
-			Mesh *mesh = scene->GetMeshesVector()->at(i);	
-
-			SetMeshMaterialShaderHandlers(scene, mesh);		
-
-			D3DMesh *d3dmesh = (D3DMesh *)mesh;	
-
-			d3dmesh->SetEffectHandles(effect);
-
-			HR(effect->CommitChanges());
-
-			// Begin passes.
-
-			UINT numPasses = 0;
-			HR(effect->Begin(&numPasses, 0));
-			for(UINT i = 0; i < numPasses; ++i)
-			{
-				HR(effect->BeginPass(i));
-				DrawMesh(mesh);
-				HR(effect->EndPass());
-			}
-			HR(effect->End());
-
-			
-		}
-
-	}
-	else
-	{
-		for(int i = 0; i < totalMeshes; i++)
-		{
-			Mesh *mesh = scene->GetMeshesVector()->at(i);								
+			d3dmesh->BeginShaderPass(i);
 			DrawMesh(mesh);
+			d3dmesh->EndShaderPass(i);
 		}
+		d3dmesh->EndShader();
+		
 	}
-
 	
 }
 
@@ -203,9 +169,7 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
 
 	int numTriangles = mesh->GetIndices()->size() / 3;
-	int numVertices = mesh->GetVertices()->size();	
-
-	
+	int numVertices = mesh->GetVertices()->size();		
 	
 	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
 	
@@ -224,19 +188,7 @@ void D3DRenderer::DrawSprite(Sprite *sprite)
 
 	
 	IDirect3DTexture9 * t = tex->GetTexture();
-	/*
-	int colIndex = d3dSprite->GetCurrentFrame() % d3dSprite->GetNumColumns();
-	int rowIndex = d3dSprite->GetCurrentFrame() / d3dSprite->GetNumColumns();
-	int frameWidth = d3dSprite->GetFrameWidth();
-	int frameHeight = d3dSprite->GetFrameHeight();
-
 	
-	RECT src;
-	src.left = colIndex * frameWidth;
-	src.right = (colIndex * frameWidth) + frameWidth;
-	src.top = rowIndex * frameHeight;
-	src.bottom = (rowIndex * frameHeight) + frameHeight;
-	*/
 	RECT src = d3dSprite->GetFrameRects()->at(d3dSprite->GetCurrentFrame());
 	m_sprite->Draw(t, &src, 0, 0, D3DCOLOR_XRGB(255,255,255));
 

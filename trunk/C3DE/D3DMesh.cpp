@@ -9,6 +9,8 @@ D3DMesh::D3DMesh()
 	m_y = 0;
 	m_z = 0;
 
+	m_numShaderPasses = 1;
+
 	
 	m_fxHandlesInitialized = false;
 	

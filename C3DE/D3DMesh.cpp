@@ -38,11 +38,11 @@ D3DXMATRIX D3DMesh::GetTransformMatrix()
 
 
 
-void D3DMesh::Translate(float x, float y, float z)
+void D3DMesh::SetPosition(float x, float y, float z)
 {
-	m_x += x;
-	m_y += y;
-	m_z += z;
+	m_x = x;
+	m_y = y;
+	m_z = z;
 
 }
 

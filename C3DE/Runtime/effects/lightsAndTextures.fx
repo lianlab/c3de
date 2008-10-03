@@ -9,6 +9,7 @@ uniform extern float4x4 gWorld;
 uniform extern float4x4 gWorldInvTrans;
 uniform extern float4x4 gWVP;
 uniform extern float3   gEyePosW;
+uniform extern float4x4 gTransformMatrix;
 
 uniform extern float4 gAmbientMtrl;
 uniform extern float4 gDiffuseMtrl;
@@ -41,7 +42,7 @@ struct OutputVS
 {
     float4 posH  : POSITION0;
     float3 normalW: TEXCOORD0;
-    float3 posW: TEXCOORD1;
+    float4 posW: TEXCOORD1;
     float2 tex0 : TEXCOORD2;
    
 };
@@ -55,15 +56,20 @@ OutputVS LightsVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0
 	
 	// Transform normal to world space.
 	float3 normalW = mul(float4(normalL, 0.0f), gWorldInvTrans).xyz;
-	normalW = normalize(normalW);
+	normalW = normalize(normalW);		
 	
 	// Transform vertex position to world space.
-	float3 posW  = mul(float4(posL, 1.0f), gWorld).xyz;
+	float4 posW  = mul(float4(posL, 1.0f), gWorld);
+	posW = mul(posW,gTransformMatrix);
+	
 	
 	outVS.posW = posW;
 	outVS.normalW = normalW;
 	// Transform to homogeneous clip space.
-	outVS.posH = mul(float4(posL, 1.0f), gWVP);
+	
+	//outVS.posH = mul(float4(posL, 1.0f), gWVP);
+	float4 newPos = mul(float4(posL, 1.0f), gTransformMatrix);
+	outVS.posH = mul(newPos, gWVP);
 	
 	// Pass on texture coordinates to be interpolated in rasterization.
 	outVS.tex0 = tex0;
@@ -73,7 +79,7 @@ OutputVS LightsVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0
 }
 
 //float4 SpotlightPS(float4 c : COLOR0) : COLOR
-float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1, float2 tex0 : TEXCOORD2):COLOR
+float4 LightsPS(float3 normalW:TEXCOORD0, float4 posW:TEXCOORD1, float2 tex0 : TEXCOORD2):COLOR
 {
 	
 	

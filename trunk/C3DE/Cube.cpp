@@ -121,6 +121,8 @@ void Cube::SetWorldParameters(D3DXMATRIX worldMatrix, D3DXMATRIX worldViewProjec
 	HR(m_effect->SetMatrix(m_shaderWorldInverseTransposeMatrix, &worldInverseTranspose));												
 	HR(m_effect->SetValue(m_shaderEyePosition, eyePosition, sizeof(D3DXVECTOR3)));	
 	
+	HR(m_effect->SetMatrix(m_shaderTransformMatrix, &GetTransformMatrix()));	
+	
 }
 
 
@@ -151,6 +153,7 @@ void Cube::InitializeEffectHandles(/*ID3DXEffect* fx*/)
 
 	m_shaderTechnique = m_effect->GetTechniqueByName("LightsTech");	
 	m_shaderViewMatrix  = m_effect->GetParameterByName(0, "gWVP");	
+	m_shaderTransformMatrix  = m_effect->GetParameterByName(0, "gTransformMatrix");	
 	m_shaderEyePosition= m_effect->GetParameterByName(0, "gEyePosW");
 	m_shaderAmbientLightMaterial = m_effect->GetParameterByName(0, "gAmbientLight");
 	m_shaderDiffuseLightMaterial = m_effect->GetParameterByName(0, "gDiffuseLight");

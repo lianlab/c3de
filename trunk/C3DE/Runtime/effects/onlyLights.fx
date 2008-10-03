@@ -8,6 +8,7 @@
 uniform extern float4x4 gWorld;
 uniform extern float4x4 gWorldInvTrans;
 uniform extern float4x4 gWVP;
+uniform extern float4x4 gTransformMatrix;
 uniform extern float3   gEyePosW;
 
 uniform extern float4 gAmbientMtrl;
@@ -75,6 +76,7 @@ OutputVS LightsVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0
 //float4 SpotlightPS(float4 c : COLOR0) : COLOR
 float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1, float2 tex0 : TEXCOORD2):COLOR
 {
+	
 	float3 texColor = tex2D(TexS, tex0).rgb;
 	
 	

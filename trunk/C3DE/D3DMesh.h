@@ -83,7 +83,7 @@ public:
 
 	D3DXMATRIX GetTransformMatrix();
 
-	void Translate(float x, float y, float z);
+	void SetPosition(float x, float y, float z);
 	float GetX(){return m_x;}
 	float GetY(){return m_y;}
 	float GetZ(){return m_z;}	
@@ -129,6 +129,7 @@ protected:
 	D3DXHANDLE m_shaderWorldInverseTransposeMatrix;//gWorldInverseTranspose R
 	D3DXHANDLE m_shaderEyePosition;//gEyePosW R
 	D3DXHANDLE m_shaderViewMatrix;//gWVP	R
+	D3DXHANDLE m_shaderTransformMatrix;//gSpotPower
 	D3DXHANDLE m_shaderTechnique; //R
 
 	D3DXHANDLE m_shaderAmbientLightMaterial;//gAmbientLigh

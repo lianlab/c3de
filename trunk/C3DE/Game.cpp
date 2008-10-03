@@ -174,21 +174,25 @@ void Game::OnKeyDown(int key)
 	}
 	else if(key == 200)
 	{
-		m_cameraHeight += (0.025f * m_deltaTime);
+		//m_cameraHeight += (0.025f * m_deltaTime);
+		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() + 0.01f, m_testMesh->GetZ());
 	}
 	else if(key == 208)
 	{
-		m_cameraHeight -= (0.025f * m_deltaTime);
+		//m_cameraHeight -= (0.025f * m_deltaTime);
+		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() - 0.01f, m_testMesh->GetZ());
 	}	
 	else if(key == 205)
 	{
-		m_grid->Translate(0.01f, 0.0f, 0.0f);
-		m_testMesh->Translate(0.01f, 0.0f, 0.0f);
+		//m_grid->Translate(0.01f, 0.0f, 0.0f);
+		//m_testMesh->Translate(0.01f, 0.0f, 0.0f);
+		m_testMesh->SetPosition(m_testMesh->GetX() + 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
 	}
 	else if(key == 203)
 	{
-		m_grid->Translate(-0.01f, 0.0f, 0.0f);
-		m_testMesh->Translate(-0.01f, 0.0f, 0.0f);
+		//m_grid->Translate(-0.01f, 0.0f, 0.0f);
+		//m_testMesh->Translate(-0.01f, 0.0f, 0.0f);
+		m_testMesh->SetPosition(m_testMesh->GetX() - 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
 	}
 }
 
@@ -256,7 +260,7 @@ void Game::CreateMeshBuffers(D3DMesh *mesh)
 	mesh->SetBuffers(vb, ib);
 	mesh->SetVertexDeclaration(Decl);
 
-	mesh->Translate(0.0f, 0.0f, 0.0f);
+	//mesh->Translate(0.0f, 0.0f, 0.0f);
 }
 
 void Game::InitializeMeshes()

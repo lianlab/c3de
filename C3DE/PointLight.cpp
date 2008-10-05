@@ -1,4 +1,5 @@
 #include "PointLight.h"
+#include "DebugMemory.h"
 
 
 PointLight::PointLight(float power):Light()

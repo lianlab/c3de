@@ -11,7 +11,7 @@ class D3DSprite : public Sprite
 {
 public:
 	D3DSprite(D3DImage *image, int frameWidth, int frameHeight, int numFrames, int numColumns, int numRows,int frameDuration);
-	~D3DSprite();
+	virtual ~D3DSprite();
 	D3DXMATRIX GetTransformationMatrix(){return m_transformationMatrix;}
 	void SetX(int x);
 	void SetY(int y);

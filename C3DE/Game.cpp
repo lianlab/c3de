@@ -1,8 +1,11 @@
 #include "Game.h"
-//#include "DebugMemory.h"
 #include "ShaderManager.h"
 #include "D3DCamera.h"
 #include "D3DRenderer.h"
+
+//THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
+//#include "DebugMemory.h"
+
 
 using namespace std;
 
@@ -58,12 +61,14 @@ Game::Game(Application * app)
 	r.top = 0;
 	r.bottom = 85;
 
+	
 	m_button = new Button(image2, frames, r);
 	m_button->SetX(50);
 	m_button->SetY(340);
 
 	m_button->AddListener(this);
 
+	
 	hx = 0;
 	hy = 0;
 	
@@ -92,7 +97,9 @@ void Game::SetInputer(DirectInput *inputer)
 
 Game::~Game()
 {
+	delete m_testScene;
 	delete m_sprite;
+	delete m_button;
 }
 
 void Game::Update(int deltaTime)
@@ -176,23 +183,27 @@ void Game::OnKeyDown(int key)
 	{
 		//m_cameraHeight += (0.025f * m_deltaTime);
 		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() + 0.01f, m_testMesh->GetZ());
+		m_testMesh->Scale(1.0f, m_testMesh->GetYScale() + 0.001, 1.0f);
 	}
 	else if(key == 208)
 	{
 		//m_cameraHeight -= (0.025f * m_deltaTime);
 		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() - 0.01f, m_testMesh->GetZ());
+		m_testMesh->Scale(1.0f, m_testMesh->GetYScale() - 0.001, 1.0f);
 	}	
 	else if(key == 205)
 	{
 		//m_grid->Translate(0.01f, 0.0f, 0.0f);
 		//m_testMesh->Translate(0.01f, 0.0f, 0.0f);
 		m_testMesh->SetPosition(m_testMesh->GetX() + 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
+		m_testMesh->Scale(m_testMesh->GetXScale() + 0.001, 1.0f, 1.0f);
 	}
 	else if(key == 203)
 	{
 		//m_grid->Translate(-0.01f, 0.0f, 0.0f);
 		//m_testMesh->Translate(-0.01f, 0.0f, 0.0f);
 		m_testMesh->SetPosition(m_testMesh->GetX() - 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
+		m_testMesh->Scale(m_testMesh->GetXScale() - 0.001, 1.0f, 1.0f);
 	}
 }
 

@@ -34,7 +34,17 @@ void D3DSprite::BuildFrameRects()
 
 D3DSprite::~D3DSprite()
 {
-	delete m_image;
+	if(m_image)
+	{
+		delete m_image;
+		m_image = NULL;
+	}
+	
+	if(m_frameRects)
+	{
+		delete m_frameRects;
+		m_frameRects = NULL;
+	}
 }
 
 void D3DSprite::SetX(int x)

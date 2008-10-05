@@ -20,7 +20,7 @@ ShaderManager::ShaderManager()
 
 ShaderManager::~ShaderManager()
 {
-
+	
 }
 
 void ShaderManager::SetDevice(IDirect3DDevice9 *device)

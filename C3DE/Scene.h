@@ -29,10 +29,12 @@ public:
 	SpecularLight * GetSpecularLight(){return m_specularLight;}
 	PointLight * GetPointLight(){ return m_pointLight;}
 
-	void SetAmbientLight(AmbientLight *light){m_ambientLight = light;}
-	void SetDiffuseLight(DiffuseLight *light){m_diffuseLight = light;}
-	void SetSpecularLight(SpecularLight *light){m_specularLight = light;}
-	void SetPointLight(PointLight *light){m_pointLight = light;}	
+	void SetAmbientLight(AmbientLight *light);
+	void SetDiffuseLight(DiffuseLight *light);
+	void SetSpecularLight(SpecularLight *light);
+	void SetPointLight(PointLight *light);
+
+	void FreeMeshes();
 
 protected:
 	vector<Mesh *> *m_meshes;

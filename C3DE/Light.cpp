@@ -1,4 +1,5 @@
 #include "Light.h"
+#include "DebugMemory.h"
 
 Light::Light()
 {

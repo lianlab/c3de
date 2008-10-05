@@ -1,5 +1,6 @@
 #include "Cube2.h"
 #include "ResourceManager.h"
+#include "DebugMemory.h"
 
 Cube2::Cube2()
 {

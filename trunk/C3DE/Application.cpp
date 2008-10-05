@@ -4,6 +4,7 @@
 #include "WindowsPerformanceCounter.h"
 #include "Debug.h"
 #include "ResourceManager.h"
+#include "ShaderManager.h"
 #include "DebugMemory.h"
 
 Application::Application()
@@ -18,6 +19,7 @@ Application::~Application()
 	delete WindowsPerformanceCounter::GetInstance();
 	delete Debug::GetInstance();
 	delete ResourceManager::GetInstance();
+	delete ShaderManager::GetInstance();
 }
 
 bool Application::Init()

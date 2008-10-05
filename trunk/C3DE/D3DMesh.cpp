@@ -1,25 +1,42 @@
 #include "D3DMesh.h"
+#include "DebugMemory.h"
 
 IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
 
 D3DMesh::D3DMesh()
 {
 	
-	m_x = 0;
-	m_y = 0;
-	m_z = 0;
+	
 
 	m_numShaderPasses = 1;
 
 	
 	m_fxHandlesInitialized = false;
+
+	
 	
 }
 
 
 D3DMesh::~D3DMesh()
 {
+	if(m_vertices)
+	{
+		delete m_vertices;
+		m_vertices = NULL;
+	}
 
+	if(m_indices)
+	{
+		delete m_indices;
+		m_indices =NULL;
+	}
+
+	if(m_texture)
+	{
+		delete m_texture;
+		m_texture = NULL;
+	}
 }
 
 void D3DMesh::Update(int deltaTime)
@@ -32,19 +49,18 @@ void D3DMesh::Update(int deltaTime)
 D3DXMATRIX D3DMesh::GetTransformMatrix()
 {
 	D3DXMATRIX T;
+	D3DXMATRIX S;
+	D3DXMATRIX O;
+	
+	D3DXMatrixScaling(&S, m_scaleX, m_scaleY, m_scaleZ);
+	
 	D3DXMatrixTranslation(&T, m_x, m_y, m_z);
-	return T;
+
+	D3DXMatrixMultiply(&O, &S, &T);
+	return O;
 }
 
 
-
-void D3DMesh::SetPosition(float x, float y, float z)
-{
-	m_x = x;
-	m_y = y;
-	m_z = z;
-
-}
 
 IDirect3DVertexBuffer9 * D3DMesh::GetVertexBuffer()
 {

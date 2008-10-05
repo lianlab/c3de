@@ -1,4 +1,5 @@
 #include "Grid.h"
+#include "DebugMemory.h"
 
 Grid::Grid(int numCellsRows, int numCellsCols, float dx, float dz)
 {

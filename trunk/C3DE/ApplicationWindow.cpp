@@ -1,4 +1,5 @@
 #include "ApplicationWindow.h"
+#include "DebugMemory.h"
 
 ApplicationWindow::ApplicationWindow(int width, int height)
 {

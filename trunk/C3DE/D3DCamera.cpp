@@ -1,4 +1,5 @@
 #include "D3DCamera.h"
+#include "DebugMemory.h"
 
 D3DCamera::D3DCamera()
 {

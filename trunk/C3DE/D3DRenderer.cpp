@@ -1,9 +1,9 @@
 #include "D3DRenderer.h"
 #include "Debug.h"
 #include "D3DSprite.h"
-//#include "DebugMemory.h"
 #include "ResourceManager.h"
 #include "D3DMesh.h"
+#include "DebugMemory.h"
 
 D3DRenderer::D3DRenderer()
 {	
@@ -15,6 +15,12 @@ D3DRenderer::~D3DRenderer()
 	if(m_font)
 	{
 		ReleaseCOM(m_font);
+	}
+
+	if(m_camera)
+	{
+		delete m_camera;
+		m_camera = NULL;
 	}
 }
 

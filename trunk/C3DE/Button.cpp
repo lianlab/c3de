@@ -1,8 +1,14 @@
 #include "Button.h"
+#include "DebugMemory.h"
 
 Button::Button(D3DImage *image, vector<RECT> *frames, RECT collisionBox):
 D3DSprite(image,0, 0, 0, 0, 0, 0)
 {
+	if(m_frameRects)
+	{
+		delete m_frameRects;
+		m_frameRects = NULL;
+	}
 	m_frameRects = frames;
 	m_collisionBox = collisionBox;
 	m_listeners = new vector<ButtonListener *>;
@@ -15,7 +21,11 @@ D3DSprite(image,0, 0, 0, 0, 0, 0)
 
 Button::~Button()
 {
-
+	if(m_listeners)
+	{
+		delete m_listeners;
+		m_listeners = NULL;
+	}
 }
 
 void Button::OnMouseDown(int button, int x, int y)

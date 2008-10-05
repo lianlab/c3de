@@ -1,4 +1,5 @@
 #include "DirectionalLight.h"
+#include "DebugMemory.h"
 
 DirectionalLight::DirectionalLight():Light()
 {
@@ -7,7 +8,11 @@ DirectionalLight::DirectionalLight():Light()
 
 DirectionalLight::~DirectionalLight()
 {
-
+	if(m_direction)
+	{
+		delete m_direction;
+		m_direction = NULL;
+	}
 }
 
 void DirectionalLight::SetDirection(float x, float y, float z)

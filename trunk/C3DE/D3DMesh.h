@@ -83,10 +83,12 @@ public:
 
 	D3DXMATRIX GetTransformMatrix();
 
-	void SetPosition(float x, float y, float z);
-	float GetX(){return m_x;}
-	float GetY(){return m_y;}
-	float GetZ(){return m_z;}	
+	//void SetPosition(float x, float y, float z);
+	//float GetX(){return m_x;}
+	//float GetY(){return m_y;}
+	//float GetZ(){return m_z;}	
+
+	
 
 	virtual void SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
 							D3DXCOLOR specularLightColor, D3DXVECTOR3 lightPosition, 

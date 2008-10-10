@@ -1,5 +1,7 @@
+#include "Renderer.h"
 #include "Mesh.h"
 #include "DebugMemory.h"
+
 
 Mesh::Mesh()
 {	
@@ -13,6 +15,8 @@ Mesh::Mesh()
 	m_z = 0.0f;
 
 	m_texture = NULL;
+
+	m_alpha = 1.0f;
 }
 
 Mesh::~Mesh()
@@ -33,3 +37,10 @@ void Mesh::SetMaterial(Material *material)
 	}
 	m_material = material;
 }
+
+/*
+void Mesh::auei(Renderer *a_renderer)
+{
+	a_renderer->nada();
+}
+*/

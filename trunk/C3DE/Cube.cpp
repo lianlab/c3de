@@ -1,3 +1,4 @@
+#include "Renderer.h"
 #include "Cube.h"
 #include "ResourceManager.h"
 #include "DebugMemory.h"
@@ -95,6 +96,8 @@ Cube::Cube()
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_CRATE_ID));
 	m_texture = (Image *) d3dImage;
 
+	m_alpha = 0.3f;
+
 	
 }
 void Cube::SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
@@ -145,11 +148,12 @@ void Cube::SetPreRenderEffectHandles(/*ID3DXEffect* fx*/)
 	HR(m_effect->SetValue(m_shaderObjectDiffuseMaterial, &GetMaterial()->GetDiffuse(), sizeof(D3DXCOLOR)));
 	HR(m_effect->SetValue(m_shaderObjectSpecularMaterial, &GetMaterial()->GetSpecular(), sizeof(D3DXCOLOR)));
 	HR(m_effect->SetFloat(m_shaderSpecularLightPower, GetMaterial()->GetSpecularPower()));
+	HR(m_effect->SetFloat(m_shaderAlpha, m_alpha));
 }
 
 void Cube::InitializeEffectHandles(/*ID3DXEffect* fx*/)
 {
-	m_effect = ShaderManager::GetInstance()->GetEffectById(SHADER_LIGHTS_AND_TEXTURES_ID);
+	m_effect = ShaderManager::GetInstance()->GetEffectById(SHADER_LIGHTS_TEXTURES_BLENDING_ID);
 	m_hTex = m_effect->GetParameterByName(0, "gTex");
 
 	m_shaderTechnique = m_effect->GetTechniqueByName("LightsTech");	
@@ -171,6 +175,7 @@ void Cube::InitializeEffectHandles(/*ID3DXEffect* fx*/)
 
 	m_shaderWorldMatrix = m_effect->GetParameterByName(0, "gWorld");
 	m_shaderWorldInverseTransposeMatrix = m_effect->GetParameterByName(0, "gWorldInvTrans");
+	m_shaderAlpha = m_effect->GetParameterByName(0, "gAlpha");
 	m_fxHandlesInitialized = true;
 }
 
@@ -193,3 +198,13 @@ Cube::~Cube()
 	ReleaseCOM(m_vertexDeclaration);
 }
 
+
+void Cube::PreRender(Renderer *a_renderer)
+{
+	a_renderer->EnableAlphaBlending();
+}
+
+void Cube::PosRender(Renderer *a_renderer)
+{
+	a_renderer->DisableAlphaBlending();
+}

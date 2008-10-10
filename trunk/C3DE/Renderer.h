@@ -40,6 +40,9 @@ public:
 	virtual void DrawMesh(Mesh *mesh) = 0;
 	virtual void DrawScene(Scene *scene) = 0;
 	Camera * GetCamera(){return m_camera;}
+
+	virtual void EnableAlphaBlending(){}
+	virtual void DisableAlphaBlending(){}
 	
 protected:
 	ApplicationWindow *m_window;

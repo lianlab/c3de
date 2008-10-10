@@ -47,6 +47,11 @@ void ShaderManager::InitializeResources()
 	errors = 0;	
 	HR(D3DXCreateEffectFromFile(m_device, "effects/onlyLights.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_ONLY_LIGHTS, &errors));	
 	m_effectResources[SHADER_ONLY_LIGHTS_ID] = SHADER_ONLY_LIGHTS;
+
+	ID3DXEffect * SHADER_LIGHTS_TEXTURES_BLENDING;
+	errors = 0;	
+	HR(D3DXCreateEffectFromFile(m_device, "effects/lightsAndTexturesAlphaBlending.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_LIGHTS_TEXTURES_BLENDING, &errors));	
+	m_effectResources[SHADER_LIGHTS_TEXTURES_BLENDING_ID] = SHADER_LIGHTS_TEXTURES_BLENDING;
 	
 }
 

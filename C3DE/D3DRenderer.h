@@ -39,6 +39,9 @@ public:
 
 	IDirect3DDevice9* GetDevice(){ return m_device;}
 
+	void EnableAlphaBlending();
+	void DisableAlphaBlending();
+
 	//void InitializeScene(Scene *scene);
 	
 private:

@@ -3,6 +3,8 @@
 
 #include "D3DMesh.h"
 
+
+
 class Cube : public D3DMesh
 {
 public:
@@ -24,12 +26,15 @@ public:
 	void BeginShader(){m_effect->Begin(&m_numShaderPasses,0);}
 	void EndShader(){m_effect->End();}
 	void CommitEffectHandles(){m_effect->CommitChanges();}
-									
+						
+	void PreRender(Renderer *a_renderer);
+	void PosRender(Renderer *a_renderer);
 
 protected:
 
 	void InitializeEffectHandles(/*ID3DXEffect* fx*/);
 	D3DXHANDLE   m_hTex;
+	D3DXHANDLE	m_shaderAlpha;//galpha
 	
 };
 #endif

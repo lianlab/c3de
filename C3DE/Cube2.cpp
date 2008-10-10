@@ -96,6 +96,7 @@ Cube2::Cube2()
 	m_texture = (Image *) d3dImage;
 
 	
+	
 }
 
 

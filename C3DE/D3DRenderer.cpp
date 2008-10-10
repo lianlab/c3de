@@ -132,6 +132,8 @@ void D3DRenderer::DrawScene(Scene *scene)
 		Mesh *mesh = scene->GetMeshesVector()->at(i);	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
 
+		d3dmesh->PreRender(this);
+
 		d3dmesh->SetPreRenderEffectHandles();
 
 		SetMeshLights(scene,mesh);
@@ -149,9 +151,24 @@ void D3DRenderer::DrawScene(Scene *scene)
 			d3dmesh->EndShaderPass(i);
 		}
 		d3dmesh->EndShader();
+		d3dmesh->PosRender(this);
 		
 	}
 	
+}
+
+void D3DRenderer::EnableAlphaBlending()
+{
+	// Enable alpha blending.
+	HR(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, true));
+	HR(m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA));
+	HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA));
+}
+
+void D3DRenderer::DisableAlphaBlending()
+{
+	// Disable alpha blending.
+	HR(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
 }
 
 
@@ -159,6 +176,7 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 {
 
 	D3DMesh *mesh = (D3DMesh *)a_mesh;	
+	
 	HR(m_device->SetStreamSource(0, mesh->GetVertexBuffer(), 0, mesh->GetVertexSize()));
 	
 	HR(m_device->SetIndices(mesh->GetIndexBuffer()));	

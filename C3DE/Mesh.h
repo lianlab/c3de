@@ -4,6 +4,8 @@
 #include "Material.h"
 #include "Image.h"
 
+class Renderer;
+
 class Mesh
 {
 public:
@@ -27,10 +29,18 @@ public:
 	void SetMaterial(Material *material);
 	Material * GetMaterial(){return m_material;}
 
+	virtual void PreRender(Renderer *a_renderer){}
+	virtual void PosRender(Renderer *a_renderer){}
+
+	void SetAlpha(float a_alpha){m_alpha = a_alpha;}
+	float GetAlpha(){return m_alpha;}
+
 protected:
 	float m_x;
 	float m_y;
 	float m_z;
+
+	float m_alpha;
 
 	float m_scaleX;
 	float m_scaleY;

@@ -1,4 +1,2 @@
-18:c:\caio\c3de\c3de\grid.cpp                        :		LINE 21,	ADDRESS 003CE1D0	20 unfreed	block 17
-19:c:\caio\c3de\c3de\grid.cpp                        :		LINE 22,	ADDRESS 003CE220	20 unfreed	block 18
 -----------------------------------------------------------
-Total Unfreed: 40 bytes
+Total Unfreed: 0 bytes

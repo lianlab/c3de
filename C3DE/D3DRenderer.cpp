@@ -132,6 +132,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 		Mesh *mesh = scene->GetMeshesVector()->at(i);	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
 
+		
 		d3dmesh->PreRender(this);
 
 		d3dmesh->SetPreRenderEffectHandles();
@@ -152,6 +153,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 		}
 		d3dmesh->EndShader();
 		d3dmesh->PosRender(this);
+		
 		
 	}
 	

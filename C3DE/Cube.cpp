@@ -96,7 +96,7 @@ Cube::Cube()
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_CRATE_ID));
 	m_texture = (Image *) d3dImage;
 
-	m_alpha = 1.0f;
+	m_alpha = 0.5f;
 
 	
 }

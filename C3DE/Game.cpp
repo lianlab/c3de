@@ -289,8 +289,7 @@ void Game::InitializeMeshes()
 	CreateMeshBuffers(m_grid);
 
 	m_testScene = new DefaultScene1();
-	m_testScene->AddMesh((Mesh*)m_grid);
-	m_testScene->AddMesh((Mesh*)m_testMesh);
+	
 	
 	
 	m_cube = new Cube2();
@@ -299,7 +298,14 @@ void Game::InitializeMeshes()
 	m_cube->SetMaterial(t_material3);
 	CreateMeshBuffers(m_cube);
 
+	
+	
+	
+	
 	m_testScene->AddMesh((Mesh*)m_cube);
+	m_testScene->AddMesh((Mesh*)m_grid);	
+	m_testScene->AddMesh((Mesh*)m_testMesh);
+	
 
 	m_testScene->Initialize();
 

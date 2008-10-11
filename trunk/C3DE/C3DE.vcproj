@@ -392,6 +392,18 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="Mirror"
+						>
+						<File
+							RelativePath=".\D3DMirror.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Mirror.cpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Camera"
@@ -659,6 +671,18 @@
 						>
 						<File
 							RelativePath=".\DefaultScene1.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Mirror"
+						>
+						<File
+							RelativePath=".\D3DMirror.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Mirror.h"
 							>
 						</File>
 					</Filter>

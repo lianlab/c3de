@@ -9,6 +9,7 @@
 #include "PointLight.h"
 
 #include "Mesh.h"
+#include "Mirror.h"
 
 using namespace std;
 
@@ -18,9 +19,13 @@ public:
 	Scene();
 	virtual ~Scene();
 	void SetUpFromXMLFile(char *xmlPath){};
-	void AddMesh(Mesh*mesh){m_meshes->push_back(mesh);}	
+	void AddMesh(Mesh*mesh);
 	void RemoveMesh(Mesh*mesh);
 	vector<Mesh *> *GetMeshesVector(){return m_meshes;}
+
+	void AddMirror(Mirror*mirror);
+	void RemoveMirror(Mirror*mirror);
+	vector<Mirror *> *GetMirrorsVector(){return m_mirrors;}
 
 	
 	
@@ -38,6 +43,7 @@ public:
 
 protected:
 	vector<Mesh *> *m_meshes;
+	vector<Mirror *> *m_mirrors;
 	
 	
 	AmbientLight * m_ambientLight;

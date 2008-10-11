@@ -118,5 +118,39 @@ void Scene::FreeMeshes()
 	}
 }
 
+void Scene::AddMesh(Mesh*mesh)
+{
+
+	if(mesh->GetAlpha() < 1.0f)
+	{
+		m_meshes->push_back(mesh);
+	}
+	else
+	{
+		m_meshes->insert(m_meshes->begin(), mesh);
+	}
+
+}	
+
+void Scene::AddMirror(Mirror*mirror)
+{
+	m_mirrors->push_back(mirror);	
+}
+
+void Scene::RemoveMirror(Mirror *mirror)
+{
+	int totalMirrors = m_mirrors->size();
+
+	for(int i = 0; i < totalMirrors; i++)
+	{
+		Mirror *t_mirror = m_mirrors->at(i);
+		if(mirror == t_mirror)
+		{
+			m_mirrors->erase(m_mirrors->begin() + i);
+			return;
+		}
+	}
+}
+
 
 

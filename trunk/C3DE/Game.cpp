@@ -184,6 +184,7 @@ void Game::OnKeyDown(int key)
 		//m_cameraHeight += (0.025f * m_deltaTime);
 		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() + 0.01f, m_testMesh->GetZ());
 		m_testMesh->Scale(1.0f, m_testMesh->GetYScale() + 0.001, 1.0f);
+		m_mirror->SetPosition(m_mirror->GetX() + 0.01f, m_mirror->GetY()+ 0.01f, m_mirror->GetZ() + 0.01f);
 	}
 	else if(key == 208)
 	{
@@ -289,6 +290,14 @@ void Game::InitializeMeshes()
 	CreateMeshBuffers(m_grid);
 
 	m_testScene = new DefaultScene1();
+
+	m_mirror = new PlanarMirror();
+	m_mirror->SetMaterial(t_material);
+	CreateMeshBuffers((D3DMesh * )m_mirror);
+
+	m_mirror->SetPosition(2.0f, 2.0f, 2.0f);
+
+	
 	
 	
 	
@@ -300,8 +309,7 @@ void Game::InitializeMeshes()
 
 	
 	
-	
-	
+	m_testScene->AddMirror((Mirror *)m_mirror);	
 	m_testScene->AddMesh((Mesh*)m_cube);
 	m_testScene->AddMesh((Mesh*)m_grid);	
 	m_testScene->AddMesh((Mesh*)m_testMesh);

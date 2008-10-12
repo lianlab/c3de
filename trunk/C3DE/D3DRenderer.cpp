@@ -3,6 +3,7 @@
 #include "D3DSprite.h"
 #include "ResourceManager.h"
 #include "D3DMesh.h"
+#include "D3DMirror.h"
 #include "DebugMemory.h"
 
 D3DRenderer::D3DRenderer()
@@ -124,6 +125,7 @@ void D3DRenderer::SetMeshWorldHandlers(Scene *scene, Mesh *mesh)
 void D3DRenderer::DrawScene(Scene *scene)
 {
 	int totalMeshes = scene->GetMeshesVector()->size();	
+	int totalMirrors = scene->GetMirrorsVector()->size();	
 
 	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
 
@@ -153,6 +155,36 @@ void D3DRenderer::DrawScene(Scene *scene)
 		}
 		d3dmesh->EndShader();
 		d3dmesh->PosRender(this);
+		
+		
+	}
+
+	for(int i = 0; i < totalMirrors; i++)
+	{
+		Mirror *mirror = scene->GetMirrorsVector()->at(i);	
+		D3DMirror *d3dmirror = (D3DMirror *)mirror;	
+
+		
+		d3dmirror->PreRender(this);
+
+		d3dmirror->SetPreRenderEffectHandles();
+
+		SetMeshLights(scene,(Mesh *)mirror);
+		SetMeshWorldHandlers(scene, (Mesh*)mirror);
+		d3dmirror->CommitEffectHandles();
+
+		// Begin passes.
+
+		UINT numPasses = d3dmirror->GetNumShaderPasses();
+		d3dmirror->BeginShader();
+		for(UINT i = 0; i < numPasses; ++i)
+		{
+			d3dmirror->BeginShaderPass(i);
+			DrawMesh((Mesh*)d3dmirror);
+			d3dmirror->EndShaderPass(i);
+		}
+		d3dmirror->EndShader();
+		d3dmirror->PosRender(this);
 		
 		
 	}

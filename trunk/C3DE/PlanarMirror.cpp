@@ -1,9 +1,9 @@
 #include "Renderer.h"
-#include "Cube.h"
+#include "PlanarMirror.h"
 #include "ResourceManager.h"
 #include "DebugMemory.h"
 
-Cube::Cube()
+PlanarMirror::PlanarMirror():D3DMirror()
 {
 	
 	m_vertices = new vector<VertexPos>;
@@ -16,35 +16,7 @@ Cube::Cube()
 	m_vertices->push_back(VertexPos( 1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f));
 	m_vertices->push_back(VertexPos( 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f));
 
-	// Fill in the back face vertex data.
-	m_vertices->push_back(VertexPos(-1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f));
-	m_vertices->push_back(VertexPos( 1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos( 1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos(-1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f));
-
-	// Fill in the top face vertex data.
-	m_vertices->push_back(VertexPos(-1.0f, 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos(-1.0f, 1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos( 1.0f, 1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f));
-	m_vertices->push_back(VertexPos( 1.0f, 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f));
-
-	// Fill in the bottom face vertex data.
-	m_vertices->push_back(VertexPos(-1.0f, -1.0f, -1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f));
-	m_vertices->push_back(VertexPos( 1.0f, -1.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos( 1.0f, -1.0f,  1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos(-1.0f, -1.0f,  1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f));
-
-	// Fill in the left face vertex data.
-	m_vertices->push_back(VertexPos(-1.0f, -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos(-1.0f,  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos(-1.0f,  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f));
-	m_vertices->push_back(VertexPos(-1.0f, -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f));
-
-	// Fill in the right face vertex data.
-	m_vertices->push_back(VertexPos( 1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos( 1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos( 1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f));
-	m_vertices->push_back(VertexPos( 1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f));
+	
 
 	//indices
 	//front face
@@ -58,36 +30,7 @@ Cube::Cube()
 	m_indices->push_back(0);
 	m_indices->push_back(2);
 	m_indices->push_back(3);
-	m_indices->push_back(4);
-	m_indices->push_back(5);
-	m_indices->push_back(6);
-	m_indices->push_back(4);
-	m_indices->push_back(6);
-	m_indices->push_back(7);
-	m_indices->push_back(8);
-	m_indices->push_back(9);
-	m_indices->push_back(10);
-	m_indices->push_back(8);
-	m_indices->push_back(10);
-	m_indices->push_back(11);
-	m_indices->push_back(12);
-	m_indices->push_back(13);
-	m_indices->push_back(14);
-	m_indices->push_back(12);
-	m_indices->push_back(14);
-	m_indices->push_back(15);
-	m_indices->push_back(16);
-	m_indices->push_back(17);
-	m_indices->push_back(18);
-	m_indices->push_back(16);
-	m_indices->push_back(18);
-	m_indices->push_back(19);
-	m_indices->push_back(20);
-	m_indices->push_back(21);
-	m_indices->push_back(22);
-	m_indices->push_back(20);
-	m_indices->push_back(22);
-	m_indices->push_back(23);
+	
 
 
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_CRATE_ID));
@@ -97,7 +40,7 @@ Cube::Cube()
 
 	
 }
-void Cube::SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
+void PlanarMirror::SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
 							D3DXCOLOR specularLightColor, D3DXVECTOR3 lightPosition, 
 							D3DXVECTOR3 lightDirection, D3DXVECTOR3 lightAttenuation,
 							float spotLightPower)
@@ -113,7 +56,7 @@ void Cube::SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLigh
 
 }
 	
-void Cube::SetWorldParameters(D3DXMATRIX worldMatrix, D3DXMATRIX worldViewProjection,
+void PlanarMirror::SetWorldParameters(D3DXMATRIX worldMatrix, D3DXMATRIX worldViewProjection,
 									D3DXMATRIX worldInverseTranspose, D3DXVECTOR3 eyePosition)
 {
 	
@@ -130,7 +73,7 @@ void Cube::SetWorldParameters(D3DXMATRIX worldMatrix, D3DXMATRIX worldViewProjec
 
 
 
-void Cube::SetPreRenderEffectHandles(/*ID3DXEffect* fx*/)
+void PlanarMirror::SetPreRenderEffectHandles(/*ID3DXEffect* fx*/)
 {
 	if(!m_fxHandlesInitialized)
 	{
@@ -148,7 +91,7 @@ void Cube::SetPreRenderEffectHandles(/*ID3DXEffect* fx*/)
 	HR(m_effect->SetFloat(m_shaderAlpha, m_alpha));
 }
 
-void Cube::InitializeEffectHandles(/*ID3DXEffect* fx*/)
+void PlanarMirror::InitializeEffectHandles(/*ID3DXEffect* fx*/)
 {
 	m_effect = ShaderManager::GetInstance()->GetEffectById(SHADER_LIGHTS_TEXTURES_BLENDING_ID);
 	m_hTex = m_effect->GetParameterByName(0, "gTex");
@@ -176,32 +119,21 @@ void Cube::InitializeEffectHandles(/*ID3DXEffect* fx*/)
 	m_fxHandlesInitialized = true;
 }
 
-/*
-void Cube::SetEffectHandles()
-{
-	if(m_effect)
-	{
-		m_shaderTechnique = m_effect->GetTechniqueByName("ColorTech");
-		m_shaderViewMatrix  = m_effect->GetParameterByName(0, "gWVP");
-		m_shaderUpdateTime = m_effect->GetParameterByName(0, "gUpdateTime");
-	}
-	
-}
-*/
 
 
-Cube::~Cube()
+
+PlanarMirror::~PlanarMirror()
 {
 	ReleaseCOM(m_vertexDeclaration);
 }
 
 
-void Cube::PreRender(Renderer *a_renderer)
+void PlanarMirror::PreRender(Renderer *a_renderer)
 {
 	a_renderer->EnableAlphaBlending();
 }
 
-void Cube::PosRender(Renderer *a_renderer)
+void PlanarMirror::PosRender(Renderer *a_renderer)
 {
 	a_renderer->DisableAlphaBlending();
 }

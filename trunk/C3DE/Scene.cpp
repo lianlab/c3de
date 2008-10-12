@@ -5,6 +5,7 @@ Scene::Scene()
 {
 
 	m_meshes = new vector<Mesh *>;
+	m_mirrors = new vector<Mirror *>;
 
 	m_ambientLight = new AmbientLight();
 	m_diffuseLight = new DiffuseLight();;

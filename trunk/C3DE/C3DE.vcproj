@@ -403,6 +403,10 @@
 							RelativePath=".\Mirror.cpp"
 							>
 						</File>
+						<File
+							RelativePath=".\PlanarMirror.cpp"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
@@ -683,6 +687,10 @@
 						</File>
 						<File
 							RelativePath=".\Mirror.h"
+							>
+						</File>
+						<File
+							RelativePath=".\PlanarMirror.h"
 							>
 						</File>
 					</Filter>

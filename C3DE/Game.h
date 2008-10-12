@@ -10,6 +10,7 @@
 //#include <d3dx9.h>
 #include "Button.h"
 #include "DirectInput.h"
+#include "PlanarMirror.h"
 
 
 
@@ -17,6 +18,7 @@
 #include "DefaultScene1.h"
 #include "Cube.h"
 #include "Cube2.h"
+
 
 
 #include "Grid.h"
@@ -67,7 +69,13 @@ private:
 
 	Cube2 *m_cube;
 
+	
+
 	Grid *m_grid;
+
+	PlanarMirror *m_mirror;
+
+
 
 	Button *m_button;
 

@@ -8,5 +8,8 @@ class D3DMirror : public D3DMesh
 public:
 	D3DMirror();
 	~D3DMirror();
+
+	void SetPreRenderEffectHandles();
+	void CommitEffectHandles();
 };
 #endif

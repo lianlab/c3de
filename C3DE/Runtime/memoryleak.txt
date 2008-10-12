@@ -1,2 +1,6 @@
+20:c:\caio\c3de\c3de\scene.cpp                       :		LINE 8,	ADDRESS 01C7E9A8	20 unfreed	block 19
+22:c:\caio\c3de\c3de\planarmirror.cpp                :		LINE 9,	ADDRESS 01C7EB40	20 unfreed	block 21
+23:c:\caio\c3de\c3de\planarmirror.cpp                :		LINE 10,	ADDRESS 01C7EB90	20 unfreed	block 22
+24:c:\caio\c3de\c3de\planarmirror.cpp                :		LINE 36,	ADDRESS 01C7F1E0	8 unfreed	block 23
 -----------------------------------------------------------
-Total Unfreed: 0 bytes
+Total Unfreed: 68 bytes

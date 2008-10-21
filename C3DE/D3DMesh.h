@@ -88,6 +88,8 @@ public:
 	//float GetY(){return m_y;}
 	//float GetZ(){return m_z;}	
 
+	void SetShaderHandlers(){}
+
 	
 
 	virtual void SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
@@ -109,7 +111,8 @@ public:
 	virtual void BeginShader(){}
 	virtual void EndShader(){}
 
-									
+				
+	ID3DXEffect * GetEffect(){return m_effect;}
 
 protected:
 	UINT m_numShaderPasses;

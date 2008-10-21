@@ -30,6 +30,8 @@ public:
 	void PreRender(Renderer *a_renderer);
 	void PosRender(Renderer *a_renderer);
 
+	void SetShaderHandlers();
+
 protected:
 
 	void InitializeEffectHandles(/*ID3DXEffect* fx*/);

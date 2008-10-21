@@ -181,30 +181,21 @@ void Game::OnKeyDown(int key)
 	}
 	else if(key == 200)
 	{
-		//m_cameraHeight += (0.025f * m_deltaTime);
-		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() + 0.01f, m_testMesh->GetZ());
-		m_testMesh->Scale(1.0f, m_testMesh->GetYScale() + 0.001, 1.0f);
-		m_mirror->SetPosition(m_mirror->GetX() + 0.01f, m_mirror->GetY()+ 0.01f, m_mirror->GetZ() + 0.01f);
+		m_cameraHeight += (0.025f * m_deltaTime);
+		
 	}
 	else if(key == 208)
 	{
-		//m_cameraHeight -= (0.025f * m_deltaTime);
-		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() - 0.01f, m_testMesh->GetZ());
-		m_testMesh->Scale(1.0f, m_testMesh->GetYScale() - 0.001, 1.0f);
+		m_cameraHeight -= (0.025f * m_deltaTime);
+		
 	}	
 	else if(key == 205)
 	{
-		//m_grid->Translate(0.01f, 0.0f, 0.0f);
-		//m_testMesh->Translate(0.01f, 0.0f, 0.0f);
-		m_testMesh->SetPosition(m_testMesh->GetX() + 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
-		m_testMesh->Scale(m_testMesh->GetXScale() + 0.001, 1.0f, 1.0f);
+		
 	}
 	else if(key == 203)
 	{
-		//m_grid->Translate(-0.01f, 0.0f, 0.0f);
-		//m_testMesh->Translate(-0.01f, 0.0f, 0.0f);
-		m_testMesh->SetPosition(m_testMesh->GetX() - 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
-		m_testMesh->Scale(m_testMesh->GetXScale() - 0.001, 1.0f, 1.0f);
+		
 	}
 }
 
@@ -286,7 +277,7 @@ void Game::InitializeMeshes()
 
 	Material *t_material2 = new Material(	D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
-	m_grid->SetMaterial(t_material2);
+	m_grid->SetMaterial(t_material);
 	CreateMeshBuffers(m_grid);
 
 	m_testScene = new DefaultScene1();
@@ -298,7 +289,10 @@ void Game::InitializeMeshes()
 	m_mirror->SetPosition(2.0f, 2.0f, 2.0f);
 
 	
-	
+	//m_plane = new Plane(100, 100, 0.2f, 0.2f);
+	m_plane = new Plane(20.0f, 20.0f);
+	m_plane->SetMaterial(t_material);
+	CreateMeshBuffers(m_plane);
 	
 	
 	m_cube = new Cube2();
@@ -309,10 +303,11 @@ void Game::InitializeMeshes()
 
 	
 	
-	m_testScene->AddMirror((Mirror *)m_mirror);	
-	m_testScene->AddMesh((Mesh*)m_cube);
-	m_testScene->AddMesh((Mesh*)m_grid);	
+	//m_testScene->AddMirror((Mirror *)m_mirror);	
+	//m_testScene->AddMesh((Mesh*)m_cube);
+	//m_testScene->AddMesh((Mesh*)m_grid);	
 	m_testScene->AddMesh((Mesh*)m_testMesh);
+	//m_testScene->AddMesh((Mesh*)m_plane);
 	
 
 	m_testScene->Initialize();

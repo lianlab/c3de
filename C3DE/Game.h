@@ -18,6 +18,7 @@
 #include "DefaultScene1.h"
 #include "Cube.h"
 #include "Cube2.h"
+#include "Plane.h"
 
 
 
@@ -69,6 +70,8 @@ private:
 
 	Cube2 *m_cube;
 
+
+	Plane *m_plane;
 	
 
 	Grid *m_grid;

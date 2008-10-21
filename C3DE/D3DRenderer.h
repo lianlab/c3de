@@ -13,6 +13,15 @@
 
 #include "SpecularLight.h"
 
+#if 1
+
+#include "AmbientLight.h"
+#include "DiffuseLight.h"
+#include "SpecularLight.h"
+#include "PointLight.h"
+#include "Material.h"
+#endif
+
 
 class D3DRenderer : public Renderer
 {
@@ -60,6 +69,47 @@ private:
 	void SetMeshLights(Scene * scene, Mesh *d3dmesh);
 
 	void SetMeshWorldHandlers(Scene *scene, Mesh *d3dmesh);
+
+	void hackTheKasbah();
+	void group1();
+	void group2();
+	void group3();
+
+#if 1
+	ID3DXEffect * m_effect;
+
+	D3DXHANDLE m_shaderWorldMatrix;//gWorld R
+	D3DXHANDLE m_shaderWorldInverseTransposeMatrix;//gWorldInverseTranspose R
+	D3DXHANDLE m_shaderEyePosition;//gEyePosW R
+	D3DXHANDLE m_shaderViewMatrix;//gWVP	R
+	D3DXHANDLE m_shaderTransformMatrix;//gSpotPower
+	D3DXHANDLE m_shaderTechnique; //R
+
+	D3DXHANDLE m_shaderAmbientLightMaterial;//gAmbientLigh
+	D3DXHANDLE m_shaderDiffuseLightMaterial;//gDiffuseLight
+	D3DXHANDLE m_shaderSpecularLightMaterial;//gSpecularLight
+	D3DXHANDLE m_shaderLightPosition;//gLightPosW R
+	D3DXHANDLE m_shaderLightDirection;//gLightDirW R
+	D3DXHANDLE m_shaderLightAttenuation;//gAttenuation012
+	D3DXHANDLE m_shaderSpotLightPower;//gSpotPower
+
+
+
+	D3DXHANDLE m_shaderObjectAmbientMaterial;//gAmbientMtrl
+	D3DXHANDLE m_shaderObjectDiffuseMaterial;//gDiffuseMtrl
+	D3DXHANDLE m_shaderObjectSpecularMaterial;//gSpecMtrl
+	D3DXHANDLE m_shaderSpecularLightPower;//gSpecPower
+
+	D3DXHANDLE m_hTex;//gSpecPower
+
+	AmbientLight * t_ambientLight;
+	DiffuseLight * t_diffuseLight;
+	SpecularLight *t_specularLight;
+	D3DXVECTOR3 *t_lightAttenuation;
+	PointLight *t_pointLight;
+
+	Material *m_material;
+#endif
 
 };
 

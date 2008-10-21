@@ -332,6 +332,14 @@
 							>
 						</File>
 						<File
+							RelativePath=".\Plane.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TeaPot.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\Wave.cpp"
 							>
 						</File>
@@ -418,6 +426,18 @@
 					</File>
 					<File
 						RelativePath=".\D3DCamera.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="FXManager"
+					>
+					<File
+						RelativePath=".\FX.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\FXManager.cpp"
 						>
 					</File>
 				</Filter>
@@ -618,6 +638,14 @@
 							>
 						</File>
 						<File
+							RelativePath=".\Plane.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TeaPot.h"
+							>
+						</File>
+						<File
 							RelativePath=".\Wave.h"
 							>
 						</File>
@@ -704,6 +732,18 @@
 					</File>
 					<File
 						RelativePath=".\D3DCamera.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="FXManager"
+					>
+					<File
+						RelativePath=".\Fx.h"
+						>
+					</File>
+					<File
+						RelativePath=".\FXManager.h"
 						>
 					</File>
 				</Filter>

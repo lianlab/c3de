@@ -33,9 +33,13 @@ void Plane::SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLig
 							D3DXVECTOR3 lightDirection, D3DXVECTOR3 lightAttenuation,
 							float spotLightPower)
 {	
-	
-	HR(m_effect->SetValue(m_shaderLightPosition, &lightPosition, sizeof(D3DXVECTOR3)));	
-	HR(m_effect->SetValue(m_shaderLightDirection, &lightDirection, sizeof(D3DXVECTOR3)));	
+	D3DXVECTOR3 lightDir = D3DXVECTOR3(-0.8f,-0.4f,0.3f);
+	D3DXVECTOR3 lightPos = D3DXVECTOR3(10.0f,5.0f,-3.0f);
+
+	//HR(m_effect->SetValue(m_shaderLightPosition, &lightPosition, sizeof(D3DXVECTOR3)));	
+	//HR(m_effect->SetValue(m_shaderLightDirection, &lightDirection, sizeof(D3DXVECTOR3)));	
+	HR(m_effect->SetValue(m_shaderLightPosition, &lightPos, sizeof(D3DXVECTOR3)));	
+	HR(m_effect->SetValue(m_shaderLightDirection, &lightDir, sizeof(D3DXVECTOR3)));	
 	HR(m_effect->SetValue(m_shaderAmbientLightMaterial, &ambientLightColor, sizeof(D3DXCOLOR)));
 	HR(m_effect->SetValue(m_shaderDiffuseLightMaterial, &diffuseLightColor, sizeof(D3DXCOLOR)));		
 	HR(m_effect->SetValue(m_shaderSpecularLightMaterial, &specularLightColor, sizeof(D3DXCOLOR)));		
@@ -52,6 +56,11 @@ void Plane::SetWorldParameters(D3DXMATRIX worldMatrix, D3DXMATRIX worldViewProje
 	HR(m_effect->SetMatrix(m_shaderViewMatrix, &worldViewProjection));	
 	HR(m_effect->SetMatrix(m_shaderWorldInverseTransposeMatrix, &worldInverseTranspose));												
 	HR(m_effect->SetValue(m_shaderEyePosition, eyePosition, sizeof(D3DXVECTOR3)));	
+
+	if(eyePosition.x > 10)
+	{
+		int kgjfg = 64;
+	}
 	
 }
 
@@ -67,8 +76,8 @@ void Plane::SetPreRenderEffectHandles(/*ID3DXEffect* fx*/)
 	}
 
 	HR(m_effect->SetTechnique(m_shaderTechnique));
-	//D3DImage *t_d3dText = (D3DImage *) m_texture;
-	//HR(m_effect->SetTexture(m_hTex, t_d3dText->GetTexture()));
+	D3DImage *t_d3dText = (D3DImage *) m_texture;
+	HR(m_effect->SetTexture(m_hTex, t_d3dText->GetTexture()));
 
 	HR(m_effect->SetValue(m_shaderObjectAmbientMaterial, &GetMaterial()->GetAmbient(),sizeof(D3DXCOLOR)));
 	HR(m_effect->SetValue(m_shaderObjectDiffuseMaterial, &GetMaterial()->GetDiffuse(), sizeof(D3DXCOLOR)));

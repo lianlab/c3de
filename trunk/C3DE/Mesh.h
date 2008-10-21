@@ -4,6 +4,7 @@
 #include "Material.h"
 #include "Image.h"
 
+
 class Renderer;
 
 class Mesh
@@ -34,6 +35,8 @@ public:
 
 	void SetAlpha(float a_alpha){m_alpha = a_alpha;}
 	float GetAlpha(){return m_alpha;}
+
+	virtual void SetShaderHandlers(){}
 
 protected:
 	float m_x;

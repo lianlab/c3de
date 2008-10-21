@@ -1,6 +1,25 @@
-20:c:\caio\c3de\c3de\scene.cpp                       :		LINE 8,	ADDRESS 01C7E9A8	20 unfreed	block 19
-22:c:\caio\c3de\c3de\planarmirror.cpp                :		LINE 9,	ADDRESS 01C7EB40	20 unfreed	block 21
-23:c:\caio\c3de\c3de\planarmirror.cpp                :		LINE 10,	ADDRESS 01C7EB90	20 unfreed	block 22
-24:c:\caio\c3de\c3de\planarmirror.cpp                :		LINE 36,	ADDRESS 01C7F1E0	8 unfreed	block 23
+18:c:\caio\c3de\c3de\grid.cpp                        :		LINE 21,	ADDRESS 003CE280	20 unfreed	block 17
+19:c:\caio\c3de\c3de\grid.cpp                        :		LINE 22,	ADDRESS 003CE2D0	20 unfreed	block 18
+20:c:\caio\c3de\c3de\scene.cpp                       :		LINE 8,	ADDRESS 01C8EA80	20 unfreed	block 19
+21:c:\caio\c3de\c3de\directionallight.cpp            :		LINE 6,	ADDRESS 01C90CF0	12 unfreed	block 20
+22:c:\caio\c3de\c3de\planarmirror.cpp                :		LINE 9,	ADDRESS 01C8EC18	20 unfreed	block 21
+23:c:\caio\c3de\c3de\planarmirror.cpp                :		LINE 10,	ADDRESS 01C8EC68	20 unfreed	block 22
+24:c:\caio\c3de\c3de\planarmirror.cpp                :		LINE 36,	ADDRESS 01C8F278	8 unfreed	block 23
+25:c:\caio\c3de\c3de\plane.cpp                       :		LINE 7,	ADDRESS 01C8F390	20 unfreed	block 24
+26:c:\caio\c3de\c3de\plane.cpp                       :		LINE 8,	ADDRESS 01C8F3E0	20 unfreed	block 25
+27:c:\caio\c3de\c3de\cube2.cpp                       :		LINE 11,	ADDRESS 01C8F8B8	20 unfreed	block 26
+35:c:\caio\c3de\c3de\cube2.cpp                       :		LINE 12,	ADDRESS 01C8F908	20 unfreed	block 34
+36:c:\caio\c3de\c3de\cube2.cpp                       :		LINE 95,	ADDRESS 01C90AA0	8 unfreed	block 35
+37:c:\caio\c3de\c3de\directionallight.cpp            :		LINE 6,	ADDRESS 01C90D88	12 unfreed	block 36
+38:c:\caio\c3de\c3de\directionallight.cpp            :		LINE 6,	ADDRESS 01C90F78	12 unfreed	block 37
+39:c:\caio\c3de\c3de\directionallight.cpp            :		LINE 6,	ADDRESS 01A31048	12 unfreed	block 38
+41:c:\caio\c3de\c3de\d3drenderer.cpp                 :		LINE 157,	ADDRESS 01A315F8	16 unfreed	block 40
+42:c:\caio\c3de\c3de\d3drenderer.cpp                 :		LINE 160,	ADDRESS 01A31648	20 unfreed	block 41
+43:c:\caio\c3de\c3de\directionallight.cpp            :		LINE 6,	ADDRESS 01A31698	12 unfreed	block 42
+44:c:\caio\c3de\c3de\d3drenderer.cpp                 :		LINE 163,	ADDRESS 01A316E0	20 unfreed	block 43
+45:c:\caio\c3de\c3de\directionallight.cpp            :		LINE 6,	ADDRESS 01A31730	12 unfreed	block 44
+46:c:\caio\c3de\c3de\d3drenderer.cpp                 :		LINE 166,	ADDRESS 01A31778	12 unfreed	block 45
+47:c:\caio\c3de\c3de\d3drenderer.cpp                 :		LINE 167,	ADDRESS 01A317C0	20 unfreed	block 46
+48:c:\caio\c3de\c3de\d3drenderer.cpp                 :		LINE 169,	ADDRESS 01A31810	52 unfreed	block 47
 -----------------------------------------------------------
-Total Unfreed: 68 bytes
+Total Unfreed: 408 bytes

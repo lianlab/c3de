@@ -1,9 +1,11 @@
 #include "DefaultScene1.h"
+#include "FXManager.h"
 #include "DebugMemory.h"
 
 DefaultScene1::DefaultScene1():D3DScene()
 {
 
+	
 	AmbientLight * t_ambientLight = new AmbientLight();
 	t_ambientLight->SetColor(0.4f*D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -22,6 +24,7 @@ DefaultScene1::DefaultScene1():D3DScene()
 	SetPointLight(t_pointLight);
 	SetLightAttenuation(t_lightAttenuation);
 	
+	
 
 }
 
@@ -32,5 +35,5 @@ DefaultScene1::~DefaultScene1()
 
 void DefaultScene1::Initialize()
 {
-
+	FXManager::GetInstance()->SetSceneEffects(this);
 }

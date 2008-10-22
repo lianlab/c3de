@@ -6,7 +6,7 @@
 
 #include "CommonDefs.h"
 
-
+#include "FX.h"
 #include <d3dx9.h>
 
 
@@ -38,5 +38,7 @@ private:
 	IDirect3DDevice9 *m_device;
 
 	ID3DXEffect * m_effectResources[TOTAL_SHADERS];	
+
+	FX * m_effects[TOTAL_SHADERS];
 };
 #endif

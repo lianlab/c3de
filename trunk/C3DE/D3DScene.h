@@ -12,7 +12,7 @@ public:
 	D3DXVECTOR3 * GetLightAttenuation(){return m_lightAttenuation;}
 	void SetLightAttenuation(D3DXVECTOR3 *attenuation);
 
-	virtual void Initialize(){};
+	virtual void Initialize();
 
 	D3DXVECTOR3 *m_lightAttenuation;
 };

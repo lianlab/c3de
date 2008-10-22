@@ -106,6 +106,7 @@ Cube2::~Cube2()
 	ReleaseCOM(m_vertexDeclaration);
 }
 
+#if 0
 void Cube2::SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
 							D3DXCOLOR specularLightColor, D3DXVECTOR3 lightPosition, 
 							D3DXVECTOR3 lightDirection, D3DXVECTOR3 lightAttenuation,
@@ -182,3 +183,4 @@ void Cube2::InitializeEffectHandles(/*ID3DXEffect* fx*/)
 
 
 
+#endif

@@ -10,6 +10,7 @@ public:
 	Plane(float width, float height);
 	~Plane();
 
+#if 0
 	void SetPreRenderEffectHandles();
 	
 
@@ -28,6 +29,7 @@ public:
 	void EndShader(){m_effect->End();}
 	void CommitEffectHandles(){m_effect->CommitChanges();}
 
+#endif
 private:
 
 	D3DXHANDLE   m_hTex;

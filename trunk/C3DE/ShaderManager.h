@@ -28,6 +28,7 @@ public:
 	
 	~ShaderManager();
 	ID3DXEffect * GetEffectById(int id);
+	FX * GetFXByID(int id);
 	void SetDevice(IDirect3DDevice9 *device);
 	
 

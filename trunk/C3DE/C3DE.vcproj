@@ -336,10 +336,6 @@
 							>
 						</File>
 						<File
-							RelativePath=".\TeaPot.cpp"
-							>
-						</File>
-						<File
 							RelativePath=".\Wave.cpp"
 							>
 						</File>
@@ -663,10 +659,6 @@
 						</File>
 						<File
 							RelativePath=".\Plane.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TeaPot.h"
 							>
 						</File>
 						<File

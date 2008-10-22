@@ -91,6 +91,7 @@ public:
 
 	void SetShaderHandlers(){}
 
+#if 0
 	
 
 	virtual void SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
@@ -112,8 +113,10 @@ public:
 	virtual void BeginShader(){}
 	virtual void EndShader(){}
 
-				
-	ID3DXEffect * GetEffect(){return m_effect;}
+#endif			
+	//ID3DXEffect * GetEffect(){return m_effect;}
+
+	FX * GetEffect(){return m_effect;}
 
 protected:
 	UINT m_numShaderPasses;
@@ -125,10 +128,11 @@ protected:
 	vector<int> *m_indices;
 
 	
-
+	FX * m_effect;
 	
 	int m_updateTime;
 
+#if 0
 	bool m_fxHandlesInitialized;
 
 	ID3DXEffect * m_effect;
@@ -154,6 +158,7 @@ protected:
 	D3DXHANDLE m_shaderObjectDiffuseMaterial;//gDiffuseMtrl
 	D3DXHANDLE m_shaderObjectSpecularMaterial;//gSpecMtrl
 	D3DXHANDLE m_shaderSpecularLightPower;//gSpecPower
+#endif
 
 };
 #endif

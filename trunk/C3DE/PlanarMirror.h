@@ -9,6 +9,7 @@ public:
 	PlanarMirror();
 	~PlanarMirror();
 	
+#if 0
 	void SetPreRenderEffectHandles();	
 
 	virtual void SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
@@ -28,11 +29,15 @@ public:
 	void PreRender(Renderer *a_renderer);
 	void PosRender(Renderer *a_renderer);
 
+#endif
 protected:
 
+#if 0
 	void InitializeEffectHandles(/*ID3DXEffect* fx*/);
 	D3DXHANDLE   m_hTex;
 	D3DXHANDLE	m_shaderAlpha;//galpha
+
+#endif
 	
 };
 #endif

@@ -9,6 +9,7 @@ public:
 	Grid(int numRows, int numCols, float dx, float dz/*, std::vector<D3DXVECTOR3>& verts, std::vector<DWORD>& indices*/);
 	~Grid();
 
+#if 0
 	void SetPreRenderEffectHandles();
 	
 
@@ -27,6 +28,7 @@ public:
 	void EndShader(){m_effect->End();}
 	void CommitEffectHandles(){m_effect->CommitChanges();}
 
+#endif
 private:
 
 	D3DXHANDLE   m_hTex;

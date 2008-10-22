@@ -6,6 +6,8 @@ FXManager * FXManager::m_instance = NULL;
 FXManager::FXManager()
 {
 	m_effects = new vector<FX *>;
+
+	//m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID)->GetEffect();
 }
 
 FXManager * FXManager::GetInstance()
@@ -21,44 +23,34 @@ FXManager * FXManager::GetInstance()
 void FXManager::PreRender()
 {
 	
-	m_effect->CommitChanges();		
-	m_effect->BeginPass(0);
+	ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID)->GetEffect()->CommitChanges();		
+	ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID)->GetEffect()->BeginPass(0);
 }
 
 void FXManager::Begin()
 {
 	UINT num = 0;
-	m_effect->Begin(&num,0);
+	ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID)->GetEffect()->Begin(&num,0);
 	
 }
 
 void FXManager::End()
 {
 	
-	m_effect->End();
+	ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID)->GetEffect()->End();
 	
 }
 
 void FXManager::PosRender()
 {
-	m_effect->EndPass();
+	ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID)->GetEffect()->EndPass();
 	
 }
 
 void FXManager::SetUpdateHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldViewProjection)
 {
-	D3DXMATRIX W;		
-	D3DXMatrixIdentity(&W);			
+	ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID)->SetWorldHandlers(cameraPosition, worldViewProjection);
 
-	D3DXMATRIX WIT;
-	D3DXMatrixInverse(&WIT, 0, &W);
-	D3DXMatrixTranspose(&WIT, &WIT);														
-	
-	
-	HR(m_effect->SetMatrix(m_shaderWorldMatrix, &W));	
-	HR(m_effect->SetMatrix(m_shaderViewMatrix, &worldViewProjection));	
-	HR(m_effect->SetMatrix(m_shaderWorldInverseTransposeMatrix, &WIT));												
-	HR(m_effect->SetValue(m_shaderEyePosition, cameraPosition, sizeof(D3DXVECTOR3)));
 }
 
 void FXManager::AddEffect(FX * effect)
@@ -89,71 +81,12 @@ void FXManager::SetSceneEffects(Scene *scene)
 		//AddEffect(t_mesh->GetEffect());
 	}
 
-#if 1
-	m_effect = ShaderManager::GetInstance()->GetEffectById(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
-	m_hTex = m_effect->GetParameterByName(0, "gTex");
+	D3DXCOLOR ambient = scene->GetAmbientLight()->GetColor();
+	D3DXCOLOR diffuse = scene->GetDiffuseLight()->GetColor();
+	D3DXCOLOR specular = scene->GetSpecularLight()->GetColor();
+	D3DXVECTOR3 lightPosition = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+	ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID)->SetLightHandlers(ambient, diffuse, specular, lightPosition);
 
-	m_shaderTechnique = m_effect->GetTechniqueByName("LightsTech");	
-	m_shaderViewMatrix  = m_effect->GetParameterByName(0, "gWVP");	
-	m_shaderEyePosition= m_effect->GetParameterByName(0, "gEyePosW");
-	m_shaderAmbientLightMaterial = m_effect->GetParameterByName(0, "gAmbientLight");
-	m_shaderDiffuseLightMaterial = m_effect->GetParameterByName(0, "gDiffuseLight");
-	m_shaderSpecularLightMaterial = m_effect->GetParameterByName(0, "gSpecularLight");
-	
-	m_shaderLightPosition = m_effect->GetParameterByName(0, "gLightVecW");
-	
-	
-	m_shaderObjectAmbientMaterial = m_effect->GetParameterByName(0, "gAmbientMtrl");
-	m_shaderObjectDiffuseMaterial = m_effect->GetParameterByName(0, "gDiffuseMtrl");
-	m_shaderObjectSpecularMaterial = m_effect->GetParameterByName(0, "gSpecularMtrl");
-	m_shaderSpecularLightPower = m_effect->GetParameterByName(0, "gSpecularPower");
-
-	m_shaderWorldMatrix = m_effect->GetParameterByName(0, "gWorld");
-	m_shaderWorldInverseTransposeMatrix = m_effect->GetParameterByName(0, "gWorldInvTrans");
-	
-
-	
-
-
-	t_ambientLight = new AmbientLight();
-	t_ambientLight->SetColor(0.4f*D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-	t_diffuseLight = new DiffuseLight();
-	t_diffuseLight->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-	t_specularLight = new SpecularLight();
-	t_specularLight->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-	t_lightAttenuation = new D3DXVECTOR3(1.0f, 0.0f, 0.0f);
-	t_pointLight = new PointLight(16.0f);
-
-	m_material = new Material(D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), 16.0f);
-
-
-	t_ambientLight = new AmbientLight();
-	t_ambientLight->SetColor(0.4f*D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-	t_diffuseLight = new DiffuseLight();
-	t_diffuseLight->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-	t_specularLight = new SpecularLight();
-	t_specularLight->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-	t_lightAttenuation = new D3DXVECTOR3(1.0f, 0.0f, 0.0f);
-	t_pointLight = new PointLight(16.0f);
-
-	m_material = new Material(D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), 16.0f);
-
-
-	D3DXVECTOR3 lightDir = D3DXVECTOR3(-0.8f,-0.4f,0.3f);
-	D3DXVECTOR3 lightPos = D3DXVECTOR3(0.0f,0.0f,-1.0f);
-
-	HR(m_effect->SetValue(m_shaderLightPosition, &lightPos, sizeof(D3DXVECTOR3)));	
-	
-	HR(m_effect->SetValue(m_shaderAmbientLightMaterial, &t_ambientLight->GetColor(), sizeof(D3DXCOLOR)));
-	HR(m_effect->SetValue(m_shaderDiffuseLightMaterial, &t_diffuseLight->GetColor(), sizeof(D3DXCOLOR)));		
-	HR(m_effect->SetValue(m_shaderSpecularLightMaterial, &t_specularLight->GetColor(), sizeof(D3DXCOLOR)));
-#endif
 }
 
 

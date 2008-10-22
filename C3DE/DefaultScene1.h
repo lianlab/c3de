@@ -8,7 +8,7 @@ class DefaultScene1:public D3DScene
 public:
 	DefaultScene1();
 	~DefaultScene1();
-	void Initialize();
+	//void Initialize();
 };
 
 

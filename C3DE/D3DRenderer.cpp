@@ -92,7 +92,7 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 }
 
-
+/*
 void D3DRenderer::SetMeshLights(Scene * scene, Mesh *mesh)
 {
 	D3DScene *t_scene = static_cast<D3DScene *> (scene);
@@ -123,112 +123,7 @@ void D3DRenderer::SetMeshWorldHandlers(Scene *scene, Mesh *mesh)
 	d3dmesh->SetWorldParameters(W, t_projView,WIT,cam->GetPosition());
 }
 
-bool g_fxHandlesInitialized = false;
-void D3DRenderer::hackTheKasbah()
-{
-	
-	if(!g_fxHandlesInitialized)
-	{
-		m_effect = ShaderManager::GetInstance()->GetEffectById(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
-		m_hTex = m_effect->GetParameterByName(0, "gTex");
-
-		m_shaderTechnique = m_effect->GetTechniqueByName("LightsTech");	
-		m_shaderViewMatrix  = m_effect->GetParameterByName(0, "gWVP");	
-		m_shaderEyePosition= m_effect->GetParameterByName(0, "gEyePosW");
-		m_shaderAmbientLightMaterial = m_effect->GetParameterByName(0, "gAmbientLight");
-		m_shaderDiffuseLightMaterial = m_effect->GetParameterByName(0, "gDiffuseLight");
-		m_shaderSpecularLightMaterial = m_effect->GetParameterByName(0, "gSpecularLight");
-		
-		m_shaderLightPosition = m_effect->GetParameterByName(0, "gLightVecW");
-		
-		
-		m_shaderObjectAmbientMaterial = m_effect->GetParameterByName(0, "gAmbientMtrl");
-		m_shaderObjectDiffuseMaterial = m_effect->GetParameterByName(0, "gDiffuseMtrl");
-		m_shaderObjectSpecularMaterial = m_effect->GetParameterByName(0, "gSpecularMtrl");
-		m_shaderSpecularLightPower = m_effect->GetParameterByName(0, "gSpecularPower");
-
-		m_shaderWorldMatrix = m_effect->GetParameterByName(0, "gWorld");
-		m_shaderWorldInverseTransposeMatrix = m_effect->GetParameterByName(0, "gWorldInvTrans");
-		g_fxHandlesInitialized = true;
-
-		
-
-
-		t_ambientLight = new AmbientLight();
-		t_ambientLight->SetColor(0.4f*D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-		t_diffuseLight = new DiffuseLight();
-		t_diffuseLight->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-		t_specularLight = new SpecularLight();
-		t_specularLight->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-		t_lightAttenuation = new D3DXVECTOR3(1.0f, 0.0f, 0.0f);
-		t_pointLight = new PointLight(16.0f);
-
-		m_material = new Material(D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), 16.0f);
-
-		group2();
-	}
-	
-	
-}
-
-void D3DRenderer::group1()
-{
-	
-	D3DXMATRIX W;		
-	D3DXMatrixIdentity(&W);			
-
-	D3DCamera *cam = (D3DCamera *) m_camera;
-	D3DXMATRIX t_view = cam->GetMatrix();
-	D3DXMATRIX t_projView = t_view*m_proj;	
-
-	D3DXMATRIX WIT;
-	D3DXMatrixInverse(&WIT, 0, &W);
-	D3DXMatrixTranspose(&WIT, &WIT);														
-	
-	
-	HR(m_effect->SetMatrix(m_shaderWorldMatrix, &W));	
-	HR(m_effect->SetMatrix(m_shaderViewMatrix, &t_projView));	
-	HR(m_effect->SetMatrix(m_shaderWorldInverseTransposeMatrix, &WIT));												
-	HR(m_effect->SetValue(m_shaderEyePosition, cam->GetPosition(), sizeof(D3DXVECTOR3)));
-
-	
-}
-
-void D3DRenderer::group2()
-{
-	return;
-
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_CRATE_ID));
-	Image *m_texture = (Image *) d3dImage;
-	HR(m_effect->SetTexture(m_hTex, d3dImage->GetTexture()));
-	
-	
-	
-	D3DXVECTOR3 lightDir = D3DXVECTOR3(-0.8f,-0.4f,0.3f);
-	D3DXVECTOR3 lightPos = D3DXVECTOR3(0.0f,0.0f,-1.0f);
-
-	HR(m_effect->SetValue(m_shaderLightPosition, &lightPos, sizeof(D3DXVECTOR3)));	
-	
-	HR(m_effect->SetValue(m_shaderAmbientLightMaterial, &t_ambientLight->GetColor(), sizeof(D3DXCOLOR)));
-	HR(m_effect->SetValue(m_shaderDiffuseLightMaterial, &t_diffuseLight->GetColor(), sizeof(D3DXCOLOR)));		
-	HR(m_effect->SetValue(m_shaderSpecularLightMaterial, &t_specularLight->GetColor(), sizeof(D3DXCOLOR)));		
-	
-}
-
-void D3DRenderer::group3()
-{
-	//OK
-	HR(m_effect->SetValue(m_shaderObjectAmbientMaterial, &m_material->GetAmbient(),sizeof(D3DXCOLOR)));
-	HR(m_effect->SetValue(m_shaderObjectDiffuseMaterial, &m_material->GetDiffuse(), sizeof(D3DXCOLOR)));
-	HR(m_effect->SetValue(m_shaderObjectSpecularMaterial, &m_material->GetSpecular(), sizeof(D3DXCOLOR)));
-	HR(m_effect->SetFloat(m_shaderSpecularLightPower, 8.0f));
-
-	
-
-}
+*/
 
 void D3DRenderer::DrawScene(Scene *scene)
 {
@@ -248,7 +143,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 	
 	
-	hackTheKasbah();
+	//hackTheKasbah();
 	//group1();
 	FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
 

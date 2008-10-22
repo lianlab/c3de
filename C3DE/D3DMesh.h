@@ -7,6 +7,7 @@
 #include "D3DCommonDefs.h"
 #include "D3DImage.h"
 #include "ShaderManager.h"
+#include "FX.h"
 
 using namespace std;
 
@@ -122,6 +123,8 @@ protected:
 
 	vector<VertexPos> *m_vertices;
 	vector<int> *m_indices;
+
+	
 
 	
 	int m_updateTime;

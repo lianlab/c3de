@@ -440,6 +440,30 @@
 						RelativePath=".\FXManager.cpp"
 						>
 					</File>
+					<Filter
+						Name="Effects"
+						>
+						<File
+							RelativePath=".\BookLights.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\LightsAndTextures.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\LightsTexturesBlending.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\OnlyLights.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\PerVertexLighting.cpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
@@ -746,6 +770,30 @@
 						RelativePath=".\FXManager.h"
 						>
 					</File>
+					<Filter
+						Name="Effects"
+						>
+						<File
+							RelativePath=".\BookLights.h"
+							>
+						</File>
+						<File
+							RelativePath=".\LightsAndTextures.h"
+							>
+						</File>
+						<File
+							RelativePath=".\LightsTexturesBlending.h"
+							>
+						</File>
+						<File
+							RelativePath=".\OnlyLights.h"
+							>
+						</File>
+						<File
+							RelativePath=".\PerVertexLighting.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

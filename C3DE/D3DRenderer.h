@@ -66,16 +66,20 @@ private:
 	
 	D3DXMATRIX m_proj;	
 
+	/*
 	void SetMeshLights(Scene * scene, Mesh *d3dmesh);
 
 	void SetMeshWorldHandlers(Scene *scene, Mesh *d3dmesh);
 
+	*/
+	
+#if 0
 	void hackTheKasbah();
 	void group1();
 	void group2();
 	void group3();
 
-#if 1
+
 	ID3DXEffect * m_effect;
 
 	D3DXHANDLE m_shaderWorldMatrix;//gWorld R

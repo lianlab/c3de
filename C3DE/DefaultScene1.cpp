@@ -33,7 +33,3 @@ DefaultScene1::~DefaultScene1()
 
 }
 
-void DefaultScene1::Initialize()
-{
-	FXManager::GetInstance()->SetSceneEffects(this);
-}

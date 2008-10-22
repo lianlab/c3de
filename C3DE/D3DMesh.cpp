@@ -11,7 +11,7 @@ D3DMesh::D3DMesh()
 	m_numShaderPasses = 1;
 
 	
-	m_fxHandlesInitialized = false;
+	//m_fxHandlesInitialized = false;
 
 	
 	

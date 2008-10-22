@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Cube.h"
 #include "ResourceManager.h"
+#include "PerVertexLighting.h"
 
 #include "DebugMemory.h"
 
@@ -96,24 +97,22 @@ Cube::Cube()
 
 	m_alpha = 0.5f;
 
-	m_effect = ShaderManager::GetInstance()->GetEffectById(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
-	m_shaderObjectAmbientMaterial = m_effect->GetParameterByName(0, "gAmbientMtrl");
-	m_shaderObjectDiffuseMaterial = m_effect->GetParameterByName(0, "gDiffuseMtrl");
-	m_shaderObjectSpecularMaterial = m_effect->GetParameterByName(0, "gSpecularMtrl");
-	m_shaderSpecularLightPower = m_effect->GetParameterByName(0, "gSpecularPower");
-	m_hTex = m_effect->GetParameterByName(0, "gTex");
+	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
+
+		
 }
 
 void Cube::SetShaderHandlers()
 {
 	
-	HR(m_effect->SetValue(m_shaderObjectAmbientMaterial, &m_material->GetAmbient(),sizeof(D3DXCOLOR)));
-	HR(m_effect->SetValue(m_shaderObjectDiffuseMaterial, &m_material->GetDiffuse(), sizeof(D3DXCOLOR)));
-	HR(m_effect->SetValue(m_shaderObjectSpecularMaterial, &m_material->GetSpecular(), sizeof(D3DXCOLOR)));
-	HR(m_effect->SetFloat(m_shaderSpecularLightPower, 8.0f));
-	D3DImage *t_d3dText = (D3DImage *) m_texture;
-	HR(m_effect->SetTexture(m_hTex, t_d3dText->GetTexture()));
+	
+	PerVertexLighting *t_effect = (PerVertexLighting *) m_effect;
+	t_effect->SetObjectMaterials(	m_material->GetAmbient(), m_material->GetDiffuse(),
+									m_material->GetSpecular(), m_material->GetSpecularPower());
 
+	D3DImage *t_d3dText = (D3DImage *) m_texture;
+	t_effect->SetObjectTexture(t_d3dText->GetTexture());
+	
 }
 
 #if 0
@@ -211,6 +210,7 @@ Cube::~Cube()
 	ReleaseCOM(m_vertexDeclaration);
 }
 
+#if 0
 void Cube::SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
 							D3DXCOLOR specularLightColor, D3DXVECTOR3 lightPosition, 
 							D3DXVECTOR3 lightDirection, D3DXVECTOR3 lightAttenuation,
@@ -295,3 +295,4 @@ void Cube::PosRender(Renderer *a_renderer)
 {
 	
 }
+#endif

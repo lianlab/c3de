@@ -1,5 +1,5 @@
 #include "DefaultScene1.h"
-#include "FXManager.h"
+
 #include "DebugMemory.h"
 
 DefaultScene1::DefaultScene1():D3DScene()

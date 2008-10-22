@@ -9,6 +9,7 @@ public:
 	Cube2();
 	~Cube2();
 
+#if 0
 	void SetPreRenderEffectHandles();
 	
 
@@ -26,6 +27,7 @@ public:
 	void BeginShader(){m_effect->Begin(&m_numShaderPasses,0);}
 	void EndShader(){m_effect->End();}
 	void CommitEffectHandles(){m_effect->CommitChanges();}
+#endif
 
 private:
 

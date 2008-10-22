@@ -11,6 +11,7 @@ public:
 	Cube();
 	~Cube();
 	
+#if 0
 	void SetPreRenderEffectHandles();	
 
 	virtual void SetLightParameters(D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
@@ -29,14 +30,19 @@ public:
 						
 	void PreRender(Renderer *a_renderer);
 	void PosRender(Renderer *a_renderer);
-
+#endif
 	void SetShaderHandlers();
 
 protected:
 
-	void InitializeEffectHandles(/*ID3DXEffect* fx*/);
+	//void InitializeEffectHandles(/*ID3DXEffect* fx*/);
 	D3DXHANDLE   m_hTex;
 	D3DXHANDLE	m_shaderAlpha;//galpha
+
+	D3DXHANDLE m_shaderObjectAmbientMaterial;//gAmbientMtrl
+	D3DXHANDLE m_shaderObjectDiffuseMaterial;//gDiffuseMtrl
+	D3DXHANDLE m_shaderObjectSpecularMaterial;//gSpecMtrl
+	D3DXHANDLE m_shaderSpecularLightPower;//gSpecPower
 	
 };
 #endif

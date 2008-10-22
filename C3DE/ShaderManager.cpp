@@ -76,3 +76,9 @@ ID3DXEffect * ShaderManager::GetEffectById(int id)
 	ID3DXEffect* effect = m_effectResources[id];
 	return effect; 
 }
+
+FX * ShaderManager::GetFXByID(int id)
+{
+	FX* effect = m_effects[id];
+	return effect; 
+}

@@ -123,7 +123,7 @@ float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1, float2 tex0 : T
 	
 }
 
-technique LightsTech
+technique ShaderTech
 {
     pass P0
     {

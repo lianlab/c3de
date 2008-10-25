@@ -8,6 +8,8 @@
 
 #include <vector>
 
+
+
 using namespace std;
 
 
@@ -31,15 +33,18 @@ public:
 							float spotLightPower, D3DXMATRIX world, D3DXMATRIX worldInverseTranspose);
 							
 
+	
 	void PreRender();
 	void PosRender();
 	
-	void Begin();
+	void Begin(FX *effect);
 	void End();
-	
+
 			
 private:
 	vector<FX *> *m_effects;
+
+	FX *m_currentEffect;
 
 	void AddEffect(FX *effect);
 	

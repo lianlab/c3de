@@ -7,6 +7,7 @@
 #include "LightsTexturesBlending.h"
 #include "OnlyLights.h"
 #include "PerVertexLighting.h"
+#include "PerPixelLighting.h"
 
 ShaderManager * ShaderManager::m_instance = NULL;
 
@@ -63,12 +64,18 @@ void ShaderManager::InitializeResources()
 	errors = 0;	
 	HR(D3DXCreateEffectFromFile(m_device, "effects/PerVertexLighting.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_LIGHTS_PER_VERTEX_TEXTURES, &errors));	
 	m_effectResources[SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID] = SHADER_LIGHTS_PER_VERTEX_TEXTURES;
+
+	ID3DXEffect * SHADER_LIGHTS_PER_PIXEL_TEXTURES;
+	errors = 0;	
+	HR(D3DXCreateEffectFromFile(m_device, "effects/PerPixelLighting.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_LIGHTS_PER_PIXEL_TEXTURES, &errors));	
+	m_effectResources[SHADER_LIGHTS_PER_PIXEL_TEXTURES_ID] = SHADER_LIGHTS_PER_PIXEL_TEXTURES;
 	
 	m_effects[SHADER_BOOK_LIGHTS_ID] = new BookLights(SHADER_BOOK_LIGHTS);
 	m_effects[SHADER_LIGHTS_AND_TEXTURES_ID] = new LightsAndTextures(SHADER_LIGHTS_AND_TEXTURES);
 	m_effects[SHADER_LIGHTS_TEXTURES_BLENDING_ID] = new LightsTexturesBlending(SHADER_LIGHTS_TEXTURES_BLENDING);
 	m_effects[SHADER_ONLY_LIGHTS_ID] = new OnlyLights(SHADER_ONLY_LIGHTS);
 	m_effects[SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID] = new PerVertexLighting(SHADER_LIGHTS_PER_VERTEX_TEXTURES);
+	m_effects[SHADER_LIGHTS_PER_PIXEL_TEXTURES_ID] = new PerPixelLighting(SHADER_LIGHTS_PER_PIXEL_TEXTURES);
 }
 
 ID3DXEffect * ShaderManager::GetEffectById(int id)

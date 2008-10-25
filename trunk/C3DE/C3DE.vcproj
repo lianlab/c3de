@@ -456,6 +456,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\PerPixelLighting.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\PerVertexLighting.cpp"
 							>
 						</File>
@@ -779,6 +783,10 @@
 						</File>
 						<File
 							RelativePath=".\OnlyLights.h"
+							>
+						</File>
+						<File
+							RelativePath=".\PerPixelLighting.h"
 							>
 						</File>
 						<File

@@ -307,7 +307,7 @@ void Game::InitializeMeshes()
 	//m_testScene->AddMesh((Mesh*)m_cube);
 	//m_testScene->AddMesh((Mesh*)m_grid);	
 	m_testScene->AddMesh((Mesh*)m_testMesh);
-	//m_testScene->AddMesh((Mesh*)m_plane);
+	m_testScene->AddMesh((Mesh*)m_plane);
 	
 
 	m_testScene->Initialize();

@@ -149,12 +149,15 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 	UINT num = 0;
 	//m_effect->Begin(&num,0);
-	FXManager::GetInstance()->Begin();
+	
 
 	for(int i = 0; i < totalMeshes; i++)
 	{
+		
 		Mesh *mesh = scene->GetMeshesVector()->at(i);	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
+
+		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());
 
 		
 		d3dmesh->SetShaderHandlers();
@@ -168,11 +171,11 @@ void D3DRenderer::DrawScene(Scene *scene)
 		DrawMesh(mesh);
 		//m_effect->EndPass();
 		FXManager::GetInstance()->PosRender();
-		
+		FXManager::GetInstance()->End();
 	}
 
 	//m_effect->End();
-	FXManager::GetInstance()->End();
+	
 
 	
 #endif

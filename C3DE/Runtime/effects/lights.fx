@@ -101,7 +101,7 @@ float4 LightsPS(float3 normalW:TEXCOORD0, float3 posW:TEXCOORD1):COLOR
 	
 }
 
-technique LightsTech
+technique ShaderTech
 {
     pass P0
     {

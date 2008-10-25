@@ -1,5 +1,6 @@
 #include "Cube2.h"
 #include "ResourceManager.h"
+#include "PerVertexLighting.h"
 #include "DebugMemory.h"
 
 Cube2::Cube2()
@@ -95,7 +96,21 @@ Cube2::Cube2()
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_ABE_ID));
 	m_texture = (Image *) d3dImage;
 
+	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
+
 	
+}
+
+void Cube2::SetShaderHandlers()
+{
+	
+	
+	PerVertexLighting *t_effect = (PerVertexLighting *) m_effect;
+	t_effect->SetObjectMaterials(	m_material->GetAmbient(), m_material->GetDiffuse(),
+									m_material->GetSpecular(), m_material->GetSpecularPower());
+
+	D3DImage *t_d3dText = (D3DImage *) m_texture;
+	t_effect->SetObjectTexture(t_d3dText->GetTexture());
 	
 }
 

@@ -9,6 +9,7 @@ public:
 	Cube2();
 	~Cube2();
 
+	void SetShaderHandlers();
 #if 0
 	void SetPreRenderEffectHandles();
 	

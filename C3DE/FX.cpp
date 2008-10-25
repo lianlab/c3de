@@ -4,7 +4,7 @@ FX::FX(ID3DXEffect * effect)
 {
 	m_effect = effect;
 
-	m_shaderTechnique = m_effect->GetTechniqueByName("LightsTech");	
+	m_shaderTechnique = m_effect->GetTechniqueByName("ShaderTech");	
 	m_shaderViewMatrix  = m_effect->GetParameterByName(0, "gWVP");	
 	m_shaderEyePosition= m_effect->GetParameterByName(0, "gEyePosW");
 	m_shaderWorldMatrix = m_effect->GetParameterByName(0, "gWorld");

@@ -10,6 +10,8 @@ public:
 	Plane(float width, float height);
 	~Plane();
 
+	void SetShaderHandlers();
+
 #if 0
 	void SetPreRenderEffectHandles();
 	

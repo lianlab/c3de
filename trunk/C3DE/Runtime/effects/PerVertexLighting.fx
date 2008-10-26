@@ -18,6 +18,7 @@ uniform extern float  gSpecularPower;
 uniform extern float3 gLightVecW;
 uniform extern float3 gEyePosW;
 uniform extern texture gTex;
+uniform extern float4x4 gTransformMatrix;
 
 sampler TexS = sampler_state
 {
@@ -49,7 +50,7 @@ OutputVS DirLightTexVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2
 	
 	// Transform vertex position to world space.
 	float3 posW  = mul(float4(posL, 1.0f), gWorld).xyz;
-	
+	posW = mul(posW,gTransformMatrix);
 	//=======================================================
 	// Compute the color: Equation 10.3.
 	
@@ -77,7 +78,9 @@ OutputVS DirLightTexVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2
 	//=======================================================
 	
 	// Transform to homogeneous clip space.
-	outVS.posH = mul(float4(posL, 1.0f), gWVP);
+	float4 newPos = mul(float4(posL, 1.0f), gTransformMatrix);
+	//outVS.posH = mul(float4(posL, 1.0f), gWVP);
+	outVS.posH = mul(newPos, gWVP);
 	
 	// Pass on texture coordinates to be interpolated in rasterization.
 	outVS.tex0 = tex0;

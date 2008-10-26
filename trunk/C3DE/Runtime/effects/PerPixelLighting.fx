@@ -13,16 +13,15 @@ uniform extern float4x4 gTransformMatrix;
 
 uniform extern float4 gAmbientMtrl;
 uniform extern float4 gDiffuseMtrl;
-uniform extern float4 gSpecularMtrl;
-uniform extern float  gSpecularPower;
+uniform extern float4 gSpecMtrl;
+uniform extern float  gSpecPower;
 uniform extern float gAlpha;
 	
 uniform extern float4 gAmbientLight;
 uniform extern float4 gDiffuseLight;
-uniform extern float4 gSpecularLight;
+uniform extern float4 gSpecLight;
 uniform extern float3 gLightPosW;  
 uniform extern float3 gLightDirW;
-uniform extern float3 gLightVecW;
 uniform extern float3 gAttenuation012; 
 uniform extern float  gSpotPower;
 
@@ -53,7 +52,6 @@ struct OutputVS
 
 OutputVS LightsVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0: TEXCOORD0)
 {
-	
     // Zero out our output.
 	OutputVS outVS = (OutputVS)0;
 	
@@ -78,9 +76,7 @@ OutputVS LightsVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0
 	outVS.tex0 = tex0;
 	
 	// Done--return the output.
-	
     return outVS;
-    
 }
 
 //float4 SpotlightPS(float4 c : COLOR0) : COLOR
@@ -88,8 +84,9 @@ float4 LightsPS(float3 normalW:TEXCOORD0, float4 posW:TEXCOORD1, float2 tex0 : T
 {
 	
 	
-	return float4(1.0f, 1.0f, 0.0f, 1.0f);
+	
 	float3 texColor = tex2D(TexS, tex0).rgb;
+	texColor = float3(1.0f, 1.0f, 1.0f);
 	
 	
 
@@ -97,8 +94,7 @@ float4 LightsPS(float3 normalW:TEXCOORD0, float4 posW:TEXCOORD1, float2 tex0 : T
 	float3 lightVecW = normalize(gLightPosW - posW);
 	
 	// Ambient Light Computation.
-	gAmbientMtrl = (0.0f, 0.0f, 1.0f, 1.0f);
-	gAmbientLight = (0.4f, 0.4f, 0.4f, 0.4f);
+	
 	float3 ambient = (gAmbientMtrl*gAmbientLight).rgb;
 	
 	// Diffuse Light Computation.
@@ -110,20 +106,19 @@ float4 LightsPS(float3 normalW:TEXCOORD0, float4 posW:TEXCOORD1, float2 tex0 : T
 	// Specular Light Computation.
 	float3 toEyeW   = normalize(gEyePosW - posW);
 	float3 reflectW = reflect(-lightVecW, normalW);
-	float t = pow(max(dot(reflectW, toEyeW), 0.0f), gSpecularPower);
-	float3 spec = t*(gSpecularMtrl*gSpecularLight).rgb;
+	float t = pow(max(dot(reflectW, toEyeW), 0.0f), gSpecPower);
+	float3 spec = t*(gSpecMtrl*gSpecLight).rgb;
 	
 	// Attentuation.
 	float d = distance(gLightPosW, posW);
 	float A = gAttenuation012.x + gAttenuation012.y*d + gAttenuation012.z*d*d;
 	
 	// Spotlight factor.
-	//float spot = pow(max(dot(-lightVecW, gLightDirW), 0.0f), gSpotPower);
+	float spot = pow(max(dot(-lightVecW, gLightDirW), 0.0f), gSpotPower);
 	
 	// Everything together.
 	//float3 color = spot*(ambient + ((diffuse + spec) / A));
-	//float3 color = spot*(ambient + diffuse);
-	float3 color = (ambient + diffuse);
+	float3 color = spot*(ambient + diffuse);
 	
 	
 	color = color * texColor;		
@@ -133,7 +128,6 @@ float4 LightsPS(float3 normalW:TEXCOORD0, float4 posW:TEXCOORD1, float2 tex0 : T
 	
 	return float4(color, gAlpha);
 	//return float4(diffuse + spec.rgb, c.a); 
-	
 	
 	
 }

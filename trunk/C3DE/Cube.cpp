@@ -99,6 +99,7 @@ Cube::Cube()
 
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
 
+	
 		
 }
 

@@ -11,12 +11,12 @@ class Mesh
 {
 public:
 	Mesh();
-	void SetPosition(float x, float y, float z){m_x = x;m_y=y;m_z=z;}
+	virtual void SetPosition(float x, float y, float z){m_x = x;m_y=y;m_z=z;}
 	float GetX(){return m_x;}
 	float GetY(){return m_y;}
 	float GetZ(){return m_z;}
 
-	void Scale(float x, float y, float z){m_scaleX=x;m_scaleY=y;m_scaleZ=z;}
+	virtual void Scale(float x, float y, float z){m_scaleX=x;m_scaleY=y;m_scaleZ=z;}
 	float GetXScale(){return m_scaleX;}
 	float GetYScale(){return m_scaleY;}
 	float GetZScale(){return m_scaleZ;}

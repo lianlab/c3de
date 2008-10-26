@@ -72,6 +72,10 @@ public:
 	IDirect3DIndexBuffer9 * GetIndexBuffer();
 	void SetBuffers(IDirect3DVertexBuffer9 *vertexBuffer, IDirect3DIndexBuffer9 *indexBuffer);
 	
+	void SetPosition(float x, float y, float z);
+	void Scale(float x, float y, float z);
+
+
 	void Update(int deltaTime);
 
 	void SetTexture(Image *tex){m_texture = tex;}

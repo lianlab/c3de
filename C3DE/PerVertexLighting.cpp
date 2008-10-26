@@ -10,7 +10,10 @@ FX(effect)
 	m_shaderObjectDiffuseMaterial = m_effect->GetParameterByName(0, "gDiffuseMtrl");
 	m_shaderObjectSpecularMaterial = m_effect->GetParameterByName(0, "gSpecularMtrl");
 	m_shaderSpecularLightPower = m_effect->GetParameterByName(0, "gSpecularPower");
+	
 	m_hTex = m_effect->GetParameterByName(0, "gTex");
+
+	
 }
 
 PerVertexLighting::~PerVertexLighting()

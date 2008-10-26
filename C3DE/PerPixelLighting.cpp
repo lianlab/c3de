@@ -8,9 +8,22 @@ FX(effect)
 	
 	m_shaderObjectAmbientMaterial = m_effect->GetParameterByName(0, "gAmbientMtrl");
 	m_shaderObjectDiffuseMaterial = m_effect->GetParameterByName(0, "gDiffuseMtrl");
-	m_shaderObjectSpecularMaterial = m_effect->GetParameterByName(0, "gSpecularMtrl");
-	m_shaderSpecularLightPower = m_effect->GetParameterByName(0, "gSpecularPower");
+	m_shaderObjectSpecularMaterial = m_effect->GetParameterByName(0, "gSpecMtrl");
+	m_shaderSpecularLightPower = m_effect->GetParameterByName(0, "gSpecPower");
 	m_hTex = m_effect->GetParameterByName(0, "gTex");
+	m_shaderTransformMatrix = m_effect->GetParameterByName(0, "gTransformMatrix");
+
+	D3DXMATRIX M;
+	
+	D3DXMatrixIdentity(&M);		
+	HR(m_effect->SetMatrix(m_shaderTransformMatrix, &M));	
+
+	m_shaderLightPosition = m_effect->GetParameterByName(0, "gLightPosW");
+
+	m_shaderSpecularLightMaterial = m_effect->GetParameterByName(0, "gSpecLight");
+
+	m_shaderAlpha = m_effect->GetParameterByName(0, "gAlpha");
+
 }
 
 PerPixelLighting::~PerPixelLighting()
@@ -18,10 +31,17 @@ PerPixelLighting::~PerPixelLighting()
 
 }
 
+void PerPixelLighting::SetAlpha(float alpha)
+{
+	HR(m_effect->SetFloat(m_shaderAlpha, alpha));
+}
+
 void PerPixelLighting::SetObjectMaterials(D3DXCOLOR ambientMaterial, D3DXCOLOR diffuseMaterial,
 							D3DXCOLOR specularMaterial, float specularPower)
 {
 
+	D3DXVECTOR3 t = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
+	HR(m_effect->SetValue(m_shaderLightPosition, &t, sizeof(D3DXVECTOR3)));
 	
 	HR(m_effect->SetValue(m_shaderObjectAmbientMaterial, &ambientMaterial,sizeof(D3DXCOLOR)));
 	HR(m_effect->SetValue(m_shaderObjectDiffuseMaterial, &diffuseMaterial, sizeof(D3DXCOLOR)));

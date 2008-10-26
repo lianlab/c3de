@@ -76,6 +76,8 @@ Plane::Plane(float width, float height)
 	m_indices->push_back(1);
 
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_PIXEL_TEXTURES_ID);
+	PerPixelLighting *t_effect = (PerPixelLighting *) m_effect;
+	t_effect->SetAlpha(1.0f);
 
 }
 

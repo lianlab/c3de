@@ -16,13 +16,25 @@ FX::FX(ID3DXEffect * effect)
 	
 	m_shaderLightPosition = m_effect->GetParameterByName(0, "gLightVecW");
 	
+	m_shaderTransformMatrix = m_effect->GetParameterByName(0, "gTransformMatrix");
 	
-	
+	D3DXMATRIX T;
+	D3DXMatrixIdentity(&T);
+	SetTransformMatrix(T);
 }
 
 FX::~FX()
 {
 
+
+}
+
+void FX::SetTransformMatrix(D3DXMATRIX matrix)
+{
+	if(m_shaderTransformMatrix)
+	{	
+		HR(m_effect->SetValue(m_shaderTransformMatrix, &matrix, sizeof(D3DXMATRIX)));
+	}
 
 }
 

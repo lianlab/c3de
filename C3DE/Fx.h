@@ -14,6 +14,8 @@ public:
 	virtual void SetWorldHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldViewProjection);
 	virtual void SetLightHandlers(	D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
 							D3DXCOLOR specularLightColor, D3DXVECTOR3 lightVector);
+
+	virtual void SetTransformMatrix(D3DXMATRIX matrix);
 protected:
 	ID3DXEffect * m_effect;
 
@@ -27,5 +29,7 @@ protected:
 	D3DXHANDLE m_shaderDiffuseLightMaterial;//gDiffuseLight
 	D3DXHANDLE m_shaderSpecularLightMaterial;//gSpecularLight
 	D3DXHANDLE m_shaderLightPosition;//gLightPosW R
+
+	D3DXHANDLE m_shaderTransformMatrix;
 };
 #endif

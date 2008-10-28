@@ -3,9 +3,9 @@
 #include "ResourceManager.h"
 #include "DebugMemory.h"
 
-PlanarMirror::PlanarMirror():D3DMirror()
+PlanarMirror::PlanarMirror(D3DMesh *mesh):D3DMirror(mesh)
 {
-	
+#if 0
 	m_vertices = new vector<VertexPos>;
 	m_indices = new vector<int>;
 
@@ -38,6 +38,7 @@ PlanarMirror::PlanarMirror():D3DMirror()
 
 	m_alpha = 0.5f;
 
+#endif
 	
 }
 
@@ -126,7 +127,7 @@ void PlanarMirror::InitializeEffectHandles(/*ID3DXEffect* fx*/)
 
 PlanarMirror::~PlanarMirror()
 {
-	ReleaseCOM(m_vertexDeclaration);
+	//ReleaseCOM(m_vertexDeclaration);
 }
 
 #if 0

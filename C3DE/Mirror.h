@@ -1,11 +1,17 @@
 #ifndef MIRROR_H
 #define MIRROR_H
 
-class Mirror
+#include "Mesh.h"
+
+
+class Mirror 
 {
 public:
-	Mirror();
+	Mirror(Mesh *);
 	virtual ~Mirror();
+	Mesh * GetMesh(){return m_mesh;}
+protected:
+	Mesh *m_mesh;
 };
 
 #endif

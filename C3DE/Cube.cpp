@@ -113,6 +113,8 @@ void Cube::SetShaderHandlers()
 
 	D3DImage *t_d3dText = (D3DImage *) m_texture;
 	t_effect->SetObjectTexture(t_d3dText->GetTexture());
+
+	t_effect->SetTransformMatrix(GetTransformMatrix());
 	
 }
 

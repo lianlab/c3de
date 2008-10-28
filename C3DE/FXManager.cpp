@@ -45,7 +45,7 @@ void FXManager::End()
 void FXManager::PosRender()
 {
 	m_currentEffect->GetEffect()->EndPass();
-	
+	m_currentEffect->ResetHandlers();
 }
 
 void FXManager::SetUpdateHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldViewProjection)

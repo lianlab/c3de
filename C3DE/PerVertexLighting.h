@@ -12,6 +12,8 @@ public:
 	void SetObjectMaterials(D3DXCOLOR ambientMaterial, D3DXCOLOR diffuseMaterial,
 							D3DXCOLOR specularMaterial, float specularPower);
 	void SetObjectTexture(IDirect3DTexture9 *texture);
+
+	void ResetHandlers();
 protected:
 	D3DXHANDLE m_shaderObjectAmbientMaterial;//gAmbientMtrl
 	D3DXHANDLE m_shaderObjectDiffuseMaterial;//gDiffuseMtrl

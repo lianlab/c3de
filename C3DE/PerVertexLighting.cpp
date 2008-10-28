@@ -21,6 +21,13 @@ PerVertexLighting::~PerVertexLighting()
 
 }
 
+void PerVertexLighting::ResetHandlers()
+{
+	D3DXMATRIX T;
+	D3DXMatrixIdentity(&T);
+	SetTransformMatrix(T);
+}
+
 void PerVertexLighting::SetObjectMaterials(D3DXCOLOR ambientMaterial, D3DXCOLOR diffuseMaterial,
 							D3DXCOLOR specularMaterial, float specularPower)
 {

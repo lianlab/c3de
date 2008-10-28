@@ -39,6 +39,11 @@ D3DMesh::~D3DMesh()
 	}
 }
 
+void D3DMesh::SetShaderHandlers()
+{
+	m_effect->SetTransformMatrix(GetTransformMatrix());
+}
+
 void D3DMesh::Update(int deltaTime)
 {
 	m_updateTime = deltaTime;
@@ -63,13 +68,13 @@ D3DXMATRIX D3DMesh::GetTransformMatrix()
 void D3DMesh::SetPosition(float x, float y, float z)
 {
 	m_x = x;m_y=y;m_z=z;
-	m_effect->SetTransformMatrix(GetTransformMatrix());
+	
 }
 
 void D3DMesh::Scale(float x, float y, float z)
 {
 	m_scaleX=x;m_scaleY=y;m_scaleZ=z;
-	m_effect->SetTransformMatrix(GetTransformMatrix());
+	//m_effect->SetTransformMatrix(GetTransformMatrix());
 }
 
 

@@ -92,43 +92,11 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 }
 
-/*
-void D3DRenderer::SetMeshLights(Scene * scene, Mesh *mesh)
-{
-	D3DScene *t_scene = static_cast<D3DScene *> (scene);
-	D3DMesh *d3dmesh = static_cast<D3DMesh *> (mesh);
-	D3DCamera *cam = (D3DCamera *) m_camera;
-	D3DXVECTOR3 lightDir = cam->GetTarget() - cam->GetPosition();
-	D3DXVec3Normalize(&lightDir, &lightDir);
-
-	d3dmesh->SetLightParameters(t_scene->GetAmbientLight()->GetColor(), t_scene->GetDiffuseLight()->GetColor(),
-								t_scene->GetSpecularLight()->GetColor(), cam->GetPosition(), lightDir, 
-								*t_scene->GetLightAttenuation(), t_scene->GetPointLight()->GetPower());
-}
-void D3DRenderer::SetMeshWorldHandlers(Scene *scene, Mesh *mesh)
-{
-	D3DScene *t_scene = static_cast<D3DScene *> (scene);
-	D3DMesh *d3dmesh = static_cast<D3DMesh *> (mesh);
-	D3DXMATRIX W;		
-	D3DXMatrixIdentity(&W);			
-
-	D3DCamera *cam = (D3DCamera *) m_camera;
-	D3DXMATRIX t_view = cam->GetMatrix();
-	D3DXMATRIX t_projView = t_view*m_proj;	
-
-	D3DXMATRIX WIT;
-	D3DXMatrixInverse(&WIT, 0, &W);
-	D3DXMatrixTranspose(&WIT, &WIT);														
-	
-	d3dmesh->SetWorldParameters(W, t_projView,WIT,cam->GetPosition());
-}
-
-*/
 
 void D3DRenderer::DrawScene(Scene *scene)
 {
 	
-#if 1
+
 	int totalMeshes = scene->GetMeshesVector()->size();	
 	int totalMirrors = scene->GetMirrorsVector()->size();	
 
@@ -141,15 +109,9 @@ void D3DRenderer::DrawScene(Scene *scene)
 	D3DXMATRIX t_projView = t_view*m_proj;	
 
 
-	
-	
-	//hackTheKasbah();
-	//group1();
 	FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
 
 	UINT num = 0;
-	//m_effect->Begin(&num,0);
-	
 
 	for(int i = 0; i < totalMeshes; i++)
 	{
@@ -174,86 +136,88 @@ void D3DRenderer::DrawScene(Scene *scene)
 		FXManager::GetInstance()->End();
 	}
 
-	//m_effect->End();
-	
-
-	
-#endif
-#if 0
-	int totalMeshes = scene->GetMeshesVector()->size();	
-	int totalMirrors = scene->GetMirrorsVector()->size();	
-
-	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
-
-	
-
-	for(int i = 0; i < totalMeshes; i++)
-	{
-		Mesh *mesh = scene->GetMeshesVector()->at(i);	
-		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
-
-		
-		
-		
-		
-		d3dmesh->PreRender(this);
-
-		d3dmesh->SetPreRenderEffectHandles();
-
-		SetMeshLights(scene,mesh);
-		SetMeshWorldHandlers(scene, mesh);
-		d3dmesh->CommitEffectHandles();
-
-		// Begin passes.
-
-		UINT numPasses = d3dmesh->GetNumShaderPasses();
-		d3dmesh->BeginShader();
-		for(UINT i = 0; i < numPasses; ++i)
-		{
-			d3dmesh->BeginShaderPass(i);
-			DrawMesh(mesh);
-			d3dmesh->EndShaderPass(i);
-		}
-		d3dmesh->EndShader();
-		d3dmesh->PosRender(this);
-		
-
-		
-		
-		
-	}
-
-	
-
 	for(int i = 0; i < totalMirrors; i++)
 	{
-		Mirror *mirror = scene->GetMirrorsVector()->at(i);	
-		D3DMirror *d3dmirror = (D3DMirror *)mirror;	
-
-		
-		d3dmirror->PreRender(this);
-
-		d3dmirror->SetPreRenderEffectHandles();
-
-		SetMeshLights(scene,(Mesh *)mirror);
-		SetMeshWorldHandlers(scene, (Mesh*)mirror);
-		d3dmirror->CommitEffectHandles();
-
-		// Begin passes.
-
-		UINT numPasses = d3dmirror->GetNumShaderPasses();
-		d3dmirror->BeginShader();
-		for(UINT i = 0; i < numPasses; ++i)
-		{
-			d3dmirror->BeginShaderPass(i);
-			DrawMesh((Mesh*)d3dmirror);
-			d3dmirror->EndShaderPass(i);
-		}
-		d3dmirror->EndShader();
-		d3dmirror->PosRender(this);
-		
+		DrawMirror(scene->GetMirrorsVector()->at(i), scene);
 		
 	}
+
+}
+
+void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
+{
+	Mesh *mesh = mirror->GetMesh();	
+	D3DMesh *d3dmesh = (D3DMesh *)mesh;
+
+	FXManager::GetInstance()->Begin(d3dmesh->GetEffect());
+
+	
+	d3dmesh->SetShaderHandlers();
+	
+
+	FXManager::GetInstance()->PreRender();
+	
+
+	DrawMesh(mesh);
+	FXManager::GetInstance()->PosRender();
+	FXManager::GetInstance()->End();
+#if 0
+	HR(gd3dDevice->SetRenderState(D3DRS_STENCILENABLE,    true));
+    HR(gd3dDevice->SetRenderState(D3DRS_STENCILFUNC,      D3DCMP_ALWAYS));
+    HR(gd3dDevice->SetRenderState(D3DRS_STENCILREF,       0x1));
+    HR(gd3dDevice->SetRenderState(D3DRS_STENCILMASK,      0xffffffff));
+    HR(gd3dDevice->SetRenderState(D3DRS_STENCILWRITEMASK, 0xffffffff));
+    HR(gd3dDevice->SetRenderState(D3DRS_STENCILZFAIL,     D3DSTENCILOP_KEEP));
+    HR(gd3dDevice->SetRenderState(D3DRS_STENCILFAIL,      D3DSTENCILOP_KEEP));
+    HR(gd3dDevice->SetRenderState(D3DRS_STENCILPASS,      D3DSTENCILOP_REPLACE));
+
+	// Disable writes to the depth and back buffers
+    HR(gd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, false));
+    HR(gd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true));
+    HR(gd3dDevice->SetRenderState(D3DRS_SRCBLEND,  D3DBLEND_ZERO));
+    HR(gd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE));
+
+	// Draw mirror to stencil only.
+	drawMirror();
+	
+	// Re-enable depth writes
+	HR(gd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE, true ));
+
+	// Only draw reflected teapot to the pixels where the mirror
+	// was drawn to.
+	HR(gd3dDevice->SetRenderState(D3DRS_STENCILFUNC,  D3DCMP_EQUAL));
+    HR(gd3dDevice->SetRenderState(D3DRS_STENCILPASS,  D3DSTENCILOP_KEEP));
+
+	// Build Reflection transformation.
+	D3DXMATRIX R;
+	D3DXPLANE plane(0.0f, 0.0f, 1.0f, 0.0f); // xy plane
+	D3DXMatrixReflect(&R, &plane);
+
+	// Save the original teapot world matrix.
+	D3DXMATRIX oldTeapotWorld = mTeapotWorld;
+
+	// Add reflection transform.
+	mTeapotWorld = mTeapotWorld * R;
+
+	// Reflect light vector also.
+	D3DXVECTOR3 oldLightVecW = mLightVecW;
+	D3DXVec3TransformNormal(&mLightVecW, &mLightVecW, &R);
+	HR(mFX->SetValue(mhLightVecW, &mLightVecW, sizeof(D3DXVECTOR3)));
+
+	// Disable depth buffer and render the reflected teapot.
+	HR(gd3dDevice->SetRenderState(D3DRS_ZENABLE, false));
+	HR(gd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
+
+	// Finally, draw the reflected teapot
+	HR(gd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW));
+	drawTeapot();
+	mTeapotWorld = oldTeapotWorld;
+	mLightVecW   = oldLightVecW;
+	
+	// Restore render states.
+	HR(gd3dDevice->SetRenderState(D3DRS_ZENABLE, true));
+	HR(gd3dDevice->SetRenderState( D3DRS_STENCILENABLE, false));
+	HR(gd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
 #endif
 }
 

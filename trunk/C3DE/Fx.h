@@ -16,6 +16,9 @@ public:
 							D3DXCOLOR specularLightColor, D3DXVECTOR3 lightVector);
 
 	virtual void SetTransformMatrix(D3DXMATRIX matrix);
+
+	//resets effect handlers that need to be changed for every mesh, like the transform matrix
+	virtual void ResetHandlers(){}
 protected:
 	ID3DXEffect * m_effect;
 

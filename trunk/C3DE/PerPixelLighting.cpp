@@ -31,6 +31,13 @@ PerPixelLighting::~PerPixelLighting()
 
 }
 
+void PerPixelLighting::ResetHandlers()
+{
+	D3DXMATRIX T;
+	D3DXMatrixIdentity(&T);
+	SetTransformMatrix(T);
+}
+
 void PerPixelLighting::SetAlpha(float alpha)
 {
 	HR(m_effect->SetFloat(m_shaderAlpha, alpha));

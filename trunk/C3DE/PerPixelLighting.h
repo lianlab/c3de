@@ -14,6 +14,8 @@ public:
 	void SetObjectTexture(IDirect3DTexture9 *texture);
 
 	void SetAlpha(float alpha);
+
+	void ResetHandlers();
 protected:
 	D3DXHANDLE m_shaderObjectAmbientMaterial;//gAmbientMtrl
 	D3DXHANDLE m_shaderObjectDiffuseMaterial;//gDiffuseMtrl

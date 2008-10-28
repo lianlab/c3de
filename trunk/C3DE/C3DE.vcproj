@@ -336,6 +336,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\Wall.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\Wave.cpp"
 							>
 						</File>
@@ -663,6 +667,10 @@
 						</File>
 						<File
 							RelativePath=".\Plane.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Wall.h"
 							>
 						</File>
 						<File

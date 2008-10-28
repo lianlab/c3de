@@ -12,6 +12,8 @@
 #include "DirectInput.h"
 #include "PlanarMirror.h"
 
+#include "Wall.h"
+
 
 
 //testing
@@ -77,6 +79,8 @@ private:
 	Grid *m_grid;
 
 	PlanarMirror *m_mirror;
+
+	Wall *m_wall;
 
 
 

@@ -13,14 +13,6 @@
 
 #include "SpecularLight.h"
 
-#if 1
-
-#include "AmbientLight.h"
-#include "DiffuseLight.h"
-#include "SpecularLight.h"
-#include "PointLight.h"
-#include "Material.h"
-#endif
 
 
 class D3DRenderer : public Renderer
@@ -48,6 +40,7 @@ public:
 
 	IDirect3DDevice9* GetDevice(){ return m_device;}
 
+	void DrawMirror(Mirror *mirror, Scene *scene);
 	void EnableAlphaBlending();
 	void DisableAlphaBlending();
 

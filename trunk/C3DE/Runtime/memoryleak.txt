@@ -8,8 +8,10 @@
 25:c:\caio\c3de\c3de\grid.cpp                        :		LINE 22,	ADDRESS 003CE4B0	20 unfreed	block 24
 26:c:\caio\c3de\c3de\scene.cpp                       :		LINE 8,	ADDRESS 01C7EC40	20 unfreed	block 25
 27:c:\caio\c3de\c3de\d3dmirror.cpp                   :		LINE 6,	ADDRESS 01C80C40	16 unfreed	block 26
+28:c:\caio\c3de\c3de\plane.cpp                       :		LINE 61,	ADDRESS 01C7ED98	20 unfreed	block 27
+29:c:\caio\c3de\c3de\plane.cpp                       :		LINE 62,	ADDRESS 01C7EDE8	20 unfreed	block 28
 30:c:\caio\c3de\c3de\cube2.cpp                       :		LINE 12,	ADDRESS 01C7F4B0	20 unfreed	block 29
 31:c:\caio\c3de\c3de\cube2.cpp                       :		LINE 13,	ADDRESS 01C7F500	20 unfreed	block 30
 32:c:\caio\c3de\c3de\cube2.cpp                       :		LINE 96,	ADDRESS 01C80698	8 unfreed	block 31
 -----------------------------------------------------------
-Total Unfreed: 464 bytes
+Total Unfreed: 504 bytes

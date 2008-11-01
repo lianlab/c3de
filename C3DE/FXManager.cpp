@@ -81,9 +81,27 @@ void FXManager::AddEffect(FX * effect)
 
 void FXManager::SetSceneEffects(Scene *scene)
 {
+	
+
+	
+
+	vector<Mesh *> *t_meshes = new vector<Mesh *>;
 	int totalMeshes = scene->GetMeshesVector()->size();
 
-	vector<Mesh *> *t_meshes = scene->GetMeshesVector();
+	for(int i = 0; i < totalMeshes; i++)
+	{
+		t_meshes->push_back(scene->GetMeshesVector()->at(i));
+	}
+	
+
+	int totalMirrors = scene->GetMirrorsVector()->size();
+
+	for(int i= 0; i < totalMirrors; i++)
+	{
+		t_meshes->push_back(scene->GetMirrorsVector()->at(i)->GetMesh());
+	}
+
+	totalMeshes = t_meshes->size();
 
 	for(int i = 0; i < totalMeshes; i++)
 	{
@@ -91,6 +109,7 @@ void FXManager::SetSceneEffects(Scene *scene)
 		AddEffect(t_mesh->GetEffect());
 		
 	}
+	
 
 	D3DXCOLOR ambient = scene->GetAmbientLight()->GetColor();
 	D3DXCOLOR diffuse = scene->GetDiffuseLight()->GetColor();

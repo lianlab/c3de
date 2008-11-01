@@ -96,10 +96,12 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 void D3DRenderer::DrawScene(Scene *scene)
 {
 	
-
+	
 	int totalMeshes = scene->GetMeshesVector()->size();	
+	
 	int totalMirrors = scene->GetMirrorsVector()->size();	
 
+	
 	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
 
 	D3DCamera *cam = (D3DCamera *) m_camera;
@@ -118,28 +120,18 @@ void D3DRenderer::DrawScene(Scene *scene)
 		
 		Mesh *mesh = scene->GetMeshesVector()->at(i);	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
-
-		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());
-
-		
+		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());		
 		d3dmesh->SetShaderHandlers();
-		//group3();
-
-		FXManager::GetInstance()->PreRender();
-		//m_effect->CommitChanges();
-
-		
-		//m_effect->BeginPass(0);
+		FXManager::GetInstance()->PreRender();	
 		DrawMesh(mesh);
-		//m_effect->EndPass();
 		FXManager::GetInstance()->PosRender();
 		FXManager::GetInstance()->End();
 	}
 
+	
 	for(int i = 0; i < totalMirrors; i++)
 	{
-		DrawMirror(scene->GetMirrorsVector()->at(i), scene);
-		
+		DrawMirror(scene->GetMirrorsVector()->at(i), scene);		
 	}
 
 }
@@ -148,45 +140,47 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 {
 	Mesh *mesh = mirror->GetMesh();	
 	D3DMesh *d3dmesh = (D3DMesh *)mesh;
-
-	FXManager::GetInstance()->Begin(d3dmesh->GetEffect());
-
-	
+	FXManager::GetInstance()->Begin(d3dmesh->GetEffect());	
 	d3dmesh->SetShaderHandlers();
-	
-
 	FXManager::GetInstance()->PreRender();
-	
-
 	DrawMesh(mesh);
 	FXManager::GetInstance()->PosRender();
 	FXManager::GetInstance()->End();
 #if 0
-	HR(gd3dDevice->SetRenderState(D3DRS_STENCILENABLE,    true));
-    HR(gd3dDevice->SetRenderState(D3DRS_STENCILFUNC,      D3DCMP_ALWAYS));
-    HR(gd3dDevice->SetRenderState(D3DRS_STENCILREF,       0x1));
-    HR(gd3dDevice->SetRenderState(D3DRS_STENCILMASK,      0xffffffff));
-    HR(gd3dDevice->SetRenderState(D3DRS_STENCILWRITEMASK, 0xffffffff));
-    HR(gd3dDevice->SetRenderState(D3DRS_STENCILZFAIL,     D3DSTENCILOP_KEEP));
-    HR(gd3dDevice->SetRenderState(D3DRS_STENCILFAIL,      D3DSTENCILOP_KEEP));
-    HR(gd3dDevice->SetRenderState(D3DRS_STENCILPASS,      D3DSTENCILOP_REPLACE));
+	HR(m_device->SetRenderState(D3DRS_STENCILENABLE,    true));
+    HR(m_device->SetRenderState(D3DRS_STENCILFUNC,      D3DCMP_ALWAYS));
+    HR(m_device->SetRenderState(D3DRS_STENCILREF,       0x1));
+    HR(m_device->SetRenderState(D3DRS_STENCILMASK,      0xffffffff));
+    HR(m_device->SetRenderState(D3DRS_STENCILWRITEMASK, 0xffffffff));
+    HR(m_device->SetRenderState(D3DRS_STENCILZFAIL,     D3DSTENCILOP_KEEP));
+    HR(m_device->SetRenderState(D3DRS_STENCILFAIL,      D3DSTENCILOP_KEEP));
+    HR(m_device->SetRenderState(D3DRS_STENCILPASS,      D3DSTENCILOP_REPLACE));
 
 	// Disable writes to the depth and back buffers
-    HR(gd3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, false));
-    HR(gd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true));
-    HR(gd3dDevice->SetRenderState(D3DRS_SRCBLEND,  D3DBLEND_ZERO));
-    HR(gd3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE));
+    HR(m_device->SetRenderState(D3DRS_ZWRITEENABLE, false));
+    HR(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, true));
+    HR(m_device->SetRenderState(D3DRS_SRCBLEND,  D3DBLEND_ZERO));
+    HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE));
 
 	// Draw mirror to stencil only.
-	drawMirror();
+	//drawMirror();
+	
+	
+	FXManager::GetInstance()->Begin(d3dmesh->GetEffect());	
+	d3dmesh->SetShaderHandlers();
+	FXManager::GetInstance()->PreRender();
+	DrawMesh(mesh);
+	FXManager::GetInstance()->PosRender();
+	FXManager::GetInstance()->End();
+	///////////77
 	
 	// Re-enable depth writes
-	HR(gd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE, true ));
+	HR(m_device->SetRenderState( D3DRS_ZWRITEENABLE, true ));
 
 	// Only draw reflected teapot to the pixels where the mirror
 	// was drawn to.
-	HR(gd3dDevice->SetRenderState(D3DRS_STENCILFUNC,  D3DCMP_EQUAL));
-    HR(gd3dDevice->SetRenderState(D3DRS_STENCILPASS,  D3DSTENCILOP_KEEP));
+	HR(m_device->SetRenderState(D3DRS_STENCILFUNC,  D3DCMP_EQUAL));
+    HR(m_device->SetRenderState(D3DRS_STENCILPASS,  D3DSTENCILOP_KEEP));
 
 	// Build Reflection transformation.
 	D3DXMATRIX R;
@@ -194,30 +188,45 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 	D3DXMatrixReflect(&R, &plane);
 
 	// Save the original teapot world matrix.
-	D3DXMATRIX oldTeapotWorld = mTeapotWorld;
+	//D3DXMATRIX oldTeapotWorld = mTeapotWorld;
 
 	// Add reflection transform.
-	mTeapotWorld = mTeapotWorld * R;
+	//mTeapotWorld = mTeapotWorld * R;
 
 	// Reflect light vector also.
-	D3DXVECTOR3 oldLightVecW = mLightVecW;
-	D3DXVec3TransformNormal(&mLightVecW, &mLightVecW, &R);
-	HR(mFX->SetValue(mhLightVecW, &mLightVecW, sizeof(D3DXVECTOR3)));
+	//D3DXVECTOR3 oldLightVecW = mLightVecW;
+	//D3DXVec3TransformNormal(&mLightVecW, &mLightVecW, &R);
+	//HR(mFX->SetValue(mhLightVecW, &mLightVecW, sizeof(D3DXVECTOR3)));
 
 	// Disable depth buffer and render the reflected teapot.
-	HR(gd3dDevice->SetRenderState(D3DRS_ZENABLE, false));
-	HR(gd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
+	HR(m_device->SetRenderState(D3DRS_ZENABLE, false));
+	HR(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
 
 	// Finally, draw the reflected teapot
-	HR(gd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW));
-	drawTeapot();
-	mTeapotWorld = oldTeapotWorld;
-	mLightVecW   = oldLightVecW;
+	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW));
+	//drawTeapot();
+
+	int totalMeshes = scene->GetMeshesVector()->size();	
+	for(int i = 0; i < totalMeshes; i++)
+	{
+		
+		mesh = scene->GetMeshesVector()->at(i);	
+		d3dmesh = (D3DMesh *)mesh;	
+		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());		
+		d3dmesh->SetShaderHandlers();
+		FXManager::GetInstance()->PreRender();	
+		DrawMesh(mesh);
+		FXManager::GetInstance()->PosRender();
+		FXManager::GetInstance()->End();
+	}
+	///////////////////////////77
+	//mTeapotWorld = oldTeapotWorld;
+	//mLightVecW   = oldLightVecW;
 	
 	// Restore render states.
-	HR(gd3dDevice->SetRenderState(D3DRS_ZENABLE, true));
-	HR(gd3dDevice->SetRenderState( D3DRS_STENCILENABLE, false));
-	HR(gd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
+	HR(m_device->SetRenderState(D3DRS_ZENABLE, true));
+	HR(m_device->SetRenderState( D3DRS_STENCILENABLE, false));
+	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
 #endif
 }
 

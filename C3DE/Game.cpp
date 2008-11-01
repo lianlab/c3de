@@ -317,12 +317,12 @@ void Game::InitializeMeshes()
 	
 	
 	
-	//m_testScene->AddMirror((Mirror *)m_mirror);	
-	m_testScene->AddMesh(m_wall);
+	m_testScene->AddMirror((Mirror *)m_mirror);	
+	//m_testScene->AddMesh(m_wall);
 	//m_testScene->AddMesh((Mesh*)m_cube);
 	//m_testScene->AddMesh((Mesh*)m_grid);	
 	m_testScene->AddMesh((Mesh*)m_testMesh);
-	m_testScene->AddMesh((Mesh*)m_plane);
+	//m_testScene->AddMesh((Mesh*)m_plane);
 	//m_testScene->AddMesh(m_wall);
 	
 

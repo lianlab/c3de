@@ -21,7 +21,10 @@ public:
 	void SetUpFromXMLFile(char *xmlPath){};
 	void AddMesh(Mesh*mesh);
 	void RemoveMesh(Mesh*mesh);
-	vector<Mesh *> *GetMeshesVector(){return m_meshes;}
+	vector<Mesh *> *GetMeshesVector()
+	{
+		return m_meshes;
+	}
 
 	void AddMirror(Mirror*mirror);
 	void RemoveMirror(Mirror*mirror);

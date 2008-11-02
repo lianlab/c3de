@@ -65,6 +65,9 @@ public:
 
 	FX * GetEffect(){return m_effect;}
 
+	void SetTransformMatrix(D3DXMATRIX matrix);
+	
+
 protected:
 	UINT m_numShaderPasses;
 	IDirect3DVertexBuffer9 * m_vertexBuffer;
@@ -84,6 +87,8 @@ protected:
 	
 	int m_updateTime;
 
+	D3DXMATRIX m_transformMatrix;
+	
 };
 #endif
 

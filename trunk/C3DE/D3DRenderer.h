@@ -59,7 +59,39 @@ private:
 	
 	D3DXMATRIX m_proj;	
 
+#if 1
+	void drawTeapot();
+	ID3DXMesh*              mTeapot;
+	IDirect3DTexture9*     mTeapotTex;
+	ID3DXEffect* mFX;
+	D3DXHANDLE   mhTech;
+	D3DXHANDLE   mhWVP;
+	D3DXHANDLE   mhWorldInvTrans;
+	D3DXHANDLE   mhLightVecW;
+	D3DXHANDLE   mhDiffuseMtrl;
+	D3DXHANDLE   mhDiffuseLight;
+	D3DXHANDLE   mhAmbientMtrl;
+	D3DXHANDLE   mhAmbientLight;
+	D3DXHANDLE   mhSpecularMtrl;
+	D3DXHANDLE   mhSpecularLight;
+	D3DXHANDLE   mhSpecularPower;
+	D3DXHANDLE   mhEyePos;
+	D3DXHANDLE   mhWorld;
+	D3DXHANDLE   mhTex;
+	D3DXMATRIX mTeapotWorld;
+	D3DXMATRIX mView;
+	D3DXMATRIX mProj;
 	
+
+	D3DXVECTOR3 mLightVecW;
+	D3DXCOLOR   mAmbientLight;
+	D3DXCOLOR   mDiffuseLight;
+	D3DXCOLOR   mSpecularLight;
+
+	void drawReflectedTeapot();
+
+	void drawReflected(Scene *scene);
+#endif
 
 };
 

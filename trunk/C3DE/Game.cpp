@@ -182,8 +182,8 @@ void Game::OnKeyDown(int key)
 	else if(key == 200)
 	{
 		//m_cameraHeight += (0.025f * m_deltaTime);
-		m_wall->SetPosition(m_wall->GetX(), m_wall->GetY(), m_wall->GetZ() + 0.01f);
-		//m_testMesh->SetPosition(m_testMesh->GetX() - 0.1f, 0.0f, 0.0f);
+		//m_wall->SetPosition(m_wall->GetX(), m_wall->GetY(), m_wall->GetZ() + 0.01f);
+		m_testMesh->SetPosition(m_testMesh->GetX() - 0.1f, 0.0f, 0.0f);
 		//m_testMesh->Scale(m_testMesh->GetXScale() - 0.1f, 0.0f, 0.0f);
 		//m_plane->Scale(m_plane->GetXScale() + 0.01f, m_plane->GetYScale()+ 0.01f, m_plane->GetZScale()+ 0.01f);
 		//m_testMesh->Scale(m_testMesh->GetXScale() + 0.01f, m_testMesh->GetYScale() + 0.01f, m_testMesh->GetZScale() + 0.01f);
@@ -192,9 +192,9 @@ void Game::OnKeyDown(int key)
 	{
 
 		//m_cameraHeight -= (0.025f * m_deltaTime);
-		m_plane->SetPosition(m_plane->GetX() + 0.1f, 0.0f, 0.0f);
+		//m_plane->SetPosition(m_plane->GetX() + 0.1f, 0.0f, 0.0f);
 		//m_testMesh->Scale(2.0f, 0.0f, 0.0f);
-		//m_testMesh->SetPosition(m_testMesh->GetX() + 0.1f, 0.0f, 0.0f);
+		m_testMesh->SetPosition(m_testMesh->GetX() + 0.1f, 0.0f, 0.0f);
 		//m_plane->Scale(m_plane->GetXScale() - 0.01f, m_plane->GetYScale()- 0.01f, m_plane->GetZScale()- 0.01f);
 		//m_testMesh->Scale(m_testMesh->GetXScale() - 0.01f, m_testMesh->GetYScale() - 0.01f, m_testMesh->GetZScale() - 0.01f);
 	}	
@@ -317,7 +317,7 @@ void Game::InitializeMeshes()
 	
 	
 	
-	m_testScene->AddMirror((Mirror *)m_mirror);	
+	//m_testScene->AddMirror((Mirror *)m_mirror);	
 	//m_testScene->AddMesh(m_wall);
 	//m_testScene->AddMesh((Mesh*)m_cube);
 	//m_testScene->AddMesh((Mesh*)m_grid);	

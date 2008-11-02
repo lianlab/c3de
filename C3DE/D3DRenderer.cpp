@@ -96,6 +96,12 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 void D3DRenderer::DrawScene(Scene *scene)
 {
 	
+		/*
+	drawTeapot();
+	drawReflectedTeapot();
+
+	return;
+	*/
 	
 	int totalMeshes = scene->GetMeshesVector()->size();	
 	
@@ -108,7 +114,14 @@ void D3DRenderer::DrawScene(Scene *scene)
 	D3DXMATRIX t_view = cam->GetMatrix();
 
 	
+	
 	D3DXMATRIX t_projView = t_view*m_proj;	
+
+	D3DXMATRIX fleps;
+
+	D3DXMatrixTranslation(&fleps, 0.0f, 0.0f, 0.0f);
+
+	t_projView = t_view*m_proj*fleps;
 
 
 	FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
@@ -128,12 +141,70 @@ void D3DRenderer::DrawScene(Scene *scene)
 		FXManager::GetInstance()->End();
 	}
 
-	
+	//drawReflected(scene);
+
+	/*
 	for(int i = 0; i < totalMirrors; i++)
 	{
 		DrawMirror(scene->GetMirrorsVector()->at(i), scene);		
 	}
+	*/
 
+	
+}
+
+void D3DRenderer::drawReflected(Scene *scene)
+{
+	int totalMeshes = scene->GetMeshesVector()->size();	
+	
+	int totalMirrors = scene->GetMirrorsVector()->size();	
+
+	// Build Reflection transformation.
+	D3DXMATRIX R;
+	D3DXPLANE plane(0.0f, 0.0f, 1.0f, 3.0f); // xy plane
+	D3DXMatrixReflect(&R, &plane);
+
+	
+	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
+
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	D3DXMATRIX t_view = cam->GetMatrix();
+
+	D3DXMATRIX fleps;
+
+	D3DXMatrixTranslation(&fleps, 5.0f, 0.0f, 0.0f);
+	
+	D3DXMATRIX t_projView = t_view*m_proj;		
+
+	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW));
+
+
+
+	UINT num = 0;
+
+	for(int i = 0; i < totalMeshes; i++)
+	{
+		
+		Mesh *mesh = scene->GetMeshesVector()->at(i);	
+		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
+		
+		D3DXMatrixReflect(&R,&plane);
+
+		D3DXMATRIX previous = d3dmesh->GetTransformMatrix();
+		d3dmesh->SetTransformMatrix(previous*R);
+		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());		
+		d3dmesh->SetShaderHandlers();
+		FXManager::GetInstance()->PreRender();	
+		DrawMesh(mesh);
+		d3dmesh->SetTransformMatrix(previous);
+		FXManager::GetInstance()->PosRender();
+		FXManager::GetInstance()->End();
+		
+
+	}
+
+	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
+	
 }
 
 void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
@@ -456,6 +527,54 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	
 	BuildProjMtx();
 
+#if 1
+	// Create the FX from a .fx file.
+	ID3DXBuffer* errors = 0;
+	HR(D3DXCreateEffectFromFile(m_device, "DirLightTex.fx", 
+		0, 0, D3DXSHADER_DEBUG, 0, &mFX, &errors));
+	if( errors )
+		MessageBox(0, (char*)errors->GetBufferPointer(), 0, 0);
+
+	// Obtain handles.
+	mhTech          = mFX->GetTechniqueByName("DirLightTexTech");
+	mhWVP           = mFX->GetParameterByName(0, "gWVP");
+	mhWorldInvTrans = mFX->GetParameterByName(0, "gWorldInvTrans");
+	mhLightVecW     = mFX->GetParameterByName(0, "gLightVecW");
+	mhDiffuseMtrl   = mFX->GetParameterByName(0, "gDiffuseMtrl");
+	mhDiffuseLight  = mFX->GetParameterByName(0, "gDiffuseLight");
+	mhAmbientMtrl   = mFX->GetParameterByName(0, "gAmbientMtrl");
+	mhAmbientLight  = mFX->GetParameterByName(0, "gAmbientLight");
+	mhSpecularMtrl  = mFX->GetParameterByName(0, "gSpecularMtrl");
+	mhSpecularLight = mFX->GetParameterByName(0, "gSpecularLight");
+	mhSpecularPower = mFX->GetParameterByName(0, "gSpecularPower");
+	mhEyePos        = mFX->GetParameterByName(0, "gEyePosW");
+	mhWorld         = mFX->GetParameterByName(0, "gWorld");
+	mhTex           = mFX->GetParameterByName(0, "gTex");
+
+	HR(D3DXCreateTextureFromFile(m_device, "brick1.dds", &mTeapotTex));
+	HR(D3DXCreateTeapot(m_device, &mTeapot, 0));
+	D3DXMatrixTranslation(&mTeapotWorld, 0.0f, 1.0f, -6.0f);
+
+	mLightVecW     = D3DXVECTOR3(0.0, 0.707f, -0.707f);
+	mDiffuseLight  = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	mAmbientLight  = D3DXCOLOR(0.6f, 0.6f, 0.6f, 1.0f);
+	mSpecularLight = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
+	HR(mFX->SetTechnique(mhTech));
+	HR(mFX->SetValue(mhLightVecW, &mLightVecW, sizeof(D3DXVECTOR3)));
+	HR(mFX->SetValue(mhDiffuseLight, &mDiffuseLight, sizeof(D3DXCOLOR)));
+	HR(mFX->SetValue(mhAmbientLight, &mAmbientLight, sizeof(D3DXCOLOR)));
+	HR(mFX->SetValue(mhSpecularLight, &mSpecularLight, sizeof(D3DXCOLOR)));
+
+	// All objects use the same material.
+	D3DXCOLOR t_white = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	D3DXCOLOR t_white2 = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
+	HR(mFX->SetValue(mhAmbientMtrl, &t_white, sizeof(D3DXCOLOR)));
+	HR(mFX->SetValue(mhDiffuseMtrl, &t_white, sizeof(D3DXCOLOR)));
+	HR(mFX->SetValue(mhSpecularMtrl, &t_white2 , sizeof(D3DXCOLOR)));
+	HR(mFX->SetFloat(mhSpecularPower, 16.0F));
+#endif
+
 	return true;
 }
 
@@ -486,3 +605,71 @@ void D3DRenderer::EndRender()
 }
 
 
+#if 1
+
+
+
+void D3DRenderer::drawTeapot()
+{		
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	D3DXMATRIX t_view = cam->GetMatrix();
+
+	
+	// Cylindrically interpolate texture coordinates.
+	HR(m_device->SetRenderState(D3DRS_WRAP0, D3DWRAPCOORD_0));
+
+	
+	HR(mFX->SetMatrix(mhWVP, &(mTeapotWorld*t_view*m_proj)));
+	D3DXMATRIX worldInvTrans;
+	D3DXMatrixInverse(&worldInvTrans, 0, &mTeapotWorld);
+	D3DXMatrixTranspose(&worldInvTrans, &worldInvTrans);
+	HR(mFX->SetMatrix(mhWorldInvTrans, &worldInvTrans));
+	HR(mFX->SetMatrix(mhWorld, &mTeapotWorld));
+	HR(mFX->SetTexture(mhTex, mTeapotTex));
+
+	// Begin passes.
+	UINT numPasses = 0;
+	HR(mFX->Begin(&numPasses, 0));
+	for(UINT i = 0; i < numPasses; ++i)
+	{
+		HR(mFX->BeginPass(i));
+		HR(mTeapot->DrawSubset(0));
+		HR(mFX->EndPass());
+	}
+	HR(mFX->End());
+
+	// Disable wrap.
+	HR(m_device->SetRenderState(D3DRS_WRAP0, 0));
+}
+
+void D3DRenderer::drawReflectedTeapot()
+{
+
+	
+	// Build Reflection transformation.
+	D3DXMATRIX R;
+	D3DXPLANE plane(0.0f, 0.0f, 1.0f, 0.0f); // xy plane
+	D3DXMatrixReflect(&R, &plane);
+
+	// Save the original teapot world matrix.
+	D3DXMATRIX oldTeapotWorld = mTeapotWorld;
+
+	// Add reflection transform.
+	mTeapotWorld = mTeapotWorld * R;
+
+	// Reflect light vector also.
+	/*
+	D3DXVECTOR3 oldLightVecW = mLightVecW;
+	D3DXVec3TransformNormal(&mLightVecW, &mLightVecW, &R);
+	HR(mFX->SetValue(mhLightVecW, &mLightVecW, sizeof(D3DXVECTOR3)));
+
+	*/
+	// Disable depth buffer and render the reflected teapot.
+	
+	D3DXMatrixTranslation(&mTeapotWorld,2.0f, 2.0f, 2.0f);
+	drawTeapot();
+	mTeapotWorld = oldTeapotWorld;
+	//mLightVecW   = oldLightVecW;
+	
+}
+#endif

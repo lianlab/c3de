@@ -7,6 +7,7 @@
 #include "FXManager.h"
 #include "DebugMemory.h"
 
+
 D3DRenderer::D3DRenderer()
 {	
 	m_font = NULL;
@@ -32,7 +33,7 @@ void D3DRenderer::BuildProjMtx()
 	float w = (float)m_d3dpp.BackBufferWidth;
 	float h = (float)m_d3dpp.BackBufferHeight;
 	D3DXMatrixPerspectiveFovLH(&m_proj, D3DX_PI * 0.25f, w/h, 1.0f, 5000.0f);
-
+	
 }
 
 void D3DRenderer::SetScreenMode(int newScreenMode)
@@ -96,12 +97,7 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 void D3DRenderer::DrawScene(Scene *scene)
 {
 	
-		/*
-	drawTeapot();
-	drawReflectedTeapot();
-
-	return;
-	*/
+	
 	
 	int totalMeshes = scene->GetMeshesVector()->size();	
 	
@@ -133,26 +129,29 @@ void D3DRenderer::DrawScene(Scene *scene)
 		
 		Mesh *mesh = scene->GetMeshesVector()->at(i);	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
+		/*
 		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());		
 		d3dmesh->SetShaderHandlers();
 		FXManager::GetInstance()->PreRender();	
 		DrawMesh(mesh);
 		FXManager::GetInstance()->PosRender();
 		FXManager::GetInstance()->End();
+		*/
+		DrawMesh(mesh);
 	}
 
-	//drawReflected(scene);
-
-	/*
+	
+	
+	
 	for(int i = 0; i < totalMirrors; i++)
 	{
 		DrawMirror(scene->GetMirrorsVector()->at(i), scene);		
-	}
-	*/
-
+	}	
+	
 	
 }
 
+#if 0
 void D3DRenderer::drawReflected(Scene *scene)
 {
 	int totalMeshes = scene->GetMeshesVector()->size();	
@@ -178,18 +177,13 @@ void D3DRenderer::drawReflected(Scene *scene)
 
 	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW));
 
-
-
 	UINT num = 0;
 
 	for(int i = 0; i < totalMeshes; i++)
-	{
-		
+	{		
 		Mesh *mesh = scene->GetMeshesVector()->at(i);	
-		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
-		
+		D3DMesh *d3dmesh = (D3DMesh *)mesh;			
 		D3DXMatrixReflect(&R,&plane);
-
 		D3DXMATRIX previous = d3dmesh->GetTransformMatrix();
 		d3dmesh->SetTransformMatrix(previous*R);
 		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());		
@@ -198,14 +192,13 @@ void D3DRenderer::drawReflected(Scene *scene)
 		DrawMesh(mesh);
 		d3dmesh->SetTransformMatrix(previous);
 		FXManager::GetInstance()->PosRender();
-		FXManager::GetInstance()->End();
-		
-
+		FXManager::GetInstance()->End();		
 	}
 
 	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
 	
 }
+#endif
 
 void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 {
@@ -217,6 +210,56 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 	DrawMesh(mesh);
 	FXManager::GetInstance()->PosRender();
 	FXManager::GetInstance()->End();
+
+	int totalMeshes = scene->GetMeshesVector()->size();	
+	
+	
+	// Build Reflection transformation.
+	D3DXMATRIX R;
+	D3DXPLANE *plane = static_cast<D3DMirror *>(mirror)->GetPlane();
+	D3DXMatrixReflect(&R, plane);
+
+	
+	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
+
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	D3DXMATRIX t_view = cam->GetMatrix();
+
+	
+	
+	D3DXMATRIX t_projView = t_view*m_proj;		
+
+	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW));
+
+	UINT num = 0;
+
+	for(int i = 0; i < totalMeshes; i++)
+	{		
+		Mesh *mesh = scene->GetMeshesVector()->at(i);	
+		D3DMesh *d3dmesh = (D3DMesh *)mesh;			
+		D3DXMatrixReflect(&R,plane);
+		D3DXMATRIX previous = d3dmesh->GetTransformMatrix();
+		d3dmesh->SetTransformMatrix(previous*R);
+		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());		
+		d3dmesh->SetShaderHandlers();
+		FXManager::GetInstance()->PreRender();	
+		DrawMesh(mesh);
+		d3dmesh->SetTransformMatrix(previous);
+		FXManager::GetInstance()->PosRender();
+		FXManager::GetInstance()->End();		
+	}
+
+	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
+#if 0
+	Mesh *mesh = mirror->GetMesh();	
+	D3DMesh *d3dmesh = (D3DMesh *)mesh;
+	FXManager::GetInstance()->Begin(d3dmesh->GetEffect());	
+	d3dmesh->SetShaderHandlers();
+	FXManager::GetInstance()->PreRender();
+	DrawMesh(mesh);
+	FXManager::GetInstance()->PosRender();
+	FXManager::GetInstance()->End();
+#endif
 #if 0
 	HR(m_device->SetRenderState(D3DRS_STENCILENABLE,    true));
     HR(m_device->SetRenderState(D3DRS_STENCILFUNC,      D3DCMP_ALWAYS));
@@ -318,7 +361,7 @@ void D3DRenderer::DisableAlphaBlending()
 
 void D3DRenderer::DrawMesh(Mesh *a_mesh)
 {
-
+/*
 	D3DMesh *mesh = (D3DMesh *)a_mesh;	
 	
 	HR(m_device->SetStreamSource(0, mesh->GetVertexBuffer(), 0, mesh->GetVertexSize()));
@@ -335,12 +378,44 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
 	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
+	
 
 	int numTriangles = mesh->GetIndices()->size() / 3;
 	int numVertices = mesh->GetVertices()->size();		
 	
 	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
+	*/
 	
+	
+
+	
+	D3DMesh *mesh = (D3DMesh *)a_mesh;
+	FXManager::GetInstance()->Begin(mesh->GetEffect());		
+	mesh->SetShaderHandlers();
+	FXManager::GetInstance()->PreRender();	
+	
+	HR(m_device->SetStreamSource(0, mesh->GetVertexBuffer(), 0, mesh->GetVertexSize()));	
+	HR(m_device->SetIndices(mesh->GetIndexBuffer()));	
+	HR(m_device->SetVertexDeclaration(mesh->GetVertexDeclaration()));
+
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	
+	D3DXMATRIX W;
+	D3DXMatrixIdentity(&W);
+	HR(m_device->SetTransform(D3DTS_WORLD, &W));
+	
+	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
+	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
+	
+
+	int numTriangles = mesh->GetIndices()->size() / 3;
+	int numVertices = mesh->GetVertices()->size();		
+	
+	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
+
+	FXManager::GetInstance()->PosRender();
+	FXManager::GetInstance()->End();
 	
 }
 
@@ -527,7 +602,7 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	
 	BuildProjMtx();
 
-#if 1
+#if 0
 	// Create the FX from a .fx file.
 	ID3DXBuffer* errors = 0;
 	HR(D3DXCreateEffectFromFile(m_device, "DirLightTex.fx", 
@@ -575,6 +650,13 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	HR(mFX->SetFloat(mhSpecularPower, 16.0F));
 #endif
 
+	/*
+	m_pivot = new Pivot();
+	m_pivot->SetMaterial(t_material);
+	CreateMeshBuffers(m_pivot);
+
+	*/
+
 	return true;
 }
 
@@ -605,7 +687,7 @@ void D3DRenderer::EndRender()
 }
 
 
-#if 1
+#if 0
 
 
 

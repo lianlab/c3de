@@ -10,7 +10,7 @@ public:
 	D3DMirror(D3DMesh *mesh);
 	~D3DMirror();
 	D3DXPLANE *GetPlane(){return m_plane;}
-private:
+protected:
 	D3DXPLANE *m_plane;
 
 };

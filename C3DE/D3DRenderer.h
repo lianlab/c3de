@@ -59,7 +59,7 @@ private:
 	
 	D3DXMATRIX m_proj;	
 
-#if 1
+#if 0
 	void drawTeapot();
 	ID3DXMesh*              mTeapot;
 	IDirect3DTexture9*     mTeapotTex;

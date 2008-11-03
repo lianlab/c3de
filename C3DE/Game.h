@@ -13,6 +13,7 @@
 #include "PlanarMirror.h"
 
 #include "Wall.h"
+#include "Pivot.h"
 
 
 
@@ -76,6 +77,7 @@ private:
 	Plane *m_plane;
 	
 
+	Pivot *m_pivot;
 	Grid *m_grid;
 
 	PlanarMirror *m_mirror;

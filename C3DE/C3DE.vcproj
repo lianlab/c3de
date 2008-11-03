@@ -332,6 +332,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\Pivot.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\Plane.cpp"
 							>
 						</File>
@@ -445,6 +449,10 @@
 						>
 						<File
 							RelativePath=".\BookLights.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\HardColors.cpp"
 							>
 						</File>
 						<File
@@ -666,6 +674,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\Pivot.h"
+							>
+						</File>
+						<File
 							RelativePath=".\Plane.h"
 							>
 						</File>
@@ -779,6 +791,10 @@
 						>
 						<File
 							RelativePath=".\BookLights.h"
+							>
+						</File>
+						<File
+							RelativePath=".\HardColors.h"
 							>
 						</File>
 						<File

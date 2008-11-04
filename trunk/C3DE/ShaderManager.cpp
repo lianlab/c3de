@@ -73,7 +73,7 @@ void ShaderManager::InitializeResources()
 
 	ID3DXEffect * SHADER_HARD_COLORS;
 	errors = 0;	
-	HR(D3DXCreateEffectFromFile(m_device, "effects/HardColors.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_HARD_COLORS, &errors));	
+	HR(D3DXCreateEffectFromFile(m_device, "effects/hardColors.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_HARD_COLORS, &errors));	
 	m_effectResources[SHADER_HARD_COLORS_ID] = SHADER_HARD_COLORS;
 	
 	m_effects[SHADER_BOOK_LIGHTS_ID] = new BookLights(SHADER_BOOK_LIGHTS);

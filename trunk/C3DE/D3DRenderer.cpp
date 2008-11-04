@@ -27,6 +27,10 @@ D3DRenderer::~D3DRenderer()
 	}
 }
 
+
+
+
+
 void D3DRenderer::BuildProjMtx()
 {
 
@@ -93,6 +97,70 @@ void D3DRenderer::SetScreenMode(int newScreenMode)
 
 }
 
+void D3DRenderer::CreateMeshBuffers(D3DMesh *mesh)
+{			
+	
+	//indices
+	IDirect3DIndexBuffer9 *ib;
+
+	int indicesSize = mesh->GetIndices()->size();
+	
+	HR(GetDevice()->CreateIndexBuffer(indicesSize * sizeof(WORD), D3DUSAGE_WRITEONLY,
+	D3DFMT_INDEX16, D3DPOOL_MANAGED, &ib, 0));
+	WORD *k = 0;
+
+	HR(ib->Lock(0,0,(void**)&k, 0));
+
+	for(int i = 0; i < indicesSize; i++)
+	{
+		k[i] = mesh->GetIndices()->at(i);
+	}
+
+	HR(ib->Unlock());
+
+	//vertices
+	IDirect3DVertexBuffer9 * vb;
+	int vertexSize = mesh->GetVertices()->size();
+	HR(GetDevice()->CreateVertexBuffer(vertexSize * mesh->GetVertexSize(), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &vb, 0));
+	VertexPos *v = 0;
+	HR(vb->Lock(0,0,(void**)&v,0));
+
+	for(int i = 0; i < vertexSize; i++)
+	{
+		v[i] = mesh->GetVertices()->at(i);
+	}
+	
+	HR(vb->Unlock());
+
+	//vertexDeclaration
+#if 0
+	D3DVERTEXELEMENT9 VertexPosElements[] =
+	{
+		{0,0,D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+		{0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0},
+		D3DDECL_END()
+	};
+#endif
+
+	D3DVERTEXELEMENT9 VertexPosElements[] = 
+	{
+		{0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+		{0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0},
+		{0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
+		D3DDECL_END()
+	};	
+
+	
+
+	IDirect3DVertexDeclaration9 *Decl;
+	HR(GetDevice()->CreateVertexDeclaration(VertexPosElements, &Decl));
+
+	mesh->SetBuffers(vb, ib);
+	mesh->SetVertexDeclaration(Decl);
+
+	//mesh->Translate(0.0f, 0.0f, 0.0f);
+}
+
 
 void D3DRenderer::DrawScene(Scene *scene)
 {
@@ -122,94 +190,66 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 	FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
 
-	UINT num = 0;
-
-	for(int i = 0; i < totalMeshes; i++)
-	{
-		
-		Mesh *mesh = scene->GetMeshesVector()->at(i);	
-		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
-		/*
-		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());		
-		d3dmesh->SetShaderHandlers();
-		FXManager::GetInstance()->PreRender();	
-		DrawMesh(mesh);
-		FXManager::GetInstance()->PosRender();
-		FXManager::GetInstance()->End();
-		*/
-		DrawMesh(mesh);
-	}
-
-	
-	
+	UINT num = 0;			
 	
 	for(int i = 0; i < totalMirrors; i++)
 	{
 		DrawMirror(scene->GetMirrorsVector()->at(i), scene);		
 	}	
-	
-	
-}
-
-#if 0
-void D3DRenderer::drawReflected(Scene *scene)
-{
-	int totalMeshes = scene->GetMeshesVector()->size();	
-	
-	int totalMirrors = scene->GetMirrorsVector()->size();	
-
-	// Build Reflection transformation.
-	D3DXMATRIX R;
-	D3DXPLANE plane(0.0f, 0.0f, 1.0f, 3.0f); // xy plane
-	D3DXMatrixReflect(&R, &plane);
-
-	
-	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
-
-	D3DCamera *cam = (D3DCamera *) m_camera;
-	D3DXMATRIX t_view = cam->GetMatrix();
-
-	D3DXMATRIX fleps;
-
-	D3DXMatrixTranslation(&fleps, 5.0f, 0.0f, 0.0f);
-	
-	D3DXMATRIX t_projView = t_view*m_proj;		
-
-	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW));
-
-	UINT num = 0;
 
 	for(int i = 0; i < totalMeshes; i++)
-	{		
+	{
+		
 		Mesh *mesh = scene->GetMeshesVector()->at(i);	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;			
-		D3DXMatrixReflect(&R,&plane);
-		D3DXMATRIX previous = d3dmesh->GetTransformMatrix();
-		d3dmesh->SetTransformMatrix(previous*R);
-		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());		
-		d3dmesh->SetShaderHandlers();
-		FXManager::GetInstance()->PreRender();	
 		DrawMesh(mesh);
-		d3dmesh->SetTransformMatrix(previous);
-		FXManager::GetInstance()->PosRender();
-		FXManager::GetInstance()->End();		
 	}
 
-	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
 	
 }
-#endif
+
 
 void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 {
+#if 0
 	Mesh *mesh = mirror->GetMesh();	
-	D3DMesh *d3dmesh = (D3DMesh *)mesh;
-	FXManager::GetInstance()->Begin(d3dmesh->GetEffect());	
-	d3dmesh->SetShaderHandlers();
-	FXManager::GetInstance()->PreRender();
+	D3DMesh *d3dmesh = (D3DMesh *)mesh;	
+	DrawMesh(mesh);	
+
+
+	HR(m_device->SetRenderState(D3DRS_STENCILENABLE,    true));
+    HR(m_device->SetRenderState(D3DRS_STENCILFUNC,      D3DCMP_ALWAYS));
+    HR(m_device->SetRenderState(D3DRS_STENCILREF,       0x1));
+    HR(m_device->SetRenderState(D3DRS_STENCILMASK,      0xffffffff));
+    HR(m_device->SetRenderState(D3DRS_STENCILWRITEMASK, 0xffffffff));
+    HR(m_device->SetRenderState(D3DRS_STENCILZFAIL,     D3DSTENCILOP_KEEP));
+    HR(m_device->SetRenderState(D3DRS_STENCILFAIL,      D3DSTENCILOP_KEEP));
+    HR(m_device->SetRenderState(D3DRS_STENCILPASS,      D3DSTENCILOP_REPLACE));
+
+	// Disable writes to the depth and back buffers
+    HR(m_device->SetRenderState(D3DRS_ZWRITEENABLE, false));
+    HR(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, true));
+    HR(m_device->SetRenderState(D3DRS_SRCBLEND,  D3DBLEND_ZERO));
+    HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE));
+
+	// Draw mirror to stencil only.
 	DrawMesh(mesh);
-	FXManager::GetInstance()->PosRender();
-	FXManager::GetInstance()->End();
+
+	// Re-enable depth writes
+	HR(m_device->SetRenderState( D3DRS_ZWRITEENABLE, true ));
+
+	// Only draw reflected teapot to the pixels where the mirror
+	// was drawn to.
+	HR(m_device->SetRenderState(D3DRS_STENCILFUNC,  D3DCMP_EQUAL));
+    HR(m_device->SetRenderState(D3DRS_STENCILPASS,  D3DSTENCILOP_KEEP));
+
+	// Disable depth buffer and render the reflected teapot.
+	HR(m_device->SetRenderState(D3DRS_ZENABLE, false));
+	HR(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
+
+	
+
+
 
 	int totalMeshes = scene->GetMeshesVector()->size();	
 	
@@ -249,18 +289,25 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 		FXManager::GetInstance()->End();		
 	}
 
+	
+	// Restore render states.
+	
+
+	HR(m_device->SetRenderState(D3DRS_ZENABLE, true));
+	HR(m_device->SetRenderState( D3DRS_STENCILENABLE, false));
+	
 	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
-#if 0
-	Mesh *mesh = mirror->GetMesh();	
-	D3DMesh *d3dmesh = (D3DMesh *)mesh;
-	FXManager::GetInstance()->Begin(d3dmesh->GetEffect());	
-	d3dmesh->SetShaderHandlers();
-	FXManager::GetInstance()->PreRender();
-	DrawMesh(mesh);
-	FXManager::GetInstance()->PosRender();
-	FXManager::GetInstance()->End();
+
 #endif
-#if 0
+
+
+	Mesh *mesh = mirror->GetMesh();	
+	D3DMesh *d3dmesh = (D3DMesh *)mesh;	
+	DrawMesh(mesh);	
+
+
+	
+
 	HR(m_device->SetRenderState(D3DRS_STENCILENABLE,    true));
     HR(m_device->SetRenderState(D3DRS_STENCILFUNC,      D3DCMP_ALWAYS));
     HR(m_device->SetRenderState(D3DRS_STENCILREF,       0x1));
@@ -275,19 +322,10 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
     HR(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, true));
     HR(m_device->SetRenderState(D3DRS_SRCBLEND,  D3DBLEND_ZERO));
     HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE));
+	
 
-	// Draw mirror to stencil only.
-	//drawMirror();
-	
-	
-	FXManager::GetInstance()->Begin(d3dmesh->GetEffect());	
-	d3dmesh->SetShaderHandlers();
-	FXManager::GetInstance()->PreRender();
-	DrawMesh(mesh);
-	FXManager::GetInstance()->PosRender();
-	FXManager::GetInstance()->End();
-	///////////77
-	
+	DrawMesh(mesh);	
+
 	// Re-enable depth writes
 	HR(m_device->SetRenderState( D3DRS_ZWRITEENABLE, true ));
 
@@ -296,52 +334,56 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 	HR(m_device->SetRenderState(D3DRS_STENCILFUNC,  D3DCMP_EQUAL));
     HR(m_device->SetRenderState(D3DRS_STENCILPASS,  D3DSTENCILOP_KEEP));
 
-	// Build Reflection transformation.
-	D3DXMATRIX R;
-	D3DXPLANE plane(0.0f, 0.0f, 1.0f, 0.0f); // xy plane
-	D3DXMatrixReflect(&R, &plane);
-
-	// Save the original teapot world matrix.
-	//D3DXMATRIX oldTeapotWorld = mTeapotWorld;
-
-	// Add reflection transform.
-	//mTeapotWorld = mTeapotWorld * R;
-
-	// Reflect light vector also.
-	//D3DXVECTOR3 oldLightVecW = mLightVecW;
-	//D3DXVec3TransformNormal(&mLightVecW, &mLightVecW, &R);
-	//HR(mFX->SetValue(mhLightVecW, &mLightVecW, sizeof(D3DXVECTOR3)));
-
 	// Disable depth buffer and render the reflected teapot.
 	HR(m_device->SetRenderState(D3DRS_ZENABLE, false));
 	HR(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
 
-	// Finally, draw the reflected teapot
-	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW));
-	//drawTeapot();
-
 	int totalMeshes = scene->GetMeshesVector()->size();	
+	
+	
+	// Build Reflection transformation.
+	D3DXMATRIX R;
+	D3DXPLANE *plane = static_cast<D3DMirror *>(mirror)->GetPlane();
+	D3DXMatrixReflect(&R, plane);
+
+	
+	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
+
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	D3DXMATRIX t_view = cam->GetMatrix();
+
+	
+	
+	D3DXMATRIX t_projView = t_view*m_proj;		
+
+	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW));
+
+	UINT num = 0;
+
 	for(int i = 0; i < totalMeshes; i++)
-	{
-		
-		mesh = scene->GetMeshesVector()->at(i);	
-		d3dmesh = (D3DMesh *)mesh;	
+	{		
+		Mesh *mesh = scene->GetMeshesVector()->at(i);	
+		D3DMesh *d3dmesh = (D3DMesh *)mesh;			
+		D3DXMatrixReflect(&R,plane);
+		D3DXMATRIX previous = d3dmesh->GetTransformMatrix();
+		d3dmesh->SetTransformMatrix(previous*R);
 		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());		
 		d3dmesh->SetShaderHandlers();
 		FXManager::GetInstance()->PreRender();	
 		DrawMesh(mesh);
+		d3dmesh->SetTransformMatrix(previous);
 		FXManager::GetInstance()->PosRender();
-		FXManager::GetInstance()->End();
+		FXManager::GetInstance()->End();		
 	}
-	///////////////////////////77
-	//mTeapotWorld = oldTeapotWorld;
-	//mLightVecW   = oldLightVecW;
+
 	
 	// Restore render states.
+	
+
 	HR(m_device->SetRenderState(D3DRS_ZENABLE, true));
 	HR(m_device->SetRenderState( D3DRS_STENCILENABLE, false));
 	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
-#endif
+
 }
 
 void D3DRenderer::EnableAlphaBlending()
@@ -361,30 +403,7 @@ void D3DRenderer::DisableAlphaBlending()
 
 void D3DRenderer::DrawMesh(Mesh *a_mesh)
 {
-/*
-	D3DMesh *mesh = (D3DMesh *)a_mesh;	
-	
-	HR(m_device->SetStreamSource(0, mesh->GetVertexBuffer(), 0, mesh->GetVertexSize()));
-	
-	HR(m_device->SetIndices(mesh->GetIndexBuffer()));	
-	HR(m_device->SetVertexDeclaration(mesh->GetVertexDeclaration()));
 
-	D3DCamera *cam = (D3DCamera *) m_camera;
-	
-	D3DXMATRIX W;
-	D3DXMatrixIdentity(&W);
-	HR(m_device->SetTransform(D3DTS_WORLD, &W));
-	
-	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
-	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
-	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
-	
-
-	int numTriangles = mesh->GetIndices()->size() / 3;
-	int numVertices = mesh->GetVertices()->size();		
-	
-	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
-	*/
 	
 	
 
@@ -651,6 +670,8 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 #endif
 
 	/*
+	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
+										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);	
 	m_pivot = new Pivot();
 	m_pivot->SetMaterial(t_material);
 	CreateMeshBuffers(m_pivot);
@@ -658,6 +679,18 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	*/
 
 	return true;
+}
+
+void D3DRenderer::DrawPivot(Pivot *pivot)
+{
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	D3DXMATRIX t_view = cam->GetMatrix();
+
+	
+	
+	D3DXMATRIX t_projView = t_view*m_proj;	
+	pivot->GetEffect()->SetWorldHandlers(cam->GetPosition(), t_projView);
+	DrawMesh((Mesh *)pivot);
 }
 
 void D3DRenderer::Reset()

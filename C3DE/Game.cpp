@@ -142,8 +142,9 @@ void Game::Render(Renderer *renderer)
 	//renderer->DrawMesh(m_grid);
 	renderer->DrawSprite(m_button);
 	renderer->DrawSprite((Sprite *)m_sprite);
+	static_cast<D3DRenderer *>(renderer)->DrawPivot(m_pivot);
 
-	renderer->DrawMesh(m_pivot);
+	
 }
 
 void Game::OnMouseDown(int button, int x , int y)
@@ -185,7 +186,7 @@ void Game::OnKeyDown(int key)
 	{
 		//m_cameraHeight += (0.025f * m_deltaTime);
 		//m_wall->SetPosition(m_wall->GetX(), m_wall->GetY(), m_wall->GetZ() + 0.01f);
-		m_testMesh->SetPosition(0.0f, 0.0f, m_testMesh->GetZ() - 0.1f);
+		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY(), m_testMesh->GetZ() - 0.01f);
 		//m_testMesh->Scale(m_testMesh->GetXScale() - 0.1f, 0.0f, 0.0f);
 		//m_plane->Scale(m_plane->GetXScale() + 0.01f, m_plane->GetYScale()+ 0.01f, m_plane->GetZScale()+ 0.01f);
 		//m_testMesh->Scale(m_testMesh->GetXScale() + 0.01f, m_testMesh->GetYScale() + 0.01f, m_testMesh->GetZScale() + 0.01f);
@@ -196,17 +197,17 @@ void Game::OnKeyDown(int key)
 		//m_cameraHeight -= (0.025f * m_deltaTime);
 		//m_plane->SetPosition(m_plane->GetX() + 0.1f, 0.0f, 0.0f);
 		//m_testMesh->Scale(2.0f, 0.0f, 0.0f);
-		m_testMesh->SetPosition(0.0f, 0.0f, m_testMesh->GetZ() + 0.1f);
+		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY(), m_testMesh->GetZ() + 0.01f);
 		//m_plane->Scale(m_plane->GetXScale() - 0.01f, m_plane->GetYScale()- 0.01f, m_plane->GetZScale()- 0.01f);
 		//m_testMesh->Scale(m_testMesh->GetXScale() - 0.01f, m_testMesh->GetYScale() - 0.01f, m_testMesh->GetZScale() - 0.01f);
 	}	
 	else if(key == 205)
 	{
-		
+		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() - 0.01f, m_testMesh->GetZ());
 	}
 	else if(key == 203)
 	{
-		
+		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() + 0.01f, m_testMesh->GetZ());
 	}
 }
 
@@ -323,7 +324,7 @@ void Game::InitializeMeshes()
 
 	//m_testMesh->SetPosition(0.0f, -5.0f, 0.0f);
 	
-	
+	m_testMesh->SetPosition(0.0f, 3.0f, -6.0f);
 	
 	m_testScene->AddMirror((Mirror *)m_mirror);	
 	//m_testScene->AddMesh(m_wall);

@@ -10,6 +10,9 @@
 #include "D3DCamera.h"
 #include "D3DScene.h"
 
+#include "D3DMesh.h"
+#include "Pivot.h"
+
 
 #include "SpecularLight.h"
 
@@ -44,8 +47,12 @@ public:
 	void EnableAlphaBlending();
 	void DisableAlphaBlending();
 
+	void CreateMeshBuffers(D3DMesh *mesh);
+
+	void DrawPivot(Pivot *pivot);
+
 	//void InitializeScene(Scene *scene);
-	
+
 private:
 	IDirect3DDevice9* m_device; 
 	D3DPRESENT_PARAMETERS m_d3dpp;
@@ -58,6 +65,8 @@ private:
 	void BuildProjMtx();
 	
 	D3DXMATRIX m_proj;	
+
+	Pivot *m_pivot;
 
 #if 0
 	void drawTeapot();

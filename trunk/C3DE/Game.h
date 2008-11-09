@@ -22,6 +22,7 @@
 #include "Cube.h"
 #include "Cube2.h"
 #include "Plane.h"
+#include "PlanarShadowSurface.h"
 
 
 
@@ -71,7 +72,7 @@ private:
 	//testing
 	Cube *m_testMesh;
 
-	Cube2 *m_cube;
+	Cube *m_cube;
 
 
 	Plane *m_plane;
@@ -83,6 +84,10 @@ private:
 	PlanarMirror *m_mirror;
 
 	Wall *m_wall;
+
+	PlanarShadowSurface *m_shadowSurface;
+
+
 
 
 

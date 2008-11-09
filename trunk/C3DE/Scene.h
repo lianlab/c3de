@@ -10,6 +10,7 @@
 
 #include "Mesh.h"
 #include "Mirror.h"
+#include "ShadowSurface.h"
 
 using namespace std;
 
@@ -30,6 +31,10 @@ public:
 	void RemoveMirror(Mirror*mirror);
 	vector<Mirror *> *GetMirrorsVector(){return m_mirrors;}
 
+	void AddShadowSurface(ShadowSurface*shadowSurface);
+	void RemoveShadowSurface(ShadowSurface*shadowSurface);
+	vector<ShadowSurface *> *GetShadowSurfacesVector(){return m_shadowSurfaces;}
+
 	
 	
 	AmbientLight * GetAmbientLight(){return m_ambientLight;}
@@ -47,6 +52,7 @@ public:
 protected:
 	vector<Mesh *> *m_meshes;
 	vector<Mirror *> *m_mirrors;
+	vector<ShadowSurface *> *m_shadowSurfaces;
 	
 	
 	AmbientLight * m_ambientLight;

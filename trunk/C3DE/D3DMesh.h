@@ -64,6 +64,7 @@ public:
 		
 
 	FX * GetEffect(){return m_effect;}
+	void SetEffect(FX *effect){m_effect = effect;}
 
 	void SetTransformMatrix(D3DXMATRIX matrix);
 	

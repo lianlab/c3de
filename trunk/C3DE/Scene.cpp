@@ -6,6 +6,7 @@ Scene::Scene()
 
 	m_meshes = new vector<Mesh *>;
 	m_mirrors = new vector<Mirror *>;
+	m_shadowSurfaces = new vector<ShadowSurface *>;
 
 	m_ambientLight = new AmbientLight();
 	m_diffuseLight = new DiffuseLight();;
@@ -148,6 +149,26 @@ void Scene::RemoveMirror(Mirror *mirror)
 		if(mirror == t_mirror)
 		{
 			m_mirrors->erase(m_mirrors->begin() + i);
+			return;
+		}
+	}
+}
+
+void Scene::AddShadowSurface(ShadowSurface*shadowSurface)
+{
+	m_shadowSurfaces->push_back(shadowSurface);	
+}
+
+void Scene::RemoveShadowSurface(ShadowSurface *shadowSurface)
+{
+	int totalShadowSurfaces = m_shadowSurfaces->size();
+
+	for(int i = 0; i < totalShadowSurfaces; i++)
+	{
+		ShadowSurface *t_shadowSurface = m_shadowSurfaces->at(i);
+		if(shadowSurface == t_shadowSurface)
+		{
+			m_shadowSurfaces->erase(m_shadowSurfaces->begin() + i);
 			return;
 		}
 	}

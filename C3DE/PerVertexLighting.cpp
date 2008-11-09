@@ -10,6 +10,7 @@ FX(effect)
 	m_shaderObjectDiffuseMaterial = m_effect->GetParameterByName(0, "gDiffuseMtrl");
 	m_shaderObjectSpecularMaterial = m_effect->GetParameterByName(0, "gSpecularMtrl");
 	m_shaderSpecularLightPower = m_effect->GetParameterByName(0, "gSpecularPower");
+	m_shaderAlpha = m_effect->GetParameterByName(0, "gAlpha");
 	
 	m_hTex = m_effect->GetParameterByName(0, "gTex");
 
@@ -43,4 +44,9 @@ void PerVertexLighting::SetObjectMaterials(D3DXCOLOR ambientMaterial, D3DXCOLOR 
 void PerVertexLighting::SetObjectTexture(IDirect3DTexture9 *texture)
 {
 	HR(m_effect->SetTexture(m_hTex, texture));
+}
+
+void PerVertexLighting::SetAlpha(float alpha)
+{
+	HR(m_effect->SetFloat(m_shaderAlpha, alpha));
 }

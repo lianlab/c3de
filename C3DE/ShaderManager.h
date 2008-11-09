@@ -7,6 +7,7 @@
 #include "CommonDefs.h"
 
 #include "FX.h"
+#include "ShadowFX.h"
 #include <d3dx9.h>
 
 
@@ -20,6 +21,7 @@ enum ShaderIDs
 	SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID, 
 	SHADER_LIGHTS_PER_PIXEL_TEXTURES_ID, 
 	SHADER_HARD_COLORS_ID, 
+	SHADER_SHADOW_FX_ID, 
 	TOTAL_SHADERS
 };
 
@@ -32,6 +34,7 @@ public:
 	ID3DXEffect * GetEffectById(int id);
 	FX * GetFXByID(int id);
 	void SetDevice(IDirect3DDevice9 *device);
+	ShadowFX * GetDefaultShadowFX();
 	
 
 private:

@@ -80,11 +80,7 @@ void FXManager::AddEffect(FX * effect)
 
 
 void FXManager::SetSceneEffects(Scene *scene)
-{
-	
-
-	
-
+{		
 	vector<Mesh *> *t_meshes = new vector<Mesh *>;
 	int totalMeshes = scene->GetMeshesVector()->size();
 
@@ -99,6 +95,13 @@ void FXManager::SetSceneEffects(Scene *scene)
 	for(int i= 0; i < totalMirrors; i++)
 	{
 		t_meshes->push_back(scene->GetMirrorsVector()->at(i)->GetMesh());
+	}
+
+	int totalShadowSurfaces = scene->GetShadowSurfacesVector()->size();
+
+	for(int i= 0; i < totalShadowSurfaces; i++)
+	{
+		t_meshes->push_back(scene->GetShadowSurfacesVector()->at(i)->GetMesh());
 	}
 
 	totalMeshes = t_meshes->size();
@@ -125,12 +128,10 @@ void FXManager::SetSceneEffects(Scene *scene)
 		
 	}
 
+	AddEffect(ShaderManager::GetInstance()->GetDefaultShadowFX());
+
 	
 }
-
-
-
-
 
 FXManager::~FXManager()
 {

@@ -420,6 +420,22 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="ShadowSurface"
+						>
+						<File
+							RelativePath=".\D3DShadowSurface.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\PlanarShadowSurface.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ShadowSurface.cpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Camera"
@@ -473,6 +489,10 @@
 						</File>
 						<File
 							RelativePath=".\PerVertexLighting.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ShadowFX.cpp"
 							>
 						</File>
 					</Filter>
@@ -762,6 +782,22 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="ShadowSurface"
+						>
+						<File
+							RelativePath=".\D3DShadowSurface.h"
+							>
+						</File>
+						<File
+							RelativePath=".\PlanarShadowSurface.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ShadowSurface.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Camera"
@@ -815,6 +851,10 @@
 						</File>
 						<File
 							RelativePath=".\PerVertexLighting.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ShadowFX.h"
 							>
 						</File>
 					</Filter>

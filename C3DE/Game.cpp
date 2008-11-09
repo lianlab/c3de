@@ -3,6 +3,7 @@
 #include "D3DCamera.h"
 #include "D3DRenderer.h"
 
+
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
 //#include "DebugMemory.h"
 
@@ -127,7 +128,8 @@ void Game::Update(int deltaTime)
 	
 }
 
-int ritmo = 0;
+
+
 
 void Game::Render(Renderer *renderer)
 {
@@ -137,6 +139,7 @@ void Game::Render(Renderer *renderer)
 	float x = m_cameraRadius * cosf(m_cameraRotation);
 	float z =  m_cameraRadius * sinf(m_cameraRotation);
 	cam->SetPosition(x, m_cameraHeight, z);
+
 	
 	renderer->DrawScene(m_testScene);
 	renderer->DrawSprite(m_button);
@@ -181,6 +184,7 @@ void Game::OnKeyDown(int key)
 	{
 		m_application->Quit();
 	}
+#if 0
 	else if(key == 200)
 	{		
 		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY(), m_testMesh->GetZ() - 0.01f);		
@@ -204,6 +208,33 @@ void Game::OnKeyDown(int key)
 	else if(key == 31)
 	{
 		m_testMesh->SetPosition(m_testMesh->GetX() - 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
+	}
+#endif
+	else if(key == 200)
+	{		
+		m_cube->SetPosition(m_cube->GetX(), m_cube->GetY(), m_cube->GetZ() - 0.01f);		
+		
+		
+	}
+	else if(key == 208)
+	{		
+		m_cube->SetPosition(m_cube->GetX(), m_cube->GetY(), m_cube->GetZ() + 0.01f);		
+	}	
+	else if(key == 205)
+	{
+		m_cube->SetPosition(m_cube->GetX(), m_cube->GetY() - 0.01f, m_cube->GetZ());
+	}
+	else if(key == 203)
+	{
+		m_cube->SetPosition(m_cube->GetX(), m_cube->GetY() + 0.01f, m_cube->GetZ());
+	}
+	else if(key == 17)
+	{
+		m_cube->SetPosition(m_cube->GetX() + 0.01f, m_cube->GetY(), m_cube->GetZ());
+	}
+	else if(key == 31)
+	{
+		m_cube->SetPosition(m_cube->GetX() - 0.01f, m_cube->GetY(), m_cube->GetZ());
 	}
 }
 
@@ -305,7 +336,7 @@ void Game::InitializeMeshes()
 	CreateMeshBuffers(m_pivot);
 	
 	
-	m_cube = new Cube2();
+	m_cube = new Cube();
 	Material *t_material3 = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
 	m_cube->SetMaterial(t_material3);
@@ -321,15 +352,21 @@ void Game::InitializeMeshes()
 	//m_testMesh->SetPosition(0.0f, -5.0f, 0.0f);
 	
 	m_testMesh->SetPosition(0.0f, 3.0f, -6.0f);
+
+	//m_cube->SetPosition(0.0f, 3.0f, -3.0f);
 	
-	m_testScene->AddMirror((Mirror *)m_mirror);	
+	m_shadowSurface = new PlanarShadowSurface(m_plane); 
+	
 	//m_testScene->AddMesh(m_wall);
-	//m_testScene->AddMesh((Mesh*)m_cube);
+	m_testScene->AddMesh((Mesh*)m_cube);
 	//m_testScene->AddMesh((Mesh*)m_grid);	
 	m_testScene->AddMesh((Mesh*)m_testMesh);
 	//m_testScene->AddMesh((Mesh*)m_plane);
+	//m_testScene->AddMirror((Mirror *)m_mirror);	
+	//m_testScene->AddMesh(m_plane);
 	//m_testScene->AddMesh(m_wall);
 	//m_testScene->AddMesh(m_pivot);
+	m_testScene->AddShadowSurface(m_shadowSurface);
 	
 
 	m_testScene->Initialize();

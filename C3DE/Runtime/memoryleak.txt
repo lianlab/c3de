@@ -1,19 +1,20 @@
-12:.\ShaderManager.cpp                               :		LINE 79,	ADDRESS 003CAD68	48 unfreed	block 11
-13:.\ShaderManager.cpp                               :		LINE 80,	ADDRESS 003CADB0	48 unfreed	block 12
-14:.\ShaderManager.cpp                               :		LINE 81,	ADDRESS 003CADF8	48 unfreed	block 13
-15:.\ShaderManager.cpp                               :		LINE 82,	ADDRESS 003CAE40	48 unfreed	block 14
-16:.\ShaderManager.cpp                               :		LINE 83,	ADDRESS 003CAE88	68 unfreed	block 15
-17:.\ShaderManager.cpp                               :		LINE 84,	ADDRESS 003CAEE8	80 unfreed	block 16
-18:.\ShaderManager.cpp                               :		LINE 85,	ADDRESS 003CAF50	80 unfreed	block 17
-25:.\Grid.cpp                                        :		LINE 21,	ADDRESS 003CCBD0	16 unfreed	block 24
-26:.\Grid.cpp                                        :		LINE 22,	ADDRESS 003CCBF8	16 unfreed	block 25
-27:.\Scene.cpp                                       :		LINE 8,	ADDRESS 003CFC98	16 unfreed	block 26
-28:.\D3DMirror.cpp                                   :		LINE 6,	ADDRESS 003CFCE8	16 unfreed	block 27
-29:.\Plane.cpp                                       :		LINE 61,	ADDRESS 003CFFD0	16 unfreed	block 28
-30:.\Plane.cpp                                       :		LINE 62,	ADDRESS 003CFD10	16 unfreed	block 29
-31:.\Cube2.cpp                                       :		LINE 12,	ADDRESS 01B5ECF8	16 unfreed	block 30
-32:.\Cube2.cpp                                       :		LINE 13,	ADDRESS 01B5ED20	16 unfreed	block 31
-33:.\Cube2.cpp                                       :		LINE 96,	ADDRESS 01B5FBC0	8 unfreed	block 32
-34:.\PlanarMirror.cpp                                :		LINE 8,	ADDRESS 01B60068	16 unfreed	block 33
+12:.\ShaderManager.cpp                               :		LINE 85,	ADDRESS 003CAD70	48 unfreed	block 11
+13:.\ShaderManager.cpp                               :		LINE 86,	ADDRESS 003CADB8	48 unfreed	block 12
+14:.\ShaderManager.cpp                               :		LINE 87,	ADDRESS 003CAE00	48 unfreed	block 13
+15:.\ShaderManager.cpp                               :		LINE 88,	ADDRESS 003CAE48	48 unfreed	block 14
+16:.\ShaderManager.cpp                               :		LINE 89,	ADDRESS 003CAE90	72 unfreed	block 15
+17:.\ShaderManager.cpp                               :		LINE 90,	ADDRESS 003CAEF0	80 unfreed	block 16
+18:.\ShaderManager.cpp                               :		LINE 91,	ADDRESS 003CAF58	80 unfreed	block 17
+19:.\ShaderManager.cpp                               :		LINE 92,	ADDRESS 003CAFC0	68 unfreed	block 18
+26:.\Grid.cpp                                        :		LINE 21,	ADDRESS 003CCC38	16 unfreed	block 25
+27:.\Grid.cpp                                        :		LINE 22,	ADDRESS 003CCC60	16 unfreed	block 26
+28:.\Scene.cpp                                       :		LINE 8,	ADDRESS 003CFD00	16 unfreed	block 27
+29:.\Scene.cpp                                       :		LINE 9,	ADDRESS 003CFD28	16 unfreed	block 28
+30:.\D3DMirror.cpp                                   :		LINE 6,	ADDRESS 003CFFD8	16 unfreed	block 29
+31:.\Plane.cpp                                       :		LINE 61,	ADDRESS 003CFE00	16 unfreed	block 30
+32:.\Plane.cpp                                       :		LINE 62,	ADDRESS 003CFE28	16 unfreed	block 31
+36:.\PlanarMirror.cpp                                :		LINE 8,	ADDRESS 01B600F8	16 unfreed	block 35
+44:.\D3DShadowSurface.cpp                            :		LINE 6,	ADDRESS 01B60148	16 unfreed	block 43
+45:.\PlanarShadowSurface.cpp                         :		LINE 8,	ADDRESS 01B60170	16 unfreed	block 44
 -----------------------------------------------------------
-Total Unfreed: 572 bytes
+Total Unfreed: 652 bytes

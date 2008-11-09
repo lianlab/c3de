@@ -19,6 +19,7 @@ uniform extern float3 gLightVecW;
 uniform extern float3 gEyePosW;
 uniform extern texture gTex;
 uniform extern float4x4 gTransformMatrix;
+uniform extern float gAlpha;
 
 sampler TexS = sampler_state
 {
@@ -94,7 +95,9 @@ float4 DirLightTexPS(float4 c : COLOR0, float4 spec : COLOR1, float2 tex0 : TEXC
 	
 	float3 texColor = tex2D(TexS, tex0).rgb;
 	float3 diffuse = c.rgb * texColor;
-    return float4(diffuse + spec.rgb, c.a); 
+    //return float4(diffuse + spec.rgb, c.a); 
+    return float4(diffuse + spec.rgb, gAlpha); 
+    
 }
 
 technique ShaderTech
@@ -106,3 +109,4 @@ technique ShaderTech
         pixelShader  = compile ps_2_0 DirLightTexPS();
     }
 }
+

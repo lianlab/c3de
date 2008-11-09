@@ -211,11 +211,11 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 {
-#if 0
 	Mesh *mesh = mirror->GetMesh();	
 	D3DMesh *d3dmesh = (D3DMesh *)mesh;	
-	DrawMesh(mesh);	
+	DrawMesh(mesh);		
 
+		
 
 	HR(m_device->SetRenderState(D3DRS_STENCILENABLE,    true));
     HR(m_device->SetRenderState(D3DRS_STENCILFUNC,      D3DCMP_ALWAYS));
@@ -232,10 +232,11 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
     HR(m_device->SetRenderState(D3DRS_SRCBLEND,  D3DBLEND_ZERO));
     HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE));
 
-	// Draw mirror to stencil only.
-	DrawMesh(mesh);
+	
+	DrawMesh(mesh);	
 
 	// Re-enable depth writes
+	
 	HR(m_device->SetRenderState( D3DRS_ZWRITEENABLE, true ));
 
 	// Only draw reflected teapot to the pixels where the mirror
@@ -243,98 +244,7 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 	HR(m_device->SetRenderState(D3DRS_STENCILFUNC,  D3DCMP_EQUAL));
     HR(m_device->SetRenderState(D3DRS_STENCILPASS,  D3DSTENCILOP_KEEP));
 
-	// Disable depth buffer and render the reflected teapot.
-	HR(m_device->SetRenderState(D3DRS_ZENABLE, false));
-	HR(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
-
-	
-
-
-
-	int totalMeshes = scene->GetMeshesVector()->size();	
-	
-	
-	// Build Reflection transformation.
-	D3DXMATRIX R;
-	D3DXPLANE *plane = static_cast<D3DMirror *>(mirror)->GetPlane();
-	D3DXMatrixReflect(&R, plane);
-
-	
-	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
-
-	D3DCamera *cam = (D3DCamera *) m_camera;
-	D3DXMATRIX t_view = cam->GetMatrix();
-
-	
-	
-	D3DXMATRIX t_projView = t_view*m_proj;		
-
-	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW));
-
-	UINT num = 0;
-
-	for(int i = 0; i < totalMeshes; i++)
-	{		
-		Mesh *mesh = scene->GetMeshesVector()->at(i);	
-		D3DMesh *d3dmesh = (D3DMesh *)mesh;			
-		D3DXMatrixReflect(&R,plane);
-		D3DXMATRIX previous = d3dmesh->GetTransformMatrix();
-		d3dmesh->SetTransformMatrix(previous*R);
-		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());		
-		d3dmesh->SetShaderHandlers();
-		FXManager::GetInstance()->PreRender();	
-		DrawMesh(mesh);
-		d3dmesh->SetTransformMatrix(previous);
-		FXManager::GetInstance()->PosRender();
-		FXManager::GetInstance()->End();		
-	}
-
-	
-	// Restore render states.
-	
-
-	HR(m_device->SetRenderState(D3DRS_ZENABLE, true));
-	HR(m_device->SetRenderState( D3DRS_STENCILENABLE, false));
-	
-	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
-
-#endif
-
-
-	Mesh *mesh = mirror->GetMesh();	
-	D3DMesh *d3dmesh = (D3DMesh *)mesh;	
-	DrawMesh(mesh);	
-
-
-	
-
-	HR(m_device->SetRenderState(D3DRS_STENCILENABLE,    true));
-    HR(m_device->SetRenderState(D3DRS_STENCILFUNC,      D3DCMP_ALWAYS));
-    HR(m_device->SetRenderState(D3DRS_STENCILREF,       0x1));
-    HR(m_device->SetRenderState(D3DRS_STENCILMASK,      0xffffffff));
-    HR(m_device->SetRenderState(D3DRS_STENCILWRITEMASK, 0xffffffff));
-    HR(m_device->SetRenderState(D3DRS_STENCILZFAIL,     D3DSTENCILOP_KEEP));
-    HR(m_device->SetRenderState(D3DRS_STENCILFAIL,      D3DSTENCILOP_KEEP));
-    HR(m_device->SetRenderState(D3DRS_STENCILPASS,      D3DSTENCILOP_REPLACE));
-
-	// Disable writes to the depth and back buffers
-    HR(m_device->SetRenderState(D3DRS_ZWRITEENABLE, false));
-    HR(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, true));
-    HR(m_device->SetRenderState(D3DRS_SRCBLEND,  D3DBLEND_ZERO));
-    HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE));
-	
-
-	DrawMesh(mesh);	
-
-	// Re-enable depth writes
-	HR(m_device->SetRenderState( D3DRS_ZWRITEENABLE, true ));
-
-	// Only draw reflected teapot to the pixels where the mirror
-	// was drawn to.
-	HR(m_device->SetRenderState(D3DRS_STENCILFUNC,  D3DCMP_EQUAL));
-    HR(m_device->SetRenderState(D3DRS_STENCILPASS,  D3DSTENCILOP_KEEP));
-
-	// Disable depth buffer and render the reflected teapot.
+	// Disable depth buffer and render the reflected objects.
 	HR(m_device->SetRenderState(D3DRS_ZENABLE, false));
 	HR(m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false));
 
@@ -347,15 +257,9 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 	D3DXMatrixReflect(&R, plane);
 
 	
-	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
-
-	D3DCamera *cam = (D3DCamera *) m_camera;
-	D3DXMATRIX t_view = cam->GetMatrix();
-
+	D3DScene *t_scene = static_cast<D3DScene *> (scene);				
 	
 	
-	D3DXMATRIX t_projView = t_view*m_proj;		
-
 	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW));
 
 	UINT num = 0;
@@ -366,18 +270,14 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;			
 		D3DXMatrixReflect(&R,plane);
 		D3DXMATRIX previous = d3dmesh->GetTransformMatrix();
-		d3dmesh->SetTransformMatrix(previous*R);
-		FXManager::GetInstance()->Begin(d3dmesh->GetEffect());		
-		d3dmesh->SetShaderHandlers();
-		FXManager::GetInstance()->PreRender();	
+		d3dmesh->SetTransformMatrix(previous*R);		
 		DrawMesh(mesh);
-		d3dmesh->SetTransformMatrix(previous);
-		FXManager::GetInstance()->PosRender();
-		FXManager::GetInstance()->End();		
+		d3dmesh->SetTransformMatrix(previous);	
 	}
 
 	
 	// Restore render states.
+	
 	
 
 	HR(m_device->SetRenderState(D3DRS_ZENABLE, true));
@@ -621,62 +521,6 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	
 	BuildProjMtx();
 
-#if 0
-	// Create the FX from a .fx file.
-	ID3DXBuffer* errors = 0;
-	HR(D3DXCreateEffectFromFile(m_device, "DirLightTex.fx", 
-		0, 0, D3DXSHADER_DEBUG, 0, &mFX, &errors));
-	if( errors )
-		MessageBox(0, (char*)errors->GetBufferPointer(), 0, 0);
-
-	// Obtain handles.
-	mhTech          = mFX->GetTechniqueByName("DirLightTexTech");
-	mhWVP           = mFX->GetParameterByName(0, "gWVP");
-	mhWorldInvTrans = mFX->GetParameterByName(0, "gWorldInvTrans");
-	mhLightVecW     = mFX->GetParameterByName(0, "gLightVecW");
-	mhDiffuseMtrl   = mFX->GetParameterByName(0, "gDiffuseMtrl");
-	mhDiffuseLight  = mFX->GetParameterByName(0, "gDiffuseLight");
-	mhAmbientMtrl   = mFX->GetParameterByName(0, "gAmbientMtrl");
-	mhAmbientLight  = mFX->GetParameterByName(0, "gAmbientLight");
-	mhSpecularMtrl  = mFX->GetParameterByName(0, "gSpecularMtrl");
-	mhSpecularLight = mFX->GetParameterByName(0, "gSpecularLight");
-	mhSpecularPower = mFX->GetParameterByName(0, "gSpecularPower");
-	mhEyePos        = mFX->GetParameterByName(0, "gEyePosW");
-	mhWorld         = mFX->GetParameterByName(0, "gWorld");
-	mhTex           = mFX->GetParameterByName(0, "gTex");
-
-	HR(D3DXCreateTextureFromFile(m_device, "brick1.dds", &mTeapotTex));
-	HR(D3DXCreateTeapot(m_device, &mTeapot, 0));
-	D3DXMatrixTranslation(&mTeapotWorld, 0.0f, 1.0f, -6.0f);
-
-	mLightVecW     = D3DXVECTOR3(0.0, 0.707f, -0.707f);
-	mDiffuseLight  = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	mAmbientLight  = D3DXCOLOR(0.6f, 0.6f, 0.6f, 1.0f);
-	mSpecularLight = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-	HR(mFX->SetTechnique(mhTech));
-	HR(mFX->SetValue(mhLightVecW, &mLightVecW, sizeof(D3DXVECTOR3)));
-	HR(mFX->SetValue(mhDiffuseLight, &mDiffuseLight, sizeof(D3DXCOLOR)));
-	HR(mFX->SetValue(mhAmbientLight, &mAmbientLight, sizeof(D3DXCOLOR)));
-	HR(mFX->SetValue(mhSpecularLight, &mSpecularLight, sizeof(D3DXCOLOR)));
-
-	// All objects use the same material.
-	D3DXCOLOR t_white = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	D3DXCOLOR t_white2 = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-	HR(mFX->SetValue(mhAmbientMtrl, &t_white, sizeof(D3DXCOLOR)));
-	HR(mFX->SetValue(mhDiffuseMtrl, &t_white, sizeof(D3DXCOLOR)));
-	HR(mFX->SetValue(mhSpecularMtrl, &t_white2 , sizeof(D3DXCOLOR)));
-	HR(mFX->SetFloat(mhSpecularPower, 16.0F));
-#endif
-
-	/*
-	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
-										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);	
-	m_pivot = new Pivot();
-	m_pivot->SetMaterial(t_material);
-	CreateMeshBuffers(m_pivot);
-
-	*/
 
 	return true;
 }
@@ -701,7 +545,7 @@ void D3DRenderer::Reset()
 
 void D3DRenderer::Clear()
 {	
-	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x0000ffff, 1.0f, 0L );
+	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0x0000ffff, 1.0f, 0L );
 }
 
 bool D3DRenderer::BeginRender()

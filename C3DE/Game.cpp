@@ -127,6 +127,8 @@ void Game::Update(int deltaTime)
 	
 }
 
+int ritmo = 0;
+
 void Game::Render(Renderer *renderer)
 {
 	//
@@ -135,11 +137,8 @@ void Game::Render(Renderer *renderer)
 	float x = m_cameraRadius * cosf(m_cameraRotation);
 	float z =  m_cameraRadius * sinf(m_cameraRotation);
 	cam->SetPosition(x, m_cameraHeight, z);
-
 	
-	//renderer->DrawMesh(m_testMesh);
 	renderer->DrawScene(m_testScene);
-	//renderer->DrawMesh(m_grid);
 	renderer->DrawSprite(m_button);
 	renderer->DrawSprite((Sprite *)m_sprite);
 	static_cast<D3DRenderer *>(renderer)->DrawPivot(m_pivot);
@@ -183,23 +182,12 @@ void Game::OnKeyDown(int key)
 		m_application->Quit();
 	}
 	else if(key == 200)
-	{
-		//m_cameraHeight += (0.025f * m_deltaTime);
-		//m_wall->SetPosition(m_wall->GetX(), m_wall->GetY(), m_wall->GetZ() + 0.01f);
-		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY(), m_testMesh->GetZ() - 0.01f);
-		//m_testMesh->Scale(m_testMesh->GetXScale() - 0.1f, 0.0f, 0.0f);
-		//m_plane->Scale(m_plane->GetXScale() + 0.01f, m_plane->GetYScale()+ 0.01f, m_plane->GetZScale()+ 0.01f);
-		//m_testMesh->Scale(m_testMesh->GetXScale() + 0.01f, m_testMesh->GetYScale() + 0.01f, m_testMesh->GetZScale() + 0.01f);
+	{		
+		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY(), m_testMesh->GetZ() - 0.01f);		
 	}
 	else if(key == 208)
-	{
-
-		//m_cameraHeight -= (0.025f * m_deltaTime);
-		//m_plane->SetPosition(m_plane->GetX() + 0.1f, 0.0f, 0.0f);
-		//m_testMesh->Scale(2.0f, 0.0f, 0.0f);
-		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY(), m_testMesh->GetZ() + 0.01f);
-		//m_plane->Scale(m_plane->GetXScale() - 0.01f, m_plane->GetYScale()- 0.01f, m_plane->GetZScale()- 0.01f);
-		//m_testMesh->Scale(m_testMesh->GetXScale() - 0.01f, m_testMesh->GetYScale() - 0.01f, m_testMesh->GetZScale() - 0.01f);
+	{		
+		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY(), m_testMesh->GetZ() + 0.01f);		
 	}	
 	else if(key == 205)
 	{
@@ -208,6 +196,14 @@ void Game::OnKeyDown(int key)
 	else if(key == 203)
 	{
 		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() + 0.01f, m_testMesh->GetZ());
+	}
+	else if(key == 17)
+	{
+		m_testMesh->SetPosition(m_testMesh->GetX() + 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
+	}
+	else if(key == 31)
+	{
+		m_testMesh->SetPosition(m_testMesh->GetX() - 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
 	}
 }
 

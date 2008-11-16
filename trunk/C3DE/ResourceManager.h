@@ -5,23 +5,37 @@
 
 
 #include "CommonDefs.h"
-
-
+#include <vector>
 #include <d3dx9.h>
-
-
 
 enum ResourceIDs
 { 
-	IMAGE_SHIP_ID, 
-	IMAGE_SHIP_BULLET_ID, 
+	IMAGE_SHIP_ID, 	
 	IMAGE_BACKGROUND_ID,
 	IMAGE_EXPLOSION_ID,
 	IMAGE_BUTTON_ID,
 	IMAGE_CRATE_ID,
 	IMAGE_ABE_ID,
+	//DWARF TEXTURES
+	IMAGE_DWARF_WEAPONS_ID, 
+	IMAGE_DWARF_PACK_ID,
+	IMAGE_DWARF_BODY_ID,
+	IMAGE_DWARF_ARMOR_ID,
+	IMAGE_DWARF_HEADGEAR_ID,
+	IMAGE_DWARF_HEAD_ID,
+	///////////
+
 	TOTAL_IMAGES
 };
+
+enum MeshesIDs
+{ 
+	MESH_DWARF_ID,
+	MESH_WOLF_ID,
+	TOTAL_MESHES
+};
+
+
 
 class ResourceManager
 {
@@ -40,6 +54,8 @@ public:
 
 	void SetDevice(IDirect3DDevice9 *device);
 	
+	std::string GetMeshFilenameByID(int a_ID);
+	IDirect3DTexture9 * ResourceManager::GetImageByFilename(std::string a_filename);
 
 private:
 	ResourceManager();
@@ -49,7 +65,10 @@ private:
 
 	IDirect3DTexture9 * temp;
 
-	IDirect3DTexture9 * m_imageResources[TOTAL_IMAGES];
+	IDirect3DTexture9 * m_imageResources[TOTAL_IMAGES];	
+	
+
+	std::string m_meshesFilenames[TOTAL_MESHES];
 	
 
 	

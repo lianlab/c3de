@@ -101,6 +101,28 @@ Game::~Game()
 	delete m_testScene;
 	delete m_sprite;
 	delete m_button;
+
+
+#if 1
+	delete m_testMesh;
+	
+	delete m_grid;
+
+	
+	delete m_plane ;
+
+	delete m_pivot;
+	
+	
+
+	delete m_wall;
+
+	delete m_mirror;
+	
+	
+	
+	delete m_shadowSurface;
+#endif
 }
 
 void Game::Update(int deltaTime)
@@ -210,6 +232,7 @@ void Game::OnKeyDown(int key)
 		m_testMesh->SetPosition(m_testMesh->GetX() - 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
 	}
 #endif
+#if 0
 	else if(key == 200)
 	{		
 		m_cube->SetPosition(m_cube->GetX(), m_cube->GetY(), m_cube->GetZ() - 0.01f);		
@@ -236,6 +259,35 @@ void Game::OnKeyDown(int key)
 	{
 		m_cube->SetPosition(m_cube->GetX() - 0.01f, m_cube->GetY(), m_cube->GetZ());
 	}
+#endif
+#if 1
+	else if(key == 200)
+	{		
+		m_dwarf->SetPosition(m_dwarf->GetX(), m_dwarf->GetY(), m_dwarf->GetZ() - 0.01f);		
+		
+		
+	}
+	else if(key == 208)
+	{		
+		m_dwarf->SetPosition(m_dwarf->GetX(), m_dwarf->GetY(), m_dwarf->GetZ() + 0.01f);		
+	}	
+	else if(key == 205)
+	{
+		m_dwarf->SetPosition(m_dwarf->GetX(), m_dwarf->GetY() - 0.01f, m_dwarf->GetZ());
+	}
+	else if(key == 203)
+	{
+		m_dwarf->SetPosition(m_dwarf->GetX(), m_dwarf->GetY() + 0.01f, m_dwarf->GetZ());
+	}
+	else if(key == 17)
+	{
+		m_dwarf->SetPosition(m_dwarf->GetX() + 0.01f, m_dwarf->GetY(), m_dwarf->GetZ());
+	}
+	else if(key == 31)
+	{
+		m_dwarf->SetPosition(m_dwarf->GetX() - 0.01f, m_dwarf->GetY(), m_dwarf->GetZ());
+	}
+#endif
 }
 
 void Game::CreateMeshBuffers(D3DMesh *mesh)
@@ -356,19 +408,27 @@ void Game::InitializeMeshes()
 	//m_cube->SetPosition(0.0f, 3.0f, -3.0f);
 	
 	m_shadowSurface = new PlanarShadowSurface(m_plane); 
-	
+	//m_cube->SetPosition(0.0f, 3.0f, -3.0f);
 	//m_testScene->AddMesh(m_wall);
+	m_testScene->AddMirror((Mirror *)m_mirror);	
 	m_testScene->AddMesh((Mesh*)m_cube);
 	//m_testScene->AddMesh((Mesh*)m_grid);	
-	m_testScene->AddMesh((Mesh*)m_testMesh);
+	//m_testScene->AddMesh((Mesh*)m_testMesh);
 	//m_testScene->AddMesh((Mesh*)m_plane);
-	//m_testScene->AddMirror((Mirror *)m_mirror);	
+	
 	//m_testScene->AddMesh(m_plane);
 	//m_testScene->AddMesh(m_wall);
 	//m_testScene->AddMesh(m_pivot);
-	m_testScene->AddShadowSurface(m_shadowSurface);
+	//m_testScene->AddShadowSurface(m_shadowSurface);
 	
 
+	m_dwarf = new Dwarf();
+	//m_dwarf->SetMaterial(t_material3);
+	m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_DWARF_ID), ((D3DRenderer*)m_renderer)->GetDevice());
+
+	
+	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
+	m_testScene->AddMesh(m_dwarf);
 	m_testScene->Initialize();
 
 

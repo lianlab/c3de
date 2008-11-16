@@ -11,6 +11,28 @@
 
 using namespace std;
 
+#if 1
+struct Vertex
+{
+	Vertex(float _x, float _y, float _z, DWORD _color)
+	{
+        x = _x;  
+        y = _y;   
+        z = _z;
+        color = _color;
+	}
+
+    float x, y, z;
+    DWORD color;
+
+	enum FVF
+	{
+		FVF_Flags = D3DFVF_XYZ | D3DFVF_DIFFUSE 
+	};
+};
+
+
+#endif
 
 struct VertexPos
 {
@@ -50,6 +72,8 @@ public:
 	void Update(int deltaTime);
 
 	void SetTexture(Image *tex){m_texture = tex;}
+	
+	void SetD3DTexture(IDirect3DTexture9 *a_tex){m_d3dTex = a_tex;}
 	Image * GetTexture(){return m_texture;}
 
 	vector<VertexPos> * GetVertices(){return m_vertices;}
@@ -67,9 +91,20 @@ public:
 	void SetEffect(FX *effect){m_effect = effect;}
 
 	void SetTransformMatrix(D3DXMATRIX matrix);
+
+	void LoadFromXFile(	const std::string &filename, IDirect3DDevice9* a_device);
+
+	int GetNumSubsets(){return m_numSubsets;}
+
+	ID3DXMesh * GetXMesh(){return m_xMesh;}
+
+	std::vector<Material*> *GetMaterials(){return m_materials;};
+	std::vector<IDirect3DTexture9*> *GetTextures(){return m_textures;}
 	
 
+	void CreateXMesh(IDirect3DDevice9 *a_device);
 protected:
+	IDirect3DTexture9 *m_d3dTex;
 	UINT m_numShaderPasses;
 	IDirect3DVertexBuffer9 * m_vertexBuffer;
 	IDirect3DIndexBuffer9 * m_indexBuffer;
@@ -85,10 +120,26 @@ protected:
 
 	
 	FX * m_effect;
+
+	ID3DXMesh *m_xMesh;
+
+	ID3DXBuffer *m_adjBuffer;
+	ID3DXBuffer * m_materialBuffer;
+	std::vector<Material*> *m_materials;
+	std::vector<IDirect3DTexture9*> *m_textures;
+
+	void FreeTextures();
+	void FreeMaterials();
+
+	int m_ID;
 	
 	int m_updateTime;
 
+	int m_numSubsets;
+
 	D3DXMATRIX m_transformMatrix;
+
+	
 	
 };
 #endif

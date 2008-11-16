@@ -17,6 +17,12 @@
 #include "SpecularLight.h"
 
 */
+
+#if 1
+#include <vector>
+#include "PerVertexLighting.h"
+#include "Cube.h"
+#endif
 #include "FX.h"
 #include "ShadowFX.h"
 
@@ -58,7 +64,6 @@ public:
 	void fleps(Mesh *mesh);
 
 	
-
 	//void InitializeScene(Scene *scene);
 
 private:
@@ -77,6 +82,8 @@ private:
 	Pivot *m_pivot;
 
 	ShadowFX *m_shadowEffect;
+
+	void DrawXMesh(D3DMesh * a_xMesh);
 
 
 

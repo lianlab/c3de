@@ -5,10 +5,13 @@
 #include "D3DMesh.h"
 #include "D3DMirror.h"
 #include "FXManager.h"
-#include "DebugMemory.h"
+
 
 #include "ShadowFX.h"
 #include "D3DShadowSurface.h"
+#include "DebugMemory.h"
+
+#include "Dwarf.h"
 
 
 D3DRenderer::D3DRenderer()
@@ -28,6 +31,8 @@ D3DRenderer::~D3DRenderer()
 		delete m_camera;
 		m_camera = NULL;
 	}
+
+	
 }
 
 
@@ -164,6 +169,8 @@ void D3DRenderer::CreateMeshBuffers(D3DMesh *mesh)
 }
 
 
+
+
 void D3DRenderer::DrawScene(Scene *scene)
 {			
 	int totalMeshes = scene->GetMeshesVector()->size();		
@@ -179,27 +186,60 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 	FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
 
+
 	UINT num = 0;			
 	
 	
 	for(int i = 0; i < totalMirrors; i++)
 	{
 		DrawMirror(scene->GetMirrorsVector()->at(i), scene);		
-	}	
-
-	
+	}		
 
 	for(int i = 0; i < totalMeshes; i++)
 	{		
 		Mesh *mesh = scene->GetMeshesVector()->at(i);	
-		D3DMesh *d3dmesh = (D3DMesh *)mesh;			
-		DrawMesh(mesh);
+		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
+		if(d3dmesh->GetXMesh())
+		{
+			DrawXMesh(d3dmesh);
+		}
+		else
+		{
+			DrawMesh(mesh);
+		}
+		
 	}	
 
 	for(int i = 0; i < totalShadowSurfaces; i++)
 	{				
 		DrawShadowSurface(scene->GetShadowSurfacesVector()->at(i), scene);
 	}
+
+
+}
+
+
+void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
+{	
+
+	PerVertexLighting * t_auei = static_cast<PerVertexLighting *>(a_mesh->GetEffect());			
+	FXManager::GetInstance()->Begin(a_mesh->GetEffect());				
+
+	int t_totalMaterials = a_mesh->GetMaterials()->size();
+	ID3DXMesh *t_xMesh = a_mesh->GetXMesh();		
+	
+	for(int j = 0; j < t_totalMaterials; j++)
+	{				
+		a_mesh->SetMaterial(a_mesh->GetMaterials()->at(j));
+		a_mesh->SetD3DTexture(a_mesh->GetTextures()->at(j));	
+		a_mesh->SetShaderHandlers();
+		FXManager::GetInstance()->PreRender();	
+		HR(t_xMesh->DrawSubset(j));
+		FXManager::GetInstance()->PosRender();
+	}						
+
+	
+	FXManager::GetInstance()->End();
 
 }
 
@@ -261,7 +301,14 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 {
 	Mesh *mesh = mirror->GetMesh();	
 	D3DMesh *d3dmesh = (D3DMesh *)mesh;	
-	DrawMesh(mesh);				
+	if(d3dmesh->GetXMesh())
+	{
+		DrawXMesh(d3dmesh);
+	}
+	else
+	{
+		DrawMesh(mesh);	
+	}		
 
 	HR(m_device->SetRenderState(D3DRS_STENCILENABLE,    true));
     HR(m_device->SetRenderState(D3DRS_STENCILFUNC,      D3DCMP_ALWAYS));
@@ -278,8 +325,14 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
     HR(m_device->SetRenderState(D3DRS_SRCBLEND,  D3DBLEND_ZERO));
     HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE));
 
-	
-	DrawMesh(mesh);	
+	if(d3dmesh->GetXMesh())
+	{
+		DrawXMesh(d3dmesh);
+	}
+	else
+	{
+		DrawMesh(mesh);	
+	}
 
 	// Re-enable depth writes
 	
@@ -319,7 +372,14 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 		D3DXMatrixReflect(&R,plane);
 		D3DXMATRIX previous = d3dmesh->GetTransformMatrix();
 		d3dmesh->SetTransformMatrix(previous*R);		
-		DrawMesh(mesh);
+		if(d3dmesh->GetXMesh())
+		{
+			DrawXMesh(d3dmesh);
+		}
+		else
+		{
+			DrawMesh(mesh);	
+		}
 		d3dmesh->SetTransformMatrix(previous);	
 	}
 	
@@ -631,9 +691,7 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	
 	BuildProjMtx();
 
-	EnableAlphaBlending(false);
-
-	
+	EnableAlphaBlending(false);	
 
 	return true;
 }

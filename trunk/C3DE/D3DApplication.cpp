@@ -36,8 +36,9 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 
 
 #if defined(DEBUG) | defined(_DEBUG)
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF |
-		_CRTDBG_LEAK_CHECK_DF);
+	
+	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF |_CRTDBG_LEAK_CHECK_DF);
+	_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF);
 #endif
 	m_hInstance = hInstance;
 	m_width = width;

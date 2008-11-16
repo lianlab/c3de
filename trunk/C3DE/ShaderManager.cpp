@@ -29,7 +29,12 @@ ShaderManager::ShaderManager()
 
 ShaderManager::~ShaderManager()
 {
-	
+	int totalEffects = TOTAL_SHADERS;
+	for(int i = 0; i< totalEffects; i++)
+	{
+		delete m_effects[i];
+		m_effects[i] = NULL;
+	}
 }
 
 void ShaderManager::SetDevice(IDirect3DDevice9 *device)

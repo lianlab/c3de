@@ -16,7 +16,7 @@ ResourceManager * ResourceManager::GetInstance()
 ResourceManager::ResourceManager()
 {
 	m_meshesFilenames[MESH_DWARF_ID] = "Meshes/Dwarf.x";
-	m_meshesFilenames[MESH_WOLF_ID] = "Wolf.x";
+	m_meshesFilenames[MESH_WOLF_ID] = "Meshes/Wolf.x";
 }
 
 ResourceManager::~ResourceManager()

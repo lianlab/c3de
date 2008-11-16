@@ -1,20 +1,19 @@
-12:.\ShaderManager.cpp                               :		LINE 85,	ADDRESS 003CAD70	48 unfreed	block 11
-13:.\ShaderManager.cpp                               :		LINE 86,	ADDRESS 003CADB8	48 unfreed	block 12
-14:.\ShaderManager.cpp                               :		LINE 87,	ADDRESS 003CAE00	48 unfreed	block 13
-15:.\ShaderManager.cpp                               :		LINE 88,	ADDRESS 003CAE48	48 unfreed	block 14
-16:.\ShaderManager.cpp                               :		LINE 89,	ADDRESS 003CAE90	72 unfreed	block 15
-17:.\ShaderManager.cpp                               :		LINE 90,	ADDRESS 003CAEF0	80 unfreed	block 16
-18:.\ShaderManager.cpp                               :		LINE 91,	ADDRESS 003CAF58	80 unfreed	block 17
-19:.\ShaderManager.cpp                               :		LINE 92,	ADDRESS 003CAFC0	68 unfreed	block 18
-26:.\Grid.cpp                                        :		LINE 21,	ADDRESS 003CCC38	16 unfreed	block 25
-27:.\Grid.cpp                                        :		LINE 22,	ADDRESS 003CCC60	16 unfreed	block 26
-28:.\Scene.cpp                                       :		LINE 8,	ADDRESS 003CFD00	16 unfreed	block 27
-29:.\Scene.cpp                                       :		LINE 9,	ADDRESS 003CFD28	16 unfreed	block 28
-30:.\D3DMirror.cpp                                   :		LINE 6,	ADDRESS 003CFFD8	16 unfreed	block 29
-31:.\Plane.cpp                                       :		LINE 61,	ADDRESS 003CFE00	16 unfreed	block 30
-32:.\Plane.cpp                                       :		LINE 62,	ADDRESS 003CFE28	16 unfreed	block 31
-36:.\PlanarMirror.cpp                                :		LINE 8,	ADDRESS 01B600F8	16 unfreed	block 35
-44:.\D3DShadowSurface.cpp                            :		LINE 6,	ADDRESS 01B60148	16 unfreed	block 43
-45:.\PlanarShadowSurface.cpp                         :		LINE 8,	ADDRESS 01B60170	16 unfreed	block 44
+22:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CD2E8	52 unfreed	block 21
+26:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CE6F0	52 unfreed	block 25
+32:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A41B20	52 unfreed	block 31
+35:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A42308	52 unfreed	block 34
+36:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A42B28	52 unfreed	block 35
+47:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A43F30	52 unfreed	block 46
+50:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01E9EE20	52 unfreed	block 49
+54:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 114,	ADDRESS 01E9EF78	20 unfreed	block 53
+55:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 115,	ADDRESS 01E9EFC8	20 unfreed	block 54
+56:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F018	52 unfreed	block 55
+57:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F108	52 unfreed	block 56
+58:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F208	52 unfreed	block 57
+59:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F308	52 unfreed	block 58
+60:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F418	52 unfreed	block 59
+61:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F538	52 unfreed	block 60
+62:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F5A8	52 unfreed	block 61
+63:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F6D8	52 unfreed	block 62
 -----------------------------------------------------------
-Total Unfreed: 652 bytes
+Total Unfreed: 820 bytes

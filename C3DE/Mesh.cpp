@@ -21,21 +21,31 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
+
 	if(m_material)
 	{
 		delete m_material;
 		m_material = NULL;
+	}
+
+	if(m_texture)
+	{
+		delete m_texture;
+		m_texture = NULL;
 	}
 }
 
 void Mesh::SetMaterial(Material *material)
 {
-	if(m_material)
-	{
-		delete m_material;
-		m_material = NULL;
-	}
+	
+	//if(m_material)
+	//{
+	//	delete m_material;
+	//	m_material = NULL;
+	//}
+	
 	m_material = material;
+	int ygfd = 876;
 }
 
 /*

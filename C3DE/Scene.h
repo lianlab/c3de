@@ -59,6 +59,9 @@ protected:
 	DiffuseLight * m_diffuseLight;
 	SpecularLight * m_specularLight;
 	PointLight * m_pointLight;
+
+	void FreeShadowSurfaces();
+	void FreeMirrors();
 	
 };
 #endif

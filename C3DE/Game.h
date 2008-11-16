@@ -23,6 +23,7 @@
 #include "Cube2.h"
 #include "Plane.h"
 #include "PlanarShadowSurface.h"
+#include "Dwarf.h"
 
 
 
@@ -88,7 +89,7 @@ private:
 	PlanarShadowSurface *m_shadowSurface;
 
 
-
+	Dwarf *m_dwarf;
 
 
 	Button *m_button;

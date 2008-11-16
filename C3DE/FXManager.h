@@ -41,12 +41,13 @@ public:
 	void End();
 
 			
+	void AddEffect(FX *effect);
 private:
 	vector<FX *> *m_effects;
 
 	FX *m_currentEffect;
 
-	void AddEffect(FX *effect);
+	
 	
 	static FXManager * m_instance;
 	FXManager();

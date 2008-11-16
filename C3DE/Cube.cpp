@@ -144,6 +144,7 @@ Cube::Cube()
 
 	//vertices
 
+#if 1
 	m_vertices->push_back(VertexPos(-1.0f, -1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f));
 	m_vertices->push_back(VertexPos(-1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f));
 	m_vertices->push_back(VertexPos( 1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f));
@@ -178,13 +179,14 @@ Cube::Cube()
 	m_vertices->push_back(VertexPos( 1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 	m_vertices->push_back(VertexPos( 1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f));
 	m_vertices->push_back(VertexPos( 1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f));
-
+#endif
+	
 	//indices
 	//front face
 	
 
 
-
+#if 1
 	m_indices->push_back(0);
 	m_indices->push_back(1);
 	m_indices->push_back(2);
@@ -221,7 +223,9 @@ Cube::Cube()
 	m_indices->push_back(20);
 	m_indices->push_back(22);
 	m_indices->push_back(23);
+#endif
 
+	
 
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_CRATE_ID));
 	m_texture = (Image *) d3dImage;
@@ -230,7 +234,7 @@ Cube::Cube()
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
 
 	
-		
+	
 }
 
 void Cube::SetShaderHandlers()
@@ -252,6 +256,8 @@ void Cube::SetShaderHandlers()
 Cube::~Cube()
 {
 	ReleaseCOM(m_vertexDeclaration);
+
+	
 }
 
 

@@ -19,6 +19,10 @@ Scene::~Scene()
 {
 	FreeMeshes();
 
+	FreeMirrors();
+
+	FreeShadowSurfaces();
+
 	if(m_ambientLight)
 	{
 		delete m_ambientLight;
@@ -117,6 +121,46 @@ void Scene::FreeMeshes()
 	{
 		delete m_meshes;
 		m_meshes = NULL;
+	}
+}
+
+void Scene::FreeMirrors()
+{
+	int totalMirrors = m_mirrors->size();
+
+	for(int i = 0; i < totalMirrors; i++)
+	{
+		Mirror *t_mirror = m_mirrors->at(i);
+		if(t_mirror)
+		{
+			delete t_mirror;
+		}
+	}
+
+	if(m_mirrors)
+	{
+		delete m_mirrors;
+		m_mirrors = NULL;
+	}
+}
+
+void Scene::FreeShadowSurfaces()
+{
+	int totalShadowSurfaces = m_shadowSurfaces->size();
+
+	for(int i = 0; i < totalShadowSurfaces; i++)
+	{
+		ShadowSurface *t_shadowSurface = m_shadowSurfaces->at(i);
+		if(t_shadowSurface)
+		{
+			delete t_shadowSurface;
+		}
+	}
+
+	if(m_shadowSurfaces)
+	{
+		delete m_shadowSurfaces;
+		m_shadowSurfaces = NULL;
 	}
 }
 

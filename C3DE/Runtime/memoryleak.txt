@@ -5,6 +5,9 @@
 36:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A42B28	52 unfreed	block 35
 47:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A43F30	52 unfreed	block 46
 50:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01E9EE20	52 unfreed	block 49
+51:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 14,	ADDRESS 01E9EE90	20 unfreed	block 50
+52:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 15,	ADDRESS 01E9EEE0	20 unfreed	block 51
+53:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 21,	ADDRESS 01E9EF30	8 unfreed	block 52
 54:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 114,	ADDRESS 01E9EF78	20 unfreed	block 53
 55:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 115,	ADDRESS 01E9EFC8	20 unfreed	block 54
 56:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F018	52 unfreed	block 55
@@ -15,5 +18,6 @@
 61:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F538	52 unfreed	block 60
 62:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F5A8	52 unfreed	block 61
 63:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F6D8	52 unfreed	block 62
+64:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F748	52 unfreed	block 63
 -----------------------------------------------------------
-Total Unfreed: 820 bytes
+Total Unfreed: 920 bytes

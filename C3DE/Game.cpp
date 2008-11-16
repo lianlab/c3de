@@ -232,7 +232,7 @@ void Game::OnKeyDown(int key)
 		m_testMesh->SetPosition(m_testMesh->GetX() - 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
 	}
 #endif
-#if 1
+#if 0
 	else if(key == 200)
 	{		
 		m_cube->SetPosition(m_cube->GetX(), m_cube->GetY(), m_cube->GetZ() - 0.01f);		
@@ -260,7 +260,7 @@ void Game::OnKeyDown(int key)
 		m_cube->SetPosition(m_cube->GetX() - 0.01f, m_cube->GetY(), m_cube->GetZ());
 	}
 #endif
-#if 0
+#if 1
 	else if(key == 200)
 	{		
 		m_dwarf->SetPosition(m_dwarf->GetX(), m_dwarf->GetY(), m_dwarf->GetZ() - 0.01f);		
@@ -455,8 +455,10 @@ void Game::InitializeMeshes()
 	m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_DWARF_ID), ((D3DRenderer*)m_renderer)->GetDevice());
 
 	
+	
+
 	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
-	//m_testScene->AddMesh(m_dwarf);
+	m_testScene->AddMesh(m_dwarf);
 	m_testScene->Initialize();
 
 

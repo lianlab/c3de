@@ -1,19 +1,12 @@
-22:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CD2E8	52 unfreed	block 21
-26:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CE6F0	52 unfreed	block 25
-32:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A41B20	52 unfreed	block 31
-35:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A42308	52 unfreed	block 34
-36:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A42B28	52 unfreed	block 35
-47:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A43F30	52 unfreed	block 46
-50:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01E9EE20	52 unfreed	block 49
-54:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 114,	ADDRESS 01E9EF78	20 unfreed	block 53
-55:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 115,	ADDRESS 01E9EFC8	20 unfreed	block 54
-56:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F018	52 unfreed	block 55
-57:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F108	52 unfreed	block 56
-58:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F208	52 unfreed	block 57
-59:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F308	52 unfreed	block 58
-60:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F418	52 unfreed	block 59
-61:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F538	52 unfreed	block 60
-62:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F5A8	52 unfreed	block 61
-63:c:\caio\c3de\c3de\d3dmesh.cpp                     :		LINE 181,	ADDRESS 01E9F6D8	52 unfreed	block 62
+21:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CD2E8	52 unfreed	block 20
+25:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CE810	52 unfreed	block 24
+31:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A41BC0	52 unfreed	block 30
+34:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A42488	52 unfreed	block 33
+35:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A42D88	52 unfreed	block 34
+46:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01E9EA28	52 unfreed	block 45
+49:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01E9F340	52 unfreed	block 48
+50:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 14,	ADDRESS 01E9F3B0	20 unfreed	block 49
+51:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 15,	ADDRESS 01E9F400	20 unfreed	block 50
+52:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 21,	ADDRESS 01E9F450	8 unfreed	block 51
 -----------------------------------------------------------
-Total Unfreed: 820 bytes
+Total Unfreed: 412 bytes

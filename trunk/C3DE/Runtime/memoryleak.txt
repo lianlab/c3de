@@ -1,12 +1,12 @@
-21:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CD2E8	52 unfreed	block 20
-25:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CE810	52 unfreed	block 24
-31:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A41BC0	52 unfreed	block 30
-34:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A42488	52 unfreed	block 33
-35:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A42D88	52 unfreed	block 34
-46:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01E9EA28	52 unfreed	block 45
-49:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01E9F340	52 unfreed	block 48
-50:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 14,	ADDRESS 01E9F3B0	20 unfreed	block 49
-51:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 15,	ADDRESS 01E9F400	20 unfreed	block 50
-52:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 21,	ADDRESS 01E9F450	8 unfreed	block 51
+21:.\Mesh.cpp                                        :		LINE 8,	ADDRESS 003CBC80	52 unfreed	block 20
+25:.\Mesh.cpp                                        :		LINE 8,	ADDRESS 003CCD70	52 unfreed	block 24
+31:.\Mesh.cpp                                        :		LINE 8,	ADDRESS 003CFF88	52 unfreed	block 30
+34:.\Mesh.cpp                                        :		LINE 8,	ADDRESS 01D5EB38	52 unfreed	block 33
+35:.\Mesh.cpp                                        :		LINE 8,	ADDRESS 01D5F150	52 unfreed	block 34
+46:.\Mesh.cpp                                        :		LINE 8,	ADDRESS 01D60238	52 unfreed	block 45
+49:.\Mesh.cpp                                        :		LINE 8,	ADDRESS 01D60818	52 unfreed	block 48
+50:.\Dwarf.cpp                                       :		LINE 14,	ADDRESS 01D60868	16 unfreed	block 49
+51:.\Dwarf.cpp                                       :		LINE 15,	ADDRESS 01D60890	16 unfreed	block 50
+52:.\Dwarf.cpp                                       :		LINE 21,	ADDRESS 01D608B8	8 unfreed	block 51
 -----------------------------------------------------------
-Total Unfreed: 412 bytes
+Total Unfreed: 404 bytes

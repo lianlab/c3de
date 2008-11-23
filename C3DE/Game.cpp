@@ -383,6 +383,7 @@ void Game::CreateMeshBuffers(D3DMesh *mesh)
 	mesh->SetVertexDeclaration(Decl);
 
 	//mesh->Translate(0.0f, 0.0f, 0.0f);
+	mesh->CreateXMesh(((D3DRenderer *)m_renderer)->GetDevice());
 }
 
 void Game::InitializeMeshes()
@@ -421,6 +422,7 @@ void Game::InitializeMeshes()
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
 	m_cube->SetMaterial(t_material3);
 	CreateMeshBuffers(m_cube);
+	
 
 	m_wall = new Wall();
 	m_wall->SetMaterial(t_material3);
@@ -434,11 +436,13 @@ void Game::InitializeMeshes()
 	m_testMesh->SetPosition(0.0f, 3.0f, -6.0f);
 
 	//m_cube->SetPosition(0.0f, 3.0f, -3.0f);
+
+	//m_cube->CreateXMesh(((D3DRenderer *)m_renderer)->GetDevice());
 	
 	m_shadowSurface = new PlanarShadowSurface(m_plane); 
 	//m_cube->SetPosition(0.0f, 3.0f, -3.0f);
 	//m_testScene->AddMesh(m_wall);
-	m_testScene->AddMirror((Mirror *)m_mirror);	
+	//m_testScene->AddMirror((Mirror *)m_mirror);	
 	m_testScene->AddMesh((Mesh*)m_cube);
 	//m_testScene->AddMesh((Mesh*)m_grid);	
 	//m_testScene->AddMesh((Mesh*)m_testMesh);
@@ -458,7 +462,7 @@ void Game::InitializeMeshes()
 	
 
 	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
-	m_testScene->AddMesh(m_dwarf);
+	//m_testScene->AddMesh(m_dwarf);
 	m_testScene->Initialize();
 
 

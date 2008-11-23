@@ -9,7 +9,7 @@
 
 #include "ShadowFX.h"
 #include "D3DShadowSurface.h"
-#include "DebugMemory.h"
+//#include "DebugMemory.h"
 
 #include "Dwarf.h"
 
@@ -199,6 +199,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 	{		
 		Mesh *mesh = scene->GetMeshesVector()->at(i);	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
+		
 		if(d3dmesh->GetXMesh())
 		{
 			DrawXMesh(d3dmesh);

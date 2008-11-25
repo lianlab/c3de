@@ -16,7 +16,7 @@
 
 D3DRenderer::D3DRenderer()
 {	
-	m_font = NULL;
+	m_font = NULL;	
 }
 
 D3DRenderer::~D3DRenderer()
@@ -172,7 +172,8 @@ void D3DRenderer::CreateMeshBuffers(D3DMesh *mesh)
 
 
 void D3DRenderer::DrawScene(Scene *scene)
-{			
+{		
+	
 	int totalMeshes = scene->GetMeshesVector()->size();		
 	int totalMirrors = scene->GetMirrorsVector()->size();	
 	int totalShadowSurfaces = scene->GetShadowSurfacesVector()->size();
@@ -408,14 +409,18 @@ void D3DRenderer::EnableAlphaBlending(bool enable)
 
 void D3DRenderer::DrawMesh(Mesh *a_mesh)
 {			
+	
+
 	D3DMesh *mesh = (D3DMesh *)a_mesh;
 	FXManager::GetInstance()->Begin(mesh->GetEffect());		
 	mesh->SetShaderHandlers();
 	FXManager::GetInstance()->PreRender();	
 	
 	HR(m_device->SetStreamSource(0, mesh->GetVertexBuffer(), 0, mesh->GetVertexSize()));	
+	
 	HR(m_device->SetIndices(mesh->GetIndexBuffer()));	
 	HR(m_device->SetVertexDeclaration(mesh->GetVertexDeclaration()));
+	
 
 	D3DCamera *cam = (D3DCamera *) m_camera;
 	
@@ -432,6 +437,7 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 	int numVertices = mesh->GetVertices()->size();		
 	
 	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
+	
 
 	FXManager::GetInstance()->PosRender();
 	FXManager::GetInstance()->End();
@@ -694,19 +700,60 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 
 	EnableAlphaBlending(false);	
 
+	CreateAxis();
+
 	return true;
 }
 
-void D3DRenderer::DrawPivot(Pivot *pivot)
+
+
+void D3DRenderer::CreateAxis()
 {
-	D3DCamera *cam = (D3DCamera *) m_camera;
-	D3DXMATRIX t_view = cam->GetMatrix();
+
+	int vertexSize = 6;
+	HR(GetDevice()->CreateVertexBuffer(vertexSize * sizeof(VertexCol), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_axisBuffer, 0));
+	VertexCol *v = 0;
+	HR(m_axisBuffer->Lock(0,0,(void**)&v,0));
+	
+	v[0] = VertexCol(0, 0, 0, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+	v[1] = VertexCol(0, 0, 25, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+	v[2] = VertexCol(0, 0, 0, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+	v[3] = VertexCol(0, 25, 0, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));	
+	v[4] = VertexCol(0, 0, 0, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	v[5] = VertexCol(25, 0, 0, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));	
+	
+	HR(m_axisBuffer->Unlock());
+
+	D3DVERTEXELEMENT9 VertexPosElements[] = 
+	{
+		{0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+		{0, 12, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0},		
+		D3DDECL_END()
+	};		
 
 	
+	HR(GetDevice()->CreateVertexDeclaration(VertexPosElements, &m_axisDeclaration));
+
 	
-	D3DXMATRIX t_projView = t_view*m_proj;	
-	pivot->GetEffect()->SetWorldHandlers(cam->GetPosition(), t_projView);
-	DrawMesh((Mesh *)pivot);
+}
+
+void D3DRenderer::DrawAxis()
+{	
+	
+	HR(m_device->SetStreamSource(0, m_axisBuffer, 0, sizeof(VertexCol)));	
+	HR(m_device->SetVertexDeclaration(m_axisDeclaration));
+
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	
+	D3DXMATRIX W;
+	D3DXMatrixIdentity(&W);
+	HR(m_device->SetTransform(D3DTS_WORLD, &W));
+	
+	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
+	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
+	
+	m_device->DrawPrimitive( D3DPT_LINELIST, 0, 3 );
 }
 
 void D3DRenderer::Reset()

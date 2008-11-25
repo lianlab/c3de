@@ -166,7 +166,7 @@ void Game::Render(Renderer *renderer)
 	renderer->DrawScene(m_testScene);
 	renderer->DrawSprite(m_button);
 	renderer->DrawSprite((Sprite *)m_sprite);
-	static_cast<D3DRenderer *>(renderer)->DrawPivot(m_pivot);
+	static_cast<D3DRenderer *>(renderer)->DrawAxis();
 
 	
 }
@@ -462,7 +462,7 @@ void Game::InitializeMeshes()
 	
 
 	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
-	//m_testScene->AddMesh(m_dwarf);
+	m_testScene->AddMesh(m_dwarf);
 	m_testScene->Initialize();
 
 

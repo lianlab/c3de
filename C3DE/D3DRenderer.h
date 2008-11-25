@@ -59,9 +59,11 @@ public:
 
 	void CreateMeshBuffers(D3DMesh *mesh);
 
-	void DrawPivot(Pivot *pivot);
+	void DrawAxis();
 
 	void fleps(Mesh *mesh);
+
+	void auei();
 
 	
 	//void InitializeScene(Scene *scene);
@@ -85,7 +87,14 @@ private:
 
 	void DrawXMesh(D3DMesh * a_xMesh);
 
+	void CreateAxis();
 
+#if 1
+
+	IDirect3DVertexBuffer9 * m_axisBuffer;
+	IDirect3DVertexDeclaration9 *m_axisDeclaration;
+	
+#endif
 
 };
 

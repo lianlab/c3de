@@ -27,6 +27,7 @@ D3DMesh::D3DMesh()
 	m_textures = NULL;
 }
 
+/*
 struct VertexPicles
 {
 	VertexPicles(float _x, float _y, float _z, DWORD _color)
@@ -45,7 +46,7 @@ struct VertexPicles
 		FVF_Flags = D3DFVF_XYZ | D3DFVF_DIFFUSE 
 	};
 };
-
+*/
 void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 {
 #if 1

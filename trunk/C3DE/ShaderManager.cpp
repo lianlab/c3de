@@ -10,6 +10,7 @@
 #include "PerPixelLighting.h"
 #include "HardColors.h"
 #include "ShadowFX.h"
+#include "SkinnedMeshFX.h"
 
 ShaderManager * ShaderManager::m_instance = NULL;
 
@@ -86,6 +87,11 @@ void ShaderManager::InitializeResources()
 	errors = 0;	
 	HR(D3DXCreateEffectFromFile(m_device, "effects/Shadow.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_SHADOW_FX, &errors));	
 	m_effectResources[SHADER_SHADOW_FX_ID] = SHADER_SHADOW_FX;
+
+	ID3DXEffect * SHADER_SKINNED_MESH_FX;
+	errors = 0;	
+	HR(D3DXCreateEffectFromFile(m_device, "effects/SkinnedMesh.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_SKINNED_MESH_FX, &errors));	
+	m_effectResources[SHADER_SKINNED_MESH_FX_ID] = SHADER_SKINNED_MESH_FX;
 	
 	m_effects[SHADER_BOOK_LIGHTS_ID] = new BookLights(SHADER_BOOK_LIGHTS);
 	m_effects[SHADER_LIGHTS_AND_TEXTURES_ID] = new LightsAndTextures(SHADER_LIGHTS_AND_TEXTURES);
@@ -95,6 +101,7 @@ void ShaderManager::InitializeResources()
 	m_effects[SHADER_LIGHTS_PER_PIXEL_TEXTURES_ID] = new PerPixelLighting(SHADER_LIGHTS_PER_PIXEL_TEXTURES);
 	m_effects[SHADER_HARD_COLORS_ID] = new HardColors(SHADER_HARD_COLORS);
 	m_effects[SHADER_SHADOW_FX_ID] = new ShadowFX(SHADER_SHADOW_FX);
+	m_effects[SHADER_SKINNED_MESH_FX_ID] = new SkinnedMeshFX(SHADER_SKINNED_MESH_FX);
 }
 
 ShadowFX * ShaderManager::GetDefaultShadowFX()

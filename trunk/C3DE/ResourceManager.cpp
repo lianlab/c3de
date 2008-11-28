@@ -17,6 +17,7 @@ ResourceManager::ResourceManager()
 {
 	m_meshesFilenames[MESH_DWARF_ID] = "Meshes/Dwarf.x";
 	m_meshesFilenames[MESH_WOLF_ID] = "Meshes/Wolf.x";
+	m_meshesFilenames[MESH_TINY_ANIM_ID] = "Meshes/tiny.x";
 }
 
 ResourceManager::~ResourceManager()
@@ -47,6 +48,8 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_DWARF_HEADGEAR;
 	IDirect3DTexture9 * TEX_DWARF_HEAD;
 	////////////////////
+	//TINY ANIM
+	IDirect3DTexture9 * TEX_TINY_ANIM;
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/alienship.bmp", &TEX_SHIP));
 	
@@ -65,6 +68,10 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/Dwarf/DwarfHead.dds", &TEX_DWARF_HEAD));
 	///////////
 
+	//TINY_ANIM
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Tiny/Tiny_skin.dds", &TEX_TINY_ANIM));
+	///////////////////
+
 	m_imageResources[IMAGE_SHIP_ID] = TEX_SHIP;	
 	m_imageResources[IMAGE_BACKGROUND_ID] = TEX_BG;
 	m_imageResources[IMAGE_EXPLOSION_ID] = TEX_EXPLOSION;
@@ -79,6 +86,10 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_DWARF_ARMOR_ID] = TEX_DWARF_ARMOR;
 	m_imageResources[IMAGE_DWARF_HEADGEAR_ID] = TEX_DWARF_HEADGEAR;
 	m_imageResources[IMAGE_DWARF_HEAD_ID] = TEX_DWARF_HEAD;
+
+	//TINY_ANIM
+	m_imageResources[IMAGE_TINY_ANIM_SKIN_ID] = TEX_TINY_ANIM;
+
 
 	
 

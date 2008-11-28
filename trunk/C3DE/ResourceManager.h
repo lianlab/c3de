@@ -24,6 +24,9 @@ enum ResourceIDs
 	IMAGE_DWARF_HEADGEAR_ID,
 	IMAGE_DWARF_HEAD_ID,
 	///////////
+	//TINY_ANIM TEXTURE
+	IMAGE_TINY_ANIM_SKIN_ID,
+	///////////////////////
 
 	TOTAL_IMAGES
 };
@@ -32,6 +35,7 @@ enum MeshesIDs
 { 
 	MESH_DWARF_ID,
 	MESH_WOLF_ID,
+	MESH_TINY_ANIM_ID,
 	TOTAL_MESHES
 };
 

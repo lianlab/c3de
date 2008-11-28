@@ -320,6 +320,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\D3DSkinnedMesh.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\Dwarf.cpp"
 							>
 						</File>
@@ -341,6 +345,10 @@
 						</File>
 						<File
 							RelativePath=".\Plane.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\SkinnedCube.cpp"
 							>
 						</File>
 						<File
@@ -501,6 +509,10 @@
 						</File>
 						<File
 							RelativePath=".\ShadowFX.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\SkinnedMeshFX.cpp"
 							>
 						</File>
 					</Filter>
@@ -690,6 +702,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\D3DSkinnedMesh.h"
+							>
+						</File>
+						<File
 							RelativePath=".\Dwarf.h"
 							>
 						</File>
@@ -711,6 +727,10 @@
 						</File>
 						<File
 							RelativePath=".\Plane.h"
+							>
+						</File>
+						<File
+							RelativePath=".\SkinnedCube.h"
 							>
 						</File>
 						<File
@@ -871,6 +891,10 @@
 						</File>
 						<File
 							RelativePath=".\ShadowFX.h"
+							>
+						</File>
+						<File
+							RelativePath=".\SkinnedMeshFX.h"
 							>
 						</File>
 					</Filter>

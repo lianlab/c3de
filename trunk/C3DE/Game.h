@@ -24,6 +24,7 @@
 #include "Plane.h"
 #include "PlanarShadowSurface.h"
 #include "Dwarf.h"
+#include "SkinnedCube.h"
 
 
 
@@ -100,6 +101,6 @@ private:
 	void InitializeMeshes();
 
 	DefaultScene1 *m_testScene;
-
+	SkinnedCube *m_skinnedCube;
 };
 #endif

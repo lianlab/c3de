@@ -1,13 +1,13 @@
-22:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CD3B0	52 unfreed	block 21
-26:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CE8D8	52 unfreed	block 25
-32:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EAEBD0	52 unfreed	block 31
-35:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EAF498	52 unfreed	block 34
-36:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EAFD98	52 unfreed	block 35
-37:c:\caio\c3de\c3de\cube.cpp                        :		LINE 278,	ADDRESS 01EAFE08	20 unfreed	block 36
-38:c:\caio\c3de\c3de\cube.cpp                        :		LINE 279,	ADDRESS 01EAFE58	20 unfreed	block 37
-46:c:\caio\c3de\c3de\cube.cpp                        :		LINE 366,	ADDRESS 01A51868	8 unfreed	block 45
-47:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A51B70	52 unfreed	block 46
-48:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A53028	52 unfreed	block 47
-51:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A53940	52 unfreed	block 50
+22:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CD370	52 unfreed	block 21
+26:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CE898	52 unfreed	block 25
+32:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EAEBB0	52 unfreed	block 31
+35:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EAF478	52 unfreed	block 34
+36:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EAFD78	52 unfreed	block 35
+37:c:\caio\c3de\c3de\cube.cpp                        :		LINE 278,	ADDRESS 01EAFDE8	20 unfreed	block 36
+38:c:\caio\c3de\c3de\cube.cpp                        :		LINE 279,	ADDRESS 01EAFE38	20 unfreed	block 37
+46:c:\caio\c3de\c3de\cube.cpp                        :		LINE 366,	ADDRESS 01EB0FD0	8 unfreed	block 45
+47:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A51B28	52 unfreed	block 46
+48:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A52FE0	52 unfreed	block 47
+51:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A538F8	52 unfreed	block 50
 -----------------------------------------------------------
 Total Unfreed: 464 bytes

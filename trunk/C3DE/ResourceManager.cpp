@@ -155,6 +155,11 @@ IDirect3DTexture9 * ResourceManager::GetImageByFilename(std::string a_filename)
 	{
 		return m_imageResources[IMAGE_DWARF_HEAD_ID];
 	}	
+	//TINY ANIM
+	else if(strcmp(a_filename.c_str(), "Tiny_skin.dds") == 0)
+	{
+		return m_imageResources[IMAGE_TINY_ANIM_SKIN_ID];
+	}	
 	else
 	{
 		return NULL;

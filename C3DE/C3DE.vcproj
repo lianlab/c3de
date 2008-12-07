@@ -320,10 +320,6 @@
 							>
 						</File>
 						<File
-							RelativePath=".\D3DSkinnedMesh.cpp"
-							>
-						</File>
-						<File
 							RelativePath=".\Dwarf.cpp"
 							>
 						</File>
@@ -348,10 +344,6 @@
 							>
 						</File>
 						<File
-							RelativePath=".\SkinnedCube.cpp"
-							>
-						</File>
-						<File
 							RelativePath=".\Wall.cpp"
 							>
 						</File>
@@ -359,6 +351,26 @@
 							RelativePath=".\Wave.cpp"
 							>
 						</File>
+						<Filter
+							Name="Skinned"
+							>
+							<File
+								RelativePath=".\AllocMeshHierarchy.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\D3DSkinnedMesh.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\SkinnedCube.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\WomanMesh.cpp"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Lighting"
@@ -509,6 +521,10 @@
 						</File>
 						<File
 							RelativePath=".\ShadowFX.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\SkinnedMeshBookFX.cpp"
 							>
 						</File>
 						<File
@@ -702,10 +718,6 @@
 							>
 						</File>
 						<File
-							RelativePath=".\D3DSkinnedMesh.h"
-							>
-						</File>
-						<File
 							RelativePath=".\Dwarf.h"
 							>
 						</File>
@@ -730,10 +742,6 @@
 							>
 						</File>
 						<File
-							RelativePath=".\SkinnedCube.h"
-							>
-						</File>
-						<File
 							RelativePath=".\Wall.h"
 							>
 						</File>
@@ -741,6 +749,26 @@
 							RelativePath=".\Wave.h"
 							>
 						</File>
+						<Filter
+							Name="Skinned"
+							>
+							<File
+								RelativePath=".\AllocMeshHierarchy.h"
+								>
+							</File>
+							<File
+								RelativePath=".\D3DSkinnedMesh.h"
+								>
+							</File>
+							<File
+								RelativePath=".\SkinnedCube.h"
+								>
+							</File>
+							<File
+								RelativePath=".\WomanMesh.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Lighting"
@@ -891,6 +919,10 @@
 						</File>
 						<File
 							RelativePath=".\ShadowFX.h"
+							>
+						</File>
+						<File
+							RelativePath=".\SkinnedMeshBookFX.h"
 							>
 						</File>
 						<File

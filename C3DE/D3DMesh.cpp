@@ -25,6 +25,8 @@ D3DMesh::D3DMesh()
 
 	m_materials = NULL;
 	m_textures = NULL;
+
+	m_effect = NULL;
 }
 
 /*
@@ -102,65 +104,7 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 	m_xMesh->UnlockIndexBuffer();
 	
 #endif
-#if 0
-	m_materials = new std::vector<Material*>;
-	m_textures = new std::vector<IDirect3DTexture9*>;
-	m_materials->push_back(m_material);
-	D3DImage *t_image = (D3DImage *)m_texture;
-	m_textures->push_back(t_image->GetTexture());
 
-	VertexPicles g_quadVertices[] =
-	{
-	   //        x     y     z       color
-	   VertexPicles( -1.0f,-1.0f, 0.0f, 0xffffff00 ), // Bottom-Left,  color = yellow
-	   VertexPicles(  1.0f,-1.0f, 0.0f, 0xff00ff00 ), // Bottom-Right, color = green
-	   VertexPicles(  1.0f, 1.0f, 0.0f, 0xffff0000 ), // Top-Right,    color = red
-	   VertexPicles( -1.0f, 1.0f, 0.0f, 0xff0000ff )  // Top-Left,     color = blue
-	};
-
-	D3DXCreateMeshFVF( 2, // Our quads has 2 faces or triangles...
-                            4, // which require 4 vertices to define.
-                            D3DXMESH_MANAGED, D3DFVF_XYZ | D3DFVF_DIFFUSE , 
-                            a_device, &m_xMesh );
-
-    //
-	// Load our quad's vertices...
-	//
-
-	VertexPicles* pVertices = NULL;
-
-	m_xMesh->LockVertexBuffer( 0, (void**)&pVertices );
-    {
-        pVertices[0] = g_quadVertices[0];
-	    pVertices[1] = g_quadVertices[1];
-	    pVertices[2] = g_quadVertices[2];
-	    pVertices[3] = g_quadVertices[3];
-
-        // If you wanted, you could also memcpy the whole thing in like so.
-        //memcpy( pVertices, g_quadVertices, sizeof(g_quadVertices) );
-    }
-	m_xMesh->UnlockVertexBuffer();
-
-	//
-	// Define our quad's indices...
-	//
-
-	WORD* pIndices = NULL;
-
-	m_xMesh->LockIndexBuffer( 0, (void**)&pIndices );
-    {
-        // First triangle of quad
-	    pIndices[0] = 0; 
-        pIndices[1] = 1; 
-        pIndices[2] = 2;
-
-        // Second triangle of quad
-	    pIndices[3] = 0; 
-        pIndices[4] = 2; 
-        pIndices[5] = 3;
-    }
-	m_xMesh->UnlockIndexBuffer();
-#endif
 }
 
 void D3DMesh::FreeTextures()

@@ -11,18 +11,9 @@
 #include "D3DScene.h"
 
 #include "D3DMesh.h"
-#include "Pivot.h"
 
-/*
-#include "SpecularLight.h"
 
-*/
-
-#if 1
-#include <vector>
-#include "PerVertexLighting.h"
-#include "Cube.h"
-#endif
+#include "D3DSkinnedMesh.h"
 #include "FX.h"
 #include "ShadowFX.h"
 
@@ -61,12 +52,7 @@ public:
 
 	void DrawAxis();
 
-	void fleps(Mesh *mesh);
-
-	void auei();
-
 	
-	//void InitializeScene(Scene *scene);
 
 private:
 	IDirect3DDevice9* m_device; 
@@ -81,20 +67,22 @@ private:
 	
 	D3DXMATRIX m_proj;	
 
-	Pivot *m_pivot;
-
 	ShadowFX *m_shadowEffect;
 
 	void DrawXMesh(D3DMesh * a_xMesh);
 
 	void CreateAxis();
 
-#if 1
-
 	IDirect3DVertexBuffer9 * m_axisBuffer;
 	IDirect3DVertexDeclaration9 *m_axisDeclaration;
+
+#if 1
+
+	void drawXcene(D3DSkinnedMesh *a_mesh);	
 	
 #endif
+	
+
 
 };
 

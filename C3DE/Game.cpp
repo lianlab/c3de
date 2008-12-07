@@ -423,9 +423,9 @@ void Game::InitializeMeshes()
 	m_cube->SetMaterial(t_material3);
 	CreateMeshBuffers(m_cube);
 
-	m_skinnedCube = new SkinnedCube();
-	m_skinnedCube->SetMaterial(t_material3);
-	CreateMeshBuffers(m_skinnedCube);
+	//m_skinnedCube = new SkinnedCube();
+	//m_skinnedCube->SetMaterial(t_material3);
+	//CreateMeshBuffers(m_skinnedCube);
 
 	m_wall = new Wall();
 	m_wall->SetMaterial(t_material3);
@@ -456,19 +456,23 @@ void Game::InitializeMeshes()
 	//m_testScene->AddMesh(m_pivot);
 	//m_testScene->AddShadowSurface(m_shadowSurface);
 	
-	m_testScene->AddMesh(m_skinnedCube);
+	//m_testScene->AddMesh(m_skinnedCube);
 
 	m_dwarf = new Dwarf();
 	//m_dwarf->SetMaterial(t_material3);
 	//m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_DWARF_ID), ((D3DRenderer*)m_renderer)->GetDevice());
-	m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TINY_ANIM_ID), ((D3DRenderer*)m_renderer)->GetDevice());
+	m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TIGER_ID), ((D3DRenderer*)m_renderer)->GetDevice());
+	//m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TINY_ANIM_ID), ((D3DRenderer*)m_renderer)->GetDevice());
 
 	
 	
-	
+	//m_dwarf->Scale(0.02f, 0.02f, 0.02f);
+	//m_testScene->AddMesh(m_dwarf);
 
-	m_dwarf->Scale(0.02f, 0.02f, 0.02f);
-	m_testScene->AddMesh(m_dwarf);
+	//m_skinMesh = new D3DSkinnedMesh("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
+	m_skinMesh = new WomanMesh();
+	m_skinMesh->LoadFromXFile("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
+	m_testScene->AddMesh(m_skinMesh);
 	m_testScene->Initialize();
 
 

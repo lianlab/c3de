@@ -63,6 +63,10 @@ void FXManager::SetUpdateHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldVi
 
 void FXManager::AddEffect(FX * effect)
 {
+	if(effect == NULL)
+	{
+		return;
+	}
 	int totalEffecs = m_effects->size();
 
 	for(int i = 0; i < totalEffecs; i++)

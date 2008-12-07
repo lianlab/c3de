@@ -26,6 +26,8 @@ enum ResourceIDs
 	///////////
 	//TINY_ANIM TEXTURE
 	IMAGE_TINY_ANIM_SKIN_ID,
+	//TIGER
+	IMAGE_TIGER_SKIN_ID,
 	///////////////////////
 
 	TOTAL_IMAGES
@@ -36,6 +38,7 @@ enum MeshesIDs
 	MESH_DWARF_ID,
 	MESH_WOLF_ID,
 	MESH_TINY_ANIM_ID,
+	MESH_TIGER_ID,
 	TOTAL_MESHES
 };
 

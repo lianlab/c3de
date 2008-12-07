@@ -25,6 +25,8 @@
 #include "PlanarShadowSurface.h"
 #include "Dwarf.h"
 #include "SkinnedCube.h"
+#include "D3DSkinnedMesh.h"
+#include "WomanMesh.h"
 
 
 
@@ -101,6 +103,8 @@ private:
 	void InitializeMeshes();
 
 	DefaultScene1 *m_testScene;
-	SkinnedCube *m_skinnedCube;
+	//SkinnedCube *m_skinnedCube;
+
+	WomanMesh *m_skinMesh;
 };
 #endif

@@ -10,6 +10,7 @@
 #include "ShadowFX.h"
 #include "D3DShadowSurface.h"
 //#include "DebugMemory.h"
+#include "SkinnedMeshBookFX.h"
 
 #include "Dwarf.h"
 
@@ -17,6 +18,7 @@
 D3DRenderer::D3DRenderer()
 {	
 	m_font = NULL;	
+	//mSkinnedMesh = NULL;
 }
 
 D3DRenderer::~D3DRenderer()
@@ -173,7 +175,14 @@ void D3DRenderer::CreateMeshBuffers(D3DMesh *mesh)
 
 void D3DRenderer::DrawScene(Scene *scene)
 {		
-	
+#if 1
+	Mesh *mesh = scene->GetMeshesVector()->at(0);	
+	D3DSkinnedMesh *d3dmesh = (D3DSkinnedMesh *)mesh;	
+
+	drawXcene(d3dmesh);
+	d3dmesh->update(0.002f);
+	return;
+#endif
 	int totalMeshes = scene->GetMeshesVector()->size();		
 	int totalMirrors = scene->GetMirrorsVector()->size();	
 	int totalShadowSurfaces = scene->GetShadowSurfacesVector()->size();
@@ -224,7 +233,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 {	
 
-	PerVertexLighting * t_auei = static_cast<PerVertexLighting *>(a_mesh->GetEffect());			
+	//PerVertexLighting * t_auei = static_cast<PerVertexLighting *>(a_mesh->GetEffect());			
 	FXManager::GetInstance()->Begin(a_mesh->GetEffect());				
 
 	int t_totalMaterials = a_mesh->GetMaterials()->size();
@@ -479,44 +488,11 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh, FX *fx)
 	
 }
 
-void D3DRenderer::fleps(Mesh *a_mesh)
-{			
-	D3DMesh *mesh = (D3DMesh *)a_mesh;
-	ShadowFX *shadowFX = ShaderManager::GetInstance()->GetDefaultShadowFX();
-	FXManager::GetInstance()->Begin(shadowFX);		
-	
-	shadowFX->SetTransformMatrix(mesh->GetTransformMatrix());
-
-	FXManager::GetInstance()->PreRender();	
-	
-	HR(m_device->SetStreamSource(0, mesh->GetVertexBuffer(), 0, mesh->GetVertexSize()));	
-	HR(m_device->SetIndices(mesh->GetIndexBuffer()));	
-	HR(m_device->SetVertexDeclaration(mesh->GetVertexDeclaration()));
-
-	D3DCamera *cam = (D3DCamera *) m_camera;
-	
-	D3DXMATRIX W;
-	D3DXMatrixIdentity(&W);
-	HR(m_device->SetTransform(D3DTS_WORLD, &W));
-	
-	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
-	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
-	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
-	
-
-	int numTriangles = mesh->GetIndices()->size() / 3;
-	int numVertices = mesh->GetVertices()->size();		
-	
-	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
-
-	FXManager::GetInstance()->PosRender();
-	FXManager::GetInstance()->End();
-	
-}
 
 
 void D3DRenderer::DrawSprite(Sprite *sprite)
 {	
+	
 	m_sprite->Begin(0);
 
 	D3DSprite * d3dSprite = static_cast<D3DSprite *> (sprite);
@@ -580,7 +556,7 @@ bool D3DRenderer::IsDeviceLost()
 
 void D3DRenderer::RenderText(char *text)
 {
-
+	
 	if(!m_font)
 	{
 		//Load Application Specific resources here...
@@ -702,9 +678,9 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 
 	CreateAxis();
 
+	
 	return true;
 }
-
 
 
 void D3DRenderer::CreateAxis()
@@ -716,11 +692,11 @@ void D3DRenderer::CreateAxis()
 	HR(m_axisBuffer->Lock(0,0,(void**)&v,0));
 	
 	v[0] = VertexCol(0, 0, 0, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
-	v[1] = VertexCol(0, 0, 25, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+	v[1] = VertexCol(0, 0, 259, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
 	v[2] = VertexCol(0, 0, 0, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
-	v[3] = VertexCol(0, 25, 0, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));	
+	v[3] = VertexCol(0, 259, 0, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));	
 	v[4] = VertexCol(0, 0, 0, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
-	v[5] = VertexCol(25, 0, 0, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));	
+	v[5] = VertexCol(259, 0, 0, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));	
 	
 	HR(m_axisBuffer->Unlock());
 
@@ -764,20 +740,57 @@ void D3DRenderer::Reset()
 
 void D3DRenderer::Clear()
 {	
-	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0x0000ffff, 1.0f, 0L );
+	
+	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0xffffffff, 1.0f, 0L );
 }
 
 bool D3DRenderer::BeginRender()
 {
 
 	m_device->BeginScene();	
-	//m_sprite->Begin(0);
+	m_sprite->Begin(0);
 	return true;
 }
 
 void D3DRenderer::EndRender()
 {
-	//m_sprite->End();
+	m_sprite->End();
 	m_device->EndScene();
 	m_device->Present(0, 0, 0, 0);
 }
+
+#if 1
+
+
+
+
+
+void D3DRenderer::drawXcene(D3DSkinnedMesh * a_mesh)
+{
+	
+	
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	D3DXMATRIX t_view = cam->GetMatrix();	
+	
+	D3DXMATRIX t_projView = t_view*m_proj;	
+	
+
+	FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
+
+	a_mesh->SetShaderHandlers();
+
+	FXManager::GetInstance()->Begin(a_mesh->GetEffect());	
+	FXManager::GetInstance()->PreRender();	
+
+	a_mesh->draw();
+
+	FXManager::GetInstance()->PosRender();
+	FXManager::GetInstance()->End();
+
+			
+
+	
+	
+
+}
+#endif

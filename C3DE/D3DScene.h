@@ -14,6 +14,8 @@ public:
 
 	virtual void Initialize();
 
+	
+
 	D3DXVECTOR3 *m_lightAttenuation;
 };
 #endif

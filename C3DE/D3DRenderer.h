@@ -76,11 +76,7 @@ private:
 	IDirect3DVertexBuffer9 * m_axisBuffer;
 	IDirect3DVertexDeclaration9 *m_axisDeclaration;
 
-#if 1
 
-	void drawXcene(D3DSkinnedMesh *a_mesh);	
-	
-#endif
 	
 
 

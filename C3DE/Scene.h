@@ -49,6 +49,8 @@ public:
 
 	void FreeMeshes();
 
+	virtual void Update(int deltaTime);
+
 protected:
 	vector<Mesh *> *m_meshes;
 	vector<Mirror *> *m_mirrors;

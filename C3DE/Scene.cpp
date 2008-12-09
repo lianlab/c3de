@@ -48,6 +48,21 @@ Scene::~Scene()
 	}
 }
 
+void Scene::Update(int deltaTime)
+{
+	int totalMeshes = m_meshes->size();
+
+	for(int i = 0; i < totalMeshes; i++)
+	{
+		Mesh *t_mesh = m_meshes->at(i);
+		if(t_mesh)
+		{
+			t_mesh->Update(deltaTime);
+			
+		}
+	}
+}
+
 void Scene::SetAmbientLight(AmbientLight *light)
 {
 	if(m_ambientLight)

@@ -15,14 +15,19 @@ IDirect3DVertexDeclaration9* VertexPNT::Decl = 0;
 D3DSkinnedMesh::D3DSkinnedMesh() : D3DMesh()
 {
 	
-	
+	m_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
+										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
+	m_materials = new std::vector<Material*>;
 
-	
+	m_materials->push_back(m_material);
 
 }
 
 void D3DSkinnedMesh::LoadFromXFile(const std::string &XFilename, IDirect3DDevice9 *a_device)
 {
+	//m_materials = new std::vector<Material*>;
+	m_textures = new std::vector<IDirect3DTexture9*>;
+
 
 	D3DVERTEXELEMENT9 VertexPNTElements[] = 
 	{
@@ -66,19 +71,19 @@ D3DSkinnedMesh::~D3DSkinnedMesh()
 		mRoot = 0;
 	}
 
-	ReleaseCOM(mSkinnedMesh);
+	ReleaseCOM(m_xMesh);
 	ReleaseCOM(mSkinInfo);
 	ReleaseCOM(mAnimCtrl);
 }
 
 UINT D3DSkinnedMesh::numVertices()
 {
-	return mSkinnedMesh->GetNumVertices();
+	return m_xMesh->GetNumVertices();
 }
 
 UINT D3DSkinnedMesh::numTriangles()
 {
-	return mSkinnedMesh->GetNumFaces();
+	return m_xMesh->GetNumFaces();
 }
 
 UINT D3DSkinnedMesh::numBones()
@@ -91,12 +96,13 @@ const D3DXMATRIX* D3DSkinnedMesh::getFinalXFormArray()
 	return &mFinalXForms[0];
 }
 
-void D3DSkinnedMesh::update(float deltaTime)
+void D3DSkinnedMesh::Update(int deltaTime)
 {
 	// Animate the mesh.  The AnimationController has pointers to the  hierarchy frame
 	// transform matrices.  The AnimationController updates these matrices to reflect 
 	// the given pose at the current time by interpolating between animation keyframes.
-	HR(mAnimCtrl->AdvanceTime(deltaTime, 0));
+	float t_time = (float) deltaTime / 1000;
+	HR(mAnimCtrl->AdvanceTime(t_time, 0));
 
 	
 	// Recurse down the tree and generate a frame's toRoot transform from the updated pose.
@@ -116,10 +122,6 @@ void D3DSkinnedMesh::update(float deltaTime)
 	}
 }
 
-void D3DSkinnedMesh::draw()
-{
-	HR(mSkinnedMesh->DrawSubset(0));
-}
 
 D3DXFRAME* D3DSkinnedMesh::findNodeWithMesh(D3DXFRAME* frame)
 {
@@ -212,7 +214,7 @@ void D3DSkinnedMesh::buildSkinnedMesh(ID3DXMesh* mesh)
 	ID3DXBuffer* boneComboTable      = 0;
 	HR(mSkinInfo->ConvertToIndexedBlendedMesh(optimizedTempMesh, D3DXMESH_MANAGED | D3DXMESH_WRITEONLY,  
 		MAX_NUM_BONES_SUPPORTED, 0, 0, 0, 0, &mMaxVertInfluences,
-		&numBoneComboEntries, &boneComboTable, &mSkinnedMesh));
+		&numBoneComboEntries, &boneComboTable, &m_xMesh));
 
 	ReleaseCOM(optimizedTempMesh); // Done with tempMesh.
 	ReleaseCOM(boneComboTable); // Don't need bone table.
@@ -222,7 +224,7 @@ void D3DSkinnedMesh::buildSkinnedMesh(ID3DXMesh* mesh)
 	// This is for insight only to see what exactly ConvertToIndexedBlendedMesh
 	// does to the vertex declaration.
 	D3DVERTEXELEMENT9 elems[MAX_FVF_DECL_SIZE];
-	HR(mSkinnedMesh->GetDeclaration(elems));
+	HR(m_xMesh->GetDeclaration(elems));
 	
 	OutputDebugString("\nVertex Format After ConvertToIndexedBlendedMesh\n");
 	int i = 0;

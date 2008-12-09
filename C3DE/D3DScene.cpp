@@ -16,6 +16,8 @@ D3DScene::~D3DScene()
 	}
 }
 
+
+
 void D3DScene::SetLightAttenuation(D3DXVECTOR3 *attenuation)
 {
 	if(m_lightAttenuation)

@@ -173,15 +173,17 @@ void D3DRenderer::CreateMeshBuffers(D3DMesh *mesh)
 
 
 
+
+
 void D3DRenderer::DrawScene(Scene *scene)
 {		
-#if 1
+#if 0
 	Mesh *mesh = scene->GetMeshesVector()->at(0);	
 	D3DSkinnedMesh *d3dmesh = (D3DSkinnedMesh *)mesh;	
 
-	drawXcene(d3dmesh);
-	d3dmesh->update(0.002f);
-	return;
+	//drawXcene(d3dmesh);
+	d3dmesh->Update(0.002f);
+	//return;
 #endif
 	int totalMeshes = scene->GetMeshesVector()->size();		
 	int totalMirrors = scene->GetMirrorsVector()->size();	
@@ -230,6 +232,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 }
 
 
+
 void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 {	
 
@@ -242,7 +245,14 @@ void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 	for(int j = 0; j < t_totalMaterials; j++)
 	{				
 		a_mesh->SetMaterial(a_mesh->GetMaterials()->at(j));
-		a_mesh->SetD3DTexture(a_mesh->GetTextures()->at(j));	
+
+		int t_totalTextures = a_mesh->GetTextures()->size();
+		//IDirect3DTexture9 * t_tex = a_mesh->GetTextures()->at(j);
+		if(j < t_totalTextures)
+		{
+			a_mesh->SetD3DTexture(a_mesh->GetTextures()->at(j));	
+		}
+		
 		a_mesh->SetShaderHandlers();
 		FXManager::GetInstance()->PreRender();	
 		HR(t_xMesh->DrawSubset(j));
@@ -759,38 +769,3 @@ void D3DRenderer::EndRender()
 	m_device->Present(0, 0, 0, 0);
 }
 
-#if 1
-
-
-
-
-
-void D3DRenderer::drawXcene(D3DSkinnedMesh * a_mesh)
-{
-	
-	
-	D3DCamera *cam = (D3DCamera *) m_camera;
-	D3DXMATRIX t_view = cam->GetMatrix();	
-	
-	D3DXMATRIX t_projView = t_view*m_proj;	
-	
-
-	FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
-
-	a_mesh->SetShaderHandlers();
-
-	FXManager::GetInstance()->Begin(a_mesh->GetEffect());	
-	FXManager::GetInstance()->PreRender();	
-
-	a_mesh->draw();
-
-	FXManager::GetInstance()->PosRender();
-	FXManager::GetInstance()->End();
-
-			
-
-	
-	
-
-}
-#endif

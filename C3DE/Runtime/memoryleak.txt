@@ -1,15 +1,26 @@
-23:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CD490	52 unfreed	block 22
-27:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CE9B8	52 unfreed	block 26
-33:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EAECD0	52 unfreed	block 32
-36:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EAF598	52 unfreed	block 35
-37:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EAFE98	52 unfreed	block 36
-38:c:\caio\c3de\c3de\cube.cpp                        :		LINE 278,	ADDRESS 01EAFF08	20 unfreed	block 37
-39:c:\caio\c3de\c3de\cube.cpp                        :		LINE 279,	ADDRESS 01EAFF58	20 unfreed	block 38
-47:c:\caio\c3de\c3de\cube.cpp                        :		LINE 366,	ADDRESS 01A51950	8 unfreed	block 46
-48:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A51C20	52 unfreed	block 47
-51:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A524F8	52 unfreed	block 50
-52:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 14,	ADDRESS 01A52568	20 unfreed	block 51
-53:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 15,	ADDRESS 01A525B8	20 unfreed	block 52
-54:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 21,	ADDRESS 01A52608	8 unfreed	block 53
+23:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CD4D0	52 unfreed	block 22
+27:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 003CEA98	52 unfreed	block 26
+30:c:\caio\c3de\c3de\scene.cpp                       :		LINE 7,	ADDRESS 01EAEC40	20 unfreed	block 29
+31:c:\caio\c3de\c3de\scene.cpp                       :		LINE 8,	ADDRESS 01EAEC90	20 unfreed	block 30
+32:c:\caio\c3de\c3de\scene.cpp                       :		LINE 9,	ADDRESS 01EAECE0	20 unfreed	block 31
+33:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EAEE28	52 unfreed	block 32
+36:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EAF790	52 unfreed	block 35
+37:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01EB0130	52 unfreed	block 36
+38:c:\caio\c3de\c3de\cube.cpp                        :		LINE 278,	ADDRESS 01EB0240	20 unfreed	block 37
+39:c:\caio\c3de\c3de\cube.cpp                        :		LINE 279,	ADDRESS 01EB0290	20 unfreed	block 38
+40:c:\caio\c3de\c3de\defaultscene1.cpp               :		LINE 9,	ADDRESS 01EAEF48	16 unfreed	block 39
+41:c:\caio\c3de\c3de\defaultscene1.cpp               :		LINE 12,	ADDRESS 01EAEF98	20 unfreed	block 40
+42:c:\caio\c3de\c3de\directionallight.cpp            :		LINE 6,	ADDRESS 01EAEFE8	12 unfreed	block 41
+43:c:\caio\c3de\c3de\defaultscene1.cpp               :		LINE 15,	ADDRESS 01EAF030	20 unfreed	block 42
+44:c:\caio\c3de\c3de\directionallight.cpp            :		LINE 6,	ADDRESS 01EAF080	12 unfreed	block 43
+45:c:\caio\c3de\c3de\defaultscene1.cpp               :		LINE 18,	ADDRESS 01EAF0C8	12 unfreed	block 44
+46:c:\caio\c3de\c3de\defaultscene1.cpp               :		LINE 19,	ADDRESS 01EAF110	20 unfreed	block 45
+47:c:\caio\c3de\c3de\cube.cpp                        :		LINE 366,	ADDRESS 01A51C90	8 unfreed	block 46
+48:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A51F60	52 unfreed	block 47
+51:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A52918	52 unfreed	block 50
+52:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 14,	ADDRESS 01A52A28	20 unfreed	block 51
+53:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 15,	ADDRESS 01A52A78	20 unfreed	block 52
+54:c:\caio\c3de\c3de\dwarf.cpp                       :		LINE 21,	ADDRESS 01A52AC8	8 unfreed	block 53
+55:c:\caio\c3de\c3de\mesh.cpp                        :		LINE 8,	ADDRESS 01A52E18	52 unfreed	block 54
 -----------------------------------------------------------
-Total Unfreed: 460 bytes
+Total Unfreed: 684 bytes

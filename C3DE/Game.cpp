@@ -98,7 +98,7 @@ void Game::SetInputer(DirectInput *inputer)
 
 Game::~Game()
 {
-	delete m_testScene;
+	//delete m_testScene;
 	delete m_sprite;
 	delete m_button;
 
@@ -142,7 +142,9 @@ void Game::Update(int deltaTime)
 	}
 	m_sprite->Update(deltaTime);
 
-	m_deltaTime = deltaTime;	
+	m_deltaTime = deltaTime;
+
+	m_testScene->Update(deltaTime);
 
 	//m_testMesh->Update(1);
 
@@ -260,7 +262,7 @@ void Game::OnKeyDown(int key)
 		m_cube->SetPosition(m_cube->GetX() - 0.01f, m_cube->GetY(), m_cube->GetZ());
 	}
 #endif
-#if 1
+#if 0
 	else if(key == 200)
 	{		
 		m_dwarf->SetPosition(m_dwarf->GetX(), m_dwarf->GetY(), m_dwarf->GetZ() - 0.01f);		
@@ -316,6 +318,32 @@ void Game::OnKeyDown(int key)
 		m_dwarf->Scale(m_dwarf->GetXScale() - 0.01f, m_dwarf->GetYScale(), m_dwarf->GetZScale());
 	}
 #endif
+	else if(key == 200)
+	{		
+		m_skinMesh->SetPosition(m_skinMesh->GetX(), m_skinMesh->GetY(), m_skinMesh->GetZ() - 0.01f);		
+		
+		
+	}
+	else if(key == 208)
+	{		
+		m_skinMesh->SetPosition(m_skinMesh->GetX(), m_skinMesh->GetY(), m_skinMesh->GetZ() + 0.01f);		
+	}	
+	else if(key == 205)
+	{
+		m_skinMesh->SetPosition(m_skinMesh->GetX(), m_skinMesh->GetY() - 0.01f, m_skinMesh->GetZ());
+	}
+	else if(key == 203)
+	{
+		m_skinMesh->SetPosition(m_skinMesh->GetX(), m_skinMesh->GetY() + 0.01f, m_skinMesh->GetZ());
+	}
+	else if(key == 17)
+	{
+		m_skinMesh->SetPosition(m_skinMesh->GetX() + 0.01f, m_skinMesh->GetY(), m_skinMesh->GetZ());
+	}
+	else if(key == 31)
+	{
+		m_skinMesh->SetPosition(m_skinMesh->GetX() - 0.01f, m_skinMesh->GetY(), m_skinMesh->GetZ());
+	}
 }
 
 void Game::CreateMeshBuffers(D3DMesh *mesh)
@@ -445,7 +473,7 @@ void Game::InitializeMeshes()
 	m_shadowSurface = new PlanarShadowSurface(m_plane); 
 	//m_cube->SetPosition(0.0f, 3.0f, -3.0f);
 	//m_testScene->AddMesh(m_wall);
-	//m_testScene->AddMirror((Mirror *)m_mirror);	
+	m_testScene->AddMirror((Mirror *)m_mirror);	
 	//m_testScene->AddMesh((Mesh*)m_cube);
 	//m_testScene->AddMesh((Mesh*)m_grid);	
 	//m_testScene->AddMesh((Mesh*)m_testMesh);
@@ -467,11 +495,12 @@ void Game::InitializeMeshes()
 	
 	
 	//m_dwarf->Scale(0.02f, 0.02f, 0.02f);
-	//m_testScene->AddMesh(m_dwarf);
+	m_testScene->AddMesh(m_dwarf);
 
 	//m_skinMesh = new D3DSkinnedMesh("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
 	m_skinMesh = new WomanMesh();
 	m_skinMesh->LoadFromXFile("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
+	m_skinMesh->Scale(0.02f, 0.02f, 0.02f);
 	m_testScene->AddMesh(m_skinMesh);
 	m_testScene->Initialize();
 

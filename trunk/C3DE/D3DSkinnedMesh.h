@@ -46,8 +46,8 @@ public:
 	UINT numBones();
 	const D3DXMATRIX* getFinalXFormArray();
 
-	void update(float deltaTime);
-	void draw();
+	virtual void Update(int deltaTime);
+	//void draw();
 
 	
 protected:
@@ -66,7 +66,7 @@ protected:
 
 protected:
 	
-	ID3DXMesh*     mSkinnedMesh;
+	//ID3DXMesh*     mSkinnedMesh;
 	D3DXFRAME*     mRoot;
 	DWORD          mMaxVertInfluences;
 	DWORD          mNumBones;

@@ -115,7 +115,9 @@ public:
 
 	int GetNumSubsets(){return m_numSubsets;}
 
-	ID3DXMesh * GetXMesh(){return m_xMesh;}
+	ID3DXMesh * GetXMesh(){
+		return m_xMesh;
+	}
 
 	std::vector<Material*> *GetMaterials(){return m_materials;};
 	std::vector<IDirect3DTexture9*> *GetTextures(){return m_textures;}

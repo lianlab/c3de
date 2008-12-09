@@ -97,8 +97,11 @@ OutputVS VBlend2VS(float3 posL    : POSITION0,
 	// Compute the vector from the vertex to the eye.
 	outVS.toEyeW = gEyePosW - posW;
 	
+	float4 newPos = mul(p, gTransformMatrix);
+	
 	// Transform to homogeneous clip space.
-	outVS.posH = mul(p, gWVP);
+	//outVS.posH = mul(p, gWVP);
+	outVS.posH = mul(newPos, gWVP);
 	
 	// Pass on texture coordinates to be interpolated in rasterization.
 	outVS.tex0 = tex0;

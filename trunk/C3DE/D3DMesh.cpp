@@ -23,10 +23,14 @@ D3DMesh::D3DMesh()
 
 	m_ID = -1;
 
-	m_materials = NULL;
-	m_textures = NULL;
+	//m_materials = NULL;
+	//m_textures = NULL;
+	m_materials = new std::vector<Material*>;
+	m_textures = new std::vector<IDirect3DTexture9*>;
 
 	m_effect = NULL;
+
+	m_xMesh = NULL;
 }
 
 /*

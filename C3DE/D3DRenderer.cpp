@@ -239,18 +239,25 @@ void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 	//PerVertexLighting * t_auei = static_cast<PerVertexLighting *>(a_mesh->GetEffect());			
 	FXManager::GetInstance()->Begin(a_mesh->GetEffect());				
 
+	//int t_totalMaterials = a_mesh->GetMaterials()->size();
 	int t_totalMaterials = a_mesh->GetMaterials()->size();
 	ID3DXMesh *t_xMesh = a_mesh->GetXMesh();		
 	
 	for(int j = 0; j < t_totalMaterials; j++)
 	{				
-		a_mesh->SetMaterial(a_mesh->GetMaterials()->at(j));
+		//a_mesh->SetMaterial(a_mesh->GetMaterials()->at(j));
+		//a_mesh->SetMaterial(a_mesh->GetMaterials()->at(j));
+		a_mesh->SetCurrentMaterial(a_mesh->GetMaterials()->at(j));
 
+		//int t_totalTextures = a_mesh->GetTextures()->size();
 		int t_totalTextures = a_mesh->GetTextures()->size();
 		//IDirect3DTexture9 * t_tex = a_mesh->GetTextures()->at(j);
 		if(j < t_totalTextures)
 		{
-			a_mesh->SetD3DTexture(a_mesh->GetTextures()->at(j));	
+			//a_mesh->SetD3DTexture(a_mesh->GetTextures()->at(j));	
+			//a_mesh->SetCurrentD3DTexture(a_mesh->GetTextures()->at(j));	
+			D3DImage *t_image = (D3DImage*)a_mesh->GetTextures()->at(j);
+			a_mesh->SetCurrentD3DTexture(t_image->GetTexture());	
 		}
 		
 		a_mesh->SetShaderHandlers();

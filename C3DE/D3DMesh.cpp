@@ -4,7 +4,7 @@
 
 IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
 
-D3DMesh::D3DMesh()
+D3DMesh::D3DMesh():Mesh()
 {
 
 
@@ -27,12 +27,13 @@ D3DMesh::D3DMesh()
 
 	//m_materials = NULL;
 	//m_textures = NULL;
-	m_materials = new std::vector<Material*>;
-	m_textures = new std::vector<IDirect3DTexture9*>;
+
 
 	m_effect = NULL;
 
 	m_xMesh = NULL;
+
+	m_currentTex = NULL;
 }
 
 
@@ -45,15 +46,13 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 		m_xMesh = NULL;
 	}
 
-	//FreeTextures();
-	//FreeMaterials();
-	m_materials = new std::vector<Material*>;
-	m_textures = new std::vector<IDirect3DTexture9*>;
-	m_materials->push_back(m_material);
+
+	//m_materials->push_back(m_material);
 	D3DImage *t_image = (D3DImage *)m_texture;
 	if(t_image)
 	{
-		m_textures->push_back(t_image->GetTexture());
+
+		m_textures->push_back((Image*)t_image);
 	}
 	
 
@@ -96,7 +95,7 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 
 void D3DMesh::FreeTextures()
 {
-	
+
 	if(m_textures)
 	{
 		int t_size = m_textures->size();
@@ -111,6 +110,7 @@ void D3DMesh::FreeTextures()
 
 void D3DMesh::FreeMaterials()
 {
+
 	if(m_materials)
 	{
 		int t_size = m_materials->size();
@@ -128,8 +128,10 @@ void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_dev
 	FreeMaterials();
 	FreeTextures();		
 
+
+
 	m_materials = new std::vector<Material*>;
-	m_textures = new std::vector<IDirect3DTexture9*>;
+	m_textures = new std::vector<Image*>;
 
 	ID3DXMesh *meshSys = 0;
 	ID3DXBuffer *adjBuffer = 0;
@@ -196,6 +198,7 @@ void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_dev
 		for(DWORD i = 0; i < numMaterials; ++i)
 		{
 			Material *t = new Material(d3dxmaterial[i].MatD3D.Diffuse, d3dxmaterial[i].MatD3D.Diffuse, d3dxmaterial[i].MatD3D.Specular, d3dxmaterial[i].MatD3D.Power);
+			//m_materials->push_back(t);
 			m_materials->push_back(t);
 
 			if(d3dxmaterial[i].pTextureFilename != 0)
@@ -204,12 +207,11 @@ void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_dev
 				char *texFN = d3dxmaterial[i].pTextureFilename;
 				//HR(D3DXCreateTextureFromFile(a_device, texFN, &tex));
 				tex = ResourceManager::GetInstance()->GetImageByFilename(texFN);
-				m_textures->push_back(tex);
+
+				D3DImage *t_image = new D3DImage(tex);
+				m_textures->push_back((Image*)t_image);
 			}
-			else
-			{
-				m_textures->push_back(0);
-			}
+			
 		}
 	}
 
@@ -218,12 +220,17 @@ void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_dev
 
 void D3DMesh::SetD3DTexture(IDirect3DTexture9 *a_tex)
 {
-	m_textures = new vector<IDirect3DTexture9*>;
 
-	m_d3dTex = a_tex;
-
-	m_textures->push_back(m_d3dTex);
 }
+
+
+void D3DMesh::SetCurrentD3DTexture(IDirect3DTexture9 *a_tex)
+{
+	m_currentTex = a_tex;
+
+	
+}
+
 
 D3DMesh::~D3DMesh()
 {
@@ -382,14 +389,7 @@ D3DXMATRIX D3DMesh::GetTransformMatrix()
 #endif
 }
 
-/*
-void D3DMesh::SetPosition(float x, float y, float z)
-{
-	m_x = x;m_y=y;m_z=z;
-	//D3DXMatrixTranslation(&m_transformMatrix, m_x, m_y, m_z);
-	
-}
-*/
+
 
 void D3DMesh::SetTransformMatrix(D3DXMATRIX matrix)
 {
@@ -404,23 +404,6 @@ void D3DMesh::SetTransformMatrix(D3DXMATRIX matrix)
 	
 }
 
-/*
-void D3DMesh::Scale(float x, float y, float z)
-{
-	m_scaleX=x;m_scaleY=y;m_scaleZ=z;
-	//D3DXMatrixScaling(&m_transformMatrix, m_x, m_y, m_z);
-	//m_effect->SetTransformMatrix(GetTransformMatrix());
-	//D3DXMatrixScaling(&m_transformMatrix, m_scaleX, m_scaleY, m_scaleZ);
-}
-
-void D3DMesh::Rotate(float x, float y, float z)
-{
-	m_scaleX=x;m_scaleY=y;m_scaleZ=z;
-	//D3DXMatrixScaling(&m_transformMatrix, m_x, m_y, m_z);
-	//m_effect->SetTransformMatrix(GetTransformMatrix());
-	//D3DXMatrixScaling(&m_transformMatrix, m_scaleX, m_scaleY, m_scaleZ);
-}
-*/
 
 IDirect3DVertexBuffer9 * D3DMesh::GetVertexBuffer()
 {

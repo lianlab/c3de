@@ -374,13 +374,13 @@ void Game::InitializeMeshes()
 	m_testMesh = new Cube();
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
-	m_testMesh->SetMaterial(t_material);
+	//m_testMesh->SetMaterial(t_material);
 	CreateMeshBuffers(m_testMesh);
 	m_grid = new Grid(100, 100, 0.2f, 0.2f);
 
 	Material *t_material2 = new Material(	D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
-	m_grid->SetMaterial(t_material);
+	//m_grid->SetMaterial(t_material);
 	CreateMeshBuffers(m_grid);
 
 	m_testScene = new DefaultScene1();
@@ -392,18 +392,19 @@ void Game::InitializeMeshes()
 	
 	//m_plane = new Plane(100, 100, 0.2f, 0.2f);
 	m_plane = new Plane(20.0f, 20.0f);
-	m_plane->SetMaterial(t_material);
+	//m_plane->SetMaterial(t_material);
 	CreateMeshBuffers(m_plane);
 
 	m_pivot = new Pivot();
-	m_pivot->SetMaterial(t_material);
+	//m_pivot->SetMaterial(t_material);
 	CreateMeshBuffers(m_pivot);
 	
 	
 	m_cube = new Cube();
 	Material *t_material3 = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
-	m_cube->SetMaterial(t_material3);
+	//m_cube->SetMaterial(t_material3);
+	m_cube->AddMaterial(t_material);
 	CreateMeshBuffers(m_cube);
 
 	//m_skinnedCube = new SkinnedCube();
@@ -411,7 +412,7 @@ void Game::InitializeMeshes()
 	//CreateMeshBuffers(m_skinnedCube);
 
 	m_wall = new Wall();
-	m_wall->SetMaterial(t_material3);
+	//m_wall->SetMaterial(t_material3);
 	m_wall->SetPosition(0.0f, 0.0f, 0.0f);
 	CreateMeshBuffers(m_wall);
 
@@ -448,10 +449,12 @@ void Game::InitializeMeshes()
 	//m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TINY_ANIM_ID), ((D3DRenderer*)m_renderer)->GetDevice());
 
 	
-	m_dwarf->SetD3DTexture(ResourceManager::GetInstance()->GetImageByID(IMAGE_SWIMMER_SKIN_ID));
+	//m_dwarf->SetD3DTexture(ResourceManager::GetInstance()->GetImageByID(IMAGE_SWIMMER_SKIN_ID));
+	D3DImage *t_image = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_SWIMMER_SKIN_ID));
+	m_dwarf->AddTexture((Image*)t_image);
 	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
 	m_testScene->AddMesh(m_dwarf);
-	//m_testScene->AddMesh(m_cube);
+	m_testScene->AddMesh(m_cube);
 
 	//m_skinMesh = new D3DSkinnedMesh("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
 	m_skinMesh = new WomanMesh();

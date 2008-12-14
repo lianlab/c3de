@@ -80,7 +80,7 @@ Pivot::~Pivot()
 void Pivot::SetShaderHandlers()
 {		
 	HardColors *t_effect = (HardColors *) m_effect;
-	t_effect->SetObjectMaterials(	m_material->GetAmbient(), m_material->GetDiffuse(),
-									m_material->GetSpecular(), m_material->GetSpecularPower());	
+	//t_effect->SetObjectMaterials(	m_material->GetAmbient(), m_material->GetDiffuse(),
+	//								m_material->GetSpecular(), m_material->GetSpecularPower());	
 	t_effect->SetTransformMatrix(GetTransformMatrix());
 }

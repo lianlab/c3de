@@ -83,14 +83,14 @@ public:
 	IDirect3DVertexBuffer9 * GetVertexBuffer();
 	IDirect3DIndexBuffer9 * GetIndexBuffer();
 	void SetBuffers(IDirect3DVertexBuffer9 *vertexBuffer, IDirect3DIndexBuffer9 *indexBuffer);
-	
-	//void SetPosition(float x, float y, float z);
-	//void Scale(float x, float y, float z);
+
 
 
 	void Update(int deltaTime);
 
 	void SetTexture(Image *tex){m_texture = tex;}
+
+	void SetCurrentD3DTexture(IDirect3DTexture9 *a_tex);
 	
 	void SetD3DTexture(IDirect3DTexture9 *a_tex);
 	Image * GetTexture(){return m_texture;}
@@ -119,13 +119,12 @@ public:
 		return m_xMesh;
 	}
 
-	std::vector<Material*> *GetMaterials(){return m_materials;};
-	std::vector<IDirect3DTexture9*> *GetTextures(){return m_textures;}
-	
 
 	void CreateXMesh(IDirect3DDevice9 *a_device);
 protected:
-	IDirect3DTexture9 *m_d3dTex;
+
+	IDirect3DTexture9 *m_currentTex;
+
 	UINT m_numShaderPasses;
 	IDirect3DVertexBuffer9 * m_vertexBuffer;
 	IDirect3DIndexBuffer9 * m_indexBuffer;
@@ -146,8 +145,6 @@ protected:
 
 	ID3DXBuffer *m_adjBuffer;
 	ID3DXBuffer * m_materialBuffer;
-	std::vector<Material*> *m_materials;
-	std::vector<IDirect3DTexture9*> *m_textures;
 
 	void FreeTextures();
 	void FreeMaterials();

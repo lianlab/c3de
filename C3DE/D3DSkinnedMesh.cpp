@@ -7,6 +7,7 @@
 
 #include "AllocMeshHierarchy.h"
 #include "ResourceManager.h"	
+#include "DebugMemory.h"
 
 #if 0
 
@@ -17,20 +18,18 @@ IDirect3DVertexDeclaration9* VertexPNT::Decl = 0;
 D3DSkinnedMesh::D3DSkinnedMesh() : D3DMesh()
 {
 	
-	m_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
-										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
-	m_materials = new std::vector<Material*>;
+	//m_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
+	//									D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
 
-	m_materials->push_back(m_material);
+
+	//m_materials->push_back(m_material);
+	
 
 }
 
 void D3DSkinnedMesh::LoadFromXFile(const std::string &XFilename, IDirect3DDevice9 *a_device)
 {
-	//m_materials = new std::vector<Material*>;
-	m_textures = new std::vector<IDirect3DTexture9*>;
-
-
+	
 	D3DVERTEXELEMENT9 VertexPNTElements[] = 
 	{
 		{0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},

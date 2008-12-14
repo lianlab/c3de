@@ -5,7 +5,7 @@
 
 Mesh::Mesh()
 {	
-	m_material = new Material(D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), 16.0f);
+	//m_material = new Material(D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), 16.0f);
 	m_scaleX = 1.0f;
 	m_scaleY = 1.0f;
 	m_scaleZ = 1.0f;
@@ -20,25 +20,34 @@ Mesh::Mesh()
 
 	m_texture = NULL;
 
+	//m_NEWmaterials = new vector<Material *>;
+	//m_NEWtextures = new vector<Texture *>;
+	m_materials = new vector<Material *>;
+	m_textures = new vector<Image *>;
+
 	m_alpha = 1.0f;
 }
 
 Mesh::~Mesh()
 {
 
+	/*
 	if(m_material)
 	{
 		delete m_material;
 		m_material = NULL;
 	}
 
+
 	if(m_texture)
 	{
 		delete m_texture;
 		m_texture = NULL;
 	}
+	*/
 }
 
+/*
 void Mesh::SetMaterial(Material *material)
 {
 	
@@ -48,9 +57,9 @@ void Mesh::SetMaterial(Material *material)
 	//	m_material = NULL;
 	//}
 	
-	m_material = material;
-	int ygfd = 876;
+	
 }
+*/
 
 /*
 void Mesh::auei(Renderer *a_renderer)

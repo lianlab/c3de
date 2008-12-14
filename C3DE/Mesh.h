@@ -3,9 +3,12 @@
 
 #include "Material.h"
 #include "Image.h"
+#include <vector>
 
 
 class Renderer;
+
+using namespace std;
 
 class Mesh
 {
@@ -32,8 +35,14 @@ public:
 
 	virtual Image * GetTexture() = 0;
 
-	void SetMaterial(Material *material);
-	Material * GetMaterial(){return m_material;}
+	std::vector<Material*> *GetMaterials(){return m_materials;};
+	std::vector<Image*> *GetTextures(){return m_textures;}
+
+	void AddTexture(Image *a_image){m_textures->push_back(a_image);}
+	//void SetMaterial(Material *material);
+	void AddMaterial(Material *a_material){m_materials->push_back(a_material);}
+	void SetCurrentMaterial(Material *a_material){m_currentMaterial = a_material;}
+	//Material * GetMaterial(){return m_material;}
 
 	virtual void PreRender(Renderer *a_renderer){}
 	virtual void PosRender(Renderer *a_renderer){}
@@ -44,6 +53,7 @@ public:
 	virtual void SetShaderHandlers(){}
 
 protected:
+	Material *m_currentMaterial;
 	float m_x;
 	float m_y;
 	float m_z;
@@ -61,6 +71,10 @@ protected:
 	Image *m_texture;
 
 
-	Material *m_material;
+	//Material *m_material;
+
+	vector<Image*> *m_textures;
+	vector<Material*> *m_materials;
+
 };
 #endif

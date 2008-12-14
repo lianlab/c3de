@@ -1,5 +1,4 @@
 
-#if 1
 
 #include "Renderer.h"
 #include "Dwarf.h"
@@ -27,7 +26,7 @@ Dwarf::Dwarf()
 	
 	m_vertexDeclaration = NULL;
 
-	m_material = NULL;
+	//m_material = NULL;
 	
 }
 
@@ -42,11 +41,13 @@ void Dwarf::SetShaderHandlers()
 
 	
 	
-	t_effect->SetObjectMaterials(	m_material->GetAmbient(), m_material->GetDiffuse(),
-									m_material->GetSpecular(), m_material->GetSpecularPower());
+	t_effect->SetObjectMaterials(	m_currentMaterial->GetAmbient(), m_currentMaterial->GetDiffuse(),
+									m_currentMaterial->GetSpecular(), m_currentMaterial->GetSpecularPower());
 									
 	
-	t_effect->SetObjectTexture(m_d3dTex);
+	//t_effect->SetObjectTexture(m_d3dTex);
+
+	t_effect->SetObjectTexture(m_currentTex);
 
 	t_effect->SetTransformMatrix(GetTransformMatrix());
 	t_effect->SetAlpha(m_alpha);
@@ -65,5 +66,3 @@ Dwarf::~Dwarf()
 	
 }
 
-
-#endif

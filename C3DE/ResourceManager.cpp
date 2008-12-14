@@ -19,6 +19,7 @@ ResourceManager::ResourceManager()
 	m_meshesFilenames[MESH_WOLF_ID] = "Meshes/Wolf.x";
 	m_meshesFilenames[MESH_TINY_ANIM_ID] = "Meshes/tiny.x";
 	m_meshesFilenames[MESH_TIGER_ID] = "Meshes/tiger.x";
+	m_meshesFilenames[MESH_SWIMMER_ID] = "Meshes/swimmer.x";
 }
 
 ResourceManager::~ResourceManager()
@@ -53,8 +54,11 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_TINY_ANIM;
 	//TIGER
 	IDirect3DTexture9 * TEX_TIGER;
+	//SWIMMER
+	IDirect3DTexture9 * TEX_SWIMMER;
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/alienship.bmp", &TEX_SHIP));
+	
 	
 	HR(D3DXCreateTextureFromFile(m_device, "Images/bkgd1.bmp", &TEX_BG));	
 	HR(D3DXCreateTextureFromFile(m_device, "Images/fireatlas.bmp", &TEX_EXPLOSION));
@@ -76,6 +80,9 @@ void ResourceManager::InitializeResources()
 	///////////////////
 	//Tiger
 	HR(D3DXCreateTextureFromFile(m_device, "Images/Tiger/tiger.bmp", &TEX_TIGER));
+	///////////////////
+	//Swimmer
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Swimmer/swimmer.bmp", &TEX_SWIMMER));
 	///////////////////
 
 	m_imageResources[IMAGE_SHIP_ID] = TEX_SHIP;	
@@ -99,6 +106,9 @@ void ResourceManager::InitializeResources()
 	//Tiger
 	m_imageResources[IMAGE_TIGER_SKIN_ID] = TEX_TIGER;
 
+	//Swimmer
+	m_imageResources[IMAGE_SWIMMER_SKIN_ID] = TEX_SWIMMER;
+
 
 	
 
@@ -114,7 +124,7 @@ IDirect3DTexture9 * ResourceManager::GetImageByID(int id)
 
 IDirect3DTexture9 * ResourceManager::GetImageByFilename(std::string a_filename)
 {
-	if(strcmp(a_filename.c_str(), "alienship.bmp") == 0)
+	if(strcmp(a_filename.c_str(), "alienship.bmp") == 0)	
 	{
 		return m_imageResources[IMAGE_SHIP_ID];
 	}	
@@ -173,6 +183,11 @@ IDirect3DTexture9 * ResourceManager::GetImageByFilename(std::string a_filename)
 	else if(strcmp(a_filename.c_str(), "tiger.bmp") == 0)
 	{
 		return m_imageResources[IMAGE_TIGER_SKIN_ID];
+	}	
+	//Swimmer
+	else if(strcmp(a_filename.c_str(), "swimmer.bmp") == 0)
+	{
+		return m_imageResources[IMAGE_SWIMMER_SKIN_ID];
 	}	
 	else
 	{

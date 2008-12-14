@@ -29,6 +29,9 @@ enum ResourceIDs
 	//TIGER
 	IMAGE_TIGER_SKIN_ID,
 	///////////////////////
+	//SWIMMER
+	IMAGE_SWIMMER_SKIN_ID,
+	///////////////////////
 
 	TOTAL_IMAGES
 };
@@ -39,6 +42,7 @@ enum MeshesIDs
 	MESH_WOLF_ID,
 	MESH_TINY_ANIM_ID,
 	MESH_TIGER_ID,
+	MESH_SWIMMER_ID,
 	TOTAL_MESHES
 };
 

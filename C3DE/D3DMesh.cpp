@@ -6,6 +6,8 @@ IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
 
 D3DMesh::D3DMesh()
 {
+
+
 	m_vertices = NULL;
 	m_indices = NULL;
 	
@@ -33,29 +35,10 @@ D3DMesh::D3DMesh()
 	m_xMesh = NULL;
 }
 
-/*
-struct VertexPicles
-{
-	VertexPicles(float _x, float _y, float _z, DWORD _color)
-	{
-        x = _x;  
-        y = _y;   
-        z = _z;
-        color = _color;
-	}
 
-    float x, y, z;
-    DWORD color;
-
-	enum FVF
-	{
-		FVF_Flags = D3DFVF_XYZ | D3DFVF_DIFFUSE 
-	};
-};
-*/
 void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 {
-#if 1
+
 	if(m_xMesh)
 	{
 		delete m_xMesh;
@@ -107,7 +90,7 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 
 	m_xMesh->UnlockIndexBuffer();
 	
-#endif
+
 
 }
 
@@ -233,6 +216,15 @@ void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_dev
 	ReleaseCOM(materialBuffer);
 }
 
+void D3DMesh::SetD3DTexture(IDirect3DTexture9 *a_tex)
+{
+	m_textures = new vector<IDirect3DTexture9*>;
+
+	m_d3dTex = a_tex;
+
+	m_textures->push_back(m_d3dTex);
+}
+
 D3DMesh::~D3DMesh()
 {
 	if(m_vertices)
@@ -285,31 +277,119 @@ void D3DMesh::Update(int deltaTime)
 }
 
 
+bool auei = false;
+
 D3DXMATRIX D3DMesh::GetTransformMatrix()
 {
 	
+		
+		
+#if 0
 	D3DXMATRIX T;
 	D3DXMATRIX S;
+	D3DXMATRIX Rx;
+	D3DXMATRIX Ry;
+	D3DXMATRIX Rz;
+	D3DXMATRIX R;
 	D3DXMATRIX O;
 	
 	D3DXMatrixScaling(&S, m_scaleX, m_scaleY, m_scaleZ);
 	
 	D3DXMatrixTranslation(&T, m_x, m_y, m_z);
 
+	D3DXMatrixIdentity(&R);
+	D3DXMatrixIdentity(&Rx);
+	D3DXMatrixIdentity(&Ry);
+	D3DXMatrixIdentity(&Rz);
+
 	D3DXMatrixMultiply(&O, &S, &T);
+
+
+	if((m_rotateX > 0.0f || m_rotateY > 0.0f || m_rotateZ > 0.0f) && !auei)
+	{
+		D3DXMatrixRotationX(&Rx, m_rotateX);
+		D3DXMatrixRotationY(&Ry, m_rotateY);
+		D3DXMatrixRotationZ(&Rz, m_rotateZ);
+
+
+		D3DXMatrixMultiply(&R, &Rx, &Ry);
+		D3DXMatrixMultiply(&R, &R, &Rz);
+
+		D3DXMatrixMultiply(&O, &O, &R);
+
+		auei = true;
+	}
+	
+
+	
+
+	
 
 	return O;
 	
 
 	return m_transformMatrix;
+	
+#endif
+#if 1
+
+	auei = true;
+#define RADIAN_TO_DEGREES 57.29577951308232286465f
+	D3DXMATRIX matRotation,matTranslation,matScale;
+	int mat;
+	D3DXVECTOR3 vAxis1, vAxis2, vAxis3;
+	D3DXQUATERNION qR;
+
+	// Set default translation
+	D3DXMatrixIdentity( &matTranslation );
+
+	D3DXMatrixScaling( &matScale, m_scaleX, m_scaleY, m_scaleZ );
+
+	vAxis2.x = 0.0f;
+	vAxis2.y = 1.0f;
+	vAxis2.z = 0.0f;
+	D3DXQuaternionNormalize(&qR, &qR);
+	D3DXQuaternionRotationAxis( &qR, &vAxis2, m_rotateY/RADIAN_TO_DEGREES );
+	D3DXMatrixRotationQuaternion( &matRotation, &qR );
+	D3DXMatrixMultiply( &matTranslation, &matRotation , &matTranslation );
+	vAxis1.x = 1.0f;
+	vAxis1.y = 0.0f;
+	vAxis1.z = 0.0f;
+	D3DXQuaternionNormalize(&qR, &qR);
+	D3DXQuaternionRotationAxis( &qR, &vAxis1, m_rotateX/RADIAN_TO_DEGREES );
+	D3DXMatrixRotationQuaternion( &matRotation, &qR );
+	D3DXMatrixMultiply( &matTranslation, &matRotation , &matTranslation );
+	vAxis3.x = 0.0f;
+	vAxis3.y = 0.0f;
+	vAxis3.z = 1.0f;
+	D3DXQuaternionNormalize(&qR, &qR);
+	D3DXQuaternionRotationAxis( &qR, &vAxis3, m_rotateZ/RADIAN_TO_DEGREES );
+	D3DXMatrixRotationQuaternion( &matRotation, &qR );
+
+	
+	D3DXMatrixMultiply( &matTranslation, &matRotation , &matTranslation );
+
+	D3DXMatrixMultiply(&matTranslation, &matScale, &matTranslation);
+
+	// Move to X,Y,Z coordinates
+	matTranslation._41 = m_x;
+	matTranslation._42 = m_y;
+	matTranslation._43 = m_z;
+	// Set the matrix
+
+	return matTranslation;
+
+#endif
 }
 
+/*
 void D3DMesh::SetPosition(float x, float y, float z)
 {
 	m_x = x;m_y=y;m_z=z;
 	//D3DXMatrixTranslation(&m_transformMatrix, m_x, m_y, m_z);
 	
 }
+*/
 
 void D3DMesh::SetTransformMatrix(D3DXMATRIX matrix)
 {
@@ -324,6 +404,7 @@ void D3DMesh::SetTransformMatrix(D3DXMATRIX matrix)
 	
 }
 
+/*
 void D3DMesh::Scale(float x, float y, float z)
 {
 	m_scaleX=x;m_scaleY=y;m_scaleZ=z;
@@ -332,6 +413,14 @@ void D3DMesh::Scale(float x, float y, float z)
 	//D3DXMatrixScaling(&m_transformMatrix, m_scaleX, m_scaleY, m_scaleZ);
 }
 
+void D3DMesh::Rotate(float x, float y, float z)
+{
+	m_scaleX=x;m_scaleY=y;m_scaleZ=z;
+	//D3DXMatrixScaling(&m_transformMatrix, m_x, m_y, m_z);
+	//m_effect->SetTransformMatrix(GetTransformMatrix());
+	//D3DXMatrixScaling(&m_transformMatrix, m_scaleX, m_scaleY, m_scaleZ);
+}
+*/
 
 IDirect3DVertexBuffer9 * D3DMesh::GetVertexBuffer()
 {

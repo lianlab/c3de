@@ -16,6 +16,11 @@ public:
 	float GetY(){return m_y;}
 	float GetZ(){return m_z;}
 
+	virtual void Rotate(float x, float y, float z){m_rotateX = x;m_rotateY=y;m_rotateZ=z;}
+	float GetRotationX(){return m_rotateX;}
+	float GetRotationY(){return m_rotateY;}
+	float GetRotationZ(){return m_rotateZ;}
+
 	virtual void Scale(float x, float y, float z){m_scaleX=x;m_scaleY=y;m_scaleZ=z;}
 	float GetXScale(){return m_scaleX;}
 	float GetYScale(){return m_scaleY;}
@@ -48,6 +53,10 @@ protected:
 	float m_scaleX;
 	float m_scaleY;
 	float m_scaleZ;
+
+	float m_rotateX;
+	float m_rotateY;
+	float m_rotateZ;
 
 	Image *m_texture;
 

@@ -14,6 +14,10 @@ Mesh::Mesh()
 	m_y = 0.0f;
 	m_z = 0.0f;
 
+	m_rotateX = 0.0f;
+	m_rotateY = 0.0f;
+	m_rotateZ = 0.0f;
+
 	m_texture = NULL;
 
 	m_alpha = 1.0f;

@@ -202,148 +202,103 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 
 }
 
+
 void Game::OnKeyDown(int key)
 {
+
+	
+	float step = 0.1f;
+	Mesh * target = (Mesh*)m_dwarf;
 	if(key == 1)
 	{
 		m_application->Quit();
 	}
+
+	
+
 #if 0
 	else if(key == 200)
 	{		
-		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY(), m_testMesh->GetZ() - 0.01f);		
+		target->Scale(target->GetXScale(), target->GetYScale(), target->GetZScale() - step);		
+		
+		
 	}
 	else if(key == 208)
 	{		
-		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY(), m_testMesh->GetZ() + 0.01f);		
+		target->Scale(target->GetXScale(), target->GetYScale(), target->GetZScale() + step);		
 	}	
 	else if(key == 205)
 	{
-		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() - 0.01f, m_testMesh->GetZ());
+		target->Scale(target->GetXScale(), target->GetYScale() - step, target->GetZScale());
 	}
 	else if(key == 203)
 	{
-		m_testMesh->SetPosition(m_testMesh->GetX(), m_testMesh->GetY() + 0.01f, m_testMesh->GetZ());
+		target->Scale(target->GetXScale(), target->GetYScale() + step, target->GetZScale());
 	}
 	else if(key == 17)
 	{
-		m_testMesh->SetPosition(m_testMesh->GetX() + 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
+		target->Scale(target->GetXScale() + step, target->GetYScale(), target->GetZScale());
 	}
 	else if(key == 31)
 	{
-		m_testMesh->SetPosition(m_testMesh->GetX() - 0.01f, m_testMesh->GetY(), m_testMesh->GetZ());
+		target->Scale(target->GetXScale() - step, target->GetYScale(), target->GetZScale());
+	}
+#endif
+#if 1
+	else if(key == 200)
+	{		
+		target->SetPosition(target->GetX(), target->GetY(), target->GetZ() - step);		
+		
+		
+	}
+	else if(key == 208)
+	{		
+		target->SetPosition(target->GetX(), target->GetY(), target->GetZ() + step);		
+	}	
+	else if(key == 205)
+	{
+		target->SetPosition(target->GetX(), target->GetY() - step, target->GetZ());
+	}
+	else if(key == 203)
+	{
+		target->SetPosition(target->GetX(), target->GetY() + step, target->GetZ());
+	}
+	else if(key == 17)
+	{
+		target->SetPosition(target->GetX() + step, target->GetY(), target->GetZ());
+	}
+	else if(key == 31)
+	{
+		target->SetPosition(target->GetX() - step, target->GetY(), target->GetZ());
 	}
 #endif
 #if 0
 	else if(key == 200)
 	{		
-		m_cube->SetPosition(m_cube->GetX(), m_cube->GetY(), m_cube->GetZ() - 0.01f);		
-		
+		target->Rotate(target->GetRotationX(), target->GetRotationY(), target->GetRotationZ() - step);				
 		
 	}
 	else if(key == 208)
 	{		
-		m_cube->SetPosition(m_cube->GetX(), m_cube->GetY(), m_cube->GetZ() + 0.01f);		
+		target->Rotate(target->GetRotationX(), target->GetRotationY(), target->GetRotationZ() + step);		
 	}	
 	else if(key == 205)
 	{
-		m_cube->SetPosition(m_cube->GetX(), m_cube->GetY() - 0.01f, m_cube->GetZ());
+		target->Rotate(target->GetRotationX(), target->GetRotationY() - step, target->GetRotationZ());
 	}
 	else if(key == 203)
 	{
-		m_cube->SetPosition(m_cube->GetX(), m_cube->GetY() + 0.01f, m_cube->GetZ());
+		target->Rotate(target->GetRotationX(), target->GetRotationY() + step, target->GetRotationZ());
 	}
 	else if(key == 17)
 	{
-		m_cube->SetPosition(m_cube->GetX() + 0.01f, m_cube->GetY(), m_cube->GetZ());
+		target->Rotate(target->GetRotationX() + step, target->GetRotationY(), target->GetRotationZ());
 	}
 	else if(key == 31)
 	{
-		m_cube->SetPosition(m_cube->GetX() - 0.01f, m_cube->GetY(), m_cube->GetZ());
+		target->Rotate(target->GetRotationX() - step, target->GetRotationY(), target->GetRotationZ());
 	}
 #endif
-#if 0
-	else if(key == 200)
-	{		
-		m_dwarf->SetPosition(m_dwarf->GetX(), m_dwarf->GetY(), m_dwarf->GetZ() - 0.01f);		
-		
-		
-	}
-	else if(key == 208)
-	{		
-		m_dwarf->SetPosition(m_dwarf->GetX(), m_dwarf->GetY(), m_dwarf->GetZ() + 0.01f);		
-	}	
-	else if(key == 205)
-	{
-		m_dwarf->SetPosition(m_dwarf->GetX(), m_dwarf->GetY() - 0.01f, m_dwarf->GetZ());
-	}
-	else if(key == 203)
-	{
-		m_dwarf->SetPosition(m_dwarf->GetX(), m_dwarf->GetY() + 0.01f, m_dwarf->GetZ());
-	}
-	else if(key == 17)
-	{
-		m_dwarf->SetPosition(m_dwarf->GetX() + 0.01f, m_dwarf->GetY(), m_dwarf->GetZ());
-	}
-	else if(key == 31)
-	{
-		m_dwarf->SetPosition(m_dwarf->GetX() - 0.01f, m_dwarf->GetY(), m_dwarf->GetZ());
-	}
-#endif
-#if 0
-	else if(key == 200)
-	{		
-		m_dwarf->Scale(m_dwarf->GetXScale(), m_dwarf->GetYScale(), m_dwarf->GetZScale() - 0.01f);		
-		
-		
-	}
-	else if(key == 208)
-	{		
-		m_dwarf->Scale(m_dwarf->GetXScale(), m_dwarf->GetYScale(), m_dwarf->GetZScale() + 0.01f);		
-	}	
-	else if(key == 205)
-	{
-		m_dwarf->Scale(m_dwarf->GetXScale(), m_dwarf->GetYScale() - 0.01f, m_dwarf->GetZScale());
-	}
-	else if(key == 203)
-	{
-		m_dwarf->Scale(m_dwarf->GetXScale(), m_dwarf->GetYScale() + 0.01f, m_dwarf->GetZScale());
-	}
-	else if(key == 17)
-	{
-		m_dwarf->Scale(m_dwarf->GetXScale() + 0.01f, m_dwarf->GetYScale(), m_dwarf->GetZScale());
-	}
-	else if(key == 31)
-	{
-		m_dwarf->Scale(m_dwarf->GetXScale() - 0.01f, m_dwarf->GetYScale(), m_dwarf->GetZScale());
-	}
-#endif
-	else if(key == 200)
-	{		
-		m_skinMesh->SetPosition(m_skinMesh->GetX(), m_skinMesh->GetY(), m_skinMesh->GetZ() - 0.01f);		
-		
-		
-	}
-	else if(key == 208)
-	{		
-		m_skinMesh->SetPosition(m_skinMesh->GetX(), m_skinMesh->GetY(), m_skinMesh->GetZ() + 0.01f);		
-	}	
-	else if(key == 205)
-	{
-		m_skinMesh->SetPosition(m_skinMesh->GetX(), m_skinMesh->GetY() - 0.01f, m_skinMesh->GetZ());
-	}
-	else if(key == 203)
-	{
-		m_skinMesh->SetPosition(m_skinMesh->GetX(), m_skinMesh->GetY() + 0.01f, m_skinMesh->GetZ());
-	}
-	else if(key == 17)
-	{
-		m_skinMesh->SetPosition(m_skinMesh->GetX() + 0.01f, m_skinMesh->GetY(), m_skinMesh->GetZ());
-	}
-	else if(key == 31)
-	{
-		m_skinMesh->SetPosition(m_skinMesh->GetX() - 0.01f, m_skinMesh->GetY(), m_skinMesh->GetZ());
-	}
 }
 
 void Game::CreateMeshBuffers(D3DMesh *mesh)
@@ -473,7 +428,7 @@ void Game::InitializeMeshes()
 	m_shadowSurface = new PlanarShadowSurface(m_plane); 
 	//m_cube->SetPosition(0.0f, 3.0f, -3.0f);
 	//m_testScene->AddMesh(m_wall);
-	m_testScene->AddMirror((Mirror *)m_mirror);	
+	//m_testScene->AddMirror((Mirror *)m_mirror);	
 	//m_testScene->AddMesh((Mesh*)m_cube);
 	//m_testScene->AddMesh((Mesh*)m_grid);	
 	//m_testScene->AddMesh((Mesh*)m_testMesh);
@@ -489,19 +444,20 @@ void Game::InitializeMeshes()
 	m_dwarf = new Dwarf();
 	//m_dwarf->SetMaterial(t_material3);
 	//m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_DWARF_ID), ((D3DRenderer*)m_renderer)->GetDevice());
-	m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TIGER_ID), ((D3DRenderer*)m_renderer)->GetDevice());
+	m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_SWIMMER_ID), ((D3DRenderer*)m_renderer)->GetDevice());
 	//m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TINY_ANIM_ID), ((D3DRenderer*)m_renderer)->GetDevice());
 
 	
-	
-	//m_dwarf->Scale(0.02f, 0.02f, 0.02f);
+	m_dwarf->SetD3DTexture(ResourceManager::GetInstance()->GetImageByID(IMAGE_SWIMMER_SKIN_ID));
+	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
 	m_testScene->AddMesh(m_dwarf);
+	//m_testScene->AddMesh(m_cube);
 
 	//m_skinMesh = new D3DSkinnedMesh("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
 	m_skinMesh = new WomanMesh();
 	m_skinMesh->LoadFromXFile("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
 	m_skinMesh->Scale(0.02f, 0.02f, 0.02f);
-	m_testScene->AddMesh(m_skinMesh);
+	//m_testScene->AddMesh(m_skinMesh);
 	m_testScene->Initialize();
 
 

@@ -13,6 +13,7 @@
 
 const float EPSILON  = 0.001f;
 
+#if 0
 struct VertexPNT
 {
 	VertexPNT()
@@ -31,6 +32,8 @@ struct VertexPNT
 
 	static IDirect3DVertexDeclaration9* Decl;
 };
+
+#endif
 
 class D3DSkinnedMesh : public D3DMesh
 {

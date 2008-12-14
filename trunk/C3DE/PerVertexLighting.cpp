@@ -43,7 +43,12 @@ void PerVertexLighting::SetObjectMaterials(D3DXCOLOR ambientMaterial, D3DXCOLOR 
 
 void PerVertexLighting::SetObjectTexture(IDirect3DTexture9 *texture)
 {
-	HR(m_effect->SetTexture(m_hTex, texture));
+	if(texture)
+	{
+		HR(m_effect->SetTexture(m_hTex, texture));
+
+	}
+	
 }
 
 void PerVertexLighting::SetAlpha(float alpha)

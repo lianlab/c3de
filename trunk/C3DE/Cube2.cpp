@@ -106,9 +106,11 @@ void Cube2::SetShaderHandlers()
 	
 	
 	PerVertexLighting *t_effect = (PerVertexLighting *) m_effect;
+	/*
 	t_effect->SetObjectMaterials(	m_material->GetAmbient(), m_material->GetDiffuse(),
 									m_material->GetSpecular(), m_material->GetSpecularPower());
 
+									*/
 	D3DImage *t_d3dText = (D3DImage *) m_texture;
 	t_effect->SetObjectTexture(t_d3dText->GetTexture());
 	

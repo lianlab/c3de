@@ -8,9 +8,11 @@
 #include "AllocMeshHierarchy.h"
 #include "ResourceManager.h"	
 
+#if 0
 
 IDirect3DVertexDeclaration9* VertexPNT::Decl = 0;
 
+#endif
 
 D3DSkinnedMesh::D3DSkinnedMesh() : D3DMesh()
 {
@@ -36,7 +38,8 @@ void D3DSkinnedMesh::LoadFromXFile(const std::string &XFilename, IDirect3DDevice
 		{0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
 		D3DDECL_END()
 	};	
-	HR(a_device->CreateVertexDeclaration(VertexPNTElements, &VertexPNT::Decl));
+	//HR(a_device->CreateVertexDeclaration(VertexPNTElements, &VertexPNT::Decl));
+	HR(a_device->CreateVertexDeclaration(VertexPNTElements, &VertexPos::Decl));
 
 	m_device = a_device;
 	AllocMeshHierarchy allocMeshHierarchy;
@@ -44,10 +47,8 @@ void D3DSkinnedMesh::LoadFromXFile(const std::string &XFilename, IDirect3DDevice
 		a_device, &allocMeshHierarchy, 0, /* ignore user data */ 
 		&mRoot,	&mAnimCtrl));
 
-	LPD3DXANIMATIONSET auei;
-	
-	mAnimCtrl->GetAnimationSet(0, &auei);
-	
+	LPD3DXANIMATIONSET auei;	
+	mAnimCtrl->GetAnimationSet(0, &auei);	
 	mAnimCtrl->SetTrackAnimationSet(0, auei);
 	mAnimCtrl->ResetTime();
 	
@@ -180,7 +181,8 @@ void D3DSkinnedMesh::buildSkinnedMesh(ID3DXMesh* mesh)
 
 	D3DVERTEXELEMENT9 elements[64];
 	UINT numElements = 0;
-	VertexPNT::Decl->GetDeclaration(elements, &numElements);
+	//VertexPNT::Decl->GetDeclaration(elements, &numElements);
+	VertexPos::Decl->GetDeclaration(elements, &numElements);
 
 	ID3DXMesh* tempMesh = 0;
 	HR(mesh->CloneMesh(D3DXMESH_SYSTEMMEM, elements, m_device, &tempMesh));

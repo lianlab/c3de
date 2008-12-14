@@ -84,15 +84,15 @@ public:
 	IDirect3DIndexBuffer9 * GetIndexBuffer();
 	void SetBuffers(IDirect3DVertexBuffer9 *vertexBuffer, IDirect3DIndexBuffer9 *indexBuffer);
 	
-	void SetPosition(float x, float y, float z);
-	void Scale(float x, float y, float z);
+	//void SetPosition(float x, float y, float z);
+	//void Scale(float x, float y, float z);
 
 
 	void Update(int deltaTime);
 
 	void SetTexture(Image *tex){m_texture = tex;}
 	
-	void SetD3DTexture(IDirect3DTexture9 *a_tex){m_d3dTex = a_tex;}
+	void SetD3DTexture(IDirect3DTexture9 *a_tex);
 	Image * GetTexture(){return m_texture;}
 
 	vector<VertexPos> * GetVertices(){return m_vertices;}

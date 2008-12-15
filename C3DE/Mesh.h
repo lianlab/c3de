@@ -31,9 +31,9 @@ public:
 	virtual ~Mesh() = 0;
 	virtual void Update(int deltaTime) = 0;
 
-	virtual void SetTexture(Image *tex) = 0;
+	//virtual void SetTexture(Image *tex) = 0;
 
-	virtual Image * GetTexture() = 0;
+	//virtual Image * GetTexture() = 0;
 
 	std::vector<Material*> *GetMaterials(){return m_materials;};
 	std::vector<Image*> *GetTextures(){return m_textures;}
@@ -42,6 +42,7 @@ public:
 	//void SetMaterial(Material *material);
 	void AddMaterial(Material *a_material){m_materials->push_back(a_material);}
 	void SetCurrentMaterial(Material *a_material){m_currentMaterial = a_material;}
+	void SetCurrentTexture(Image *a_texture){m_currentTexture = a_texture;}
 	//Material * GetMaterial(){return m_material;}
 
 	virtual void PreRender(Renderer *a_renderer){}
@@ -68,7 +69,8 @@ protected:
 	float m_rotateY;
 	float m_rotateZ;
 
-	Image *m_texture;
+	//Image *m_texture;
+	Image *m_currentTexture;
 
 
 	//Material *m_material;

@@ -453,14 +453,16 @@ void Game::InitializeMeshes()
 	D3DImage *t_image = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_SWIMMER_SKIN_ID));
 	m_dwarf->AddTexture((Image*)t_image);
 	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
-	m_testScene->AddMesh(m_dwarf);
-	m_testScene->AddMesh(m_cube);
+	//m_testScene->AddMesh(m_dwarf);
+	//m_testScene->AddMesh(m_cube);
 
 	//m_skinMesh = new D3DSkinnedMesh("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
 	m_skinMesh = new WomanMesh();
 	m_skinMesh->LoadFromXFile("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
+	//m_skinMesh->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_SWIMMER_ID),  ((D3DRenderer*)m_renderer)->GetDevice());
+	
 	m_skinMesh->Scale(0.02f, 0.02f, 0.02f);
-	//m_testScene->AddMesh(m_skinMesh);
+	m_testScene->AddMesh(m_skinMesh);
 	m_testScene->Initialize();
 
 

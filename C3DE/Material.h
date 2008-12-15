@@ -14,6 +14,8 @@ public:
 	D3DXCOLOR GetDiffuse(){return m_diffuse;}
 	D3DXCOLOR GetSpecular(){return m_specular;}
 	float GetSpecularPower(){return m_specularPower;}
+
+	static Material * WHITE;
 	
 private:
 	D3DXCOLOR m_ambient;

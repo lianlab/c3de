@@ -46,11 +46,12 @@ void D3DSkinnedMesh::LoadFromXFile(const std::string &XFilename, IDirect3DDevice
 		a_device, &allocMeshHierarchy, 0, /* ignore user data */ 
 		&mRoot,	&mAnimCtrl));
 
+	/*
 	LPD3DXANIMATIONSET auei;	
 	mAnimCtrl->GetAnimationSet(0, &auei);	
 	mAnimCtrl->SetTrackAnimationSet(0, auei);
 	mAnimCtrl->ResetTime();
-	
+	*/
 
 	// In this demo we assume that the input .X file contains only one
 	// mesh.  So search for that one and only mesh.

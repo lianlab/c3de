@@ -364,7 +364,8 @@ Cube::Cube()
 	
 
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_CRATE_ID));
-	m_texture = (Image *) d3dImage;
+	//m_texture = (Image *) d3dImage;
+	AddTexture((Image *) d3dImage);
 
 
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_SKINNED_MESH_FX_ID);
@@ -383,7 +384,8 @@ void Cube::SetShaderHandlers()
 									m_currentMaterial->GetSpecular(), m_currentMaterial->GetSpecularPower());
 
 									
-	D3DImage *t_d3dText = (D3DImage *) m_texture;
+	//D3DImage *t_d3dText = (D3DImage *) m_texture;
+	D3DImage *t_d3dText = (D3DImage *) m_currentTexture;
 	t_effect->SetObjectTexture(t_d3dText->GetTexture());
 
 	t_effect->SetTransformMatrix(GetTransformMatrix());

@@ -17,8 +17,8 @@ Dwarf::Dwarf()
 
 	
 
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_CRATE_ID));
-	m_texture = (Image *) d3dImage;
+	//D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_CRATE_ID));
+	//m_texture = (Image *) d3dImage;
 
 
 	//m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
@@ -47,7 +47,9 @@ void Dwarf::SetShaderHandlers()
 	
 	//t_effect->SetObjectTexture(m_d3dTex);
 
-	t_effect->SetObjectTexture(m_currentTex);
+	D3DImage *t_image = (D3DImage*) m_currentTexture;
+
+	t_effect->SetObjectTexture(t_image->GetTexture());
 
 	t_effect->SetTransformMatrix(GetTransformMatrix());
 	t_effect->SetAlpha(m_alpha);

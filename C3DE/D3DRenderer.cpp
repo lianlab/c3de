@@ -256,8 +256,10 @@ void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 		{
 			//a_mesh->SetD3DTexture(a_mesh->GetTextures()->at(j));	
 			//a_mesh->SetCurrentD3DTexture(a_mesh->GetTextures()->at(j));	
-			D3DImage *t_image = (D3DImage*)a_mesh->GetTextures()->at(j);
-			a_mesh->SetCurrentD3DTexture(t_image->GetTexture());	
+			//D3DImage *t_image = (D3DImage*)a_mesh->GetTextures()->at(j);
+			Image *t_image = a_mesh->GetTextures()->at(j);
+			//a_mesh->SetCurrentD3DTexture(t_image->GetTexture());	
+			a_mesh->SetCurrentTexture(t_image);
 		}
 		
 		a_mesh->SetShaderHandlers();

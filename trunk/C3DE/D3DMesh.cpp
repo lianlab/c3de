@@ -33,7 +33,7 @@ D3DMesh::D3DMesh():Mesh()
 
 	m_xMesh = NULL;
 
-	m_currentTex = NULL;
+	//m_currentTex = NULL;
 }
 
 
@@ -48,12 +48,14 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 
 
 	//m_materials->push_back(m_material);
+#if 0
 	D3DImage *t_image = (D3DImage *)m_texture;
 	if(t_image)
 	{
 
 		m_textures->push_back((Image*)t_image);
 	}
+#endif
 	
 
 	D3DVERTEXELEMENT9 VertexPosElements[] = 
@@ -218,18 +220,22 @@ void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_dev
 	ReleaseCOM(materialBuffer);
 }
 
+#if 0
 void D3DMesh::SetD3DTexture(IDirect3DTexture9 *a_tex)
 {
 
 }
+#endif
 
 
+/*
 void D3DMesh::SetCurrentD3DTexture(IDirect3DTexture9 *a_tex)
 {
 	m_currentTex = a_tex;
 
 	
 }
+*/
 
 
 D3DMesh::~D3DMesh()

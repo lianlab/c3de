@@ -88,12 +88,12 @@ public:
 
 	void Update(int deltaTime);
 
-	void SetTexture(Image *tex){m_texture = tex;}
+	//void SetTexture(Image *tex){m_texture = tex;}
 
-	void SetCurrentD3DTexture(IDirect3DTexture9 *a_tex);
+	//void SetCurrentD3DTexture(IDirect3DTexture9 *a_tex);
 	
-	void SetD3DTexture(IDirect3DTexture9 *a_tex);
-	Image * GetTexture(){return m_texture;}
+	//void SetD3DTexture(IDirect3DTexture9 *a_tex);
+	//Image * GetTexture(){return m_texture;}
 
 	vector<VertexPos> * GetVertices(){return m_vertices;}
 	vector<int> * GetIndices(){return m_indices;}
@@ -123,7 +123,7 @@ public:
 	void CreateXMesh(IDirect3DDevice9 *a_device);
 protected:
 
-	IDirect3DTexture9 *m_currentTex;
+	//IDirect3DTexture9 *m_currentTex;
 
 	UINT m_numShaderPasses;
 	IDirect3DVertexBuffer9 * m_vertexBuffer;

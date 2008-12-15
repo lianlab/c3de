@@ -18,7 +18,9 @@ Mesh::Mesh()
 	m_rotateY = 0.0f;
 	m_rotateZ = 0.0f;
 
-	m_texture = NULL;
+	//m_texture = NULL;
+
+	m_currentTexture = NULL;
 
 	//m_NEWmaterials = new vector<Material *>;
 	//m_NEWtextures = new vector<Texture *>;

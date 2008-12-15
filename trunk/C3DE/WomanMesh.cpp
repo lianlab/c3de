@@ -7,7 +7,10 @@ WomanMesh::WomanMesh() : D3DSkinnedMesh()
 {
 
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_TINY_ANIM_SKIN_ID));
-	m_texture = (Image *) d3dImage;
+	//m_texture = (Image *) d3dImage;
+
+	AddTexture((Image *) d3dImage);
+	AddMaterial(Material::WHITE);
 
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_SKINNED_MESH_BOOK_FX_ID);
 
@@ -21,7 +24,8 @@ void WomanMesh::SetShaderHandlers()
 	//t_effect->SetObjectMaterials(	m_material->GetAmbient(), m_material->GetDiffuse(),
 	//								m_material->GetSpecular(), m_material->GetSpecularPower());
 
-	D3DImage *t_d3dText = (D3DImage *) m_texture;
+	//D3DImage *t_d3dText = (D3DImage *) m_texture;
+	D3DImage *t_d3dText = (D3DImage *) m_currentTexture;
 	t_effect->SetObjectTexture(t_d3dText->GetTexture());
 
 	t_effect->SetTransformMatrix(GetTransformMatrix());

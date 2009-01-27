@@ -208,7 +208,7 @@ void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_dev
 				IDirect3DTexture9 *tex = 0;
 				char *texFN = d3dxmaterial[i].pTextureFilename;
 				//HR(D3DXCreateTextureFromFile(a_device, texFN, &tex));
-				tex = ResourceManager::GetInstance()->GetImageByFilename(texFN);
+				tex = ResourceManager::GetInstance()->GetTextureByFilename(texFN);
 
 				D3DImage *t_image = new D3DImage(tex);
 				m_textures->push_back((Image*)t_image);

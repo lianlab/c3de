@@ -6,7 +6,7 @@
 WomanMesh::WomanMesh() : D3DSkinnedMesh()
 {
 
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_TINY_ANIM_SKIN_ID));
+	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_TINY_ANIM_SKIN_ID));
 	//m_texture = (Image *) d3dImage;
 
 	AddTexture((Image *) d3dImage);

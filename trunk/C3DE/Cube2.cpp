@@ -93,7 +93,7 @@ Cube2::Cube2()
 	m_indices->push_back(23);
 
 
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_ABE_ID));
+	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_ABE_ID));
 	//m_texture = (Image *) d3dImage;
 	AddTexture((Image *) d3dImage);
 

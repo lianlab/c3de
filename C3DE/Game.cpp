@@ -14,10 +14,10 @@ Game::Game(Application * app)
 {
 	m_application = app;
 
-	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetImageByID(IMAGE_EXPLOSION_ID);
+	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_EXPLOSION_ID);
 	D3DImage *image = new D3DImage(t);				
 
-	t = ResourceManager::GetInstance()->GetImageByID(IMAGE_BUTTON_ID);
+	t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_BUTTON_ID);
 	D3DImage *image2 = new D3DImage(t);			
 	m_sprite = new D3DSprite(image, 64, 64, 30, 6, 5, 50);
 
@@ -454,8 +454,8 @@ void Game::InitializeMeshes()
 	//m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TINY_ANIM_ID), ((D3DRenderer*)m_renderer)->GetDevice());
 
 	
-	//m_dwarf->SetD3DTexture(ResourceManager::GetInstance()->GetImageByID(IMAGE_SWIMMER_SKIN_ID));
-	D3DImage *t_image = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_SWIMMER_SKIN_ID));
+	//m_dwarf->SetD3DTexture(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SWIMMER_SKIN_ID));
+	D3DImage *t_image = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SWIMMER_SKIN_ID));
 	m_dwarf->AddTexture((Image*)t_image);
 	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
 	
@@ -496,7 +496,7 @@ void Game::InitializeMeshes()
 	m_dwarf = new Dwarf();
 	m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_SWIMMER_ID), ((D3DRenderer*)m_renderer)->GetDevice());
 	
-	D3DImage *t_image = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_SWIMMER_SKIN_ID));
+	D3DImage *t_image = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SWIMMER_SKIN_ID));
 	m_dwarf->AddTexture((Image*)t_image);
 	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
 	

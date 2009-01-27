@@ -1,6 +1,9 @@
 #include "ResourceManager.h"
+#include <fstream>
 #include "DebugMemory.h"
 #include "D3DCommonDefs.h"
+
+using namespace std;
 
 ResourceManager * ResourceManager::m_instance = NULL;
 
@@ -20,6 +23,8 @@ ResourceManager::ResourceManager()
 	m_meshesFilenames[MESH_TINY_ANIM_ID] = "Meshes/tiny.x";
 	m_meshesFilenames[MESH_TIGER_ID] = "Meshes/tiger.x";
 	m_meshesFilenames[MESH_SWIMMER_ID] = "Meshes/swimmer.x";
+
+
 }
 
 ResourceManager::~ResourceManager()
@@ -111,10 +116,40 @@ void ResourceManager::InitializeResources()
 
 
 	
+	//files
+#if 0
+	std::ifstream t_inFile;
+	t_inFile.open("Images/Terrain/test.raw", ios_base::binary);
+	vector<unsigned char> *t_buffer = new vector<unsigned char>;
+	t_inFile.read((char*)t_buffer, (streamsize)t_buffer->size());
+	t_inFile.close();
+	m_fileBytes[FILE_TERRAIN_ID] = t_buffer;
+#endif
+	// Open the file.
+	std::ifstream t_inFile;
 
+	//TERRAIN 1
+	// A height for each vertex
+	std::vector<unsigned char> t_in( 129 * 129 );	
+	t_inFile.open("Images/Terrain/test.raw", ios_base::binary);
+	// Read the RAW bytes.
+	t_inFile.read((char*)&t_in[0], (streamsize)t_in.size());
+	// Done with file.
+	t_inFile.close();
+	m_fileBytes[0] = &t_in;
+
+	//TERRAIN 2
+	// A height for each vertex
+	std::vector<unsigned char> t_in2( 129 * 129 );	
+	t_inFile.open("Images/Terrain/test2.raw", ios_base::binary);
+	// Read the RAW bytes.
+	t_inFile.read((char*)&t_in2[0], (streamsize)t_in2.size());
+	// Done with file.
+	t_inFile.close();
+	m_fileBytes[1] = &t_in2;
 }
 
-IDirect3DTexture9 * ResourceManager::GetImageByID(int id)
+IDirect3DTexture9 * ResourceManager::GetTextureByID(int id)
 {
 	//return TEX_SHIP;
 	//return temp;
@@ -122,7 +157,7 @@ IDirect3DTexture9 * ResourceManager::GetImageByID(int id)
 	return tex; 
 }
 
-IDirect3DTexture9 * ResourceManager::GetImageByFilename(std::string a_filename)
+IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename)
 {
 	if(strcmp(a_filename.c_str(), "alienship.bmp") == 0)	
 	{
@@ -198,6 +233,11 @@ IDirect3DTexture9 * ResourceManager::GetImageByFilename(std::string a_filename)
 std::string ResourceManager::GetMeshFilenameByID(int a_ID)
 {
 	return m_meshesFilenames[a_ID];
+}
+
+std::vector<unsigned char> * ResourceManager::GetFileBytesByID(int a_ID)
+{
+	return m_fileBytes[a_ID];
 }
 
 //C3DESprite * ResourceManager::GetSpriteByID(int id)

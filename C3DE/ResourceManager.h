@@ -8,7 +8,7 @@
 #include <vector>
 #include <d3dx9.h>
 
-enum ResourceIDs
+enum TexturesIDs
 { 
 	IMAGE_SHIP_ID, 	
 	IMAGE_BACKGROUND_ID,
@@ -33,7 +33,17 @@ enum ResourceIDs
 	IMAGE_SWIMMER_SKIN_ID,
 	///////////////////////
 
+	
 	TOTAL_IMAGES
+};
+
+enum FilesIDs
+{ 	
+	///////////////////////
+	//TERRAIN
+	FILE_TERRAIN_ID,
+	///////////////////////
+	TOTAL_FILES
 };
 
 enum MeshesIDs
@@ -56,7 +66,7 @@ public:
 	~ResourceManager();
 
 	//C3DESprite * GetSpriteByID(int id);
-	IDirect3DTexture9 * GetImageByID(int id);
+	IDirect3DTexture9 * GetTextureByID(int id);
 
 
 	
@@ -66,7 +76,9 @@ public:
 	void SetDevice(IDirect3DDevice9 *device);
 	
 	std::string GetMeshFilenameByID(int a_ID);
-	IDirect3DTexture9 * ResourceManager::GetImageByFilename(std::string a_filename);
+	IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename);
+
+	std::vector<unsigned char> * GetFileBytesByID(int a_ID);
 
 private:
 	ResourceManager();
@@ -81,7 +93,7 @@ private:
 
 	std::string m_meshesFilenames[TOTAL_MESHES];
 	
-
+	std::vector<unsigned char> * m_fileBytes[2];
 	
 
 };

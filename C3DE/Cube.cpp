@@ -93,7 +93,7 @@ Cube::Cube()
 	m_indices->push_back(23);
 
 
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_CRATE_ID));
+	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_CRATE_ID));
 	m_texture = (Image *) d3dImage;
 
 	m_alpha = 0.5f;
@@ -227,7 +227,7 @@ Cube::Cube()
 
 	
 
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_CRATE_ID));
+	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_CRATE_ID));
 	m_texture = (Image *) d3dImage;
 
 
@@ -363,7 +363,7 @@ Cube::Cube()
 
 	
 
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_CRATE_ID));
+	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_CRATE_ID));
 	//m_texture = (Image *) d3dImage;
 	AddTexture((Image *) d3dImage);
 

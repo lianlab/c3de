@@ -1,4 +1,5 @@
 #include "Grid.h"
+#include "PerVertexLighting.h"
 #include "DebugMemory.h"
 
 Grid::Grid(int numCellsRows, int numCellsCols, float dx, float dz)
@@ -28,7 +29,7 @@ Grid::Grid(int numCellsRows, int numCellsCols, float dx, float dz)
 		{
 					
 			float tx = j*dx + xOffset;
-			float tz = -i*dz + zOffset;
+			float tz = -i*dz + zOffset;			
 			m_vertices->push_back(VertexPos(tx, 0.0f, tz));		
 			
 		}
@@ -58,6 +59,9 @@ Grid::Grid(int numCellsRows, int numCellsCols, float dx, float dz)
 
 	}
 
+	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
+	PerVertexLighting *t_effect = (PerVertexLighting *) m_effect;
+	t_effect->SetAlpha(1.0f);
 
 
 }
@@ -65,6 +69,17 @@ Grid::Grid(int numCellsRows, int numCellsCols, float dx, float dz)
 Grid::~Grid()
 {
 	ReleaseCOM(m_vertexDeclaration);
+}
+
+void Grid::SetShaderHandlers()
+{		
+	PerVertexLighting *t_effect = (PerVertexLighting *) m_effect;
+	//t_effect->SetObjectMaterials(	m_material->GetAmbient(), m_material->GetDiffuse(),
+	//								m_material->GetSpecular(), m_material->GetSpecularPower());
+
+	t_effect->SetTransformMatrix(GetTransformMatrix());
+	
+	
 }
 
 #if 0

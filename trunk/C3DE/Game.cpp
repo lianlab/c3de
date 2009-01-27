@@ -104,24 +104,24 @@ Game::~Game()
 
 
 #if 1
-	delete m_testMesh;
+	//delete m_testMesh;
 	
-	delete m_grid;
+	//delete m_grid;
 
 	
-	delete m_plane ;
+	//delete m_plane ;
 
-	delete m_pivot;
+	//delete m_pivot;
 	
 	
 
-	delete m_wall;
+	//delete m_wall;
 
-	delete m_mirror;
+	//delete m_mirror;
 	
 	
 	
-	delete m_shadowSurface;
+	//delete m_shadowSurface;
 #endif
 }
 
@@ -209,6 +209,7 @@ void Game::OnKeyDown(int key)
 	
 	float step = 0.1f;
 	Mesh * target = (Mesh*)m_dwarf;
+	//Mesh * target = (Mesh*)m_skinMesh;
 	if(key == 1)
 	{
 		m_application->Quit();
@@ -244,7 +245,7 @@ void Game::OnKeyDown(int key)
 		target->Scale(target->GetXScale() - step, target->GetYScale(), target->GetZScale());
 	}
 #endif
-#if 1
+#if 0
 	else if(key == 200)
 	{		
 		target->SetPosition(target->GetX(), target->GetY(), target->GetZ() - step);		
@@ -272,7 +273,7 @@ void Game::OnKeyDown(int key)
 		target->SetPosition(target->GetX() - step, target->GetY(), target->GetZ());
 	}
 #endif
-#if 0
+#if 1
 	else if(key == 200)
 	{		
 		target->Rotate(target->GetRotationX(), target->GetRotationY(), target->GetRotationZ() - step);				
@@ -371,6 +372,8 @@ void Game::CreateMeshBuffers(D3DMesh *mesh)
 
 void Game::InitializeMeshes()
 {
+	
+#if 0
 	m_testMesh = new Cube();
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
@@ -446,6 +449,8 @@ void Game::InitializeMeshes()
 	//m_dwarf->SetMaterial(t_material3);
 	//m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_DWARF_ID), ((D3DRenderer*)m_renderer)->GetDevice());
 	m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_SWIMMER_ID), ((D3DRenderer*)m_renderer)->GetDevice());
+	//m_dwarf->LoadFromXFile("Meshes/auei.x", ((D3DRenderer*)m_renderer)->GetDevice());
+	//m_dwarf->LoadFromXFile("Meshes/picles.x", ((D3DRenderer*)m_renderer)->GetDevice());
 	//m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TINY_ANIM_ID), ((D3DRenderer*)m_renderer)->GetDevice());
 
 	
@@ -453,19 +458,52 @@ void Game::InitializeMeshes()
 	D3DImage *t_image = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_SWIMMER_SKIN_ID));
 	m_dwarf->AddTexture((Image*)t_image);
 	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
-	//m_testScene->AddMesh(m_dwarf);
+	
+	m_testScene->AddMesh(m_dwarf);
 	//m_testScene->AddMesh(m_cube);
 
 	//m_skinMesh = new D3DSkinnedMesh("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
-	m_skinMesh = new WomanMesh();
-	m_skinMesh->LoadFromXFile("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
+	//m_skinMesh = new WomanMesh();
+	//
+	
+	//m_skinMesh->LoadFromXFile("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
 	//m_skinMesh->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_SWIMMER_ID),  ((D3DRenderer*)m_renderer)->GetDevice());
 	
-	m_skinMesh->Scale(0.02f, 0.02f, 0.02f);
-	m_testScene->AddMesh(m_skinMesh);
+	//m_skinMesh->Scale(0.02f, 0.02f, 0.02f);
+	//m_testScene->AddMesh(m_skinMesh);
 	m_testScene->Initialize();
 
+#endif
 
+	m_testScene = new DefaultScene1();	
+
+	m_testMesh = new Cube();
+	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
+										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
+	m_testMesh->AddMaterial(t_material);
+	
+	CreateMeshBuffers(m_testMesh);
+
+
+	m_testScene->AddMesh(m_testMesh);
+
+	Grid* auei = new Grid(50,50,1.0f, 1.0f);
+	auei->AddMaterial(t_material);
+	CreateMeshBuffers(auei);
+	m_testScene->AddMesh(auei);
+
+
+	m_dwarf = new Dwarf();
+	m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_SWIMMER_ID), ((D3DRenderer*)m_renderer)->GetDevice());
+	
+	D3DImage *t_image = new D3DImage(ResourceManager::GetInstance()->GetImageByID(IMAGE_SWIMMER_SKIN_ID));
+	m_dwarf->AddTexture((Image*)t_image);
+	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
+	
+	m_dwarf->SetPosition(15.0f, 5.0f, 0.0f);
+	m_testScene->AddMesh(m_dwarf);
+	
+	m_testScene->Initialize();
 	
 }
 

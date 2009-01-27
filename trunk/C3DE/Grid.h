@@ -9,6 +9,8 @@ public:
 	Grid(int numRows, int numCols, float dx, float dz/*, std::vector<D3DXVECTOR3>& verts, std::vector<DWORD>& indices*/);
 	~Grid();
 
+	void SetShaderHandlers();
+
 #if 0
 	void SetPreRenderEffectHandles();
 	
@@ -31,7 +33,7 @@ public:
 #endif
 private:
 
-	D3DXHANDLE   m_hTex;
+	//D3DXHANDLE   m_hTex;
 
 protected:
 	void InitializeEffectHandles();

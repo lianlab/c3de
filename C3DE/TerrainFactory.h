@@ -10,17 +10,21 @@
 class TerrainFactory
 {
 public:
-	TerrainFactory(int m, int n);
-	TerrainFactory(int m, int n, const std::string &filename, float heightScale, float heightOffset);
+	//TerrainFactory(int m, int n);
+	//TerrainFactory(int m, int n, const std::string &filename, float heightScale, float heightOffset);
 
-	Mesh * getTerrainMesh(int m, int n, const std::string &filename, float heightScale, float heightOffset);
-	int getTotalRows(){return m_totalRows;}
-	int getTotalCols(){return m_totalCols;}
+	static TerrainFactory * GetInstance();
+
+	Mesh * GetTerrainMesh(int m, int n, IDirect3DTexture9 *a_texture, float heightScale, float heightOffset);
+	int GetTotalRows(){return m_totalRows;}
+	int GetTotalCols(){return m_totalCols;}
+
+	~TerrainFactory();
 
 private :
-	bool inBounds(int i, int j);
-	float sampleHeight3x3(int i, int j);
-	void filter3x3();
+	bool InBounds(int i, int j);
+	float SampleHeight3x3(int i, int j);
+	void Filter3x3();
 
 	std::string m_heightMapFile;
 	//Table<float> m_heightMap;
@@ -29,5 +33,8 @@ private :
 
 	int m_totalRows;
 	int m_totalCols;
+
+	TerrainFactory();
+	static TerrainFactory * m_instance;
 };
 #endif

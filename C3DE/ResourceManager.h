@@ -32,6 +32,10 @@ enum TexturesIDs
 	//SWIMMER
 	IMAGE_SWIMMER_SKIN_ID,
 	///////////////////////
+	///////////////////////
+	//TERRAIN
+	IMAGE_TERRAIN_ID,
+	///////////////////////
 
 	
 	TOTAL_IMAGES
@@ -78,7 +82,7 @@ public:
 	std::string GetMeshFilenameByID(int a_ID);
 	IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename);
 
-	std::vector<unsigned char> * GetFileBytesByID(int a_ID);
+	
 
 private:
 	ResourceManager();
@@ -93,8 +97,6 @@ private:
 
 	std::string m_meshesFilenames[TOTAL_MESHES];
 	
-	std::vector<unsigned char> * m_fileBytes[2];
 	
-
 };
 #endif

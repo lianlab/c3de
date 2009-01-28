@@ -2,6 +2,7 @@
 #include "ShaderManager.h"
 #include "D3DCamera.h"
 #include "D3DRenderer.h"
+#include "TerrainFactory.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -487,7 +488,8 @@ void Game::InitializeMeshes()
 
 	m_testScene->AddMesh(m_testMesh);
 
-	Grid* auei = new Grid(50,50,1.0f, 1.0f);
+	//Grid* auei = new Grid(50,50,1.0f, 1.0f);
+	Grid* auei = (Grid*)TerrainFactory::GetInstance()->GetTerrainMesh(50,50,NULL, 10.0f,10.0f);
 	auei->AddMaterial(t_material);
 	CreateMeshBuffers(auei);
 	m_testScene->AddMesh(auei);

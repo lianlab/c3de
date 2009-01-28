@@ -61,6 +61,8 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_TIGER;
 	//SWIMMER
 	IDirect3DTexture9 * TEX_SWIMMER;
+	//TERRAIN
+	IDirect3DTexture9 * TEX_TERRAIN;
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/alienship.bmp", &TEX_SHIP));
 	
@@ -90,6 +92,12 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/Swimmer/swimmer.bmp", &TEX_SWIMMER));
 	///////////////////
 
+	//TERRAIN
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &TEX_TERRAIN));
+	///////////////////
+
+	
+
 	m_imageResources[IMAGE_SHIP_ID] = TEX_SHIP;	
 	m_imageResources[IMAGE_BACKGROUND_ID] = TEX_BG;
 	m_imageResources[IMAGE_EXPLOSION_ID] = TEX_EXPLOSION;
@@ -114,39 +122,57 @@ void ResourceManager::InitializeResources()
 	//Swimmer
 	m_imageResources[IMAGE_SWIMMER_SKIN_ID] = TEX_SWIMMER;
 
+	//Terrain
+	m_imageResources[IMAGE_TERRAIN_ID] = TEX_TERRAIN;
 
-	
-	//files
+
 #if 0
-	std::ifstream t_inFile;
-	t_inFile.open("Images/Terrain/test.raw", ios_base::binary);
-	vector<unsigned char> *t_buffer = new vector<unsigned char>;
-	t_inFile.read((char*)t_buffer, (streamsize)t_buffer->size());
-	t_inFile.close();
-	m_fileBytes[FILE_TERRAIN_ID] = t_buffer;
-#endif
+	
+
 	// Open the file.
 	std::ifstream t_inFile;
 
 	//TERRAIN 1
 	// A height for each vertex
 	std::vector<unsigned char> t_in( 129 * 129 );	
-	t_inFile.open("Images/Terrain/test.raw", ios_base::binary);
+	t_inFile.open("Images/Terrain/terrain.raw", ios_base::binary);
 	// Read the RAW bytes.
 	t_inFile.read((char*)&t_in[0], (streamsize)t_in.size());
 	// Done with file.
 	t_inFile.close();
 	m_fileBytes[0] = &t_in;
 
-	//TERRAIN 2
-	// A height for each vertex
-	std::vector<unsigned char> t_in2( 129 * 129 );	
-	t_inFile.open("Images/Terrain/test2.raw", ios_base::binary);
-	// Read the RAW bytes.
-	t_inFile.read((char*)&t_in2[0], (streamsize)t_in2.size());
-	// Done with file.
-	t_inFile.close();
-	m_fileBytes[1] = &t_in2;
+
+
+
+
+	float *m_pHeightMap = new float[128 * 128];
+	memset(m_pHeightMap, 0, sizeof(float)  * 128 * 128);
+	IDirect3DTexture9 *heightMapTexture =  NULL;
+
+	D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &heightMapTexture);
+	D3DLOCKED_RECT sRect;
+	heightMapTexture->LockRect(0, &sRect, NULL, NULL);
+	BYTE *bytes = (BYTE*)sRect.pBits;
+
+	for(int y=0; y<128;y++)
+	{
+		for (int x = 0; x <128; x++)
+		{
+			BYTE *b = bytes + y*sRect.Pitch + x;
+			m_pHeightMap[x+y*128] = ((*b /255.0f) * 5.0f);
+		}
+
+	}
+
+	heightMapTexture->UnlockRect(0);
+
+#endif
+}
+
+void poxa()
+{
+	
 }
 
 IDirect3DTexture9 * ResourceManager::GetTextureByID(int id)
@@ -224,6 +250,11 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 	{
 		return m_imageResources[IMAGE_SWIMMER_SKIN_ID];
 	}	
+	//Terrain
+	else if(strcmp(a_filename.c_str(), "terrain.bmp") == 0)
+	{
+		return m_imageResources[IMAGE_TERRAIN_ID];
+	}	
 	else
 	{
 		return NULL;
@@ -235,10 +266,7 @@ std::string ResourceManager::GetMeshFilenameByID(int a_ID)
 	return m_meshesFilenames[a_ID];
 }
 
-std::vector<unsigned char> * ResourceManager::GetFileBytesByID(int a_ID)
-{
-	return m_fileBytes[a_ID];
-}
+
 
 //C3DESprite * ResourceManager::GetSpriteByID(int id)
 //{

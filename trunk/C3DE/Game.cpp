@@ -274,6 +274,34 @@ void Game::OnKeyDown(int key)
 		target->SetPosition(target->GetX() - step, target->GetY(), target->GetZ());
 	}
 #endif
+#if 0
+	else if(key == 200)
+	{		
+		target->Rotate(target->GetRotationX(), target->GetRotationY(), target->GetRotationZ() - step);				
+		
+	}
+	else if(key == 208)
+	{		
+		target->Rotate(target->GetRotationX(), target->GetRotationY(), target->GetRotationZ() + step);		
+	}	
+	else if(key == 205)
+	{
+		target->Rotate(target->GetRotationX(), target->GetRotationY() - step, target->GetRotationZ());
+	}
+	else if(key == 203)
+	{
+		target->Rotate(target->GetRotationX(), target->GetRotationY() + step, target->GetRotationZ());
+	}
+	else if(key == 17)
+	{
+		target->Rotate(target->GetRotationX() + step, target->GetRotationY(), target->GetRotationZ());
+	}
+	else if(key == 31)
+	{
+		target->Rotate(target->GetRotationX() - step, target->GetRotationY(), target->GetRotationZ());
+	}
+#endif
+
 #if 1
 	else if(key == 200)
 	{		
@@ -486,12 +514,17 @@ void Game::InitializeMeshes()
 	CreateMeshBuffers(m_testMesh);
 
 
-	m_testScene->AddMesh(m_testMesh);
+	//m_testScene->AddMesh(m_testMesh);
 
+#if 1
 	//Grid* auei = new Grid(50,50,1.0f, 1.0f);
-	Grid* auei = (Grid*)TerrainFactory::GetInstance()->GetTerrainMesh(50,50,NULL, 10.0f,10.0f);
+	Grid* auei = (Grid*)TerrainFactory::GetInstance()->GetTerrainMesh(50,50,ResourceManager::GetInstance()->GetTextureByID(IMAGE_TERRAIN_ID), 10.0f);
+	
+
 	auei->AddMaterial(t_material);
 	CreateMeshBuffers(auei);
+
+	auei->SetPosition(0.0f, -20.0f, 0.0f);
 	m_testScene->AddMesh(auei);
 
 
@@ -503,8 +536,9 @@ void Game::InitializeMeshes()
 	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
 	
 	m_dwarf->SetPosition(15.0f, 5.0f, 0.0f);
-	m_testScene->AddMesh(m_dwarf);
+	//m_testScene->AddMesh(m_dwarf);
 	
+#endif
 	m_testScene->Initialize();
 	
 }

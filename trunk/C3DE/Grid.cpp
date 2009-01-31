@@ -29,7 +29,8 @@ Grid::Grid(int numCellsRows, int numCellsCols, float dx, float dz)
 		{
 					
 			float tx = j*dx + xOffset;
-			float tz = -i*dz + zOffset;			
+			float tz = -i*dz + zOffset;		
+			float ty = rand() % 10;
 			m_vertices->push_back(VertexPos(tx, 0.0f, tz));		
 			
 		}

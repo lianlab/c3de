@@ -363,8 +363,7 @@ Cube::Cube()
 
 	
 
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_CRATE_ID));
-	//m_texture = (Image *) d3dImage;
+	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_TERRAIN_ID));	
 	AddTexture((Image *) d3dImage);
 
 
@@ -384,7 +383,7 @@ void Cube::SetShaderHandlers()
 									m_currentMaterial->GetSpecular(), m_currentMaterial->GetSpecularPower());
 
 									
-	//D3DImage *t_d3dText = (D3DImage *) m_texture;
+	
 	D3DImage *t_d3dText = (D3DImage *) m_currentTexture;
 	t_effect->SetObjectTexture(t_d3dText->GetTexture());
 

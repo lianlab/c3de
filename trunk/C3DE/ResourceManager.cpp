@@ -93,7 +93,10 @@ void ResourceManager::InitializeResources()
 	///////////////////
 
 	//TERRAIN
-	HR(D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &TEX_TERRAIN));
+	//HR(D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &TEX_TERRAIN));
+	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/terrain.bmp", 100, 100, 1, D3DUSAGE_DYNAMIC, 
+											  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
+											  NULL, NULL, NULL, &TEX_TERRAIN);
 	///////////////////
 
 	

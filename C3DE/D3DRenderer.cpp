@@ -14,6 +14,9 @@
 
 #include "Dwarf.h"
 
+#if HACK_FROM_SCRATCH
+IDirect3DVertexDeclaration9* VertexPosHACK::Decl = 0;
+#endif
 
 D3DRenderer::D3DRenderer()
 {	
@@ -170,21 +173,69 @@ void D3DRenderer::CreateMeshBuffers(D3DMesh *mesh)
 	//mesh->Translate(0.0f, 0.0f, 0.0f);
 }
 
-
-
-
-
+#if HACK_FROM_SCRATCH
 
 void D3DRenderer::DrawScene(Scene *scene)
+{
+	Mesh *mesh = scene->GetMeshesVector()->at(0);	
+	D3DMesh *d3dmesh = (D3DMesh *)mesh;	
+	
+
+	// Clear the backbuffer and depth buffer.
+	HR(m_device->Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0));
+
+	HR(m_device->BeginScene());
+
+	// Let Direct3D know the vertex buffer, index buffer and vertex 
+	// declaration we are using.
+	//HR(m_device->SetStreamSource(0, mVB, 0, sizeof(VertexPosHACK)));
+	HR(m_device->SetStreamSource(0, d3dmesh->GetVertexBuffer(), 0, d3dmesh->GetVertexSize()));
+	//HR(m_device->SetIndices(mIB));
+	HR(m_device->SetIndices(d3dmesh->GetIndexBuffer()));
+	
+	//HR(m_device->SetVertexDeclaration(VertexPosHACK::Decl));
+	HR(m_device->SetVertexDeclaration(d3dmesh->GetVertexDeclaration()));
+
+	// World matrix is identity.
+	D3DXMATRIX W;
+	D3DXMatrixIdentity(&W);
+	HR(m_device->SetTransform(D3DTS_WORLD, &W));
+	//HR(m_device->SetTransform(D3DTS_VIEW, &mView));
+	HR(m_device->SetTransform(D3DTS_PROJECTION, &mProj));
+
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	
+	
+	
+	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
+
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
+	//HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 8, 0, 12));
+	int numTriangles = d3dmesh->GetIndices()->size() / 3;
+	int numVertices = d3dmesh->GetVertices()->size();		
+	
+	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
+	
+	//mGfxStats->display();
+
+	HR(m_device->EndScene());
+
+	// Present the backbuffer.
+	HR(m_device->Present(0, 0, 0, 0));
+}
+
+
+#else
+void D3DRenderer::DrawScene(Scene *scene)
 {		
-#if 0
+/*
 	Mesh *mesh = scene->GetMeshesVector()->at(0);	
 	D3DSkinnedMesh *d3dmesh = (D3DSkinnedMesh *)mesh;	
 
 	//drawXcene(d3dmesh);
 	d3dmesh->Update(0.002f);
 	//return;
-#endif
+*/
 	int totalMeshes = scene->GetMeshesVector()->size();		
 	int totalMirrors = scene->GetMirrorsVector()->size();	
 	int totalShadowSurfaces = scene->GetShadowSurfacesVector()->size();
@@ -230,6 +281,8 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 
 }
+
+#endif
 
 
 
@@ -458,7 +511,7 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 	
 	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
-	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
 	
 
 	int numTriangles = mesh->GetIndices()->size() / 3;
@@ -494,7 +547,7 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh, FX *fx)
 	
 	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
-	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
 	
 
 	int numTriangles = mesh->GetIndices()->size() / 3;
@@ -670,6 +723,10 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	D3DXMatrixPerspectiveFovLH(&P, D3DX_PI * 0.25f, width/height, 1.0f, 5000.0f);
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &P));
 
+#if HACK_FROM_SCRATCH
+
+#else
+	
 	HR(m_device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR));
 	HR(m_device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR));
 	HR(m_device->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR));
@@ -683,8 +740,11 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	HR(m_device->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1));
 	HR(m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA));
 	HR(m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA));
-	HR(m_device->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2));					
+	HR(m_device->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2));	
+	
 
+	
+#endif
 	//end of 2d stuff
 	D3DCamera *cam = new D3DCamera();
 	m_camera = (Camera *)cam;	
@@ -696,6 +756,32 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	EnableAlphaBlending(false);	
 
 	CreateAxis();
+
+#if HACK_FROM_SCRATCH
+	D3DVERTEXELEMENT9 VertexPosElements[] = 
+	{
+		{0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+		D3DDECL_END()
+	};	
+	HR(m_device->CreateVertexDeclaration(VertexPosElements, &VertexPosHACK::Decl));
+
+	buildVertexBuffer();
+	buildIndexBuffer();
+
+	mCameraRadius    = 10.0f;
+	mCameraRotationY = 1.2 * D3DX_PI;
+	mCameraHeight    = 5.0f;
+
+	// The aspect ratio depends on the backbuffer dimensions, which can 
+	// possibly change after a reset.  So rebuild the projection matrix.
+	buildProjMatrix();
+	buildViewMtx();
+
+	//===============================================================
+	// VertexPos
+
+	
+#endif
 
 	
 	return true;
@@ -746,7 +832,7 @@ void D3DRenderer::DrawAxis()
 	
 	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
-	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
 	
 	m_device->DrawPrimitive( D3DPT_LINELIST, 0, 3 );
 }
@@ -759,13 +845,17 @@ void D3DRenderer::Reset()
 
 void D3DRenderer::Clear()
 {	
-	
+#if HACK_FROM_SCRATCH
+	return;
+#endif
 	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0xffffffff, 1.0f, 0L );
 }
 
 bool D3DRenderer::BeginRender()
 {
-
+#if HACK_FROM_SCRATCH
+		return true;
+#endif
 	m_device->BeginScene();	
 	m_sprite->Begin(0);
 	return true;
@@ -773,8 +863,99 @@ bool D3DRenderer::BeginRender()
 
 void D3DRenderer::EndRender()
 {
+#if HACK_FROM_SCRATCH
+	return;
+#endif
 	m_sprite->End();
 	m_device->EndScene();
 	m_device->Present(0, 0, 0, 0);
 }
 
+
+#if HACK_FROM_SCRATCH
+void D3DRenderer::buildVertexBuffer()
+{
+	// Obtain a pointer to a new vertex buffer.
+	HR(m_device->CreateVertexBuffer(8 * sizeof(VertexPosHACK), D3DUSAGE_WRITEONLY,
+		0, D3DPOOL_MANAGED, &mVB, 0));
+
+	// Now lock it to obtain a pointer to its internal data, and write the
+	// cube's vertex data.
+
+	VertexPosHACK* v = 0;
+	HR(mVB->Lock(0, 0, (void**)&v, 0));
+
+	v[0] = VertexPosHACK(-1.0f, -1.0f, -1.0f);
+	v[1] = VertexPosHACK(-1.0f,  1.0f, -1.0f);
+	v[2] = VertexPosHACK( 1.0f,  1.0f, -1.0f);
+	v[3] = VertexPosHACK( 1.0f, -1.0f, -1.0f);
+	v[4] = VertexPosHACK(-1.0f, -1.0f,  1.0f);
+	v[5] = VertexPosHACK(-1.0f,  1.0f,  1.0f);
+	v[6] = VertexPosHACK( 1.0f,  1.0f,  1.0f);
+	v[7] = VertexPosHACK( 1.0f, -1.0f,  1.0f);
+
+	HR(mVB->Unlock());
+}
+
+
+
+void D3DRenderer::buildIndexBuffer()
+{
+	// Obtain a pointer to a new index buffer.
+	HR(m_device->CreateIndexBuffer(36 * sizeof(WORD), D3DUSAGE_WRITEONLY,
+		D3DFMT_INDEX16, D3DPOOL_MANAGED, &mIB, 0));
+
+	// Now lock it to obtain a pointer to its internal data, and write the
+	// cube's index data.
+
+	WORD* k = 0;
+
+	HR(mIB->Lock(0, 0, (void**)&k, 0));
+
+	// Front face.
+	k[0] = 0; k[1] = 1; k[2] = 2;
+	k[3] = 0; k[4] = 2; k[5] = 3;
+
+	// Back face.
+	k[6] = 4; k[7]  = 6; k[8]  = 5;
+	k[9] = 4; k[10] = 7; k[11] = 6;
+
+	// Left face.
+	k[12] = 4; k[13] = 5; k[14] = 1;
+	k[15] = 4; k[16] = 1; k[17] = 0;
+
+	// Right face.
+	k[18] = 3; k[19] = 2; k[20] = 6;
+	k[21] = 3; k[22] = 6; k[23] = 7;
+
+	// Top face.
+	k[24] = 1; k[25] = 5; k[26] = 6;
+	k[27] = 1; k[28] = 6; k[29] = 2;
+
+	// Bottom face.
+	k[30] = 4; k[31] = 0; k[32] = 3;
+	k[33] = 4; k[34] = 3; k[35] = 7;
+
+	HR(mIB->Unlock());
+}
+
+void D3DRenderer::buildProjMatrix()
+{
+	float w = (float)m_d3dpp.BackBufferWidth;
+	float h = (float)m_d3dpp.BackBufferHeight;
+	D3DXMatrixPerspectiveFovLH(&mProj, D3DX_PI * 0.25f, w/h, 1.0f, 5000.0f);
+}
+
+void D3DRenderer::buildViewMtx()
+{
+	float x = mCameraRadius * cosf(mCameraRotationY);
+	float z = mCameraRadius * sinf(mCameraRotationY);
+	D3DXVECTOR3 pos(x, mCameraHeight, z);
+	D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 up(0.0f, 1.0f, 0.0f);
+	D3DXMatrixLookAtLH(&mView, &pos, &target, &up);
+}
+
+
+
+#endif

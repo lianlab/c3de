@@ -15,7 +15,7 @@ public:
 
 	static TerrainFactory * GetInstance();
 
-	Mesh * GetTerrainMesh(int m, int n, IDirect3DTexture9 *a_texture, float heightScale, float heightOffset);
+	Mesh * GetTerrainMesh(int m, int n, IDirect3DTexture9 *a_texture, float maxHeight);
 	int GetTotalRows(){return m_totalRows;}
 	int GetTotalCols(){return m_totalCols;}
 

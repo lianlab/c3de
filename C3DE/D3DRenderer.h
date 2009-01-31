@@ -17,6 +17,20 @@
 #include "FX.h"
 #include "ShadowFX.h"
 
+#define HACK_FROM_SCRATCH 0
+
+#if 1
+	struct VertexPosHACK
+	{
+		VertexPosHACK():pos(0.0f, 0.0f, 0.0f){}
+		VertexPosHACK(float x, float y, float z):pos(x,y,z){}
+		VertexPosHACK(const D3DXVECTOR3& v):pos(v){}
+
+		D3DXVECTOR3 pos;
+		static IDirect3DVertexDeclaration9* Decl;
+	};
+#endif
+
 class D3DRenderer : public Renderer
 {
 public:
@@ -77,7 +91,25 @@ private:
 	IDirect3DVertexDeclaration9 *m_axisDeclaration;
 
 
+#if HACK_FROM_SCRATCH
+	IDirect3DVertexBuffer9* mVB;
+	IDirect3DIndexBuffer9*  mIB;
 	
+
+	void buildIndexBuffer();
+	void buildVertexBuffer();
+	void buildProjMatrix();
+	void buildViewMtx();
+
+	D3DXMATRIX mView;
+	D3DXMATRIX mProj;
+
+	float mCameraRotationY;
+	float mCameraRadius;
+	float mCameraHeight;
+
+	
+#endif
 
 
 };

@@ -177,6 +177,15 @@ void D3DRenderer::CreateMeshBuffers(D3DMesh *mesh)
 
 void D3DRenderer::DrawScene(Scene *scene)
 {
+	/*
+	HR(m_device->Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0));
+	HR(m_device->BeginScene());
+	HR(m_device->EndScene());
+
+	// Present the backbuffer.
+	HR(m_device->Present(0, 0, 0, 0));
+	return;
+	*/
 	Mesh *mesh = scene->GetMeshesVector()->at(0);	
 	D3DMesh *d3dmesh = (D3DMesh *)mesh;	
 	
@@ -722,6 +731,8 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	float height = (float)R.bottom;
 	D3DXMatrixPerspectiveFovLH(&P, D3DX_PI * 0.25f, width/height, 1.0f, 5000.0f);
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &P));
+
+	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE));
 
 #if HACK_FROM_SCRATCH
 

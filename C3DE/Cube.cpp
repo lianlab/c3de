@@ -363,7 +363,7 @@ Cube::Cube()
 
 	
 
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_TERRAIN_ID));	
+	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_CRATE_ID));	
 	AddTexture((Image *) d3dImage);
 
 

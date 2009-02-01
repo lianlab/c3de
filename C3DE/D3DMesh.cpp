@@ -289,6 +289,30 @@ void D3DMesh::Update(int deltaTime)
 	
 }
 
+void D3DMesh::SetVertices(vector<VertexPos> * a_vertices)
+{
+	if(m_vertices)
+	{
+		delete m_vertices;
+		m_vertices = NULL;
+	}
+
+	m_vertices = a_vertices;
+
+}
+	
+
+void D3DMesh::SetIndices(vector<int> * a_indices)
+{
+	if(m_indices)
+	{
+		delete m_indices;
+		m_indices = NULL;
+	}
+
+	m_indices = a_indices;
+}
+
 
 bool auei = false;
 

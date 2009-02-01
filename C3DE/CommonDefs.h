@@ -15,4 +15,6 @@
 
 #endif
 
+#define ROUND_FLOAT(x) {(int)(x + 0.5f)}
+
 #endif

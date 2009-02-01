@@ -106,5 +106,22 @@ private:
 	//SkinnedCube *m_skinnedCube;
 
 	WomanMesh *m_skinMesh;
+
+#if 1
+	float m_camX;
+	float m_camY;
+	float m_camZ;
+
+	float m_camTargetX;
+	float m_camTargetY;
+	float m_camTargetZ;
+
+	float m_camRadius;
+
+	float m_camYRotation;
+	float m_camZRotation;
+
+	Grid* m_auei;
+#endif	
 };
 #endif

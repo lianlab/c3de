@@ -35,6 +35,8 @@ enum TexturesIDs
 	///////////////////////
 	//TERRAIN
 	IMAGE_TERRAIN_ID,
+	//TERRAIN
+	IMAGE_TERRAIN_FOREST_ID,
 	///////////////////////
 
 	

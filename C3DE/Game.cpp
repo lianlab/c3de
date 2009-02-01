@@ -73,6 +73,23 @@ Game::Game(Application * app)
 	
 	hx = 0;
 	hy = 0;
+
+#if 1
+	m_camX = 0.0f;
+	m_camY = 0.0f;
+	m_camZ = 0.0f;
+
+	m_camRadius = 1.0f;
+
+	m_camTargetX = m_camRadius;
+	m_camTargetY = 0.0f;
+	m_camTargetZ = 0.0f;
+
+	m_camYRotation = 0.0f;
+	m_camZRotation = 0.0f;
+
+	
+#endif
 	
 }
 
@@ -165,6 +182,15 @@ void Game::Render(Renderer *renderer)
 	float z =  m_cameraRadius * sinf(m_cameraRotation);
 	cam->SetPosition(x, m_cameraHeight, z);
 
+	//cam->SetPosition(m_camX, m_camY, m_camZ);
+	
+	
+
+	//m_camTargetX = m_camRadius * cosf(m_camYRotation);
+	//m_camTargetZ = m_camRadius * sinf(m_camYRotation);
+	
+	//cam->SetTarget(m_camTargetX, m_camTargetY, m_camTargetZ);
+
 	
 	renderer->DrawScene(m_testScene);
 	renderer->DrawSprite(m_button);
@@ -187,6 +213,7 @@ void Game::OnMouseUp(int button, int x, int y)
 void Game::OnMouseMove(int x, int y, int dx, int dy)
 {
 
+#if 1
 	m_cameraRotation += dx / 50.0f;
 	m_cameraRadius += dy / 50.0f;
 	if(fabsf(m_cameraRotation) >= 2.0f * D3DX_PI)
@@ -200,6 +227,15 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 
 	hx = x;
 	hy = y;
+#else
+	float step = 0.001f;
+	float degrees = step * dx;
+	float radians = degrees * D3DX_PI / 180.00f;
+
+	
+	m_camTargetX += sinf(radians) * m_camRadius;
+	m_camTargetZ += cosf(radians) * m_camRadius;
+#endif
 
 }
 
@@ -209,7 +245,7 @@ void Game::OnKeyDown(int key)
 
 	
 	float step = 0.1f;
-	Mesh * target = (Mesh*)m_dwarf;
+	Mesh * target = (Mesh*)m_auei;
 	//Mesh * target = (Mesh*)m_skinMesh;
 	if(key == 1)
 	{
@@ -246,7 +282,7 @@ void Game::OnKeyDown(int key)
 		target->Scale(target->GetXScale() - step, target->GetYScale(), target->GetZScale());
 	}
 #endif
-#if 0
+#if 1
 	else if(key == 200)
 	{		
 		target->SetPosition(target->GetX(), target->GetY(), target->GetZ() - step);		
@@ -302,31 +338,81 @@ void Game::OnKeyDown(int key)
 	}
 #endif
 
-#if 1
-	else if(key == 200)
-	{		
-		target->Rotate(target->GetRotationX(), target->GetRotationY(), target->GetRotationZ() - step);				
+#if 0
 		
+
+	else if(key == 200)
+		//UP
+	{		
+		//target->Rotate(target->GetRotationX(), target->GetRotationY(), target->GetRotationZ() - step);				
+		m_camX += 0.1f;
+		m_camTargetX += 0.1f;
 	}
 	else if(key == 208)
-	{		
-		target->Rotate(target->GetRotationX(), target->GetRotationY(), target->GetRotationZ() + step);		
+	{	//DOWN	
+		
+		//target->Rotate(target->GetRotationX(), target->GetRotationY(), target->GetRotationZ() + step);		
+		m_camX -= 0.1f;
+		m_camTargetX -= 0.1f;
 	}	
 	else if(key == 205)
 	{
-		target->Rotate(target->GetRotationX(), target->GetRotationY() - step, target->GetRotationZ());
+		//RIGHT
+		//target->Rotate(target->GetRotationX(), target->GetRotationY() - step, target->GetRotationZ());
+		m_camZ += 0.1f;
+		m_camTargetZ += 0.1f;
 	}
 	else if(key == 203)
 	{
-		target->Rotate(target->GetRotationX(), target->GetRotationY() + step, target->GetRotationZ());
+		//LEFT
+		//target->Rotate(target->GetRotationX(), target->GetRotationY() + step, target->GetRotationZ());
+		m_camZ -= 0.1f;
+		m_camTargetZ -= 0.1f;
 	}
 	else if(key == 17)
 	{
-		target->Rotate(target->GetRotationX() + step, target->GetRotationY(), target->GetRotationZ());
+		
+		float step = 0.001f;
+		//float degrees = step * 0.1f;
+		float degrees = 30.0f;
+		float radians = degrees * D3DX_PI / 180.00f;
+		/*
+
+		float tx = (cosf(radians) * m_camRadius);
+		float tz = (sinf(radians) * m_camRadius);
+		
+		m_camTargetX -= (1 -tx);
+		m_camTargetZ -= (tz - m_camTargetZ);
+		
+		//m_camYRotation += 0.1f;
+		*/
+		D3DXMATRIX m;
+		D3DXMatrixIdentity(&m);
+		float tx = m_camTargetX - m_camX;
+		float ty = m_camTargetY - m_camY;
+		float tz = m_camTargetZ - m_camZ;
+		
+		m_camTargetX = tx + cosf(radians)*m_camRadius;
+		m_camTargetZ = tz + sinf(radians)*m_camRadius;
+		//D3DXMatrixTranslation(&m, tx, ty, tz);
+
+		
+
+		//target->Rotate(target->GetRotationX() + step, target->GetRotationY(), target->GetRotationZ());
 	}
 	else if(key == 31)
 	{
-		target->Rotate(target->GetRotationX() - step, target->GetRotationY(), target->GetRotationZ());
+		
+		float step = 0.001f;
+		float degrees = step * (-0.1f);
+		float radians = degrees * D3DX_PI / 180.00f;
+
+		
+		m_camTargetX = sinf(radians) * m_camRadius;
+		m_camTargetZ = cosf(radians) * m_camRadius;
+		
+		//m_camYRotation += 0.1f;
+		//target->Rotate(target->GetRotationX() - step, target->GetRotationY(), target->GetRotationZ());
 	}
 #endif
 }
@@ -506,39 +592,13 @@ void Game::InitializeMeshes()
 
 	m_testScene = new DefaultScene1();	
 
-	m_testMesh = new Cube();
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
-										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
-	m_testMesh->AddMaterial(t_material);
+										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);	
+
 	
-	CreateMeshBuffers(m_testMesh);
-
-
-	//m_testScene->AddMesh(m_testMesh);
-
-#if 1
-	//Grid* auei = new Grid(50,50,1.0f, 1.0f);
-	Grid* auei = (Grid*)TerrainFactory::GetInstance()->GetTerrainMesh(50,50,ResourceManager::GetInstance()->GetTextureByID(IMAGE_TERRAIN_ID), 10.0f);
-	
-
-	auei->AddMaterial(t_material);
-	CreateMeshBuffers(auei);
-
-	auei->SetPosition(0.0f, -20.0f, 0.0f);
-	m_testScene->AddMesh(auei);
-
-
-	m_dwarf = new Dwarf();
-	m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_SWIMMER_ID), ((D3DRenderer*)m_renderer)->GetDevice());
-	
-	D3DImage *t_image = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SWIMMER_SKIN_ID));
-	m_dwarf->AddTexture((Image*)t_image);
-	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
-	
-	m_dwarf->SetPosition(15.0f, 5.0f, 0.0f);
-	//m_testScene->AddMesh(m_dwarf);
-	
-#endif
+	m_auei = (Grid*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
+	CreateMeshBuffers(m_auei);
+	m_testScene->AddMesh(m_auei);
 	m_testScene->Initialize();
 	
 }

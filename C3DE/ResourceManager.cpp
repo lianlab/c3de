@@ -63,6 +63,8 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_SWIMMER;
 	//TERRAIN
 	IDirect3DTexture9 * TEX_TERRAIN;
+	//TERRAIN
+	IDirect3DTexture9 * TEX_TERRAIN_FOREST;
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/alienship.bmp", &TEX_SHIP));
 	
@@ -94,9 +96,16 @@ void ResourceManager::InitializeResources()
 
 	//TERRAIN
 	//HR(D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &TEX_TERRAIN));
-	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/terrain.bmp", 100, 100, 1, D3DUSAGE_DYNAMIC, 
+	
+	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/terrain.bmp", 10, 10, 1, D3DUSAGE_DYNAMIC, 
 											  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
 											  NULL, NULL, NULL, &TEX_TERRAIN);
+
+	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/terrainForest.bmp", 128, 128, 1, D3DUSAGE_DYNAMIC, 
+											  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
+											  NULL, NULL, NULL, &TEX_TERRAIN_FOREST);
+											  
+	//HR(D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &TEX_TERRAIN));
 	///////////////////
 
 	
@@ -128,55 +137,12 @@ void ResourceManager::InitializeResources()
 	//Terrain
 	m_imageResources[IMAGE_TERRAIN_ID] = TEX_TERRAIN;
 
-
-#if 0
-	
-
-	// Open the file.
-	std::ifstream t_inFile;
-
-	//TERRAIN 1
-	// A height for each vertex
-	std::vector<unsigned char> t_in( 129 * 129 );	
-	t_inFile.open("Images/Terrain/terrain.raw", ios_base::binary);
-	// Read the RAW bytes.
-	t_inFile.read((char*)&t_in[0], (streamsize)t_in.size());
-	// Done with file.
-	t_inFile.close();
-	m_fileBytes[0] = &t_in;
+	//Terrain
+	m_imageResources[IMAGE_TERRAIN_FOREST_ID] = TEX_TERRAIN_FOREST;
 
 
-
-
-
-	float *m_pHeightMap = new float[128 * 128];
-	memset(m_pHeightMap, 0, sizeof(float)  * 128 * 128);
-	IDirect3DTexture9 *heightMapTexture =  NULL;
-
-	D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &heightMapTexture);
-	D3DLOCKED_RECT sRect;
-	heightMapTexture->LockRect(0, &sRect, NULL, NULL);
-	BYTE *bytes = (BYTE*)sRect.pBits;
-
-	for(int y=0; y<128;y++)
-	{
-		for (int x = 0; x <128; x++)
-		{
-			BYTE *b = bytes + y*sRect.Pitch + x;
-			m_pHeightMap[x+y*128] = ((*b /255.0f) * 5.0f);
-		}
-
-	}
-
-	heightMapTexture->UnlockRect(0);
-
-#endif
 }
 
-void poxa()
-{
-	
-}
 
 IDirect3DTexture9 * ResourceManager::GetTextureByID(int id)
 {

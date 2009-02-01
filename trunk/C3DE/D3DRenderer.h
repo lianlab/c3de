@@ -19,6 +19,7 @@
 
 #define HACK_FROM_SCRATCH 0
 
+
 #if 1
 	struct VertexPosHACK
 	{

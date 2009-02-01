@@ -98,6 +98,9 @@ public:
 	vector<VertexPos> * GetVertices(){return m_vertices;}
 	vector<int> * GetIndices(){return m_indices;}
 
+	void SetVertices(vector<VertexPos> * a_vertices);
+	void SetIndices(vector<int> * a_indices);
+
 	int GetVertexSize(){return sizeof(VertexPos);}
 
 	D3DXMATRIX GetTransformMatrix();

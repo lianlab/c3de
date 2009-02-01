@@ -3,9 +3,15 @@
 
 #include "CommonDefs.h"
 #include "Mesh.h"
+#include "TerrainGrid.h"
 #include <string>
 
-
+enum TERRAINS
+{
+	TERRAIN_NORMAL_ID, 
+	TERRAIN_FOREST_ID, 
+	TOTAL_TERRAINS
+};
 
 class TerrainFactory
 {
@@ -15,7 +21,8 @@ public:
 
 	static TerrainFactory * GetInstance();
 
-	Mesh * GetTerrainMesh(int m, int n, IDirect3DTexture9 *a_texture, float maxHeight);
+	//Mesh * GetTerrainMesh(int m, int n, IDirect3DTexture9 *a_texture, float maxHeight);
+	Mesh * GetTerrainMesh(int a_id);
 	int GetTotalRows(){return m_totalRows;}
 	int GetTotalCols(){return m_totalCols;}
 
@@ -36,5 +43,7 @@ private :
 
 	TerrainFactory();
 	static TerrainFactory * m_instance;
+
+	(TerrainGrid *)m_terrains[TOTAL_TERRAINS];
 };
 #endif

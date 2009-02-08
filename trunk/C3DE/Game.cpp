@@ -81,9 +81,13 @@ Game::Game(Application * app)
 
 	m_camRadius = 1.0f;
 
-	m_camTargetX = m_camRadius;
+	m_camTargetX = 0.0f;
 	m_camTargetY = 0.0f;
-	m_camTargetZ = 0.0f;
+	m_camTargetZ = 1.0f;
+
+	m_camUpX = 0.0f;
+	m_camUpY = 1.0f;
+	m_camUpZ = 0.0f;
 
 	m_camYRotation = 0.0f;
 	m_camZRotation = 0.0f;
@@ -180,17 +184,10 @@ void Game::Render(Renderer *renderer)
 	D3DCamera * cam = (D3DCamera *)renderer->GetCamera();
 	float x = m_cameraRadius * cosf(m_cameraRotation);
 	float z =  m_cameraRadius * sinf(m_cameraRotation);
-	cam->SetPosition(x, m_cameraHeight, z);
 
-	//cam->SetPosition(m_camX, m_camY, m_camZ);
-	
-	
-
-	//m_camTargetX = m_camRadius * cosf(m_camYRotation);
-	//m_camTargetZ = m_camRadius * sinf(m_camYRotation);
-	
-	//cam->SetTarget(m_camTargetX, m_camTargetY, m_camTargetZ);
-
+	cam->SetPosition(m_camX, m_camY, m_camZ);
+	cam->SetUp(m_camUpX, m_camUpY, m_camUpZ);	
+	cam->SetTarget(m_camTargetX, m_camTargetY, m_camTargetZ);
 	
 	renderer->DrawScene(m_testScene);
 	renderer->DrawSprite(m_button);
@@ -213,7 +210,7 @@ void Game::OnMouseUp(int button, int x, int y)
 void Game::OnMouseMove(int x, int y, int dx, int dy)
 {
 
-#if 1
+#if 0
 	m_cameraRotation += dx / 50.0f;
 	m_cameraRadius += dy / 50.0f;
 	if(fabsf(m_cameraRotation) >= 2.0f * D3DX_PI)
@@ -228,13 +225,43 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 	hx = x;
 	hy = y;
 #else
-	float step = 0.001f;
-	float degrees = step * dx;
-	float radians = degrees * D3DX_PI / 180.00f;
-
+		
 	
-	m_camTargetX += sinf(radians) * m_camRadius;
-	m_camTargetZ += cosf(radians) * m_camRadius;
+	D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
+	D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+	D3DXVECTOR3 look = target - pos;
+	D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
+	D3DXVECTOR3 right;
+	D3DXVec3Cross(&right, &up, &look);
+	D3DXVec3Normalize(&right, &right);		
+
+	float yAngle = dx / 150.0f;
+	// Rotate camera axes about the world's y-axis.
+	D3DXMATRIX R;
+	D3DXMatrixRotationY(&R, yAngle);
+	D3DXVec3TransformCoord(&right, &right, &R);
+	D3DXVec3TransformCoord(&up, &up, &R);
+	D3DXVec3TransformCoord(&look, &look, &R);
+
+	//m_camTargetX = pos.x + look.x;
+	//m_camTargetY = pos.y + look.y;
+	//m_camTargetZ = pos.z + look.z;	
+
+	float pitch  = dy / 150.0f;
+	// Rotate camera axes about the world's y-axis.
+	
+	D3DXMatrixRotationAxis(&R, &right, pitch);
+	D3DXVec3TransformCoord(&look, &look, &R);
+	D3DXVec3TransformCoord(&up, &up, &R);
+
+	m_camTargetX = pos.x + look.x;
+	m_camTargetY = pos.y + look.y;
+	m_camTargetZ = pos.z + look.z;
+
+	m_camUpX = up.x;
+	m_camUpY = up.y;
+	m_camUpZ = up.z;
+	
 #endif
 
 }
@@ -282,7 +309,7 @@ void Game::OnKeyDown(int key)
 		target->Scale(target->GetXScale() - step, target->GetYScale(), target->GetZScale());
 	}
 #endif
-#if 1
+#if 0
 	else if(key == 200)
 	{		
 		target->SetPosition(target->GetX(), target->GetY(), target->GetZ() - step);		
@@ -372,48 +399,198 @@ void Game::OnKeyDown(int key)
 	else if(key == 17)
 	{
 		
-		float step = 0.001f;
-		//float degrees = step * 0.1f;
-		float degrees = 30.0f;
-		float radians = degrees * D3DX_PI / 180.00f;
-		/*
+		float yAngle = 1 / 150.0f;
+		D3DXMATRIX matrix;
 
-		float tx = (cosf(radians) * m_camRadius);
-		float tz = (sinf(radians) * m_camRadius);
-		
-		m_camTargetX -= (1 -tx);
-		m_camTargetZ -= (tz - m_camTargetZ);
-		
-		//m_camYRotation += 0.1f;
-		*/
-		D3DXMATRIX m;
-		D3DXMatrixIdentity(&m);
-		float tx = m_camTargetX - m_camX;
-		float ty = m_camTargetY - m_camY;
-		float tz = m_camTargetZ - m_camZ;
-		
-		m_camTargetX = tx + cosf(radians)*m_camRadius;
-		m_camTargetZ = tz + sinf(radians)*m_camRadius;
-		//D3DXMatrixTranslation(&m, tx, ty, tz);
+		D3DXVECTOR3 t_target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 t_pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);	
 
-		
+		D3DXVECTOR3 L = t_target - t_pos;
+		D3DXVec3Normalize(&L, &L);
 
-		//target->Rotate(target->GetRotationX() + step, target->GetRotationY(), target->GetRotationZ());
+		D3DXMatrixRotationY(&matrix, yAngle);
+		D3DXVec3TransformCoord(&L, &L, &matrix);
+
+		m_camTargetX = m_camX + L.x;
+		m_camTargetY = m_camY + L.y;
+		m_camTargetZ = m_camZ + L.z;
 	}
 	else if(key == 31)
-	{
-		
-		float step = 0.001f;
-		float degrees = step * (-0.1f);
-		float radians = degrees * D3DX_PI / 180.00f;
+	{		
+		float yAngle = -1 / 150.0f;
+		D3DXMATRIX matrix;
 
+		D3DXVECTOR3 t_target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 t_pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);					
 		
-		m_camTargetX = sinf(radians) * m_camRadius;
-		m_camTargetZ = cosf(radians) * m_camRadius;
-		
-		//m_camYRotation += 0.1f;
-		//target->Rotate(target->GetRotationX() - step, target->GetRotationY(), target->GetRotationZ());
+
+		D3DXVECTOR3 L = t_target - t_pos;
+		D3DXVec3Normalize(&L, &L);				
+
+		D3DXMatrixRotationY(&matrix, yAngle);
+		D3DXVec3TransformCoord(&L, &L, &matrix);
+
+		m_camTargetX = m_camX + L.x;
+		m_camTargetY = m_camY + L.y;
+		m_camTargetZ = m_camZ + L.z;
 	}
+	
+	else if(key == 30)
+	{
+		float zAngle = -1 / 150.0f;
+		D3DXMATRIX matrix;
+
+		D3DXVECTOR3 t_target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 t_pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);					
+		D3DXVECTOR3 t_up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+
+		D3DXVECTOR3 L = t_target - t_pos;
+		D3DXVec3Normalize(&L, &L);
+
+		D3DXVECTOR3 R;
+		D3DXVec3Cross(&R, &t_up, &L);
+		D3DXVec3Normalize(&R, &R);
+
+		D3DXVECTOR3 U;
+		D3DXVec3Cross(&U, &L, &R);
+		D3DXVec3Normalize(&U, &U);	
+
+
+		D3DXMatrixRotationZ(&matrix, zAngle);
+		D3DXVec3TransformCoord(&R, &R, &matrix);
+		D3DXVec3TransformCoord(&U, &U, &matrix);
+		D3DXVec3TransformCoord(&L, &L, &matrix);
+
+		m_camTargetX = m_camX + L.x;
+		m_camTargetY = m_camY + L.y;
+		m_camTargetZ = m_camZ + L.z;
+	}
+	else if(key == 32)
+	{
+		float zAngle = 1 / 150.0f;
+		D3DXMATRIX matrix;
+
+		D3DXVECTOR3 t_target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 t_pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);					
+		D3DXVECTOR3 t_up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+
+		D3DXVECTOR3 L = t_target - t_pos;
+		D3DXVec3Normalize(&L, &L);
+
+		D3DXVECTOR3 R;
+		D3DXVec3Cross(&R, &t_up, &L);
+		D3DXVec3Normalize(&R, &R);
+
+		D3DXVECTOR3 U;
+		D3DXVec3Cross(&U, &L, &R);
+		D3DXVec3Normalize(&U, &U);	
+
+
+		D3DXMatrixRotationZ(&matrix, zAngle);
+		D3DXVec3TransformCoord(&R, &R, &matrix);
+		D3DXVec3TransformCoord(&U, &U, &matrix);
+		D3DXVec3TransformCoord(&L, &L, &matrix);
+
+		m_camTargetX = m_camX + L.x;
+		m_camTargetY = m_camY + L.y;
+		m_camTargetZ = m_camZ + L.z;
+	}
+	
+#endif
+
+#if 1
+	
+	else if(key == 200)
+	//UP
+	{		
+		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
+		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 look = target - pos;
+		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
+		D3DXVECTOR3 right;
+		D3DXVec3Cross(&right, &up, &look);
+		D3DXVec3Normalize(&right, &right);
+
+		m_dir = look*0.1f;
+
+		m_camX += m_dir.x;
+		m_camY += m_dir.y;
+		m_camZ += m_dir.z;
+
+		m_camTargetX += m_dir.x;
+		m_camTargetY += m_dir.y;
+		m_camTargetZ += m_dir.z;
+	}
+	else if(key == 208)
+	{	
+	//DOWN	
+		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
+		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 look = target - pos;
+		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
+		D3DXVECTOR3 right;
+		D3DXVec3Cross(&right, &up, &look);
+		D3DXVec3Normalize(&right, &right);
+
+		m_dir = -look*0.1f;
+
+		m_camX += m_dir.x;
+		m_camY += m_dir.y;
+		m_camZ += m_dir.z;
+
+		m_camTargetX += m_dir.x;
+		m_camTargetY += m_dir.y;
+		m_camTargetZ += m_dir.z;
+		
+	}	
+	else if(key == 205)
+	{
+		//RIGHT
+		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
+		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 look = target - pos;
+		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
+		D3DXVECTOR3 right;
+		D3DXVec3Cross(&right, &up, &look);
+		D3DXVec3Normalize(&right, &right);
+
+		m_dir = right*0.1f;
+
+		m_camX += m_dir.x;
+		m_camY += m_dir.y;
+		m_camZ += m_dir.z;
+
+		m_camTargetX += m_dir.x;
+		m_camTargetY += m_dir.y;
+		m_camTargetZ += m_dir.z;
+	}
+	else if(key == 203)
+	{
+		//LEFT
+		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
+		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 look = target - pos;
+		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
+		D3DXVECTOR3 right;
+		D3DXVec3Cross(&right, &up, &look);
+		D3DXVec3Normalize(&right, &right);
+
+		m_dir = -right*0.1f;
+
+		m_camX += m_dir.x;
+		m_camY += m_dir.y;
+		m_camZ += m_dir.z;
+
+		m_camTargetX += m_dir.x;
+		m_camTargetY += m_dir.y;
+		m_camTargetZ += m_dir.z;
+		
+	}
+	
 #endif
 }
 
@@ -486,119 +663,15 @@ void Game::CreateMeshBuffers(D3DMesh *mesh)
 }
 
 void Game::InitializeMeshes()
-{
-	
-#if 0
-	m_testMesh = new Cube();
-	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
-										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
-	//m_testMesh->SetMaterial(t_material);
-	CreateMeshBuffers(m_testMesh);
-	m_grid = new Grid(100, 100, 0.2f, 0.2f);
-
-	Material *t_material2 = new Material(	D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),D3DXCOLOR(0.0f, 0.0f, 1.0f,1.0f),
-										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
-	//m_grid->SetMaterial(t_material);
-	CreateMeshBuffers(m_grid);
-
-	m_testScene = new DefaultScene1();
-
-	
-
-	//m_mirror->SetPosition(2.0f, 2.0f, 2.0f);
-
-	
-	//m_plane = new Plane(100, 100, 0.2f, 0.2f);
-	m_plane = new Plane(20.0f, 20.0f);
-	//m_plane->SetMaterial(t_material);
-	CreateMeshBuffers(m_plane);
-
-	m_pivot = new Pivot();
-	//m_pivot->SetMaterial(t_material);
-	CreateMeshBuffers(m_pivot);
-	
-	
-	m_cube = new Cube();
-	Material *t_material3 = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
-										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
-	//m_cube->SetMaterial(t_material3);
-	m_cube->AddMaterial(t_material);
-	CreateMeshBuffers(m_cube);
-
-	//m_skinnedCube = new SkinnedCube();
-	//m_skinnedCube->SetMaterial(t_material3);
-	//CreateMeshBuffers(m_skinnedCube);
-
-	m_wall = new Wall();
-	//m_wall->SetMaterial(t_material3);
-	m_wall->SetPosition(0.0f, 0.0f, 0.0f);
-	CreateMeshBuffers(m_wall);
-
-	m_mirror = new PlanarMirror(m_wall);
-
-	//m_testMesh->SetPosition(0.0f, -5.0f, 0.0f);
-	
-	m_testMesh->SetPosition(0.0f, 3.0f, -6.0f);
-
-	//m_cube->SetPosition(0.0f, 3.0f, -3.0f);
-
-	//m_cube->CreateXMesh(((D3DRenderer *)m_renderer)->GetDevice());
-	
-	m_shadowSurface = new PlanarShadowSurface(m_plane); 
-	//m_cube->SetPosition(0.0f, 3.0f, -3.0f);
-	//m_testScene->AddMesh(m_wall);
-	//m_testScene->AddMirror((Mirror *)m_mirror);	
-	//m_testScene->AddMesh((Mesh*)m_cube);
-	//m_testScene->AddMesh((Mesh*)m_grid);	
-	//m_testScene->AddMesh((Mesh*)m_testMesh);
-	//m_testScene->AddMesh((Mesh*)m_plane);
-	
-	//m_testScene->AddMesh(m_plane);
-	//m_testScene->AddMesh(m_wall);
-	//m_testScene->AddMesh(m_pivot);
-	//m_testScene->AddShadowSurface(m_shadowSurface);
-	
-	//m_testScene->AddMesh(m_skinnedCube);
-
-	m_dwarf = new Dwarf();
-	//m_dwarf->SetMaterial(t_material3);
-	//m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_DWARF_ID), ((D3DRenderer*)m_renderer)->GetDevice());
-	m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_SWIMMER_ID), ((D3DRenderer*)m_renderer)->GetDevice());
-	//m_dwarf->LoadFromXFile("Meshes/auei.x", ((D3DRenderer*)m_renderer)->GetDevice());
-	//m_dwarf->LoadFromXFile("Meshes/picles.x", ((D3DRenderer*)m_renderer)->GetDevice());
-	//m_dwarf->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TINY_ANIM_ID), ((D3DRenderer*)m_renderer)->GetDevice());
-
-	
-	//m_dwarf->SetD3DTexture(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SWIMMER_SKIN_ID));
-	D3DImage *t_image = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SWIMMER_SKIN_ID));
-	m_dwarf->AddTexture((Image*)t_image);
-	m_dwarf->Scale(2.0f, 2.0f, 2.0f);
-	
-	m_testScene->AddMesh(m_dwarf);
-	//m_testScene->AddMesh(m_cube);
-
-	//m_skinMesh = new D3DSkinnedMesh("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
-	//m_skinMesh = new WomanMesh();
-	//
-	
-	//m_skinMesh->LoadFromXFile("Meshes/tiny.x",  ((D3DRenderer*)m_renderer)->GetDevice());
-	//m_skinMesh->LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_SWIMMER_ID),  ((D3DRenderer*)m_renderer)->GetDevice());
-	
-	//m_skinMesh->Scale(0.02f, 0.02f, 0.02f);
-	//m_testScene->AddMesh(m_skinMesh);
-	m_testScene->Initialize();
-
-#endif
-
+{	
 	m_testScene = new DefaultScene1();	
-
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
-										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);	
-
-	
+										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	m_auei = (Grid*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
 	CreateMeshBuffers(m_auei);
 	m_testScene->AddMesh(m_auei);
+
+
 	m_testScene->Initialize();
 	
 }

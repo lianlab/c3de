@@ -11,6 +11,7 @@ public:
 	
 	D3DXVECTOR3 GetPosition(){return m_pos;}
 	D3DXVECTOR3 GetTarget(){return m_target;}
+	D3DXVECTOR3 GetUp(){return m_up;}
 	D3DXMATRIX GetMatrix();
 private:
 	D3DXVECTOR3 m_pos;

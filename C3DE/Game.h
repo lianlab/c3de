@@ -116,10 +116,16 @@ private:
 	float m_camTargetY;
 	float m_camTargetZ;
 
+	float m_camUpX;
+	float m_camUpY;
+	float m_camUpZ;
+
 	float m_camRadius;
 
 	float m_camYRotation;
 	float m_camZRotation;
+
+	D3DXVECTOR3 m_dir;
 
 	Grid* m_auei;
 #endif	

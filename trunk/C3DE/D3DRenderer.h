@@ -17,7 +17,7 @@
 #include "FX.h"
 #include "ShadowFX.h"
 
-#define HACK_FROM_SCRATCH 1
+#define HACK_FROM_SCRATCH 0
 
 
 #if 1
@@ -112,6 +112,7 @@ private:
 	
 #endif
 
+	
 
 };
 

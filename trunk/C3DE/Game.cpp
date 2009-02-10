@@ -271,14 +271,17 @@ void Game::OnKeyDown(int key)
 {
 
 	
-	float step = 0.1f;
+	//float step = 0.1f;
 	Mesh * target = (Mesh*)m_auei;
 	//Mesh * target = (Mesh*)m_skinMesh;
+	float step = 1.0f;
+
 	if(key == 1)
 	{
 		m_application->Quit();
 	}
 
+	
 	
 
 #if 0
@@ -512,7 +515,7 @@ void Game::OnKeyDown(int key)
 		D3DXVec3Cross(&right, &up, &look);
 		D3DXVec3Normalize(&right, &right);
 
-		m_dir = look*0.1f;
+		m_dir = look*step;
 
 		m_camX += m_dir.x;
 		m_camY += m_dir.y;
@@ -534,7 +537,7 @@ void Game::OnKeyDown(int key)
 		D3DXVec3Cross(&right, &up, &look);
 		D3DXVec3Normalize(&right, &right);
 
-		m_dir = -look*0.1f;
+		m_dir = -look*step;
 
 		m_camX += m_dir.x;
 		m_camY += m_dir.y;
@@ -557,7 +560,7 @@ void Game::OnKeyDown(int key)
 		D3DXVec3Cross(&right, &up, &look);
 		D3DXVec3Normalize(&right, &right);
 
-		m_dir = right*0.1f;
+		m_dir = right*step;
 
 		m_camX += m_dir.x;
 		m_camY += m_dir.y;
@@ -579,7 +582,7 @@ void Game::OnKeyDown(int key)
 		D3DXVec3Cross(&right, &up, &look);
 		D3DXVec3Normalize(&right, &right);
 
-		m_dir = -right*0.1f;
+		m_dir = -right*step;
 
 		m_camX += m_dir.x;
 		m_camY += m_dir.y;
@@ -667,7 +670,7 @@ void Game::InitializeMeshes()
 	m_testScene = new DefaultScene1();	
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
-	m_auei = (Grid*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
+	m_auei = (Grid*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
 	CreateMeshBuffers(m_auei);
 	m_testScene->AddMesh(m_auei);
 

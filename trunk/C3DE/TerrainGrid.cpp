@@ -3,7 +3,7 @@
 #include "SkinnedMeshFX.h"
 #include "DebugMemory.h"
 
-TerrainGrid::TerrainGrid(int a_ID, int a_rows, int a_cols, IDirect3DTexture9 *a_texture, float maxHeight)
+TerrainGrid::TerrainGrid(int a_ID, int a_rows, int a_cols, IDirect3DTexture9 *a_texture, float maxHeight, float cellSize)
 {
 	m_id = a_ID;
 
@@ -35,7 +35,8 @@ TerrainGrid::TerrainGrid(int a_ID, int a_rows, int a_cols, IDirect3DTexture9 *a_
 
 	float t_ratio = (float)desc.Width / a_rows;
 		
-	int t_ratioInt = ROUND_FLOAT(t_ratio);	
+	//int t_ratioInt = ROUND_FLOAT(t_ratio);	
+	int t_ratioInt = (int)t_ratio;	
 
 	//buildVertex
 	for(int i = 0; i < (a_rows + 1); i++)
@@ -44,10 +45,11 @@ TerrainGrid::TerrainGrid(int a_ID, int a_rows, int a_cols, IDirect3DTexture9 *a_
 		{
 					
 			int t_index = (int)(i * sRect.Pitch + j)*t_ratioInt;
-			float tx = j*1.0f + xOffset;
-			float tz = -i*1.0f + zOffset;		
+			float tx = j*cellSize + xOffset;
+			float tz = -i*cellSize + zOffset;		
 			BYTE *b = bytes  + t_index;
 			float ty = (*b/255.0f)*maxHeight;
+			
 			float u = (float(i) / a_rows);
 			float v = (float(j) / a_cols);
 			m_vertices->push_back(VertexPos(tx, ty, tz, 0.0f, 1.0f, 0.0f, u , v));		

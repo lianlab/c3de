@@ -177,15 +177,7 @@ void D3DRenderer::CreateMeshBuffers(D3DMesh *mesh)
 
 void D3DRenderer::DrawScene(Scene *scene)
 {
-	/*
-	HR(m_device->Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0));
-	HR(m_device->BeginScene());
-	HR(m_device->EndScene());
-
-	// Present the backbuffer.
-	HR(m_device->Present(0, 0, 0, 0));
-	return;
-	*/
+	
 	Mesh *mesh = scene->GetMeshesVector()->at(0);	
 	D3DMesh *d3dmesh = (D3DMesh *)mesh;	
 	
@@ -235,16 +227,10 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 
 #else
+
 void D3DRenderer::DrawScene(Scene *scene)
 {		
-/*
-	Mesh *mesh = scene->GetMeshesVector()->at(0);	
-	D3DSkinnedMesh *d3dmesh = (D3DSkinnedMesh *)mesh;	
 
-	//drawXcene(d3dmesh);
-	d3dmesh->Update(0.002f);
-	//return;
-*/
 	int totalMeshes = scene->GetMeshesVector()->size();		
 	int totalMirrors = scene->GetMirrorsVector()->size();	
 	int totalShadowSurfaces = scene->GetShadowSurfacesVector()->size();
@@ -291,6 +277,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 }
 
+
 #endif
 
 
@@ -305,22 +292,18 @@ void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 	int t_totalMaterials = a_mesh->GetMaterials()->size();
 	ID3DXMesh *t_xMesh = a_mesh->GetXMesh();		
 	
+
 	for(int j = 0; j < t_totalMaterials; j++)
 	{				
-		//a_mesh->SetMaterial(a_mesh->GetMaterials()->at(j));
-		//a_mesh->SetMaterial(a_mesh->GetMaterials()->at(j));
+		
 		a_mesh->SetCurrentMaterial(a_mesh->GetMaterials()->at(j));
 
-		//int t_totalTextures = a_mesh->GetTextures()->size();
+		
 		int t_totalTextures = a_mesh->GetTextures()->size();
-		//IDirect3DTexture9 * t_tex = a_mesh->GetTextures()->at(j);
+		
 		if(j < t_totalTextures)
-		{
-			//a_mesh->SetD3DTexture(a_mesh->GetTextures()->at(j));	
-			//a_mesh->SetCurrentD3DTexture(a_mesh->GetTextures()->at(j));	
-			//D3DImage *t_image = (D3DImage*)a_mesh->GetTextures()->at(j);
-			Image *t_image = a_mesh->GetTextures()->at(j);
-			//a_mesh->SetCurrentD3DTexture(t_image->GetTexture());	
+		{			
+			Image *t_image = a_mesh->GetTextures()->at(j);			
 			a_mesh->SetCurrentTexture(t_image);
 		}
 		
@@ -768,6 +751,8 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 
 	CreateAxis();
 
+	
+
 #if HACK_FROM_SCRATCH
 	D3DVERTEXELEMENT9 VertexPosElements[] = 
 	{
@@ -777,7 +762,7 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	HR(m_device->CreateVertexDeclaration(VertexPosElements, &VertexPosHACK::Decl));
 
 	buildVertexBuffer();
-	buildIndexBuffer();
+	//buildIndexBuffer();
 
 	mCameraRadius    = 10.0f;
 	mCameraRotationY = 1.2 * D3DX_PI;
@@ -859,6 +844,7 @@ void D3DRenderer::Clear()
 #if HACK_FROM_SCRATCH
 	return;
 #endif
+	
 	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0xffffffff, 1.0f, 0L );
 }
 
@@ -867,6 +853,7 @@ bool D3DRenderer::BeginRender()
 #if HACK_FROM_SCRATCH
 		return true;
 #endif
+	
 	m_device->BeginScene();	
 	m_sprite->Begin(0);
 	return true;
@@ -877,6 +864,7 @@ void D3DRenderer::EndRender()
 #if HACK_FROM_SCRATCH
 	return;
 #endif
+	
 	m_sprite->End();
 	m_device->EndScene();
 	m_device->Present(0, 0, 0, 0);
@@ -970,3 +958,4 @@ void D3DRenderer::buildViewMtx()
 
 
 #endif
+

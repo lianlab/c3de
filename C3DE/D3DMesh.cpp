@@ -64,12 +64,23 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 		{0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0},
 		{0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
 		D3DDECL_END()
-	};		
+	};	
+
+	D3DVERTEXELEMENT9 elems[MAX_FVF_DECL_SIZE];
 
 	int totalVertices = m_vertices->size();
 	int totalIndices = m_indices->size();
-	D3DXCreateMesh(totalIndices/3, totalVertices, D3DXMESH_MANAGED, VertexPosElements, a_device, &m_xMesh);
+	DWORD indices = totalIndices/3;
+	DWORD vertices = totalVertices;
+	//HRESULT err = D3DXCreateMesh(totalIndices/3, totalVertices, D3DXMESH_SYSTEMMEM|D3DXMESH_32BIT, VertexPosElements, a_device, &m_xMesh);
+	//HRESULT err = D3DXCreateMesh(indices, vertices, D3DXMESH_SYSTEMMEM|D3DXMESH_32BIT, VertexPosElements, a_device, &m_xMesh);
+	HRESULT err = D3DXCreateMesh(indices, vertices, D3DXMESH_MANAGED, VertexPosElements, a_device, &m_xMesh);
+	//HRESULT err = D3DXCreateMesh(totalIndices/3, totalVertices, D3DXMESH_32BIT, VertexPosElements, a_device, &m_xMesh);
 
+	if(err == D3DERR_INVALIDCALL)
+	{
+		int picles = 39872;
+	}
 	VertexPos *v = NULL;
 	m_xMesh->LockVertexBuffer(0, (void**)&v);
 

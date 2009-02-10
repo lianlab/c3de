@@ -4,6 +4,7 @@
 #include "TerrainGrid.h"
 #include "TerrainNormal.h"
 #include "TerrainForest.h"
+#include "TerrainNoise.h"
 
 TerrainFactory * TerrainFactory::m_instance = NULL;
 
@@ -21,6 +22,7 @@ TerrainFactory::TerrainFactory()
 {
 	m_terrains[TERRAIN_NORMAL_ID] = new TerrainNormal();
 	m_terrains[TERRAIN_FOREST_ID] = new TerrainForest();
+	m_terrains[TERRAIN_NOISE_ID] = new TerrainNoise();
 }
 
 TerrainFactory::~TerrainFactory()

@@ -6,7 +6,7 @@
 class TerrainGrid : public D3DMesh
 {
 public:
-	TerrainGrid(int a_id, int a_rows, int a_cols, IDirect3DTexture9 *a_texture, float maxHeight);
+	TerrainGrid(int a_id, int a_rows, int a_cols, IDirect3DTexture9 *a_texture, float maxHeight, float cellSize = 1.0f);
 	~TerrainGrid();
 
 	int GetID(){return m_id;}

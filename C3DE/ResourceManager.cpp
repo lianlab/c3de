@@ -65,6 +65,8 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_TERRAIN;
 	//TERRAIN
 	IDirect3DTexture9 * TEX_TERRAIN_FOREST;
+	//TERRAIN
+	IDirect3DTexture9 * TEX_TERRAIN_NOISE;
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/alienship.bmp", &TEX_SHIP));
 	
@@ -104,6 +106,10 @@ void ResourceManager::InitializeResources()
 	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/terrainForest.bmp", 128, 128, 1, D3DUSAGE_DYNAMIC, 
 											  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
 											  NULL, NULL, NULL, &TEX_TERRAIN_FOREST);
+
+	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/noise.jpg", 512, 512, 1, D3DUSAGE_DYNAMIC, 
+											  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
+											  NULL, NULL, NULL, &TEX_TERRAIN_NOISE);
 											  
 	//HR(D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &TEX_TERRAIN));
 	///////////////////
@@ -139,6 +145,9 @@ void ResourceManager::InitializeResources()
 
 	//Terrain
 	m_imageResources[IMAGE_TERRAIN_FOREST_ID] = TEX_TERRAIN_FOREST;
+
+	//Terrain
+	m_imageResources[IMAGE_TERRAIN_NOISE_ID] = TEX_TERRAIN_NOISE;
 
 
 }

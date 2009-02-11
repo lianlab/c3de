@@ -274,7 +274,7 @@ void Game::OnKeyDown(int key)
 	//float step = 0.1f;
 	Mesh * target = (Mesh*)m_auei;
 	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 1.0f;
+	float step = 0.01f;
 
 	if(key == 1)
 	{
@@ -673,6 +673,11 @@ void Game::InitializeMeshes()
 	m_auei = (Grid*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
 	CreateMeshBuffers(m_auei);
 	m_testScene->AddMesh(m_auei);
+
+	m_cube = new Cube();
+	m_cube->AddMaterial(t_material);
+	CreateMeshBuffers(m_cube);
+	m_testScene->AddMesh(m_cube);
 
 
 	m_testScene->Initialize();

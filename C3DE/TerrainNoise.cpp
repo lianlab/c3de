@@ -3,8 +3,8 @@
 #include "D3DImage.h"
 #include "ResourceManager.h"
 
-TerrainNoise::TerrainNoise():
-TerrainGrid(TERRAIN_NOISE_ID, 50, 50,ResourceManager::GetInstance()->GetTextureByID(IMAGE_TERRAIN_NOISE_ID), 10.0f, 1.0f)
+TerrainNoise::TerrainNoise(IDirect3DDevice9 * a_device):
+Terrain(TERRAIN_NOISE_ID, 50, 50, a_device,ResourceManager::GetInstance()->GetTextureByID(IMAGE_TERRAIN_NOISE_ID), 10.0f, 1.0f)
 {
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);

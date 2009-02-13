@@ -6,6 +6,7 @@ Scene::Scene()
 
 	m_meshes = new vector<Mesh *>;
 	m_mirrors = new vector<Mirror *>;
+	m_terrains = new vector<Terrain *>;
 	m_shadowSurfaces = new vector<ShadowSurface *>;
 
 	m_ambientLight = new AmbientLight();
@@ -178,6 +179,27 @@ void Scene::FreeShadowSurfaces()
 		m_shadowSurfaces = NULL;
 	}
 }
+
+void Scene::RemoveTerrain(Terrain *a_terrain)
+{
+	int totalTerrains = m_terrains->size();
+
+	for(int i = 0; i < totalTerrains; i++)
+	{
+		Terrain *t_terrain = m_terrains->at(i);
+		if(a_terrain == t_terrain)
+		{
+			m_terrains->erase(m_terrains->begin() + i);
+			return;
+		}
+	}
+}
+
+void Scene::AddTerrain(Terrain *a_terrain)
+{
+	m_terrains->push_back(a_terrain);
+}
+
 
 void Scene::AddMesh(Mesh*mesh)
 {

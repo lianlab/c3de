@@ -1,10 +1,11 @@
 #include "TerrainFactory.h"
 #include "PerVertexLighting.h"
 #include "ShaderManager.h"
-#include "TerrainGrid.h"
+#include "Terrain.h"
 #include "TerrainNormal.h"
 #include "TerrainForest.h"
 #include "TerrainNoise.h"
+#include "D3DRenderer.h"
 
 TerrainFactory * TerrainFactory::m_instance = NULL;
 
@@ -20,9 +21,9 @@ TerrainFactory * TerrainFactory::GetInstance()
 
 TerrainFactory::TerrainFactory()
 {
-	m_terrains[TERRAIN_NORMAL_ID] = new TerrainNormal();
-	m_terrains[TERRAIN_FOREST_ID] = new TerrainForest();
-	m_terrains[TERRAIN_NOISE_ID] = new TerrainNoise();
+	m_terrains[TERRAIN_NORMAL_ID] = new TerrainNormal(D3DRenderer::GetDevice());
+	m_terrains[TERRAIN_FOREST_ID] = new TerrainForest(D3DRenderer::GetDevice());
+	m_terrains[TERRAIN_NOISE_ID] = new TerrainNoise(D3DRenderer::GetDevice());
 }
 
 TerrainFactory::~TerrainFactory()

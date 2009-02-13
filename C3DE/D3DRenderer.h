@@ -20,7 +20,7 @@
 #define HACK_FROM_SCRATCH 0
 
 
-#if 1
+#if 0
 	struct VertexPosHACK
 	{
 		VertexPosHACK():pos(0.0f, 0.0f, 0.0f){}
@@ -56,7 +56,9 @@ public:
 
 	void SetScreenMode(int newScreenMode);
 
-	IDirect3DDevice9* GetDevice(){ return m_device;}
+	//IDirect3DDevice9* GetDevice(){ return m_device;}
+
+	static IDirect3DDevice9* GetDevice(){return m_device;}
 
 	void DrawMirror(Mirror *mirror, Scene *scene);
 	void DrawShadowSurface(ShadowSurface *shadowSurface, Scene *scene);
@@ -70,7 +72,7 @@ public:
 	
 
 private:
-	IDirect3DDevice9* m_device; 
+	static IDirect3DDevice9* m_device; 
 	D3DPRESENT_PARAMETERS m_d3dpp;
 	HINSTANCE m_hInstance;
 	HWND m_mainWindow;

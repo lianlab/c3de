@@ -3,10 +3,10 @@
 
 #include "TerrainFactory.h"
 
-class TerrainNoise : public TerrainGrid
+class TerrainNoise : public Terrain
 {
 public:
-	TerrainNoise();
+	TerrainNoise(IDirect3DDevice9 * a_device);
 	~TerrainNoise();
 };
 #endif

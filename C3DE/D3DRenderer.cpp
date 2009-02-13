@@ -18,6 +18,8 @@
 IDirect3DVertexDeclaration9* VertexPosHACK::Decl = 0;
 #endif
 
+IDirect3DDevice9 * D3DRenderer::m_device = NULL;
+
 D3DRenderer::D3DRenderer()
 {	
 	m_font = NULL;	
@@ -486,7 +488,7 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 
 	D3DMesh *mesh = (D3DMesh *)a_mesh;
 	FXManager::GetInstance()->Begin(mesh->GetEffect());		
-	mesh->SetShaderHandlers();
+	//mesh->SetShaderHandlers();
 	FXManager::GetInstance()->PreRender();	
 	
 	HR(m_device->SetStreamSource(0, mesh->GetVertexBuffer(), 0, mesh->GetVertexSize()));	

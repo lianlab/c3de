@@ -3,10 +3,10 @@
 
 #include "TerrainFactory.h"
 
-class TerrainForest : public TerrainGrid
+class TerrainForest : public Terrain
 {
 public:
-	TerrainForest();
+	TerrainForest(IDirect3DDevice9 * a_device);
 	~TerrainForest();
 };
 #endif

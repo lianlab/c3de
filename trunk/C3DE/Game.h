@@ -127,7 +127,7 @@ private:
 
 	D3DXVECTOR3 m_dir;
 
-	Grid* m_auei;
+	Terrain* m_auei;
 #endif	
 };
 #endif

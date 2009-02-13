@@ -11,6 +11,7 @@
 #include "Mesh.h"
 #include "Mirror.h"
 #include "ShadowSurface.h"
+#include "Terrain.h"
 
 using namespace std;
 
@@ -22,6 +23,10 @@ public:
 	void SetUpFromXMLFile(char *xmlPath){};
 	void AddMesh(Mesh*mesh);
 	void RemoveMesh(Mesh*mesh);
+	void AddTerrain(Terrain *a_terrain);
+	void RemoveTerrain(Terrain *a_terrain);
+	vector<Terrain*> *GetTerrains(){return m_terrains;}
+
 	vector<Mesh *> *GetMeshesVector()
 	{
 		return m_meshes;
@@ -55,12 +60,15 @@ protected:
 	vector<Mesh *> *m_meshes;
 	vector<Mirror *> *m_mirrors;
 	vector<ShadowSurface *> *m_shadowSurfaces;
+	vector<Terrain*> * m_terrains;
 	
 	
 	AmbientLight * m_ambientLight;
 	DiffuseLight * m_diffuseLight;
 	SpecularLight * m_specularLight;
 	PointLight * m_pointLight;
+
+
 
 	void FreeShadowSurfaces();
 	void FreeMirrors();

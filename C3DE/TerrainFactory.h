@@ -3,7 +3,7 @@
 
 #include "CommonDefs.h"
 #include "Mesh.h"
-#include "TerrainGrid.h"
+#include "Terrain.h"
 #include <string>
 
 enum TERRAINS
@@ -45,6 +45,6 @@ private :
 	TerrainFactory();
 	static TerrainFactory * m_instance;
 
-	(TerrainGrid *)m_terrains[TOTAL_TERRAINS];
+	(Terrain *)m_terrains[TOTAL_TERRAINS];
 };
 #endif

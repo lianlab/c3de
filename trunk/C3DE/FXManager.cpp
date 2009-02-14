@@ -108,6 +108,13 @@ void FXManager::SetSceneEffects(Scene *scene)
 		t_meshes->push_back(scene->GetShadowSurfacesVector()->at(i)->GetMesh());
 	}
 
+	int t_totalTerrains = scene->GetTerrains()->size();
+
+	for(int i= 0; i < t_totalTerrains; i++)
+	{
+		t_meshes->push_back((Mesh*)scene->GetTerrains()->at(i));
+	}
+
 	totalMeshes = t_meshes->size();
 
 	for(int i = 0; i < totalMeshes; i++)

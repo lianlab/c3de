@@ -677,7 +677,8 @@ void Game::InitializeMeshes()
 	CreateMeshBuffers(m_auei);
 #endif
 
-	m_testScene->AddMesh(m_auei);
+	m_testScene->AddTerrain(m_auei);
+	//m_testScene->AddMesh(m_auei);
 
 	Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);		
 	//m_testScene->AddMesh(porra);

@@ -253,7 +253,17 @@ void D3DRenderer::DrawScene(Scene *scene)
 	for(int i = 0; i < totalMirrors; i++)
 	{
 		DrawMirror(scene->GetMirrorsVector()->at(i), scene);		
-	}		
+	}	
+
+	int t_totalTerrains = scene->GetTerrains()->size();
+
+	for(int i = 0; i < t_totalTerrains; i++)
+	{		
+		Terrain *t_terrain = scene->GetTerrains()->at(i);		
+		
+		DrawXMesh((D3DMesh* )t_terrain);		
+		
+	}	
 
 	for(int i = 0; i < totalMeshes; i++)
 	{		

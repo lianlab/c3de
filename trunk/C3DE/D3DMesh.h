@@ -124,6 +124,8 @@ public:
 
 
 	void CreateXMesh(IDirect3DDevice9 *a_device);
+
+	
 protected:
 
 	//IDirect3DTexture9 *m_currentTex;

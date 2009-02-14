@@ -17,10 +17,11 @@
 #include "FX.h"
 #include "ShadowFX.h"
 
-#define HACK_FROM_SCRATCH 0
+//#define HACK_FROM_SCRATCH 1
+#include "CommonDefs.h"
 
 
-#if 0
+#if HACK_FROM_SCRATCH
 	struct VertexPosHACK
 	{
 		VertexPosHACK():pos(0.0f, 0.0f, 0.0f){}

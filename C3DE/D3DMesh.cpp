@@ -106,6 +106,10 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 
 }
 
+
+
+
+
 void D3DMesh::FreeTextures()
 {
 

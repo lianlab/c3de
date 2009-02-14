@@ -17,4 +17,6 @@
 
 #define ROUND_FLOAT(x) {(int)(x + 0.5f)}
 
+#define HACK_FROM_SCRATCH 0
+
 #endif

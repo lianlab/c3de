@@ -3,6 +3,7 @@
 #include "D3DCamera.h"
 #include "D3DRenderer.h"
 #include "TerrainFactory.h"
+#include "TerrainForest.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -670,18 +671,19 @@ void Game::InitializeMeshes()
 	m_testScene = new DefaultScene1();	
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
-	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
+	
+	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);		
+#if HACK_FROM_SCRATCH
 	CreateMeshBuffers(m_auei);
+#endif
+
 	m_testScene->AddMesh(m_auei);
 
-	Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);	
-	CreateMeshBuffers(porra);
-	m_testScene->AddMesh(porra);
+	Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);		
+	//m_testScene->AddMesh(porra);
 
-
-	Terrain *carai = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
-	CreateMeshBuffers(carai);
-	m_testScene->AddMesh(carai);
+	Terrain *carai = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);		
+	//m_testScene->AddMesh(carai);
 
 	porra->SetPosition(0.0f, 15.0f, 0.0f);
 
@@ -691,7 +693,7 @@ void Game::InitializeMeshes()
 	m_cube = new Cube();
 	m_cube->AddMaterial(t_material);
 	CreateMeshBuffers(m_cube);
-	m_testScene->AddMesh(m_cube);
+	//m_testScene->AddMesh(m_cube);
 #endif
 
 	m_testScene->Initialize();

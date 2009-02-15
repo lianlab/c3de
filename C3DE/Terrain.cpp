@@ -16,8 +16,8 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 	
 	int numTris = a_rows*a_cols*2;
 
-	float width = (float)a_cols*1.0f;
-	float depth = (float)a_rows*1.0f;
+	float width = (float)a_cols*cellSize;
+	float depth = (float)a_rows*cellSize;
 
 	float xOffset = -width * 0.5f;
 	float zOffset = depth * 0.5f;

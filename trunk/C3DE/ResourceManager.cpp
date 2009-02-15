@@ -149,9 +149,37 @@ void ResourceManager::InitializeResources()
 	//Terrain
 	m_imageResources[IMAGE_TERRAIN_NOISE_ID] = TEX_TERRAIN_NOISE;
 
-
+	InitializeVideos();
 }
 
+void ResourceManager::InitializeVideos()
+{
+	AVIFileInit();
+	IAVIFile *t_aviFile = NULL;
+
+	if(AVIFileOpen(&t_aviFile, "Videos/intro.avi", OF_READ, NULL) != 0)
+	{
+		int error = 543543;
+	}
+
+	PAVISTREAM *t_stream = new PAVISTREAM();
+	PGETFRAME *t_getFrame = new PGETFRAME();
+	AVIFileGetStream(t_aviFile, t_stream, streamtypeVIDEO, 0);
+	*t_getFrame = AVIStreamGetFrameOpen(*t_stream, NULL);
+	long t_time = AVIStreamEndTime(*t_stream);
+	VideoStructure *t_structure = new VideoStructure();
+	t_structure->m_frames = t_getFrame;
+	t_structure->m_stream = t_stream;
+	t_structure->m_totalTime = t_time;
+
+	m_videos[VIDEO_FIRST_ID] = t_structure;
+	//AVIFileExit();
+}
+
+VideoStructure * ResourceManager::GetVideoByID(int a_ID)
+{
+	return m_videos[a_ID];
+}
 
 IDirect3DTexture9 * ResourceManager::GetTextureByID(int id)
 {

@@ -3,6 +3,14 @@
 
 #include "D3DMesh.h"
 
+struct SubGrid
+{
+	const static int NUM_ROWS  = 33;
+	const static int NUM_COLS  = 33;
+	const static int NUM_TRIS  = (NUM_ROWS-1)*(NUM_COLS-1)*2;
+	const static int NUM_VERTS = NUM_ROWS*NUM_COLS;
+};
+
 class Terrain : public D3DMesh
 {
 	public:
@@ -15,13 +23,21 @@ class Terrain : public D3DMesh
 
 	void SetShaderHandlers();
 
-	void porra(IDirect3DDevice9* a_device);
+	vector<Mesh *> *GetSubMeshes(){return m_subMeshes;}
+
+	void fleps();
+
+	IDirect3DTexture9 *m_eps;
 
 private:
 	void CreateMeshBuffers(IDirect3DDevice9 *a_device);
 
 	void GenerateXMesh(IDirect3DDevice9* a_device);
 	//D3DXHANDLE   m_hTex;
+
+	vector<Mesh *> *m_subMeshes;
+
+	int m_fleps;
 
 protected:
 	void InitializeEffectHandles();

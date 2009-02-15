@@ -266,7 +266,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 	}	
 
 	for(int i = 0; i < totalMeshes; i++)
-	{		
+	{				
 		Mesh *mesh = scene->GetMeshesVector()->at(i);	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
 		

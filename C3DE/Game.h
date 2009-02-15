@@ -27,6 +27,9 @@
 #include "SkinnedCube.h"
 #include "D3DSkinnedMesh.h"
 #include "WomanMesh.h"
+#include "VideoMesh.h"
+#include "Billboard.h"
+#include "CubeMovie.h"
 
 
 
@@ -128,6 +131,10 @@ private:
 	D3DXVECTOR3 m_dir;
 
 	Terrain* m_auei;
+
+	Billboard *m_videoMesh;
+
+	CubeMovie *m_cubeMovie;
 #endif	
 };
 #endif

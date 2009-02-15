@@ -7,6 +7,7 @@
 #include "CommonDefs.h"
 #include <vector>
 #include <d3dx9.h>
+#include <vfw.h>
 
 enum TexturesIDs
 { 
@@ -65,6 +66,19 @@ enum MeshesIDs
 	TOTAL_MESHES
 };
 
+struct VideoStructure
+{
+	PGETFRAME *m_frames;
+	PAVISTREAM *m_stream;
+	long m_totalTime;
+
+};
+enum Videos
+{
+	VIDEO_FIRST_ID,
+	TOTAL_VIDEOS
+};
+
 
 
 class ResourceManager
@@ -87,7 +101,7 @@ public:
 	std::string GetMeshFilenameByID(int a_ID);
 	IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename);
 
-	
+	VideoStructure * GetVideoByID(int a_ID);
 
 private:
 	ResourceManager();
@@ -102,6 +116,8 @@ private:
 
 	std::string m_meshesFilenames[TOTAL_MESHES];
 	
-	
+	VideoStructure * m_videos[TOTAL_VIDEOS];
+
+	void InitializeVideos();
 };
 #endif

@@ -2,10 +2,14 @@
 #include "PerVertexLighting.h"
 #include "SkinnedMeshFX.h"
 //#include "DebugMemory.h"
+#include "ResourceManager.h"
 #include "CommonDefs.h"
 
 Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDirect3DTexture9 *a_texture, float maxHeight, float cellSize)
 {
+	m_fleps = 0;
+	m_eps = NULL;
+	m_subMeshes = new vector<Mesh *>;
 	m_id = a_ID;
 
 	a_rows--;
@@ -138,9 +142,55 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 
 	m_xMesh->UnlockIndexBuffer();
 
+	
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#if 0
+
+
+	//===============================================================
+	// Now break the grid up into subgrid meshes.
+	m_xMesh->LockVertexBuffer(0, (void**)&v2);
+
+	// Find out the number of subgrids we'll have.  For example, if
+	// m = 513, n = 257, SUBGRID_VERT_ROWS = SUBGRID_VERT_COLS = 33,
+	// then subGridRows = 512/32 = 16 and sibGridCols = 256/32 = 8.
+	int subGridRows = (a_rows) / (SubGrid::NUM_ROWS-1);
+	int subGridCols = (a_cols) / (SubGrid::NUM_COLS-1);
+
+	for(int r = 0; r < subGridRows; ++r)
+	{
+		for(int c = 0; c < subGridCols; ++c)
+		{
+			// Rectangle that indicates (via matrix indices ij) the
+			// portion of global grid vertices to use for this subgrid.
+			RECT R = 
+			{
+					c * (SubGrid::NUM_COLS-1),
+					r * (SubGrid::NUM_ROWS-1),
+				(c+1) * (SubGrid::NUM_COLS-1),
+				(r+1) * (SubGrid::NUM_ROWS-1)
+			};
+
+			//buildSubGridMesh(R, v); 
+		}
+	}
+#endif
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
 	PerVertexLighting *t_effect = (PerVertexLighting *) m_effect;
 	t_effect->SetAlpha(1.0f);
@@ -148,7 +198,30 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 }
 
 
+void Terrain::fleps()
+{	
 
+	IDirect3DTexture9 * t_texture;
+	if(m_fleps >300)
+	{
+		if(m_eps == ResourceManager::GetInstance()->GetTextureByID(IMAGE_CRATE_ID))
+		{
+			t_texture = ResourceManager::GetInstance()->GetTextureByID(IMAGE_TIGER_SKIN_ID);
+			
+		}
+		else
+		{
+			t_texture = ResourceManager::GetInstance()->GetTextureByID(IMAGE_CRATE_ID);
+			
+		}
+
+		m_eps = t_texture;
+
+		m_fleps = 0;
+	}
+
+	m_fleps++;
+}
 
 Terrain::~Terrain()
 {
@@ -166,7 +239,15 @@ void Terrain::SetShaderHandlers()
 									
 	
 	D3DImage *t_d3dText = (D3DImage *) m_currentTexture;
-	t_effect->SetObjectTexture(t_d3dText->GetTexture());
+	//t_effect->SetObjectTexture(t_d3dText->GetTexture());
+	if(m_eps)
+	{
+		t_effect->SetObjectTexture(m_eps);
+	}
+	else
+	{
+		t_effect->SetObjectTexture(t_d3dText->GetTexture());
+	}
 
 	t_effect->SetTransformMatrix(GetTransformMatrix());
 	t_effect->SetAlpha(m_alpha);

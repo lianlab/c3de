@@ -169,6 +169,8 @@ void Game::Update(int deltaTime)
 
 	m_testScene->Update(deltaTime);
 
+	//m_videoMesh->Update(deltaTime);
+
 	//m_testMesh->Update(1);
 
 	//m_grid->Update(10);
@@ -275,7 +277,7 @@ void Game::OnKeyDown(int key)
 	//float step = 0.1f;
 	Mesh * target = (Mesh*)m_auei;
 	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 1.01f;
+	float step = 0.01f;
 
 	if(key == 1)
 	{
@@ -677,25 +679,40 @@ void Game::InitializeMeshes()
 	CreateMeshBuffers(m_auei);
 #endif
 
-	m_testScene->AddTerrain(m_auei);
+	//m_testScene->AddTerrain(m_auei);
 	//m_testScene->AddMesh(m_auei);
 
-	Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);		
+	//Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);		
 	//m_testScene->AddMesh(porra);
+	//m_testScene->AddTerrain(porra);
 
-	Terrain *carai = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);		
+	//Terrain *carai = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);		
 	//m_testScene->AddMesh(carai);
 
-	porra->SetPosition(0.0f, 15.0f, 0.0f);
+	//m_testScene->AddTerrain(carai);
 
-	carai->SetPosition(0.0f, 30.0f, 0.0f);
+	//porra->SetPosition(0.0f, 15.0f, 0.0f);
+
+	//carai->SetPosition(0.0f, 30.0f, 0.0f);
 
 #if 1
 	m_cube = new Cube();
 	m_cube->AddMaterial(t_material);
 	CreateMeshBuffers(m_cube);
-	//m_testScene->AddMesh(m_cube);
+	m_cube->SetPosition(0.0f, 0.0f, 5.0f);
+	m_testScene->AddMesh(m_cube);
 #endif
+
+	m_videoMesh = new Billboard();
+	//m_videoMesh->AddMaterial(t_material);
+	m_videoMesh->SetPosition(0.0f, 0.0f, 5.0f);
+	//CreateMeshBuffers((D3DMesh*)m_videoMesh);
+	//m_testScene->AddMesh(m_videoMesh);
+
+	m_cubeMovie = new CubeMovie();
+	m_cubeMovie->SetPosition(0.0f, 0.0f, 2.0f);
+	CreateMeshBuffers((D3DMesh*)m_cubeMovie);
+	m_testScene->AddMesh(m_cubeMovie);
 
 	m_testScene->Initialize();
 	

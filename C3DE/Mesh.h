@@ -10,6 +10,8 @@ class Renderer;
 
 using namespace std;
 
+const float EPSILON  = 0.001f;
+
 class Mesh
 {
 public:

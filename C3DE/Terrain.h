@@ -23,24 +23,26 @@ class Terrain : public D3DMesh
 
 	void SetShaderHandlers();
 
-	vector<Mesh *> *GetSubMeshes(){return m_subMeshes;}
+	vector<D3DMesh* > *GetSubMeshes(){return m_subMeshes;}
 
-	void fleps();
-
-	IDirect3DTexture9 *m_eps;
+	
 
 private:
-	void CreateMeshBuffers(IDirect3DDevice9 *a_device);
 
-	void GenerateXMesh(IDirect3DDevice9* a_device);
+	void BuildSubGridMesh(RECT& R, VertexPos* gridVerts);
+	
 	//D3DXHANDLE   m_hTex;
 
-	vector<Mesh *> *m_subMeshes;
+	vector<D3DMesh*> *m_subMeshes;
 
 	int m_fleps;
 
 protected:
+	IDirect3DDevice9* m_device;
 	void InitializeEffectHandles();
 	int m_id;
+
+	int m_numCols;
+	int m_numRows;
 };
 #endif

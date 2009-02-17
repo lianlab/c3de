@@ -73,6 +73,7 @@ public:
 	
 
 private:
+	void DrawTerrainSubMesh(D3DMesh * a_parentMesh, D3DMesh *t_subMesh);
 	static IDirect3DDevice9* m_device; 
 	D3DPRESENT_PARAMETERS m_d3dpp;
 	HINSTANCE m_hInstance;

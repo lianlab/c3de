@@ -277,7 +277,7 @@ void Game::OnKeyDown(int key)
 	//float step = 0.1f;
 	Mesh * target = (Mesh*)m_auei;
 	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 0.01f;
+	float step = 5.01f;
 
 	if(key == 1)
 	{
@@ -674,12 +674,17 @@ void Game::InitializeMeshes()
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	
-	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);		
+	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
+
+	//Terrain *tt = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
+	//m_testScene->AddTerrain(tt);
+
+	//tt->SetPosition(0.0f, 500.0f, 0.0f);
 #if HACK_FROM_SCRATCH
 	CreateMeshBuffers(m_auei);
 #endif
 
-	//m_testScene->AddTerrain(m_auei);
+	m_testScene->AddTerrain(m_auei);
 	//m_testScene->AddMesh(m_auei);
 
 	//Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);		
@@ -700,7 +705,7 @@ void Game::InitializeMeshes()
 	m_cube->AddMaterial(t_material);
 	CreateMeshBuffers(m_cube);
 	m_cube->SetPosition(0.0f, 0.0f, 5.0f);
-	m_testScene->AddMesh(m_cube);
+	//m_testScene->AddMesh(m_cube);
 #endif
 
 	m_videoMesh = new Billboard();
@@ -711,8 +716,8 @@ void Game::InitializeMeshes()
 
 	m_cubeMovie = new CubeMovie();
 	m_cubeMovie->SetPosition(0.0f, 0.0f, 2.0f);
-	CreateMeshBuffers((D3DMesh*)m_cubeMovie);
-	m_testScene->AddMesh(m_cubeMovie);
+	//CreateMeshBuffers((D3DMesh*)m_cubeMovie);
+	//m_testScene->AddMesh(m_cubeMovie);
 
 	m_testScene->Initialize();
 	

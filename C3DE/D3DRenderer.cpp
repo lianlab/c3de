@@ -259,9 +259,28 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 	for(int i = 0; i < t_totalTerrains; i++)
 	{		
-		Terrain *t_terrain = scene->GetTerrains()->at(i);		
-		
-		DrawXMesh((D3DMesh* )t_terrain);		
+		Terrain *t_terrain = scene->GetTerrains()->at(i);	
+
+		int t_totalSubMeshes = t_terrain->GetSubMeshes()->size();
+
+		for(int j = 0; j < t_totalSubMeshes; j++)
+		{
+
+			
+			FXManager::GetInstance()->Begin(t_terrain->GetEffect());			
+			ID3DXMesh *t_mesh = t_terrain->GetSubMeshes()->at(j)->GetXMesh();																
+			t_terrain->SetCurrentMaterial(t_terrain->GetMaterials()->at(0));			
+			
+			Image *t_image = t_terrain->GetTextures()->at(0);			
+			t_terrain->SetCurrentTexture(t_image);			
+			
+			t_terrain->SetShaderHandlers();
+			FXManager::GetInstance()->PreRender();	
+			HR(t_mesh->DrawSubset(0));
+			FXManager::GetInstance()->PosRender();									
+			
+			FXManager::GetInstance()->End();
+		}			
 		
 	}	
 
@@ -322,6 +341,46 @@ void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 		a_mesh->SetShaderHandlers();
 		FXManager::GetInstance()->PreRender();	
 		HR(t_xMesh->DrawSubset(j));
+		FXManager::GetInstance()->PosRender();
+	}						
+
+	
+	FXManager::GetInstance()->End();
+
+}
+
+
+void D3DRenderer::DrawTerrainSubMesh(D3DMesh * a_mesh, D3DMesh *a_subMesh)
+{	
+
+	//PerVertexLighting * t_auei = static_cast<PerVertexLighting *>(a_mesh->GetEffect());			
+	FXManager::GetInstance()->Begin(a_mesh->GetEffect());				
+
+	//int t_totalMaterials = a_mesh->GetMaterials()->size();
+	int t_totalMaterials = a_mesh->GetMaterials()->size();
+
+	ID3DXMesh *t_mesh = a_subMesh->GetXMesh();
+
+		
+	
+
+	for(int j = 0; j < t_totalMaterials; j++)
+	{				
+		
+		a_mesh->SetCurrentMaterial(a_mesh->GetMaterials()->at(j));
+
+		
+		int t_totalTextures = a_mesh->GetTextures()->size();
+		
+		if(j < t_totalTextures)
+		{			
+			Image *t_image = a_mesh->GetTextures()->at(j);			
+			a_mesh->SetCurrentTexture(t_image);
+		}
+		
+		a_mesh->SetShaderHandlers();
+		FXManager::GetInstance()->PreRender();	
+		HR(t_mesh->DrawSubset(j));
 		FXManager::GetInstance()->PosRender();
 	}						
 

@@ -266,7 +266,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 		for(int j = 0; j < t_totalSubMeshes; j++)
 		{
 
-			
+			//if(j%3)continue;
 			FXManager::GetInstance()->Begin(t_terrain->GetEffect());			
 			ID3DXMesh *t_mesh = t_terrain->GetSubMeshes()->at(j)->GetXMesh();																
 			t_terrain->SetCurrentMaterial(t_terrain->GetMaterials()->at(0));			

@@ -11,7 +11,7 @@
 #include <vector>
 
 
-const float EPSILON  = 0.001f;
+
 
 #if 0
 struct VertexPNT

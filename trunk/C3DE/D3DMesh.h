@@ -91,6 +91,8 @@ public:
 	//void SetTexture(Image *tex){m_texture = tex;}
 
 	//void SetCurrentD3DTexture(IDirect3DTexture9 *a_tex);
+
+
 	
 	//void SetD3DTexture(IDirect3DTexture9 *a_tex);
 	//Image * GetTexture(){return m_texture;}
@@ -122,6 +124,7 @@ public:
 		return m_xMesh;
 	}
 
+	void SetXMesh(ID3DXMesh *a_mesh);
 
 	void CreateXMesh(IDirect3DDevice9 *a_device);
 

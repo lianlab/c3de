@@ -19,4 +19,6 @@
 
 #define HACK_FROM_SCRATCH 0
 
+//#define EPSILON 0.001f
+
 #endif

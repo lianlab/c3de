@@ -36,6 +36,17 @@ D3DMesh::D3DMesh():Mesh()
 	//m_currentTex = NULL;
 }
 
+void D3DMesh::SetXMesh(ID3DXMesh *a_mesh)
+{
+	if(m_xMesh)
+	{
+		delete m_xMesh;
+		m_xMesh = NULL;
+	}
+
+	m_xMesh = a_mesh;
+}
+
 
 void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 {

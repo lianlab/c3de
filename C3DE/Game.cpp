@@ -674,7 +674,7 @@ void Game::InitializeMeshes()
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	
-	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
+	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);	
 
 	//Terrain *tt = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
 	//m_testScene->AddTerrain(tt);
@@ -705,7 +705,7 @@ void Game::InitializeMeshes()
 	m_cube->AddMaterial(t_material);
 	CreateMeshBuffers(m_cube);
 	m_cube->SetPosition(0.0f, 0.0f, 5.0f);
-	//m_testScene->AddMesh(m_cube);
+	m_testScene->AddMesh(m_cube);
 #endif
 
 	m_videoMesh = new Billboard();

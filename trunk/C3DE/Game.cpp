@@ -277,7 +277,7 @@ void Game::OnKeyDown(int key)
 	//float step = 0.1f;
 	Mesh * target = (Mesh*)m_auei;
 	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 5.01f;
+	float step = 1.01f;
 
 	if(key == 1)
 	{
@@ -674,7 +674,11 @@ void Game::InitializeMeshes()
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	
-	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);	
+	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
+
+	Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
+
+	Terrain *carai = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);
 
 	//Terrain *tt = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
 	//m_testScene->AddTerrain(tt);
@@ -685,6 +689,12 @@ void Game::InitializeMeshes()
 #endif
 
 	m_testScene->AddTerrain(m_auei);
+
+	porra->SetPosition(0.0f, -100.0f, 0.0f);
+
+	carai->SetPosition(0.0f, -200.0f, 0.0f);
+	m_testScene->AddTerrain(porra);
+	m_testScene->AddTerrain(carai);
 	//m_testScene->AddMesh(m_auei);
 
 	//Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);		

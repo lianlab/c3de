@@ -38,7 +38,7 @@ Game::Game(Application * app)
 	m_renderer = app->GetRenderer();
 
 	//CreateTestMesh();
-	InitializeMeshes();
+	
 
 	vector<RECT> *frames = new vector<RECT>;
 	RECT r;
@@ -75,7 +75,9 @@ Game::Game(Application * app)
 	hx = 0;
 	hy = 0;
 
-#if 1
+	
+
+#if 0
 	m_camX = 0.0f;
 	m_camY = 0.0f;
 	m_camZ = 0.0f;
@@ -95,6 +97,37 @@ Game::Game(Application * app)
 
 	
 #endif
+
+#if 1
+	
+
+	m_camRadius = 1.0f;
+
+	m_cubeX = 0.0f;
+	m_cubeY = 50.0f;
+	m_cubeZ = 0.0f;
+
+	m_camX = m_cubeX;
+	m_camY = m_cubeY + 2.0f;
+	m_camZ = m_cubeZ - 5.0f;
+
+	m_camTargetX = m_cubeX;
+	m_camTargetY = m_cubeY + 2.0f;
+	m_camTargetZ = m_cubeZ - 4.0f;
+
+	m_camUpX = 0.0f;
+	m_camUpY = 1.0f;
+	m_camUpZ = 0.0f;
+
+	m_camYRotation = 0.0f;
+	m_camZRotation = 0.0f;
+
+	
+#endif
+
+	InitializeMeshes();
+
+	
 	
 }
 
@@ -277,7 +310,7 @@ void Game::OnKeyDown(int key)
 	//float step = 0.1f;
 	Mesh * target = (Mesh*)m_auei;
 	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 1.01f;
+	float step = 5.01f;
 
 	if(key == 1)
 	{
@@ -504,7 +537,7 @@ void Game::OnKeyDown(int key)
 	
 #endif
 
-#if 1
+#if 0
 	
 	else if(key == 200)
 	//UP
@@ -596,6 +629,42 @@ void Game::OnKeyDown(int key)
 		m_camTargetZ += m_dir.z;
 		
 	}
+#endif
+#if 1
+	else if(key == 200)
+	//UP
+	{		
+		m_cubeZ += step;
+	}
+	else if(key == 208)
+	{	
+	//DOWN	
+		
+		m_cubeZ -= step;
+	}	
+	else if(key == 205)
+	{
+		//RIGHT
+		m_cubeX += step;
+	}
+	else if(key == 203)
+	{
+		//LEFT
+		
+		m_cubeX -= step;
+	}
+
+	m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
+
+	
+	m_camX = m_cubeX;
+	m_camY = m_cubeY + 2.0f;
+	m_camZ = m_cubeZ - 5.0f;
+
+	m_camTargetX = m_cubeX;
+	m_camTargetY = m_cubeY + 2.0f;
+	m_camTargetZ = m_cubeZ - 4.0f;
+
 	
 #endif
 }
@@ -714,13 +783,13 @@ void Game::InitializeMeshes()
 	m_cube = new Cube();
 	m_cube->AddMaterial(t_material);
 	CreateMeshBuffers(m_cube);
-	m_cube->SetPosition(0.0f, 0.0f, 5.0f);
+	m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
 	m_testScene->AddMesh(m_cube);
 #endif
 
 	m_videoMesh = new Billboard();
 	//m_videoMesh->AddMaterial(t_material);
-	m_videoMesh->SetPosition(0.0f, 0.0f, 5.0f);
+	m_videoMesh->SetPosition(0.0f, 0.0f, 15.0f);
 	//CreateMeshBuffers((D3DMesh*)m_videoMesh);
 	//m_testScene->AddMesh(m_videoMesh);
 

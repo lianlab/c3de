@@ -135,6 +135,10 @@ private:
 	Billboard *m_videoMesh;
 
 	CubeMovie *m_cubeMovie;
+
+	float m_cubeX;
+	float m_cubeY;
+	float m_cubeZ;
 #endif	
 };
 #endif

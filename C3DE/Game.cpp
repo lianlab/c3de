@@ -4,6 +4,7 @@
 #include "D3DRenderer.h"
 #include "TerrainFactory.h"
 #include "TerrainForest.h"
+#include "DirectInput.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -187,6 +188,8 @@ void Game::Update(int deltaTime)
 	//m_sprite->SetX(m_sprite->GetX() + m_speed);
 	//m_sprite->SetY(m_sprite->GetY() + m_yspeed);
 
+	UpdateInput();
+
 	if(m_sprite->GetX() > 640 || m_sprite->GetX() < 0)
 	{
 		m_speed = m_speed * -1;
@@ -208,6 +211,56 @@ void Game::Update(int deltaTime)
 
 	//m_grid->Update(10);
 	
+}
+
+void Game::UpdateInput()
+{
+
+	float step = 1.0f;
+
+	if(DirectInput::GetInstance()->IsKeyDown(1))
+	{
+		m_application->Quit();
+		return;
+	}
+
+	
+	if(DirectInput::GetInstance()->IsKeyDown(200))
+	//UP
+	{		
+		m_cubeZ += step;
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(208))
+	{	
+	//DOWN	
+		
+		m_cubeZ -= step;
+	}	
+	if(DirectInput::GetInstance()->IsKeyDown(205))
+	{
+		//RIGHT
+		m_cubeX += step;
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(203))
+	{
+		//LEFT
+		
+		m_cubeX -= step;
+	}
+
+	m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
+
+	
+	m_camX = m_cubeX;
+	m_camY = m_cubeY + 2.0f;
+	m_camZ = m_cubeZ - 5.0f;
+
+	m_camTargetX = m_cubeX;
+	m_camTargetY = m_cubeY + 2.0f;
+	m_camTargetZ = m_cubeZ - 4.0f;
+
+	
+
 }
 
 

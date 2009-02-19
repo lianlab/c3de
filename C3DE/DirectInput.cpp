@@ -1,6 +1,8 @@
 #include "DirectInput.h"
 #include "DebugMemory.h"
 
+DirectInput* DirectInput::m_instance = NULL;
+
 DirectInput::DirectInput()
 {
 	POINT point;
@@ -8,6 +10,16 @@ DirectInput::DirectInput()
 	m_mouseAbsX = (int)point.x;
 	m_mouseAbsY = (int)point.y;
 }
+
+DirectInput * DirectInput::GetInstance()
+{
+	if(!m_instance)
+	{
+		m_instance = new DirectInput();
+	}
+
+	return m_instance;
+}	
 
 DirectInput::~DirectInput()
 {
@@ -134,9 +146,10 @@ void DirectInput::Init(HINSTANCE hInstance, HWND hwnd)
 
 
 
-bool DirectInput::IsKeyDown(char key)
+bool DirectInput::IsKeyDown(int key)
 {
-	return false;
+	if(key > 255) return false;
+	return (m_keyboardState[key] & 0x80);
 }
 
 bool DirectInput::IsMouseButtonDown(int button)

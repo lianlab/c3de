@@ -67,7 +67,7 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 	WindowsApplicationWindow *window = new WindowsApplicationWindow(m_hInstance, m_mainWindow, width, height);
 	m_renderer->Init(window, windowed);	
 	
-	m_input = new DirectInput();
+	m_input = DirectInput::GetInstance();
 	m_input->Init(m_hInstance, m_mainWindow);		
 
 	m_performanceCounter = WindowsPerformanceCounter::GetInstance();
@@ -79,10 +79,10 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 
 	m_game = new Game(this);
 
-	m_input->AddKeyboardListener((KeyboardListener *)m_game);
-	m_input->AddMouseListener((MouseListener *)m_game);	
+	//m_input->AddKeyboardListener((KeyboardListener *)m_game);
+	//m_input->AddMouseListener((MouseListener *)m_game);	
 
-	m_game->SetInputer(m_input);
+	//m_game->SetInputer(m_input);
 
 	return true;
 }

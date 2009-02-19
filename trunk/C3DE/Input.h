@@ -14,7 +14,7 @@ public:
 	virtual ~Input();
 	virtual void Update() = 0;
 	virtual void Init(){};
-	virtual bool IsKeyDown(char key) = 0;
+	virtual bool IsKeyDown(int key) = 0;
 	virtual bool IsMouseButtonDown(int button) = 0;
 	float GetMouseDX() { return m_mouseDX;}
 	float GetMouseDY() { return m_mouseDY;}

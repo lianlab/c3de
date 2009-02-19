@@ -83,6 +83,8 @@ private:
 
 
 	Plane *m_plane;
+
+	void UpdateInput();
 	
 
 	Pivot *m_pivot;

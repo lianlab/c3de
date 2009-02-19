@@ -12,13 +12,14 @@
 class DirectInput : public Input
 {
 public:
-	DirectInput();
+	static DirectInput * GetInstance();
 	~DirectInput();
 	void Update();
 	void Init(HINSTANCE hInstance, HWND hwnd);
-	bool IsKeyDown(char key);
+	bool IsKeyDown(int key);
 	bool IsMouseButtonDown(int button);
 private:
+	DirectInput();
 	IDirectInput8 *m_dInput;
 	IDirectInputDevice8 *m_keyboard;
 	char m_keyboardState[256];
@@ -29,6 +30,8 @@ private:
 
 	int m_mouseAbsX;
 	int m_mouseAbsY;
+
+	static DirectInput *m_instance;
 	
 
 };

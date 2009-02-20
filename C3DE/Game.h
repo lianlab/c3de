@@ -141,6 +141,8 @@ private:
 	float m_cubeX;
 	float m_cubeY;
 	float m_cubeZ;
+
+	D3DXVECTOR3 m_carDirection;
 #endif	
 };
 #endif

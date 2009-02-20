@@ -123,6 +123,8 @@ Game::Game(Application * app)
 	m_camYRotation = 0.0f;
 	m_camZRotation = 0.0f;
 
+	m_carDirection = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+
 	
 #endif
 
@@ -216,7 +218,10 @@ void Game::Update(int deltaTime)
 void Game::UpdateInput()
 {
 
-	float step = 1.0f;
+	float step = 0.1f;
+	float t_fleps = 0.0f;
+
+	float t_angle = 0.0f;
 
 	if(DirectInput::GetInstance()->IsKeyDown(1))
 	{
@@ -224,42 +229,85 @@ void Game::UpdateInput()
 		return;
 	}
 
+	D3DXVECTOR3 newPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
 	
 	if(DirectInput::GetInstance()->IsKeyDown(200))
 	//UP
 	{		
-		m_cubeZ += step;
+		//m_cubeZ += step;
+		newPos = step*m_carDirection;
+
 	}
 	if(DirectInput::GetInstance()->IsKeyDown(208))
 	{	
 	//DOWN	
 		
-		m_cubeZ -= step;
+		//m_cubeZ -= step;
+		newPos = -step*m_carDirection;
 	}	
 	if(DirectInput::GetInstance()->IsKeyDown(205))
 	{
-		//RIGHT
-		m_cubeX += step;
+		//RIGHT		
+		t_angle = 0.01f;				
 	}
 	if(DirectInput::GetInstance()->IsKeyDown(203))
 	{
-		//LEFT
-		
-		m_cubeX -= step;
+		//LEFT		
+		t_angle = -0.01f;		
 	}
+
+	float t_dAngle = 57.29577951308232286465f * t_angle;
+	D3DXMATRIX R;
+	D3DXMatrixRotationY(&R, t_angle);
+	D3DXVec3TransformCoord(&m_carDirection, &m_carDirection, &R);
+	D3DXVec3Normalize(&m_carDirection, &m_carDirection);
+	
+	m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + t_dAngle, m_cube->GetRotationZ());
+
+	m_cubeX += newPos.x;
+	m_cubeY += newPos.y;
+	m_cubeZ += newPos.z;
 
 	m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
 
-	
-	m_camX = m_cubeX;
-	m_camY = m_cubeY + 2.0f;
-	m_camZ = m_cubeZ - 5.0f;
+#define LOCK_CAMERA 0
+#define FIXED_CAMERA 1
+#if LOCK_CAMERA
+	D3DXVECTOR3 t_camLook = m_carDirection * -15.0f;
+	t_camLook.x = m_cubeX + t_camLook.x;
+	t_camLook.y = m_cubeY + t_camLook.y;
+	t_camLook.z = m_cubeZ + t_camLook.z;
 
-	m_camTargetX = m_cubeX;
-	m_camTargetY = m_cubeY + 2.0f;
-	m_camTargetZ = m_cubeZ - 4.0f;
+	m_camX = t_camLook.x;
+	m_camY = m_cubeY + 3.0f;
+	m_camZ = t_camLook.z;
 
-	
+	D3DXVECTOR3 t_camTarget = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	t_camTarget.x = m_camX + (m_carDirection*2.0f).x;
+	t_camTarget.y = m_camY + (m_carDirection*2.0f).y;
+	t_camTarget.z = m_camZ + (m_carDirection*2.0f).z;
+	//m_camTargetX = m_camX
+
+	m_camTargetX = t_camTarget.x;
+	m_camTargetY = t_camTarget.y;
+	m_camTargetZ = t_camTarget.z;
+#endif
+
+#if FIXED_CAMERA
+	m_camX = 0.0f;
+	m_camY = m_cubeY + 250.0f;
+	m_camZ = 0.0f;
+
+	m_camTargetX = 0.0f;
+	m_camTargetY = 0.0f;
+	m_camTargetZ = 0.0f;
+
+	m_camUpX = 1.0f;
+	m_camUpY = 0.0f;
+	m_camUpZ = 0.0f;
+#endif
+
 
 }
 
@@ -296,25 +344,51 @@ void Game::OnMouseUp(int button, int x, int y)
 	int moueskfd = button;
 }
 
+#if 1
 void Game::OnMouseMove(int x, int y, int dx, int dy)
-{
+{		
+	
+	D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
+	D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+	D3DXVECTOR3 look = target - pos;
+	D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
+	D3DXVECTOR3 right;
+	D3DXVec3Cross(&right, &up, &look);
+	D3DXVec3Normalize(&right, &right);		
 
-#if 0
-	m_cameraRotation += dx / 50.0f;
-	m_cameraRadius += dy / 50.0f;
-	if(fabsf(m_cameraRotation) >= 2.0f * D3DX_PI)
-		m_cameraRotation = 0.0f;
+	float yAngle = dx / 150.0f;
+	float t_angle = yAngle * 57.29577951308232286465f;
 
-	if(m_cameraRadius < 5.0f)
-		m_cameraRadius = 5.0f;
+	m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + t_angle, m_cube->GetRotationZ());
+	
+	// Rotate camera axes about the world's y-axis.
+	D3DXMATRIX R;
+	D3DXMatrixRotationY(&R, yAngle);
+	D3DXVec3TransformCoord(&right, &right, &R);
+	D3DXVec3TransformCoord(&up, &up, &R);
+	D3DXVec3TransformCoord(&look, &look, &R);
 
-	m_sprite->SetX(x);
-	m_sprite->SetY(y);
+	float pitch  = dy / 150.0f;
+	
+	// Rotate camera axes about the world's y-axis.
+	
+	D3DXMatrixRotationAxis(&R, &right, pitch);
+	D3DXVec3TransformCoord(&look, &look, &R);
+	D3DXVec3TransformCoord(&up, &up, &R);
 
-	hx = x;
-	hy = y;
+	m_camTargetX = pos.x + look.x;
+	m_camTargetY = pos.y + look.y;
+	m_camTargetZ = pos.z + look.z;
+
+	m_camUpX = up.x;
+	m_camUpY = up.y;
+	m_camUpZ = up.z;
+
+
+}
 #else
-		
+void Game::OnMouseMove(int x, int y, int dx, int dy)
+{		
 	
 	D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
 	D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
@@ -332,16 +406,7 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 	D3DXVec3TransformCoord(&up, &up, &R);
 	D3DXVec3TransformCoord(&look, &look, &R);
 
-	//m_camTargetX = pos.x + look.x;
-	//m_camTargetY = pos.y + look.y;
-	//m_camTargetZ = pos.z + look.z;	
-
-	float pitch  = dy / 150.0f;
-	// Rotate camera axes about the world's y-axis.
 	
-	D3DXMatrixRotationAxis(&R, &right, pitch);
-	D3DXVec3TransformCoord(&look, &look, &R);
-	D3DXVec3TransformCoord(&up, &up, &R);
 
 	m_camTargetX = pos.x + look.x;
 	m_camTargetY = pos.y + look.y;
@@ -350,10 +415,10 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 	m_camUpX = up.x;
 	m_camUpY = up.y;
 	m_camUpZ = up.z;
-	
-#endif
+
 
 }
+#endif
 
 
 void Game::OnKeyDown(int key)
@@ -363,7 +428,7 @@ void Game::OnKeyDown(int key)
 	//float step = 0.1f;
 	Mesh * target = (Mesh*)m_auei;
 	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 5.01f;
+	float step = 0.1f;
 
 	if(key == 1)
 	{
@@ -796,7 +861,7 @@ void Game::InitializeMeshes()
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	
-	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
+	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);	
 
 	Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
 

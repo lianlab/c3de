@@ -25,7 +25,9 @@ class Terrain : public D3DMesh
 
 	vector<D3DMesh* > *GetSubMeshes(){return m_subMeshes;}
 
-	
+	float getHeight(float x, float z){return 0.0f;}
+
+	D3DXVECTOR2 GetCoords(float x, float z);
 
 private:
 
@@ -36,6 +38,8 @@ private:
 	vector<D3DMesh*> *m_subMeshes;
 
 	int m_fleps;
+
+	float m_cellSize;
 
 protected:
 	IDirect3DDevice9* m_device;

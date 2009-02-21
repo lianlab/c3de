@@ -11,6 +11,8 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 	//m_subMeshes = new vector<Mesh *>;
 	m_id = a_ID;
 
+	m_cellSize = cellSize;
+
 	m_subMeshes = new vector<D3DMesh*>;
 
 	m_numCols = a_cols;
@@ -85,8 +87,10 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 			BYTE *b = bytes  + t_index;
 			float ty = (*b/255.0f)*maxHeight;
 			
-			float u = (float(i) / a_rows);
-			float v = (float(j) / a_cols);
+			//float u = (float(i) / a_rows);
+			float u = (float(i) / a_cols);
+			//float v = (float(j) / a_cols);
+			float v = (float(j) / a_rows);
 				
 			v2[t_iterator] = VertexPos(tx, ty, tz, 0.0f, 1.0f, 0.0f, u , v);
 			t_iterator++;
@@ -145,24 +149,7 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 
 	}
 
-	m_xMesh->UnlockIndexBuffer();
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	m_xMesh->UnlockIndexBuffer();	
 
 
 #if 1
@@ -203,6 +190,30 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 
 }
 
+
+D3DXVECTOR2 Terrain::GetCoords(float x, float z)
+{
+	
+
+	int t_cols = m_numCols - 1;
+	int t_rows = m_numRows - 1;	
+
+	float width = (float)t_cols*m_cellSize;
+	float depth = (float)t_rows*m_cellSize;
+
+	float t_localX = x - m_x;
+	float t_localZ = z - m_z;
+
+	float t_transformedX = width/2 + t_localX;
+	float t_transformedZ = depth/2 + t_localZ;
+
+	int t_row = (int)t_transformedX/m_cellSize;
+	int t_col = (int)t_transformedZ/m_cellSize;
+
+	D3DXVECTOR2 t_ret = D3DXVECTOR2(t_row, t_col);
+
+	return t_ret;
+}
 
 void Terrain::BuildSubGridMesh(RECT& R, VertexPos* gridVerts)
 {

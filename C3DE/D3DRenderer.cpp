@@ -14,7 +14,9 @@
 
 #include "Dwarf.h"
 
-#if HACK_FROM_SCRATCH
+#define REAL_HACK 0
+
+#if REAL_HACK
 IDirect3DVertexDeclaration9* VertexPosHACK::Decl = 0;
 #endif
 
@@ -175,7 +177,7 @@ void D3DRenderer::CreateMeshBuffers(D3DMesh *mesh)
 	//mesh->Translate(0.0f, 0.0f, 0.0f);
 }
 
-#if HACK_FROM_SCRATCH
+#if REAL_HACK
 
 void D3DRenderer::DrawScene(Scene *scene)
 {
@@ -184,10 +186,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 	D3DMesh *d3dmesh = (D3DMesh *)mesh;	
 	
 
-	// Clear the backbuffer and depth buffer.
-	HR(m_device->Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0));
-
-	HR(m_device->BeginScene());
+	
 
 	// Let Direct3D know the vertex buffer, index buffer and vertex 
 	// declaration we are using.
@@ -212,23 +211,19 @@ void D3DRenderer::DrawScene(Scene *scene)
 	
 	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
 
-	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
 	//HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 8, 0, 12));
 	int numTriangles = d3dmesh->GetIndices()->size() / 3;
 	int numVertices = d3dmesh->GetVertices()->size();		
 	
 	HR(m_device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, numVertices, 0, numTriangles));
 	
-	//mGfxStats->display();
-
-	HR(m_device->EndScene());
-
-	// Present the backbuffer.
-	HR(m_device->Present(0, 0, 0, 0));
+	
 }
 
 
 #else
+
 
 void D3DRenderer::DrawScene(Scene *scene)
 {		
@@ -307,7 +302,6 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 
 }
-
 
 #endif
 
@@ -610,7 +604,7 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh, FX *fx)
 	
 	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
-	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
 	
 
 	int numTriangles = mesh->GetIndices()->size() / 3;
@@ -786,9 +780,10 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	D3DXMatrixPerspectiveFovLH(&P, D3DX_PI * 0.25f, width/height, 1.0f, 5000.0f);
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &P));
 
-	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE));
+	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
 
-#if HACK_FROM_SCRATCH
+#if REAL_HACK
 
 #else
 	
@@ -824,28 +819,24 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 
 	
 
-#if HACK_FROM_SCRATCH
-	D3DVERTEXELEMENT9 VertexPosElements[] = 
-	{
-		{0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
-		D3DDECL_END()
-	};	
-	HR(m_device->CreateVertexDeclaration(VertexPosElements, &VertexPosHACK::Decl));
+#if REAL_HACK
+	//D3DVERTEXELEMENT9 VertexPosElements[] = 
+	//{
+	//	{0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+	//	D3DDECL_END()
+	//};	
+	//HR(m_device->CreateVertexDeclaration(VertexPosElements, &VertexPosHACK::Decl));
 
-	buildVertexBuffer();
+	//buildVertexBuffer();
 	//buildIndexBuffer();
 
-	mCameraRadius    = 10.0f;
-	mCameraRotationY = 1.2 * D3DX_PI;
-	mCameraHeight    = 5.0f;
-
+	
 	// The aspect ratio depends on the backbuffer dimensions, which can 
 	// possibly change after a reset.  So rebuild the projection matrix.
 	buildProjMatrix();
 	buildViewMtx();
 
-	//===============================================================
-	// VertexPos
+	
 
 	
 #endif
@@ -899,7 +890,7 @@ void D3DRenderer::DrawAxis()
 	
 	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
-	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
 	
 	m_device->DrawPrimitive( D3DPT_LINELIST, 0, 3 );
 }
@@ -911,38 +902,26 @@ void D3DRenderer::Reset()
 
 
 void D3DRenderer::Clear()
-{	
-#if HACK_FROM_SCRATCH
-	return;
-#endif
-	
+{		
 	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0xffffffff, 1.0f, 0L );
 }
 
 bool D3DRenderer::BeginRender()
-{
-#if HACK_FROM_SCRATCH
-		return true;
-#endif
-	
+{	
 	m_device->BeginScene();	
-	m_sprite->Begin(0);
+	//m_sprite->Begin(0);
 	return true;
 }
 
 void D3DRenderer::EndRender()
-{
-#if HACK_FROM_SCRATCH
-	return;
-#endif
-	
-	m_sprite->End();
+{	
+	//m_sprite->End();
 	m_device->EndScene();
 	m_device->Present(0, 0, 0, 0);
 }
 
 
-#if HACK_FROM_SCRATCH
+#if REAL_HACK
 void D3DRenderer::buildVertexBuffer()
 {
 	// Obtain a pointer to a new vertex buffer.

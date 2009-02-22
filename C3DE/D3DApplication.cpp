@@ -79,7 +79,7 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 
 	m_game = new Game(this);
 
-	//m_input->AddKeyboardListener((KeyboardListener *)m_game);
+	m_input->AddKeyboardListener((KeyboardListener *)m_game);
 	m_input->AddMouseListener((MouseListener *)m_game);	
 
 	//m_game->SetInputer(m_input);
@@ -105,7 +105,8 @@ bool D3DApplication::Render()
 
 	static char msg[256];
 	float fps = m_performanceCounter->GetFPS();
-	sprintf_s(msg, "FPS: %.4f\n%d\n%d", fps, m_game->hx, m_game->hy);
+	//sprintf_s(msg, "FPS: %.4f\n%d\n%d", fps, m_game->hx, m_game->hy);
+	sprintf_s(msg, "FPS: %.4f\nhidden objs: %d\nshownobjs: %d", fps, m_game->hx, m_game->hy);
 
 	m_game->Render(m_renderer);
 	m_renderer->RenderText(msg);	

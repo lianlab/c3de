@@ -51,6 +51,8 @@ protected:
 	vector <RendererListener *> *m_listeners;
 	Camera *m_camera;
 
+	
+
 };
 
 #endif

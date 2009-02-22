@@ -31,6 +31,8 @@ class Terrain : public D3DMesh
 
 	float GetHeight(float x, float z);
 
+	vector<AABB*> * GetBoundingBoxes(){return m_boundingBoxes;}
+
 private:
 
 	void BuildSubGridMesh(RECT& R, VertexPos* gridVerts);
@@ -47,6 +49,8 @@ protected:
 	IDirect3DDevice9* m_device;
 	void InitializeEffectHandles();
 	int m_id;
+
+	vector<AABB*> *m_boundingBoxes;
 
 	int m_numCols;
 	int m_numRows;

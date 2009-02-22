@@ -99,6 +99,14 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 	{
 		v[i] = GetVertices()->at(i);
 	}
+
+	D3DXVECTOR3 t_min;
+	D3DXVECTOR3 t_max;
+
+	HR(D3DXComputeBoundingBox((D3DXVECTOR3*)v, m_xMesh->GetNumVertices(), 
+		sizeof(VertexPos), &t_min, &t_max));
+
+	m_boundingBox = new AABB(t_min, t_max);
 	
 	m_xMesh->UnlockVertexBuffer();
 
@@ -113,6 +121,7 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 
 	m_xMesh->UnlockIndexBuffer();
 	
+
 
 
 }
@@ -242,6 +251,8 @@ void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_dev
 			
 		}
 	}
+
+
 
 	ReleaseCOM(materialBuffer);
 }

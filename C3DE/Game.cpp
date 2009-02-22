@@ -218,7 +218,7 @@ void Game::Update(int deltaTime)
 #if 1
 void Game::UpdateInput()
 {
-//return;
+return;
 	float step = 1.1f;
 	float t_fleps = 0.0f;
 
@@ -489,9 +489,9 @@ void Game::OnKeyDown(int key)
 
 	
 	//float step = 0.1f;
-	Mesh * target = (Mesh*)m_auei;
+	Mesh * target = (Mesh*)m_cube;
 	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 1.1f;
+	float step = 0.1f;
 
 	if(key == 1)
 	{
@@ -557,7 +557,7 @@ void Game::OnKeyDown(int key)
 		target->SetPosition(target->GetX() - step, target->GetY(), target->GetZ());
 	}
 #endif
-#if 0
+#if 1
 	else if(key == 200)
 	{		
 		target->Rotate(target->GetRotationX(), target->GetRotationY(), target->GetRotationZ() - step);				
@@ -718,7 +718,7 @@ void Game::OnKeyDown(int key)
 	
 #endif
 
-#if 1
+#if 0
 	
 	else if(key == 200)
 	//UP
@@ -936,7 +936,7 @@ void Game::InitializeMeshes()
 	//tt->SetPosition(0.0f, 500.0f, 0.0f);
 
 
-	m_testScene->AddTerrain(m_auei);
+	//m_testScene->AddTerrain(m_auei);
 
 	//porra->SetPosition(0.0f, -100.0f, 0.0f);
 
@@ -962,8 +962,16 @@ void Game::InitializeMeshes()
 	m_cube = new Cube();
 	m_cube->AddMaterial(t_material);
 	CreateMeshBuffers(m_cube);
-	m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
+	//m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
 	m_testScene->AddMesh(m_cube);
+
+	/*
+	Cube *t_fleps = new Cube();
+	t_fleps->AddMaterial(t_material);
+	CreateMeshBuffers(t_fleps);
+	t_fleps->SetPosition(m_cubeX, m_cubeY, m_cubeZ + 15.0f);
+	m_testScene->AddMesh(t_fleps);
+	*/
 #endif
 
 	m_videoMesh = new Billboard();

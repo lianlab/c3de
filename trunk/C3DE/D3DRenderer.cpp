@@ -15,6 +15,7 @@
 #include "Dwarf.h"
 
 #define REAL_HACK 0
+#define DRAW_BOUNDING_BOXES 1
 
 #if REAL_HACK
 IDirect3DVertexDeclaration9* VertexPosHACK::Decl = 0;
@@ -25,6 +26,8 @@ IDirect3DDevice9 * D3DRenderer::m_device = NULL;
 D3DRenderer::D3DRenderer()
 {	
 	m_font = NULL;	
+	hidden = 0;
+	shown = 0;
 	//mSkinnedMesh = NULL;
 }
 
@@ -224,10 +227,65 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 #else
 
+void D3DRenderer::CalculateFrustumPlanes()
+{
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	D3DXMATRIX t_view = cam->GetMatrix();	
+	
+	D3DXMATRIX VP = t_view*m_proj;	
+
+	D3DXVECTOR4 col0(VP(0,0), VP(1,0), VP(2,0), VP(3,0));
+	D3DXVECTOR4 col1(VP(0,1), VP(1,1), VP(2,1), VP(3,1));
+	D3DXVECTOR4 col2(VP(0,2), VP(1,2), VP(2,2), VP(3,2));
+	D3DXVECTOR4 col3(VP(0,3), VP(1,3), VP(2,3), VP(3,3));
+
+	m_frustumPlane[0] = (D3DXPLANE)(col2);
+	m_frustumPlane[1] = (D3DXPLANE)(col3 - col2);
+	m_frustumPlane[2] = (D3DXPLANE)(col3 + col0);
+	m_frustumPlane[3] = (D3DXPLANE)(col3 - col0);
+	m_frustumPlane[4] = (D3DXPLANE)(col3 - col1);
+	m_frustumPlane[5] = (D3DXPLANE)(col3 + col1);
+
+	for(int i = 0; i < 6; i++)
+	{
+		D3DXPlaneNormalize(&m_frustumPlane[i], &m_frustumPlane[i]);
+	}
+}
+
+bool D3DRenderer::IsAABBWithinView(AABB *a_box)
+{
+	D3DXVECTOR3 P;
+	D3DXVECTOR3 Q;
+
+	for(int i = 0; i < 6; ++i)
+	{
+		for(int j = 0; j < 3; ++j)
+		{
+			if(m_frustumPlane[i][j] >= 0.0f)
+			{
+				P[j] = a_box->minPoint[j];
+				Q[j] = a_box->maxPoint[j];
+			}
+			else
+			{
+				P[j] = a_box->maxPoint[j];
+				Q[j] = a_box->minPoint[j];
+			}
+		}
+		if(D3DXPlaneDotCoord(&m_frustumPlane[i], &Q) < 0.0f)
+		return false;
+	}
+
+	return true;
+
+	
+}
+
 
 void D3DRenderer::DrawScene(Scene *scene)
 {		
-
+	this->hidden = 0;
+	this->shown = 0;
 	int totalMeshes = scene->GetMeshesVector()->size();		
 	int totalMirrors = scene->GetMirrorsVector()->size();	
 	int totalShadowSurfaces = scene->GetShadowSurfacesVector()->size();
@@ -237,6 +295,8 @@ void D3DRenderer::DrawScene(Scene *scene)
 	D3DXMATRIX t_view = cam->GetMatrix();	
 	
 	D3DXMATRIX t_projView = t_view*m_proj;	
+
+	CalculateFrustumPlanes();
 	
 
 	FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
@@ -288,7 +348,15 @@ void D3DRenderer::DrawScene(Scene *scene)
 		
 		if(d3dmesh->GetXMesh())
 		{
-			DrawXMesh(d3dmesh);
+			if(IsAABBWithinView(d3dmesh->GetBoundingBox()))
+			{
+				this->shown++;
+				DrawXMesh(d3dmesh);
+			}
+			else
+			{
+				this->hidden++;
+			}
 		}
 		else
 		{
@@ -338,7 +406,11 @@ void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 		FXManager::GetInstance()->PreRender();	
 		HR(t_xMesh->DrawSubset(j));
 		FXManager::GetInstance()->PosRender();
-	}						
+	}		
+
+#if DRAW_BOUNDING_BOXES
+	DrawAABB(a_mesh);
+#endif
 
 	
 	FXManager::GetInstance()->End();
@@ -687,7 +759,11 @@ bool D3DRenderer::IsDeviceLost()
 
 void D3DRenderer::RenderText(char *text)
 {
-	
+	static char msg[256];
+
+	//sprintf_s(msg, "FPS: %.4f\n%d\n%d", fps, m_game->hx, m_game->hy);
+	sprintf_s(msg, "FPS: %.4f\nhidden objs: %d\nshownobjs: %d", 5.0f, this->hidden, this->shown);
+
 	if(!m_font)
 	{
 		//Load Application Specific resources here...
@@ -698,7 +774,8 @@ void D3DRenderer::RenderText(char *text)
 	}
 
 	RECT r[] = {{10, 10, 0,0}, {10, 30, 0,0}, {10, 50, 0,0}, {10, 70, 0,0}, {10, 90, 0,0}};
-	m_font->DrawText(NULL, text, -1, &r[0], DT_LEFT | DT_TOP | DT_NOCLIP, 0xff000000);
+	//m_font->DrawText(NULL, text, -1, &r[0], DT_LEFT | DT_TOP | DT_NOCLIP, 0xff000000);
+	m_font->DrawText(NULL, msg, -1, &r[0], DT_LEFT | DT_TOP | DT_NOCLIP, 0xff000000);
 
 }
 
@@ -818,6 +895,7 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	EnableAlphaBlending(false);	
 
 	CreateAxis();
+	CreateAABB();
 
 	
 
@@ -878,6 +956,37 @@ void D3DRenderer::CreateAxis()
 	
 }
 
+
+void D3DRenderer::CreateAABB()
+{
+
+	int vertexSize = 48;
+	HR(GetDevice()->CreateVertexBuffer(vertexSize * sizeof(VertexCol), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_aabbBuffer, 0));
+	VertexCol *v = 0;
+	HR(m_aabbBuffer->Lock(0,0,(void**)&v,0));
+	
+
+	for (int i = 0; i < vertexSize; i++)
+	{
+		v[i] = VertexCol(0, 0, 0, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	}
+	
+	
+	HR(m_aabbBuffer->Unlock());
+
+	D3DVERTEXELEMENT9 VertexPosElements[] = 
+	{
+		{0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+		{0, 12, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0},		
+		D3DDECL_END()
+	};		
+
+	
+	HR(GetDevice()->CreateVertexDeclaration(VertexPosElements, &m_aabbDeclaration));
+
+	
+}
+
 void D3DRenderer::DrawAxis()
 {	
 	
@@ -895,6 +1004,131 @@ void D3DRenderer::DrawAxis()
 	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
 	
 	m_device->DrawPrimitive( D3DPT_LINELIST, 0, 3 );
+}
+
+void D3DRenderer::DrawAABB(D3DMesh * a_mesh)
+{	
+	AABB* t_boundingBox = a_mesh->GetBoundingBox();
+
+
+
+	float t_offset = 0.1f;
+
+	VertexCol *v = 0;
+	HR(m_aabbBuffer->Lock(0,0,(void**)&v,0));
+
+	float t_minX = t_boundingBox->minPoint.x - t_offset;
+	float t_minY = t_boundingBox->minPoint.y - t_offset;
+	float t_minZ = t_boundingBox->minPoint.z - t_offset ;
+
+	float t_maxX = t_boundingBox->maxPoint.x + t_offset;
+	float t_maxY = t_boundingBox->maxPoint.y + t_offset;
+	float t_maxZ = t_boundingBox->maxPoint.z + t_offset;
+
+	float t_lengthX = t_maxX - t_minX;
+	float t_lengthY = t_maxY - t_minY;
+	float t_lengthZ = t_maxZ - t_minZ;
+
+	D3DXCOLOR t_color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+	
+	
+	v[0] = VertexCol(t_minX, t_minY, t_minZ, t_color);
+	v[1] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ, t_color);
+	
+	v[2] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ, t_color);
+	v[3] = VertexCol(t_minX + t_lengthX, t_minY + t_lengthY, t_minZ, t_color);
+	
+	v[4] = VertexCol(t_minX + t_lengthX, t_minY + t_lengthY, t_minZ, t_color);
+	v[5] = VertexCol(t_minX + t_lengthX, t_minY , t_minZ, t_color);
+	
+	v[6] = VertexCol(t_minX + t_lengthX, t_minY , t_minZ, t_color);
+	v[7] = VertexCol(t_minX, t_minY, t_minZ, t_color);
+
+
+
+
+	v[8] = VertexCol(t_minX, t_minY, t_minZ, t_color);
+	v[9] = VertexCol(t_minX, t_minY , t_minZ + t_lengthZ, t_color);
+
+	v[10] = VertexCol(t_minX, t_minY , t_minZ + t_lengthZ, t_color);
+	v[11] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);
+
+	v[12] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);
+	v[13] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ, t_color);
+
+
+
+
+	v[14] = VertexCol(t_minX, t_minY, t_minZ + t_lengthZ, t_color);
+	v[15] = VertexCol(t_minX + t_lengthX, t_minY, t_minZ + t_lengthZ, t_color);
+
+	v[16] = VertexCol(t_minX + t_lengthX, t_minY, t_minZ + t_lengthZ, t_color);
+	v[17] = VertexCol(t_minX + t_lengthX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);
+
+	v[18] = VertexCol(t_minX + t_lengthX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);
+	v[19] = VertexCol(t_minX , t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);
+
+
+
+	v[20] = VertexCol(t_minX + t_lengthX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);
+	v[21] = VertexCol(t_minX + t_lengthX, t_minY + t_lengthY, t_minZ , t_color);
+
+	v[22] = VertexCol(t_minX + t_lengthX, t_minY , t_minZ + t_lengthZ, t_color);
+	v[23] = VertexCol(t_minX + t_lengthX, t_minY , t_minZ , t_color);
+	
+	
+	
+	
+	
+	
+	/*
+	v[2] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ, t_color);	
+	v[3] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);	
+	v[4] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);	
+	v[5] = VertexCol(t_minX, t_minY, t_minZ + t_lengthZ, t_color);	
+	v[6] = VertexCol(t_minX, t_minY, t_minZ + t_lengthZ, t_color);	
+	v[7] = VertexCol(t_minX, t_minY, t_minZ, t_color);
+
+	v[8] = VertexCol(t_minX, t_minY, t_minZ, t_color);
+	v[9] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ, t_color);
+	v[10] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ, t_color);	
+	v[11] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);	
+	v[12] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);	
+	v[13] = VertexCol(t_minX, t_minY, t_minZ + t_lengthZ, t_color);	
+	v[14] = VertexCol(t_minX, t_minY, t_minZ + t_lengthZ, t_color);	
+	v[15] = VertexCol(t_minX, t_minY, t_minZ, t_color);
+	*/
+	
+	HR(m_aabbBuffer->Unlock());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	HR(m_device->SetStreamSource(0, m_aabbBuffer, 0, sizeof(VertexCol)));	
+	HR(m_device->SetVertexDeclaration(m_aabbDeclaration));
+
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	
+	D3DXMATRIX W;
+	D3DXMatrixIdentity(&W);
+	HR(m_device->SetTransform(D3DTS_WORLD, &W));
+	
+	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
+	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
+	
+	m_device->DrawPrimitive( D3DPT_LINELIST, 0, 12 );
 }
 
 void D3DRenderer::Reset()

@@ -78,6 +78,8 @@ private:
 	D3DPRESENT_PARAMETERS m_d3dpp;
 	HINSTANCE m_hInstance;
 	HWND m_mainWindow;
+
+	void DrawAABB(D3DMesh * a_mesh);
 	
 	ID3DXFont *m_font;
 	ID3DXSprite *m_sprite;
@@ -94,6 +96,15 @@ private:
 
 	IDirect3DVertexBuffer9 * m_axisBuffer;
 	IDirect3DVertexDeclaration9 *m_axisDeclaration;
+
+	IDirect3DVertexBuffer9 * m_aabbBuffer;
+	IDirect3DVertexDeclaration9 *m_aabbDeclaration;
+
+	D3DXPLANE m_frustumPlane[6];
+
+	void CalculateFrustumPlanes();
+
+	bool IsAABBWithinView(AABB *a_box);
 
 
 #if HACK_FROM_SCRATCH
@@ -116,7 +127,10 @@ private:
 	
 #endif
 
-	
+	void CreateAABB();
+
+	int hidden;
+	int shown;
 
 };
 

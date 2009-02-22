@@ -34,6 +34,13 @@ struct Vertex
 
 #endif
 
+struct AABB
+{
+	AABB(D3DXVECTOR3 a_min, D3DXVECTOR3 a_max) : minPoint(a_min),maxPoint(a_max){}
+	D3DXVECTOR3 minPoint;
+	D3DXVECTOR3 maxPoint;
+};
+
 struct VertexPos
 {
 	VertexPos()
@@ -128,8 +135,12 @@ public:
 
 	void CreateXMesh(IDirect3DDevice9 *a_device);
 
+	AABB* GetBoundingBox(){return m_boundingBox;}
+
 	
 protected:
+
+	AABB *m_boundingBox;
 
 	//IDirect3DTexture9 *m_currentTex;
 

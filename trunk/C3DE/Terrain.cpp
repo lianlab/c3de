@@ -13,6 +13,8 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 	//m_subMeshes = new vector<Mesh *>;
 	m_id = a_ID;
 
+	m_boundingBoxes = new vector<AABB*>;
+
 	m_cellSize = cellSize;
 
 	m_subMeshes = new vector<D3DMesh*>;
@@ -327,6 +329,18 @@ void Terrain::BuildSubGridMesh(RECT& R, VertexPos* gridVerts)
 	//AABB bndBox;
 	//HR(D3DXComputeBoundingBox((D3DXVECTOR3*)v, subMesh->GetNumVertices(), 
 	//	sizeof(VertexPos), &bndBox.minPt, &bndBox.maxPt));
+
+	// Compute the bounding box before unlocking the vertex buffer.
+	
+	D3DXVECTOR3 t_min;
+	D3DXVECTOR3 t_max;
+
+	HR(D3DXComputeBoundingBox((D3DXVECTOR3*)v, subMesh->GetNumVertices(), 
+		sizeof(VertexPos), &t_min, &t_max));
+
+	AABB *t_boundingBox = new AABB(t_min, t_max);
+
+	m_boundingBoxes->push_back(t_boundingBox);
 
 	HR(subMesh->UnlockVertexBuffer());
 

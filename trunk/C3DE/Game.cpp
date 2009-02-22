@@ -105,7 +105,7 @@ Game::Game(Application * app)
 	m_camRadius = 1.0f;
 
 	m_cubeX = 0.0f;
-	m_cubeY = 50.0f;
+	m_cubeY = 11.5f;
 	m_cubeZ = 0.0f;
 
 	m_camX = m_cubeX;
@@ -215,10 +215,11 @@ void Game::Update(int deltaTime)
 	
 }
 
+#if 1
 void Game::UpdateInput()
 {
-
-	float step = 0.1f;
+//return;
+	float step = 1.1f;
 	float t_fleps = 0.0f;
 
 	float t_angle = 0.0f;
@@ -227,6 +228,12 @@ void Game::UpdateInput()
 	{
 		m_application->Quit();
 		return;
+		//step = 0.1f;
+	}
+
+	if(DirectInput::GetInstance()->IsKeyDown(16))
+	{
+		step = 0.1f;
 	}
 
 	D3DXVECTOR3 newPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -254,7 +261,9 @@ void Game::UpdateInput()
 	if(DirectInput::GetInstance()->IsKeyDown(203))
 	{
 		//LEFT		
-		t_angle = -0.01f;		
+		t_angle = -0.01f;	
+
+		
 	}
 
 	float t_dAngle = 57.29577951308232286465f * t_angle;
@@ -269,15 +278,22 @@ void Game::UpdateInput()
 	m_cubeY += newPos.y;
 	m_cubeZ += newPos.z;
 
+	//hx = m_auei->GetCoords(m_cubeX, m_cubeZ).x;
+	hx = (int)m_cubeX ;
+	hy = (int)m_auei->GetHeight(m_cubeX, m_cubeZ);
+	//hy = (int)m_cubeZ;
+
 	m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
 
-#define LOCK_CAMERA 0
-#define FIXED_CAMERA 1
+#define LOCK_CAMERA 1
+#define FIXED_CAMERA !LOCK_CAMERA
 #if LOCK_CAMERA
 	D3DXVECTOR3 t_camLook = m_carDirection * -15.0f;
 	t_camLook.x = m_cubeX + t_camLook.x;
 	t_camLook.y = m_cubeY + t_camLook.y;
 	t_camLook.z = m_cubeZ + t_camLook.z;
+
+	m_cubeY = m_auei->GetHeight(m_cubeX, m_cubeZ) + 1.5f;
 
 	m_camX = t_camLook.x;
 	m_camY = m_cubeY + 3.0f;
@@ -310,7 +326,54 @@ void Game::UpdateInput()
 
 
 }
+#endif
 
+#if 0
+void Game::UpdateInput()
+{
+
+	float step = 0.1f;	
+
+	if(DirectInput::GetInstance()->IsKeyDown(1))
+	{
+		m_application->Quit();
+		return;
+	}
+
+	D3DXVECTOR3 newPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	
+	if(DirectInput::GetInstance()->IsKeyDown(200))
+	//UP
+	{		
+		
+		m_auei->SetPosition(m_auei->GetX() + step, m_auei->GetY(), m_auei->GetZ());
+
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(208))
+	{	
+	//DOWN	
+		
+		
+
+	}	
+	if(DirectInput::GetInstance()->IsKeyDown(205))
+	{
+		
+
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(203))
+	{
+		
+
+	}
+
+	
+
+
+
+}
+#endif
 
 
 
@@ -359,7 +422,7 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 	float yAngle = dx / 150.0f;
 	float t_angle = yAngle * 57.29577951308232286465f;
 
-	m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + t_angle, m_cube->GetRotationZ());
+	//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + t_angle, m_cube->GetRotationZ());
 	
 	// Rotate camera axes about the world's y-axis.
 	D3DXMATRIX R;
@@ -428,7 +491,7 @@ void Game::OnKeyDown(int key)
 	//float step = 0.1f;
 	Mesh * target = (Mesh*)m_auei;
 	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 0.1f;
+	float step = 1.1f;
 
 	if(key == 1)
 	{
@@ -655,7 +718,7 @@ void Game::OnKeyDown(int key)
 	
 #endif
 
-#if 0
+#if 1
 	
 	else if(key == 200)
 	//UP
@@ -748,7 +811,7 @@ void Game::OnKeyDown(int key)
 		
 	}
 #endif
-#if 1
+#if 0
 	else if(key == 200)
 	//UP
 	{		
@@ -861,27 +924,25 @@ void Game::InitializeMeshes()
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	
-	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);	
+	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
 
-	Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
+	//Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
 
-	Terrain *carai = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);
+	//Terrain *carai = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);
 
 	//Terrain *tt = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
 	//m_testScene->AddTerrain(tt);
 
 	//tt->SetPosition(0.0f, 500.0f, 0.0f);
-#if HACK_FROM_SCRATCH
-	CreateMeshBuffers(m_auei);
-#endif
+
 
 	m_testScene->AddTerrain(m_auei);
 
-	porra->SetPosition(0.0f, -100.0f, 0.0f);
+	//porra->SetPosition(0.0f, -100.0f, 0.0f);
 
-	carai->SetPosition(0.0f, -200.0f, 0.0f);
-	m_testScene->AddTerrain(porra);
-	m_testScene->AddTerrain(carai);
+	//carai->SetPosition(0.0f, -200.0f, 0.0f);
+	//m_testScene->AddTerrain(porra);
+	//m_testScene->AddTerrain(carai);
 	//m_testScene->AddMesh(m_auei);
 
 	//Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);		

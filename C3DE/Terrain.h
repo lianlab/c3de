@@ -29,6 +29,8 @@ class Terrain : public D3DMesh
 
 	D3DXVECTOR2 GetCoords(float x, float z);
 
+	float GetHeight(float x, float z);
+
 private:
 
 	void BuildSubGridMesh(RECT& R, VertexPos* gridVerts);
@@ -48,5 +50,7 @@ protected:
 
 	int m_numCols;
 	int m_numRows;
+
+	float *m_heights;
 };
 #endif

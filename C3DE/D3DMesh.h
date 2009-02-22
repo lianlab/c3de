@@ -135,12 +135,15 @@ public:
 
 	void CreateXMesh(IDirect3DDevice9 *a_device);
 
-	AABB* GetBoundingBox(){return m_boundingBox;}
+	AABB* GetBoundingBox();
+
+	void SetBoundingBox(AABB *a_aabb){m_boundingBox = a_aabb;}
 
 	
 protected:
 
 	AABB *m_boundingBox;
+	AABB *m_transformedBox;
 
 	//IDirect3DTexture9 *m_currentTex;
 

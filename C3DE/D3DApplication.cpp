@@ -106,7 +106,8 @@ bool D3DApplication::Render()
 	static char msg[256];
 	float fps = m_performanceCounter->GetFPS();
 	//sprintf_s(msg, "FPS: %.4f\n%d\n%d", fps, m_game->hx, m_game->hy);
-	sprintf_s(msg, "FPS: %.4f\nhidden objs: %d\nshownobjs: %d", fps, m_game->hx, m_game->hy);
+	sprintf_s(msg, "FPS: %.4f\n", fps);
+	//sprintf_s(msg, "FPS: %.4f\nhidden objs: %d\nshownobjs: %d", fps, m_game->hx, m_game->hy);
 
 	m_game->Render(m_renderer);
 	m_renderer->RenderText(msg);	

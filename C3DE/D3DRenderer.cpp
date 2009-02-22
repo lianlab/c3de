@@ -321,7 +321,15 @@ void D3DRenderer::DrawScene(Scene *scene)
 		for(int j = 0; j < t_totalSubMeshes; j++)
 		//for(int j = 0; j < 1; j++)
 		{
-
+			if(!IsAABBWithinView(t_terrain->GetSubMeshes()->at(j)->GetBoundingBox()))
+			{
+				this->hidden++;
+				continue;
+			}
+			else
+			{
+				this->shown++;
+			}
 			//if(j%3)continue;
 			FXManager::GetInstance()->Begin(t_terrain->GetEffect());			
 			ID3DXMesh *t_mesh = t_terrain->GetSubMeshes()->at(j)->GetXMesh();																
@@ -351,6 +359,9 @@ void D3DRenderer::DrawScene(Scene *scene)
 			if(IsAABBWithinView(d3dmesh->GetBoundingBox()))
 			{
 				this->shown++;
+				#if DRAW_BOUNDING_BOXES
+					DrawAABB(d3dmesh);
+				#endif
 				DrawXMesh(d3dmesh);
 			}
 			else
@@ -408,9 +419,7 @@ void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 		FXManager::GetInstance()->PosRender();
 	}		
 
-#if DRAW_BOUNDING_BOXES
-	DrawAABB(a_mesh);
-#endif
+
 
 	
 	FXManager::GetInstance()->End();
@@ -762,7 +771,8 @@ void D3DRenderer::RenderText(char *text)
 	static char msg[256];
 
 	//sprintf_s(msg, "FPS: %.4f\n%d\n%d", fps, m_game->hx, m_game->hy);
-	sprintf_s(msg, "FPS: %.4f\nhidden objs: %d\nshownobjs: %d", 5.0f, this->hidden, this->shown);
+
+	sprintf_s(msg, "%shidden objs: %d\nshownobjs: %d", text,this->hidden, this->shown);
 
 	if(!m_font)
 	{

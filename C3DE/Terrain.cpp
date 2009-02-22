@@ -340,7 +340,7 @@ void Terrain::BuildSubGridMesh(RECT& R, VertexPos* gridVerts)
 
 	AABB *t_boundingBox = new AABB(t_min, t_max);
 
-	m_boundingBoxes->push_back(t_boundingBox);
+	//m_boundingBoxes->push_back(t_boundingBox);
 
 	HR(subMesh->UnlockVertexBuffer());
 
@@ -419,6 +419,7 @@ void Terrain::BuildSubGridMesh(RECT& R, VertexPos* gridVerts)
 	//mSubGridMeshes.push_back(subMesh);
 	D3DMesh *t_mesh = new D3DMesh();
 	t_mesh->SetXMesh(subMesh);
+	t_mesh->SetBoundingBox(t_boundingBox);
 	
 	m_subMeshes->push_back(t_mesh);
 	//mSubGridBndBoxes.push_back(bndBox);

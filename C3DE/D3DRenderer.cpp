@@ -259,11 +259,13 @@ void D3DRenderer::DrawScene(Scene *scene)
 		int t_totalSubMeshes = t_terrain->GetSubMeshes()->size();
 
 		for(int j = 0; j < t_totalSubMeshes; j++)
+		//for(int j = 0; j < 1; j++)
 		{
 
 			//if(j%3)continue;
 			FXManager::GetInstance()->Begin(t_terrain->GetEffect());			
 			ID3DXMesh *t_mesh = t_terrain->GetSubMeshes()->at(j)->GetXMesh();																
+			//ID3DXMesh *t_mesh = t_terrain->GetXMesh();		
 			t_terrain->SetCurrentMaterial(t_terrain->GetMaterials()->at(0));			
 			
 			Image *t_image = t_terrain->GetTextures()->at(0);			

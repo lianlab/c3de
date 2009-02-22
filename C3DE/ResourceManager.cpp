@@ -99,15 +99,15 @@ void ResourceManager::InitializeResources()
 	//TERRAIN
 	//HR(D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &TEX_TERRAIN));
 	
-	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/terrain.bmp", 10, 10, 1, D3DUSAGE_DYNAMIC, 
+	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/noise128.jpg", 128, 128, 1, D3DUSAGE_DYNAMIC, 
 											  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
 											  NULL, NULL, NULL, &TEX_TERRAIN);
 
-	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/terrainForest.bmp", 128, 128, 1, D3DUSAGE_DYNAMIC, 
+	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/noise256.jpg", 256, 256, 1, D3DUSAGE_DYNAMIC, 
 											  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
 											  NULL, NULL, NULL, &TEX_TERRAIN_FOREST);
 
-	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/noise.jpg", 512, 512, 1, D3DUSAGE_DYNAMIC, 
+	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/noise512.jpg", 512, 512, 1, D3DUSAGE_DYNAMIC, 
 											  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
 											  NULL, NULL, NULL, &TEX_TERRAIN_NOISE);
 											  

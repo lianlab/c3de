@@ -6,9 +6,9 @@
 #include "CommonDefs.h"
 
 Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDirect3DTexture9 *a_texture, float maxHeight, float cellSize)
-{
-	//a_rows = 6;
-	//a_cols = 6;
+{	
+	//a_rows = 128;
+	//a_cols = 128;
 	m_device = a_device;
 	//m_subMeshes = new vector<Mesh *>;
 	m_id = a_ID;
@@ -20,10 +20,9 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 	m_numCols = a_cols;
 	m_numRows = a_rows;
 
-	m_heights = new float[a_rows*a_cols];
+	m_heights = new float[(a_rows+1)*(a_cols+1)];
 
-	a_rows--;
-	a_cols--;
+	
 
 	//m_ambientMaterial = Material(0.0f, 0.0f, 1.0f, 1.0f);
 	int numVertices = (a_rows +1)*(a_cols + 1);
@@ -35,10 +34,7 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 
 	float xOffset = -width * 0.5f;
 	float zOffset = depth * 0.5f;
-	//float xOffset = 0.0f;
-	//float zOffset = 0.0f;
-
-	//int k = 0;
+	
 
 	m_vertices = new vector<VertexPos>;
 	m_indices = new vector<int>;
@@ -50,10 +46,21 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 	D3DSURFACE_DESC desc;
 	a_texture->GetLevelDesc(0, &desc);	
 
+
+
 	float t_ratio = (float)desc.Width / a_rows;
+
+	
 		
-	//int t_ratioInt = ROUND_FLOAT(t_ratio);	
-	int t_ratioInt = (int)t_ratio;	
+	int t_ratioInt = ROUND_FLOAT(t_ratio);	
+	//int t_ratioInt = (int)t_ratio;	
+
+	/*
+	if(t_ratio < 1.0f)
+	{
+		t_ratioInt = (int)(t_ratio + 0.5f);	
+	}
+	*/
 
 	if(m_xMesh)
 	{
@@ -71,10 +78,11 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 
 	int totalVertices = (a_rows + 1) * (a_cols + 1);
 	int totalIndices = (a_rows)*(a_cols)*6;
-	DWORD indices = totalIndices/3;
+	DWORD indices = (a_rows)*(a_cols)*2;
 	DWORD vertices = totalVertices;
 	
 	HRESULT err = D3DXCreateMesh(indices, vertices, D3DXMESH_SYSTEMMEM | D3DXMESH_32BIT, VertexPosElements, a_device, &m_xMesh);
+	//HRESULT err = D3DXCreateMesh(indices, vertices, D3DXMESH_MANAGED, VertexPosElements, a_device, &m_xMesh);
 
 	VertexPos *v2 = NULL;
 	m_xMesh->LockVertexBuffer(0, (void**)&v2);
@@ -89,7 +97,28 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 		for(int j = 0; j < (a_cols + 1); j++)
 		{
 					
-			int t_index = (int)(i * sRect.Pitch + j)*t_ratioInt;
+			//int t_index = (int)(i * (sRect.Pitch) + j)*t_ratioInt;
+			int t_j;
+			int t_i;
+			if(j == a_cols) 
+			{
+				t_j = a_cols -1;
+			}
+			else
+			{
+				t_j = j;
+			}
+
+			if(i == a_rows) 
+			{
+				t_i = a_rows -1;
+			}
+			else
+			{
+				t_i = i;
+			}
+
+			int t_index = (int)   (   (t_i *    sRect.Pitch    + t_j)    * t_ratio );
 			float tx = j*cellSize + xOffset;
 			float tz = -i*cellSize + zOffset;		
 			
@@ -133,12 +162,12 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 			int index6 = (i+1)*(a_rows + 1) + j + 1;
 			*/
 
-			int index1 = (i+1)*(a_rows+1) + j;
-			int index2 = i*(a_rows+1) + j;
-			int index3 = i*(a_rows+1) + j + 1;
-			int index4 = (i+1)*(a_rows+1) + j;
-			int index5 = i*(a_rows+1) + j + 1;
-			int index6 = (i+1)*(a_rows+1) + j + 1;
+			int index1 = (i+1)*(a_cols+1) + j;
+			int index2 = i*(a_cols+1) + j;
+			int index3 = i*(a_cols+1) + j + 1;
+			int index4 = (i+1)*(a_cols+1) + j;
+			int index5 = i*(a_cols+1) + j + 1;
+			int index6 = (i+1)*(a_cols+1) + j + 1;
 			
 			k2[t_iterator] = index1;
 			t_iterator++;
@@ -187,6 +216,7 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 	{
 		for(int c = 0; c < subGridCols; ++c)
 		{
+			
 			// Rectangle that indicates (via matrix indices ij) the
 			// portion of global grid vertices to use for this subgrid.
 			RECT R = 
@@ -234,8 +264,8 @@ D3DXVECTOR2 Terrain::GetCoords(float x, float z)
 
 float Terrain::GetHeight(float x, float z)
 {
-	int t_cols = m_numCols - 1;
-	int t_rows = m_numRows - 1;	
+	int t_cols = m_numCols +1;
+	int t_rows = m_numRows + 1;	
 
 	float width = (float)t_cols*m_cellSize;
 	float depth = (float)t_rows*m_cellSize;
@@ -249,7 +279,7 @@ float Terrain::GetHeight(float x, float z)
 	int t_row = (int)t_transformedX/m_cellSize;
 	int t_col = (int)t_transformedZ/m_cellSize;
 
-	return m_heights[t_col*m_numCols + t_row];
+	return m_heights[t_col*t_cols + t_row];
 }
 
 void Terrain::BuildSubGridMesh(RECT& R, VertexPos* gridVerts)
@@ -259,12 +289,7 @@ void Terrain::BuildSubGridMesh(RECT& R, VertexPos* gridVerts)
 	//===============================================================
 	// Create the subgrid mesh.
 	ID3DXMesh* subMesh = 0;
-	//D3DVERTEXELEMENT9 elems[MAX_FVF_DECL_SIZE];
-	//UINT numElems = 0;
 	
-	
-	//HR(VertexPos::Decl->GetDeclaration(elems, &numElems));
-
 
 	D3DVERTEXELEMENT9 VertexPosElements[] = 
 	{
@@ -288,11 +313,11 @@ void Terrain::BuildSubGridMesh(RECT& R, VertexPos* gridVerts)
 	VertexPos* v = 0;
 	HR(subMesh->LockVertexBuffer(0, (void**)&v));
 	int k = 0;
-	for(int i = R.top; i <= R.bottom; ++i)
+	for(int i = R.top; i <= R.bottom; i++)
 	{
-		for(int j = R.left; j <= R.right; ++j)
+		for(int j = R.left; j <= R.right; j++)
 		{
-			int value = i*m_numCols+j;
+			int value = i*(m_numCols+1)+j;
 			v[k++] = gridVerts[value];
 		}
 	}
@@ -306,14 +331,7 @@ void Terrain::BuildSubGridMesh(RECT& R, VertexPos* gridVerts)
 	HR(subMesh->UnlockVertexBuffer());
 
 
-	//===============================================================
-	// Build Index and Attribute Buffer.
-	// Get indices for subgrid (we don't use the verts here--the verts
-	// are given by the parameter gridVerts).
-	//std::vector<D3DXVECTOR3> tempVerts;
-	//std::vector<DWORD> tempIndices;
-	//GenTriGrid(SubGrid::NUM_ROWS, SubGrid::NUM_COLS, mDX, mDZ, 
-	//	D3DXVECTOR3(0.0f, 0.0f, 0.0f), tempVerts, tempIndices);
+	
 
 	WORD* indices  = 0;
 	DWORD* attBuff = 0;
@@ -374,7 +392,7 @@ void Terrain::BuildSubGridMesh(RECT& R, VertexPos* gridVerts)
 	//===============================================================
 	// Optimize for the vertex cache and build attribute table.
 #if 1
-	int cake = sizeof(DWORD);
+	
 	DWORD* adj = new DWORD[t_numFaces*3];
 	HR(subMesh->GenerateAdjacency(EPSILON, adj));
 	HR(subMesh->OptimizeInplace(D3DXMESHOPT_VERTEXCACHE|D3DXMESHOPT_ATTRSORT,

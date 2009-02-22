@@ -10,6 +10,8 @@ D3DMesh::D3DMesh():Mesh()
 
 	m_vertices = NULL;
 	m_indices = NULL;
+
+	m_transformedBox = NULL;
 	
 	
 
@@ -126,9 +128,39 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 
 }
 
+AABB* D3DMesh::GetBoundingBox()
+{
+//IMPORTANT, THIS METHOD IS NOT WORKING FOR ROTATIONS
+	float t_rotationX = m_rotateX;
+	float t_rotationY = m_rotateY;
+	float t_rotationZ = m_rotateZ;
 
+	m_rotateX = 0.0f;
+	m_rotateY = 0.0f;
+	m_rotateZ = 0.0f;
+	D3DXMATRIX t_matrix = GetTransformMatrix();
 
+	m_rotateX = t_rotationX;
+	m_rotateY = t_rotationY;
+	m_rotateZ = t_rotationZ;
 
+	D3DXVECTOR4 t_min = D3DXVECTOR4(m_boundingBox->minPoint, 1.0f);
+	D3DXVECTOR4 t_max = D3DXVECTOR4(m_boundingBox->maxPoint, 1.0f);
+	D3DXVec3Transform(&t_min, &m_boundingBox->minPoint, &t_matrix);
+	D3DXVec3Transform(&t_max, &m_boundingBox->maxPoint, &t_matrix);
+
+	if(m_transformedBox)
+	{
+		delete m_transformedBox;
+		m_transformedBox = NULL;
+	}
+	//D3DXVECTOR3 t_diff2 = D3DXVECTOR3(t_max.x - t_min.x, t_max.y - t_min.y, t_max.z - t_min.z);
+	//D3DXVECTOR3 t_max3 = D3DXVECTOR3(t_min.x + t_diff.x,t_min.y + t_diff.y, t_min.z + t_diff.z);
+	m_transformedBox = new AABB(D3DXVECTOR3(t_min.x, t_min.y, t_min.z), D3DXVECTOR3(t_max.x, t_max.y, t_max.z));		
+
+	return m_transformedBox;
+
+}
 
 void D3DMesh::FreeTextures()
 {

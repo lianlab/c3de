@@ -30,6 +30,7 @@
 #include "VideoMesh.h"
 #include "Billboard.h"
 #include "CubeMovie.h"
+#include "BillboardMesh.h"
 
 
 
@@ -143,6 +144,8 @@ private:
 	float m_cubeZ;
 
 	D3DXVECTOR3 m_carDirection;
+
+	BillboardMesh * m_billboard;
 #endif	
 };
 #endif

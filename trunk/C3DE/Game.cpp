@@ -105,7 +105,7 @@ Game::Game(Application * app)
 	m_camRadius = 1.0f;
 
 	m_cubeX = 0.0f;
-	m_cubeY = 11.5f;
+	m_cubeY = -2.0f;
 	m_cubeZ = 0.0f;
 
 	m_camX = m_cubeX;
@@ -431,7 +431,8 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 	D3DXVec3TransformCoord(&up, &up, &R);
 	D3DXVec3TransformCoord(&look, &look, &R);
 
-	float pitch  = dy / 150.0f;
+	//float pitch  = dy / 150.0f;
+	float pitch  = 0.0f;
 	
 	// Rotate camera axes about the world's y-axis.
 	
@@ -491,7 +492,7 @@ void Game::OnKeyDown(int key)
 	//float step = 0.1f;
 	Mesh * target = (Mesh*)m_cube;
 	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 1.01f;
+	float step = 0.1f;
 
 	if(key == 1)
 	{
@@ -936,7 +937,7 @@ void Game::InitializeMeshes()
 	//tt->SetPosition(0.0f, 500.0f, 0.0f);
 
 
-	m_testScene->AddTerrain(m_auei);
+	//m_testScene->AddTerrain(m_auei);
 
 	//porra->SetPosition(0.0f, -100.0f, 0.0f);
 
@@ -963,7 +964,7 @@ void Game::InitializeMeshes()
 	m_cube->AddMaterial(t_material);
 	CreateMeshBuffers(m_cube);
 	//m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
-	m_testScene->AddMesh(m_cube);
+	//m_testScene->AddMesh(m_cube);
 
 	/*
 	Cube *t_fleps = new Cube();
@@ -984,6 +985,18 @@ void Game::InitializeMeshes()
 	m_cubeMovie->SetPosition(0.0f, 0.0f, 2.0f);
 	//CreateMeshBuffers((D3DMesh*)m_cubeMovie);
 	//m_testScene->AddMesh(m_cubeMovie);
+
+	
+
+
+	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_CRATE_ID));	
+	
+
+	m_billboard = new BillboardMesh(d3dImage);
+	m_billboard->AddMaterial(t_material);
+	m_billboard->SetPosition(0.0f, 0.0f, 5.0f);
+	CreateMeshBuffers(m_billboard);
+	m_testScene->AddMesh(m_billboard);
 
 	m_testScene->Initialize();
 	

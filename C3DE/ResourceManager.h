@@ -42,6 +42,9 @@ enum TexturesIDs
 	//TERRAIN
 	IMAGE_TERRAIN_NOISE_ID,
 	///////////////////////
+	//TREE
+	IMAGE_TREE_0_BARK_ID,
+	IMAGE_TREE_0_LEAVES_ID,
 
 	
 	TOTAL_IMAGES
@@ -63,6 +66,7 @@ enum MeshesIDs
 	MESH_TINY_ANIM_ID,
 	MESH_TIGER_ID,
 	MESH_SWIMMER_ID,
+	MESH_TREE_0_ID,
 	TOTAL_MESHES
 };
 

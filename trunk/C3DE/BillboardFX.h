@@ -17,19 +17,22 @@ public:
 
 	void SetWorldHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldViewProjection);
 
-	void SetAlpha(float alpha);
+
+	void BillboardFX::SetLightHandlers(	D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
+							D3DXCOLOR specularLightColor, D3DXVECTOR3 lightVector);
+	//void SetAlpha(float alpha);
 
 	void ResetHandlers();
 protected:
-	D3DXHANDLE m_shaderObjectAmbientMaterial;//gAmbientMtrl
-	D3DXHANDLE m_shaderObjectDiffuseMaterial;//gDiffuseMtrl
-	D3DXHANDLE m_shaderObjectSpecularMaterial;//gSpecMtrl
-	D3DXHANDLE m_shaderSpecularLightPower;//gSpecPower
-	D3DXHANDLE m_shaderAlpha;//gSpecPower
-	D3DXHANDLE m_shaderHack;//gSpecPower
+	//D3DXHANDLE m_shaderObjectAmbientMaterial;//gAmbientMtrl
+	//D3DXHANDLE m_shaderObjectDiffuseMaterial;//gDiffuseMtrl
+	//D3DXHANDLE m_shaderObjectSpecularMaterial;//gSpecMtrl
+	//D3DXHANDLE m_shaderSpecularLightPower;//gSpecPower
+	//D3DXHANDLE m_shaderAlpha;//gSpecPower
+	//D3DXHANDLE m_shaderHack;//gSpecPower
 	D3DXHANDLE   m_hTex;
 
-	float m_hack;
-	float dir;
+	//float m_hack;
+	//float dir;
 };
 #endif

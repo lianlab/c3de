@@ -45,7 +45,7 @@ void BillboardMesh::SetShaderHandlers()
 	t_effect->SetObjectTexture(t_d3dText->GetTexture());
 
 	t_effect->SetTransformMatrix(GetTransformMatrix());
-	t_effect->SetAlpha(m_alpha);
+	//t_effect->SetAlpha(m_alpha);
 	
 }
 

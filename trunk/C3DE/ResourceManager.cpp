@@ -23,6 +23,7 @@ ResourceManager::ResourceManager()
 	m_meshesFilenames[MESH_TINY_ANIM_ID] = "Meshes/tiny.x";
 	m_meshesFilenames[MESH_TIGER_ID] = "Meshes/tiger.x";
 	m_meshesFilenames[MESH_SWIMMER_ID] = "Meshes/swimmer.x";
+	m_meshesFilenames[MESH_TREE_0_ID] = "Meshes/tree0.x";
 
 
 }
@@ -67,6 +68,9 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_TERRAIN_FOREST;
 	//TERRAIN
 	IDirect3DTexture9 * TEX_TERRAIN_NOISE;
+	//TREE
+	IDirect3DTexture9 * TEX_TREE_0_BARK;
+	IDirect3DTexture9 * TEX_TREE_0_LEAVES;
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/alienship.bmp", &TEX_SHIP));
 	
@@ -110,6 +114,10 @@ void ResourceManager::InitializeResources()
 	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/noise512.jpg", 512, 512, 1, D3DUSAGE_DYNAMIC, 
 											  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
 											  NULL, NULL, NULL, &TEX_TERRAIN_NOISE);
+
+	//TREE 0
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Tree0/tree0_bark.dds", &TEX_TREE_0_BARK));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Tree0/tree0_leaf.dds", &TEX_TREE_0_LEAVES));
 											  
 	//HR(D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &TEX_TERRAIN));
 	///////////////////
@@ -148,6 +156,10 @@ void ResourceManager::InitializeResources()
 
 	//Terrain
 	m_imageResources[IMAGE_TERRAIN_NOISE_ID] = TEX_TERRAIN_NOISE;
+
+	//Tree 0
+	m_imageResources[IMAGE_TREE_0_BARK_ID] = TEX_TREE_0_BARK;
+	m_imageResources[IMAGE_TREE_0_LEAVES_ID] = TEX_TREE_0_LEAVES;
 
 	InitializeVideos();
 }
@@ -260,7 +272,16 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 	else if(strcmp(a_filename.c_str(), "terrain.bmp") == 0)
 	{
 		return m_imageResources[IMAGE_TERRAIN_ID];
-	}	
+	}
+	//tree 0
+	else if(strcmp(a_filename.c_str(), "tree0_bark.dds") == 0)
+	{
+		return m_imageResources[IMAGE_TREE_0_BARK_ID];
+	}
+	else if(strcmp(a_filename.c_str(), "tree0_leaf.dds") == 0)
+	{
+		return m_imageResources[IMAGE_TREE_0_LEAVES_ID];
+	}
 	else
 	{
 		return NULL;

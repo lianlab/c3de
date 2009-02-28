@@ -19,7 +19,8 @@ D3DCamera::~D3DCamera()
 
 D3DXMATRIX D3DCamera::GetMatrix()
 {
-#if 1
+#define USE_HELPER_FUCTIONS 1
+#if USE_HELPER_FUCTIONS
 	m_pos = D3DXVECTOR3(m_x, m_y, m_z);
 	m_target = D3DXVECTOR3(m_targetX, m_targetY, m_targetZ);
 	m_up = D3DXVECTOR3(m_upX, m_upY, m_upZ);

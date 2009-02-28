@@ -5,6 +5,7 @@
 #include "TerrainFactory.h"
 #include "TerrainForest.h"
 #include "DirectInput.h"
+#include "Tree.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -431,8 +432,8 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 	D3DXVec3TransformCoord(&up, &up, &R);
 	D3DXVec3TransformCoord(&look, &look, &R);
 
-	//float pitch  = dy / 150.0f;
-	float pitch  = 0.0f;
+	float pitch  = dy / 150.0f;
+	
 	
 	// Rotate camera axes about the world's y-axis.
 	
@@ -925,7 +926,7 @@ void Game::InitializeMeshes()
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	
-	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
+	//m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
 
 	//Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
 
@@ -975,21 +976,27 @@ void Game::InitializeMeshes()
 	*/
 #endif
 
-	m_videoMesh = new Billboard();
+	//m_videoMesh = new Billboard();
 	//m_videoMesh->AddMaterial(t_material);
-	m_videoMesh->SetPosition(0.0f, 0.0f, 15.0f);
+	//m_videoMesh->SetPosition(0.0f, 0.0f, 15.0f);
 	//CreateMeshBuffers((D3DMesh*)m_videoMesh);
 	//m_testScene->AddMesh(m_videoMesh);
 
 	m_cubeMovie = new CubeMovie();
-	m_cubeMovie->SetPosition(0.0f, 0.0f, 2.0f);
+	m_cubeMovie->SetPosition(0.0f, 0.0f, 5.0f);
 	//CreateMeshBuffers((D3DMesh*)m_cubeMovie);
 	//m_testScene->AddMesh(m_cubeMovie);
+
+	//Dwarf *t_dwarf = new Dwarf();
+	//t_dwarf->LoadFromXFile(	ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TREE_0_ID), 
+	//	D3DRenderer::GetDevice());
+	Tree *t_tree = new Tree();
+	
 
 	
 
 
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_CRATE_ID));	
+	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_TREE_0_LEAVES_ID));	
 	
 
 	m_billboard = new BillboardMesh(d3dImage);
@@ -997,6 +1004,8 @@ void Game::InitializeMeshes()
 	m_billboard->SetPosition(0.0f, 0.0f, 5.0f);
 	CreateMeshBuffers(m_billboard);
 	m_testScene->AddMesh(m_billboard);
+
+	m_testScene->AddMesh(t_tree);
 
 	m_testScene->Initialize();
 	

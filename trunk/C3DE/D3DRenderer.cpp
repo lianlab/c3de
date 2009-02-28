@@ -341,6 +341,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 			
 			t_terrain->SetShaderHandlers();
 			FXManager::GetInstance()->PreRender();	
+
 			HR(t_mesh->DrawSubset(0));
 			FXManager::GetInstance()->PosRender();									
 			
@@ -359,7 +360,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 			if(IsAABBWithinView(d3dmesh->GetBoundingBox()))
 			{
 				this->shown++;
-				#if DRAW_BOUNDING_BOXES
+				#if DRAW_BOUNDING_BOXES && 0
 					DrawAABB(d3dmesh);
 				#endif
 				DrawXMesh(d3dmesh);
@@ -415,7 +416,9 @@ void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 		
 		a_mesh->SetShaderHandlers();
 		FXManager::GetInstance()->PreRender();	
+		a_mesh->PreRender((Renderer*)this);
 		HR(t_xMesh->DrawSubset(j));
+		a_mesh->PosRender((Renderer*)this);
 		FXManager::GetInstance()->PosRender();
 	}		
 
@@ -705,6 +708,10 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh, FX *fx)
 void D3DRenderer::DrawSprite(Sprite *sprite)
 {	
 	
+	HR(m_device->SetRenderState(D3DRS_ALPHATESTENABLE, true));
+	HR(m_device->SetRenderState(D3DRS_ALPHAREF, 200));
+	HR(m_device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER));
+
 	m_sprite->Begin(0);
 
 	D3DSprite * d3dSprite = static_cast<D3DSprite *> (sprite);
@@ -722,6 +729,8 @@ void D3DRenderer::DrawSprite(Sprite *sprite)
 	m_sprite->Flush();	
 
 	m_sprite->End();
+
+	HR(m_device->SetRenderState(D3DRS_ALPHATESTENABLE, false));
 
 }
 

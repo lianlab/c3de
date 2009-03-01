@@ -55,7 +55,7 @@ void D3DRenderer::BuildProjMtx()
 
 	float w = (float)m_d3dpp.BackBufferWidth;
 	float h = (float)m_d3dpp.BackBufferHeight;
-	D3DXMatrixPerspectiveFovLH(&m_proj, D3DX_PI * 0.25f, w/h, 1.0f, 5000.0f);
+	D3DXMatrixPerspectiveFovLH(&m_proj, D3DX_PI * 0.25f, w/h, 1.0f, FAR_Z);
 	
 }
 

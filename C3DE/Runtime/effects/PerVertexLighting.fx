@@ -21,6 +21,10 @@ uniform extern texture gTex;
 uniform extern float4x4 gTransformMatrix;
 uniform extern float gAlpha;
 
+static float3 gFogColor = (0.5f, 0.5f, 0.5f);
+static float gFogStart = 1.0f;
+static float gFogRange = 200.0f;
+
 sampler TexS = sampler_state
 {
 	Texture = <gTex>;
@@ -38,6 +42,7 @@ struct OutputVS
     float4 diffuse : COLOR0;
     float4 spec    : COLOR1;
     float2 tex0    : TEXCOORD0;
+    float fogLerpParam : TEXCOORD1;
 };
 
 OutputVS DirLightTexVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0: TEXCOORD0)
@@ -86,17 +91,25 @@ OutputVS DirLightTexVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2
 	// Pass on texture coordinates to be interpolated in rasterization.
 	outVS.tex0 = tex0;
 	
+	float dist = distance(newPos.xyz, gEyePosW);
+	
+	outVS.fogLerpParam = saturate((dist - gFogStart) / gFogRange);
+	
 	// Done--return the output.
     return outVS;
 }
 
-float4 DirLightTexPS(float4 c : COLOR0, float4 spec : COLOR1, float2 tex0 : TEXCOORD0) : COLOR
+float4 DirLightTexPS(float4 c : COLOR0, float4 spec : COLOR1, float2 tex0 : TEXCOORD0, float fogLerpParam:TEXCOORD1) : COLOR
 {
 	
 	float3 texColor = tex2D(TexS, tex0).rgb;
+	float4 texColor4 = tex2D(TexS, tex0);
 	float3 diffuse = c.rgb * texColor;
-    //return float4(diffuse + spec.rgb, c.a); 
-    return float4(diffuse + spec.rgb, gAlpha); 
+    //return float4(diffuse + spec.rgb, texColor4.a*c.a); 
+    float3 final = lerp(texColor, gFogColor, fogLerpParam);
+    //return float4(texColor, texColor4.a*c.a); 
+    return float4(final, texColor4.a*c.a); 
+    //return float4(diffuse + spec.rgb, gAlpha); 
     
 }
 

@@ -5,7 +5,11 @@
 #include "TerrainFactory.h"
 #include "TerrainForest.h"
 #include "DirectInput.h"
-#include "Tree.h"
+#include "Tree0.h"
+#include "Tree1.h"
+#include "Tree2.h"
+#include "Tree3.h"
+#include "Castle.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -112,10 +116,12 @@ Game::Game(Application * app)
 	m_camX = m_cubeX;
 	m_camY = m_cubeY + 2.0f;
 	m_camZ = m_cubeZ - 5.0f;
+	
 
 	m_camTargetX = m_cubeX;
 	m_camTargetY = m_cubeY + 2.0f;
 	m_camTargetZ = m_cubeZ - 4.0f;
+	
 
 	m_camUpX = 0.0f;
 	m_camUpY = 1.0f;
@@ -219,7 +225,8 @@ void Game::Update(int deltaTime)
 #if 1
 void Game::UpdateInput()
 {
-return;
+
+
 	float step = 1.1f;
 	float t_fleps = 0.0f;
 
@@ -926,75 +933,51 @@ void Game::InitializeMeshes()
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	
-	//m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
+	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
 
-	//Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
-
-	//Terrain *carai = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);
-
-	//Terrain *tt = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);	
-	//m_testScene->AddTerrain(tt);
-
-	//tt->SetPosition(0.0f, 500.0f, 0.0f);
+	
 
 
-	//m_testScene->AddTerrain(m_auei);
+	m_testScene->AddTerrain(m_auei);
 
-	//porra->SetPosition(0.0f, -100.0f, 0.0f);
-
-	//carai->SetPosition(0.0f, -200.0f, 0.0f);
-	//m_testScene->AddTerrain(porra);
-	//m_testScene->AddTerrain(carai);
-	//m_testScene->AddMesh(m_auei);
-
-	//Terrain *porra = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NORMAL_ID);		
-	//m_testScene->AddMesh(porra);
-	//m_testScene->AddTerrain(porra);
-
-	//Terrain *carai = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_FOREST_ID);		
-	//m_testScene->AddMesh(carai);
-
-	//m_testScene->AddTerrain(carai);
-
-	//porra->SetPosition(0.0f, 15.0f, 0.0f);
-
-	//carai->SetPosition(0.0f, 30.0f, 0.0f);
+	
 
 #if 1
 	m_cube = new Cube();
-	m_cube->AddMaterial(t_material);
-	CreateMeshBuffers(m_cube);
-	//m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
-	//m_testScene->AddMesh(m_cube);
+	//m_cube->AddMaterial(t_material);
+	//CreateMeshBuffers(m_cube);
 
-	/*
-	Cube *t_fleps = new Cube();
-	t_fleps->AddMaterial(t_material);
-	CreateMeshBuffers(t_fleps);
-	t_fleps->SetPosition(m_cubeX, m_cubeY, m_cubeZ + 15.0f);
-	m_testScene->AddMesh(t_fleps);
-	*/
+	m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
+
+	m_testScene->AddMesh(m_cube);
+	
 #endif
 
-	//m_videoMesh = new Billboard();
-	//m_videoMesh->AddMaterial(t_material);
-	//m_videoMesh->SetPosition(0.0f, 0.0f, 15.0f);
-	//CreateMeshBuffers((D3DMesh*)m_videoMesh);
-	//m_testScene->AddMesh(m_videoMesh);
+	
 
 	m_cubeMovie = new CubeMovie();
 	m_cubeMovie->SetPosition(0.0f, 0.0f, 5.0f);
-	//CreateMeshBuffers((D3DMesh*)m_cubeMovie);
-	//m_testScene->AddMesh(m_cubeMovie);
-
-	//Dwarf *t_dwarf = new Dwarf();
-	//t_dwarf->LoadFromXFile(	ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TREE_0_ID), 
-	//	D3DRenderer::GetDevice());
-	Tree *t_tree = new Tree();
 	
-
 	
+	Tree0 *t_tree0 = new Tree0();
+	t_tree0->Scale(0.2f, 0.2f, 0.2f);
+	t_tree0->SetPosition(5.0f, m_auei->GetHeight(5.0f, 10.0f), 10.0f);
 
+	Tree1 *t_tree1 = new Tree1();
+	t_tree1->Scale(0.2f, 0.2f, 0.2f);
+	t_tree1->SetPosition(10.0f, m_auei->GetHeight(10.0f, 10.0f), 10.0f);
+
+	Tree2 *t_tree2 = new Tree2();
+	t_tree2->Scale(0.2f, 0.2f, 0.2f);
+	t_tree2->SetPosition(15.0f, m_auei->GetHeight(15.0f, 10.0f), 10.0f);
+
+	Tree3 *t_tree3 = new Tree3();
+	t_tree3->Scale(0.2f, 0.2f, 0.2f);
+	t_tree3->SetPosition(20.0f, m_auei->GetHeight(20.0f, 10.0f), 10.0f);
+	
+	
+	Castle *t_castle = new Castle();
+	
 
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_TREE_0_LEAVES_ID));	
 	
@@ -1003,9 +986,13 @@ void Game::InitializeMeshes()
 	m_billboard->AddMaterial(t_material);
 	m_billboard->SetPosition(0.0f, 0.0f, 5.0f);
 	CreateMeshBuffers(m_billboard);
-	m_testScene->AddMesh(m_billboard);
+	//m_testScene->AddMesh(m_billboard);
 
-	m_testScene->AddMesh(t_tree);
+	
+	m_testScene->AddMesh(t_tree0);
+	m_testScene->AddMesh(t_tree1);
+	m_testScene->AddMesh(t_tree2);
+	m_testScene->AddMesh(t_tree3);
 
 	m_testScene->Initialize();
 	

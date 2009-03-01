@@ -76,6 +76,6 @@ void SkinnedMeshFX::SetWorldHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worl
 	HR(m_effect->SetMatrix(m_shaderViewMatrix, &worldViewProjection));	
 	HR(m_effect->SetMatrix(m_shaderWorldInverseTransposeMatrix, &WIT));												
 	HR(m_effect->SetValue(m_shaderEyePosition, cameraPosition, sizeof(D3DXVECTOR3)));
-	HR(m_effect->SetFloat(m_shaderHack, m_hack));
+	//HR(m_effect->SetFloat(m_shaderHack, m_hack));
 	//HR(m_effect->SetFloat(m_shaderAlpha, m_hack));
 }

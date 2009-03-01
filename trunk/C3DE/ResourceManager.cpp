@@ -24,6 +24,10 @@ ResourceManager::ResourceManager()
 	m_meshesFilenames[MESH_TIGER_ID] = "Meshes/tiger.x";
 	m_meshesFilenames[MESH_SWIMMER_ID] = "Meshes/swimmer.x";
 	m_meshesFilenames[MESH_TREE_0_ID] = "Meshes/tree0.x";
+	m_meshesFilenames[MESH_TREE_1_ID] = "Meshes/tree1.x";
+	m_meshesFilenames[MESH_TREE_2_ID] = "Meshes/tree2.x";
+	m_meshesFilenames[MESH_TREE_3_ID] = "Meshes/tree3.x";
+	m_meshesFilenames[MESH_CASTLE_ID] = "Meshes/castle.x";
 
 
 }
@@ -68,9 +72,28 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_TERRAIN_FOREST;
 	//TERRAIN
 	IDirect3DTexture9 * TEX_TERRAIN_NOISE;
-	//TREE
+	//TREE 0
 	IDirect3DTexture9 * TEX_TREE_0_BARK;
 	IDirect3DTexture9 * TEX_TREE_0_LEAVES;
+
+	//TREE 1
+	IDirect3DTexture9 * TEX_TREE_1_BARK;
+	IDirect3DTexture9 * TEX_TREE_1_LEAVES;
+
+	//TREE 2
+	IDirect3DTexture9 * TEX_TREE_2_BARK;
+	IDirect3DTexture9 * TEX_TREE_2_LEAVES;
+
+	//TREE 3
+	IDirect3DTexture9 * TEX_TREE_3_BARK;
+	IDirect3DTexture9 * TEX_TREE_3_LEAVES;
+
+	//CASTLE
+	IDirect3DTexture9 * TEX_CASTLE_BRICK;
+	IDirect3DTexture9 * TEX_CASTLE_STONE_FLOOR;
+	IDirect3DTexture9 * TEX_CASTLE_MARBLE;
+	//GRASS PATTERN
+	IDirect3DTexture9 * TEX_GRASS_PATTERN;
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/alienship.bmp", &TEX_SHIP));
 	
@@ -111,14 +134,37 @@ void ResourceManager::InitializeResources()
 											  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
 											  NULL, NULL, NULL, &TEX_TERRAIN_FOREST);
 
-	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/noise512.jpg", 512, 512, 1, D3DUSAGE_DYNAMIC, 
+	//D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/noise512.jpg", 512, 512, 1, D3DUSAGE_DYNAMIC, 
+	//										  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
+	//										  NULL, NULL, NULL, &TEX_TERRAIN_NOISE);
+
+	D3DXCreateTextureFromFileEx(m_device, "Images/Terrain/noise.jpg", 512, 512, 1, D3DUSAGE_DYNAMIC, 
 											  D3DFMT_L8, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
 											  NULL, NULL, NULL, &TEX_TERRAIN_NOISE);
 
 	//TREE 0
 	HR(D3DXCreateTextureFromFile(m_device, "Images/Tree0/tree0_bark.dds", &TEX_TREE_0_BARK));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/Tree0/tree0_leaf.dds", &TEX_TREE_0_LEAVES));
-											  
+
+	//TREE 1
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Tree1/tree1_bark.dds", &TEX_TREE_1_BARK));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Tree1/tree1_leaf.dds", &TEX_TREE_1_LEAVES));
+
+	//TREE 2
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Tree2/tree2_bark.dds", &TEX_TREE_2_BARK));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Tree2/tree2_leaf.dds", &TEX_TREE_2_LEAVES));
+
+	//TREE 3
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Tree3/tree3_bark.dds", &TEX_TREE_3_BARK));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Tree3/tree3_leaf.dds", &TEX_TREE_3_LEAVES));
+
+	//CASTLE
+	HR(D3DXCreateTextureFromFile(m_device, "Images/castle/darkbrick.bmp", &TEX_CASTLE_BRICK));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/castle/marble.bmp", &TEX_CASTLE_MARBLE));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/castle/stonefloor.bmp", &TEX_CASTLE_STONE_FLOOR));
+		
+	//GRASS PATTERN
+	HR(D3DXCreateTextureFromFile(m_device, "Images/grass.dds", &TEX_GRASS_PATTERN));
 	//HR(D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &TEX_TERRAIN));
 	///////////////////
 
@@ -160,6 +206,26 @@ void ResourceManager::InitializeResources()
 	//Tree 0
 	m_imageResources[IMAGE_TREE_0_BARK_ID] = TEX_TREE_0_BARK;
 	m_imageResources[IMAGE_TREE_0_LEAVES_ID] = TEX_TREE_0_LEAVES;
+
+	//Tree 1
+	m_imageResources[IMAGE_TREE_1_BARK_ID] = TEX_TREE_1_BARK;
+	m_imageResources[IMAGE_TREE_1_LEAVES_ID] = TEX_TREE_1_LEAVES;
+
+	//Tree 2
+	m_imageResources[IMAGE_TREE_2_BARK_ID] = TEX_TREE_2_BARK;
+	m_imageResources[IMAGE_TREE_2_LEAVES_ID] = TEX_TREE_2_LEAVES;
+
+	//Tree 3
+	m_imageResources[IMAGE_TREE_3_BARK_ID] = TEX_TREE_3_BARK;
+	m_imageResources[IMAGE_TREE_3_LEAVES_ID] = TEX_TREE_3_LEAVES;
+
+	//CASTLE
+	m_imageResources[IMAGE_CASTLE_STONE_FLOOR_ID] = TEX_CASTLE_STONE_FLOOR;
+	m_imageResources[IMAGE_CASTLE_BRICK_ID] = TEX_CASTLE_BRICK;
+	m_imageResources[IMAGE_CASTLE_MARBLE_ID] = TEX_CASTLE_MARBLE;
+
+	//GRASS PATTERN
+	m_imageResources[IMAGE_GRASS_PATTERN_ID] = TEX_GRASS_PATTERN;
 
 	InitializeVideos();
 }
@@ -281,6 +347,51 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 	else if(strcmp(a_filename.c_str(), "tree0_leaf.dds") == 0)
 	{
 		return m_imageResources[IMAGE_TREE_0_LEAVES_ID];
+	}
+	//tree 1
+	else if(strcmp(a_filename.c_str(), "tree1_bark.dds") == 0)
+	{
+		return m_imageResources[IMAGE_TREE_1_BARK_ID];
+	}
+	else if(strcmp(a_filename.c_str(), "tree1_leaf.dds") == 0)
+	{
+		return m_imageResources[IMAGE_TREE_1_LEAVES_ID];
+	}
+	//tree 2
+	else if(strcmp(a_filename.c_str(), "tree2_bark.dds") == 0)
+	{
+		return m_imageResources[IMAGE_TREE_2_BARK_ID];
+	}
+	else if(strcmp(a_filename.c_str(), "tree2_leaf.dds") == 0)
+	{
+		return m_imageResources[IMAGE_TREE_2_LEAVES_ID];
+	}
+	//tree 3
+	else if(strcmp(a_filename.c_str(), "tree3_bark.dds") == 0)
+	{
+		return m_imageResources[IMAGE_TREE_3_BARK_ID];
+	}
+	else if(strcmp(a_filename.c_str(), "tree3_leaf.dds") == 0)
+	{
+		return m_imageResources[IMAGE_TREE_3_LEAVES_ID];
+	}
+	//castle
+	else if(strcmp(a_filename.c_str(), "marble.bmp") == 0)
+	{
+		return m_imageResources[IMAGE_CASTLE_MARBLE_ID];
+	}
+	else if(strcmp(a_filename.c_str(), "stonefloor.bmp") == 0)
+	{
+		return m_imageResources[IMAGE_CASTLE_STONE_FLOOR_ID];
+	}
+	else if(strcmp(a_filename.c_str(), "darkbrick.bmp") == 0)
+	{
+		return m_imageResources[IMAGE_CASTLE_BRICK_ID];
+	}
+	//grass pattern
+	else if(strcmp(a_filename.c_str(), "grass.ddc") == 0)
+	{
+		return m_imageResources[IMAGE_GRASS_PATTERN_ID];
 	}
 	else
 	{

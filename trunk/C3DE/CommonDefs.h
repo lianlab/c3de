@@ -17,8 +17,9 @@
 
 #define ROUND_FLOAT(x) {(int)(x + 0.5f)}
 
-#define HACK_FROM_SCRATCH 0
+#define HACK_FROM_SCRATCH 1
 
 //#define EPSILON 0.001f
+#define FAR_Z 1000.0f
 
 #endif

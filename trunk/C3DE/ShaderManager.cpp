@@ -13,6 +13,7 @@
 #include "SkinnedMeshFX.h"
 #include "SkinnedMeshBookFX.h"
 #include "BillboardFX.h"
+#include "GrassFX.h"
 
 ShaderManager * ShaderManager::m_instance = NULL;
 
@@ -104,6 +105,11 @@ void ShaderManager::InitializeResources()
 	errors = 0;	
 	HR(D3DXCreateEffectFromFile(m_device, "effects/billboard.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_BILLBOARD_FX, &errors));	
 	m_effectResources[SHADER_BILLBOARD_FX_ID] = SHADER_BILLBOARD_FX;
+
+	ID3DXEffect * SHADER_GRASS_FX;
+	errors = 0;	
+	HR(D3DXCreateEffectFromFile(m_device, "effects/grass.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_GRASS_FX, &errors));	
+	m_effectResources[SHADER_GRASS_FX_ID] = SHADER_GRASS_FX;
 	
 	m_effects[SHADER_BOOK_LIGHTS_ID] = new BookLights(SHADER_BOOK_LIGHTS);
 	m_effects[SHADER_LIGHTS_AND_TEXTURES_ID] = new LightsAndTextures(SHADER_LIGHTS_AND_TEXTURES);
@@ -116,6 +122,7 @@ void ShaderManager::InitializeResources()
 	m_effects[SHADER_SKINNED_MESH_FX_ID] = new SkinnedMeshFX(SHADER_SKINNED_MESH_FX);
 	m_effects[SHADER_SKINNED_MESH_BOOK_FX_ID] = new SkinnedMeshBookFX(SHADER_SKINNED_MESH_BOOK_FX);
 	m_effects[SHADER_BILLBOARD_FX_ID] = new BillboardFX(SHADER_BILLBOARD_FX);
+	m_effects[SHADER_GRASS_FX_ID] = new GrassFX(SHADER_GRASS_FX);
 }
 
 ShadowFX * ShaderManager::GetDefaultShadowFX()

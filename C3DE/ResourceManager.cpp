@@ -95,6 +95,10 @@ void ResourceManager::InitializeResources()
 	//GRASS PATTERN
 	IDirect3DTexture9 * TEX_GRASS_PATTERN;
 
+	//GRASS BILLBOARD
+	IDirect3DTexture9 * TEX_GRASS_BILLBOARD;
+
+
 	HR(D3DXCreateTextureFromFile(m_device, "Images/alienship.bmp", &TEX_SHIP));
 	
 	
@@ -166,6 +170,10 @@ void ResourceManager::InitializeResources()
 	//GRASS PATTERN
 	HR(D3DXCreateTextureFromFile(m_device, "Images/grass.dds", &TEX_GRASS_PATTERN));
 	//HR(D3DXCreateTextureFromFile(m_device, "Images/Terrain/terrain.bmp", &TEX_TERRAIN));
+	
+	//GRASS BILLBOARD
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Grass/grassfin0.dds", &TEX_GRASS_BILLBOARD));
+
 	///////////////////
 
 	
@@ -226,6 +234,9 @@ void ResourceManager::InitializeResources()
 
 	//GRASS PATTERN
 	m_imageResources[IMAGE_GRASS_PATTERN_ID] = TEX_GRASS_PATTERN;
+
+	//GRASS BILLBOARD
+	m_imageResources[IMAGE_GRASS_BILLBOARD_ID] = TEX_GRASS_BILLBOARD;
 
 	InitializeVideos();
 }
@@ -389,9 +400,14 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 		return m_imageResources[IMAGE_CASTLE_BRICK_ID];
 	}
 	//grass pattern
-	else if(strcmp(a_filename.c_str(), "grass.ddc") == 0)
+	else if(strcmp(a_filename.c_str(), "grass.dds") == 0)
 	{
 		return m_imageResources[IMAGE_GRASS_PATTERN_ID];
+	}
+	//grass billboard
+	else if(strcmp(a_filename.c_str(), "grassfin0.dds") == 0)
+	{
+		return m_imageResources[IMAGE_GRASS_BILLBOARD_ID];
 	}
 	else
 	{

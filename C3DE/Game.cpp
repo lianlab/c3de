@@ -10,6 +10,7 @@
 #include "Tree2.h"
 #include "Tree3.h"
 #include "Castle.h"
+#include "Grass.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -225,7 +226,7 @@ void Game::Update(int deltaTime)
 #if 1
 void Game::UpdateInput()
 {
-
+return;
 
 	float step = 1.1f;
 	float t_fleps = 0.0f;
@@ -933,12 +934,12 @@ void Game::InitializeMeshes()
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	
-	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
+	//m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
 
 	
 
 
-	m_testScene->AddTerrain(m_auei);
+	//m_testScene->AddTerrain(m_auei);
 
 	
 
@@ -947,9 +948,9 @@ void Game::InitializeMeshes()
 	//m_cube->AddMaterial(t_material);
 	//CreateMeshBuffers(m_cube);
 
-	m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
+	//m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
 
-	m_testScene->AddMesh(m_cube);
+	//m_testScene->AddMesh(m_cube);
 	
 #endif
 
@@ -958,7 +959,7 @@ void Game::InitializeMeshes()
 	m_cubeMovie = new CubeMovie();
 	m_cubeMovie->SetPosition(0.0f, 0.0f, 5.0f);
 	
-	
+	/*
 	Tree0 *t_tree0 = new Tree0();
 	t_tree0->Scale(0.2f, 0.2f, 0.2f);
 	t_tree0->SetPosition(5.0f, m_auei->GetHeight(5.0f, 10.0f), 10.0f);
@@ -974,13 +975,15 @@ void Game::InitializeMeshes()
 	Tree3 *t_tree3 = new Tree3();
 	t_tree3->Scale(0.2f, 0.2f, 0.2f);
 	t_tree3->SetPosition(20.0f, m_auei->GetHeight(20.0f, 10.0f), 10.0f);
-	
+	*/
 	
 	Castle *t_castle = new Castle();
 	
 
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_TREE_0_LEAVES_ID));	
 	
+	Grass *t_grass = new Grass();
+	m_testScene->AddMesh(t_grass);
 
 	m_billboard = new BillboardMesh(d3dImage);
 	m_billboard->AddMaterial(t_material);
@@ -989,10 +992,10 @@ void Game::InitializeMeshes()
 	//m_testScene->AddMesh(m_billboard);
 
 	
-	m_testScene->AddMesh(t_tree0);
-	m_testScene->AddMesh(t_tree1);
-	m_testScene->AddMesh(t_tree2);
-	m_testScene->AddMesh(t_tree3);
+	//m_testScene->AddMesh(t_tree0);
+	//m_testScene->AddMesh(t_tree1);
+	//m_testScene->AddMesh(t_tree2);
+	//m_testScene->AddMesh(t_tree3);
 
 	m_testScene->Initialize();
 	

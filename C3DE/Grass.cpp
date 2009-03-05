@@ -84,9 +84,56 @@ void Grass::BuildGrass()
 		D3DXVECTOR3 pos(x, y, z);
 		D3DXVECTOR3 scale(sx, sy, sz);
 
-		BuildGrassFin(v, k, indexOffset, pos, scale);
-		v += 4;
-		k += 6;
+		/////////////////////////
+		float amp = GetRandomFloat(0.5f, 1.0f);
+
+		
+#if 0
+		v[i*4] = GrassVertex(D3DXVECTOR3(-1.0f, -0.5f, 0.0f), D3DXVECTOR2(0.0f, 1.0f), 0.0f);
+		v[i*4 + 1] = GrassVertex(D3DXVECTOR3(-1.0f, 0.5f, 0.0f), D3DXVECTOR2(0.0f, 0.0f), amp);
+		v[i*4 + 2] = GrassVertex(D3DXVECTOR3(1.0f, 0.5f, 0.0f), D3DXVECTOR2(1.0f, 0.0f), amp);
+		v[i*4 + 3] = GrassVertex(D3DXVECTOR3(1.0f, -0.5f, 0.0f), D3DXVECTOR2(1.0f, 1.0f), 0.0f);
+		
+#else
+		float t_width = 2.0f;
+		float t_height = 1.0f;
+		float t_minX = -1.0f;
+		float t_minY = -0.5f;
+		float t_halfHeight = t_height/2.0f;
+		v[i*4]		= GrassVertex(D3DXVECTOR3(t_minX + x, t_minY + y + t_halfHeight, z), D3DXVECTOR2(0.0f, 1.0f), 0.0f);
+		v[i*4 + 1]	= GrassVertex(D3DXVECTOR3(t_minX + x, t_minY + t_height + y + t_halfHeight, z), D3DXVECTOR2(0.0f, 0.0f), amp);
+		v[i*4 + 2]	= GrassVertex(D3DXVECTOR3(t_minX + t_width + x, t_minY + t_height + y + t_halfHeight, z), D3DXVECTOR2(1.0f, 0.0f), amp);
+		v[i*4 + 3]	= GrassVertex(D3DXVECTOR3(t_minX + t_width + x, t_minY + y + t_halfHeight, z), D3DXVECTOR2(1.0f, 1.0f), 0.0f);
+#endif
+		k[i*6] = 0 + indexOffset;
+		k[i*6 + 1] = 1 + indexOffset;
+		k[i*6 + 2] = 2 + indexOffset;
+		k[i*6 + 3] = 0 + indexOffset;
+		k[i*6 + 4] = 2 + indexOffset;
+		k[i*6 + 5] = 3 + indexOffset;
+
+		indexOffset += 4;
+
+		for(int j = 0; j < 4; ++j)
+		{
+			//v[i*4 + j].pos.x *= scale.x;
+			//v[i*4 + j].pos.y *= scale.y;
+			//v[i*4 + j].pos.z *= scale.z;			
+
+			//v[i].colorOffset = D3DXCOLOR(GetRandomFloat(0.0f, 1.0f), GetRandomFloat(0.0f, 0.2f), GetRandomFloat(0.0f, 0.1f), 0.0f);
+			v[i*4 + j].colorOffset = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+		}
+
+		float heightOver2 = (v[i*4 + 1].pos.y - v[i*4].pos.y) /2;
+		pos.y += heightOver2;
+
+		v[i*4].quadPos = pos;
+		v[i*4 + 1].quadPos = pos;
+		v[i*4 + 2].quadPos = pos;
+		v[i*4 + 3].quadPos = pos;
+//////////////////////////////
+		//v += 4;
+		//k += 6;
 	}
 
 	HR(m_xMesh->UnlockVertexBuffer());
@@ -101,6 +148,8 @@ void Grass::BuildGrass()
 	HR(D3DXComputeBoundingBox(&v->pos, m_xMesh->GetNumVertices(),
 			m_xMesh->GetNumBytesPerVertex(), &t_min, &t_max));	
 
+	//t_min = D3DXVECTOR3(-1.0f, 0.0f, 0.0f);
+	//t_max = D3DXVECTOR3(21.0f, 1.0f, 4.0f);
 	m_boundingBox = new AABB(t_min, t_max);
 	
 	HR(m_xMesh->UnlockVertexBuffer());

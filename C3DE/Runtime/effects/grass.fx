@@ -63,8 +63,10 @@ OutputVS GrassVS(float3 posL : POSITION0,
 	// Zero out our output.
 	OutputVS outVS = (OutputVS)0;
 	
+	float3 t_transformedQuadPos = mul(float4(quadPosW, 1.0f), gTransformMatrix);
+	//float3 t_transformedQuadPos = quadPosW;
 	// Compute billboard matrix.
-	float3 look = normalize(gEyePosW - quadPosW);
+	float3 look = normalize(gEyePosW - t_transformedQuadPos);
 	//float3 look = normalize(gEyePosW - posL);
 	float3 right = normalize(cross(float3(0.0f, 1.0f, 0.0f), look));
 	float3 up    = cross(look, right);
@@ -74,10 +76,13 @@ OutputVS GrassVS(float3 posL : POSITION0,
 	lookAtMtx[0] = float4(right, 0.0f);
 	lookAtMtx[1] = float4(up, 0.0f);
 	lookAtMtx[2] = float4(look, 0.0f);
-	lookAtMtx[3] = float4(quadPosW, 1.0f);
+	lookAtMtx[3] = float4(t_transformedQuadPos, 1.0f);
 	//lookAtMtx[3] = float4(posL, 1.0f);
 	
-	float3 t_pseudo = posL - quadPosW;
+	float3 t_transformedPosL = mul(float4(posL, 1.0f), gTransformMatrix);
+	//float3 t_transformedPosL = posL;
+	float3 t_pseudo = t_transformedPosL - t_transformedQuadPos;
+	
 	
 	// Transform to world space.
 	//float4 posW = mul(float4(posL, 1.0f), lookAtMtx);

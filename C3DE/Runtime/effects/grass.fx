@@ -65,6 +65,7 @@ OutputVS GrassVS(float3 posL : POSITION0,
 	
 	// Compute billboard matrix.
 	float3 look = normalize(gEyePosW - quadPosW);
+	//float3 look = normalize(gEyePosW - posL);
 	float3 right = normalize(cross(float3(0.0f, 1.0f, 0.0f), look));
 	float3 up    = cross(look, right);
 	
@@ -74,9 +75,14 @@ OutputVS GrassVS(float3 posL : POSITION0,
 	lookAtMtx[1] = float4(up, 0.0f);
 	lookAtMtx[2] = float4(look, 0.0f);
 	lookAtMtx[3] = float4(quadPosW, 1.0f);
+	//lookAtMtx[3] = float4(posL, 1.0f);
+	
+	float3 t_pseudo = posL - quadPosW;
 	
 	// Transform to world space.
-	float4 posW = mul(float4(posL, 1.0f), lookAtMtx);
+	//float4 posW = mul(float4(posL, 1.0f), lookAtMtx);
+	float4 posW = mul(float4(t_pseudo, 1.0f), lookAtMtx);
+	//float4 posW = float4(posL, 1.0f);
 		
 	// Oscillate the vertices based on their amplitude factor.  Note that
 	// the bottom vertices of the grass fins (i.e., the vertices fixed to 

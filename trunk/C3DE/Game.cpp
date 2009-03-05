@@ -988,6 +988,7 @@ void Game::InitializeMeshes()
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_TREE_0_LEAVES_ID));	
 	
 	Grass *t_grass = new Grass(5, D3DXVECTOR3(5.0f, 0.0f, 1.0f));
+	t_grass->SetPosition(5.0f, 5.0f, 5.0f);
 	m_testScene->AddMesh(t_grass);
 
 	m_billboard = new BillboardMesh(d3dImage);

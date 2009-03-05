@@ -1,12 +1,20 @@
 #include "CommonDefs.h"
+#include "RandomDefs.h"
 #include "Debug.h"
 #include "DebugMemory.h"
 #include "D3DApplication.h"
+#include <ctime>
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd)
 {
+#if USE_TIME_SEED
+	srand(time(0));
+#else
+	srand(RANDOM_SEED);
+#endif
 	// Turn on the trace file 'dumpmemorylog.txt'
+
 	DumpMemoryLogAllAllocations(TRUE);
 
     D3DApplication *app = new D3DApplication();

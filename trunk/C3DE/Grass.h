@@ -18,12 +18,15 @@ struct GrassVertex
 class Grass : public D3DMesh
 {
 public:
-	Grass();
+	Grass(int a_numBlocks, D3DXVECTOR3 a_blockOffset);
 	~Grass();
 private:
 	void BuildGrass();
 	void SetShaderHandlers();
 
 	void BuildGrassFin(GrassVertex *v, WORD *k, int & indexOffset, D3DXVECTOR3 &worldPos, D3DXVECTOR3 &scale);
+
+	int m_numBlocks;
+	D3DXVECTOR3 m_blockOffset;
 };
 #endif

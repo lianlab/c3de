@@ -357,10 +357,10 @@ void D3DRenderer::DrawScene(Scene *scene)
 		
 		if(d3dmesh->GetXMesh())
 		{
-			if(IsAABBWithinView(d3dmesh->GetBoundingBox()))
+			if(true || IsAABBWithinView(d3dmesh->GetBoundingBox()))
 			{
 				this->shown++;
-				#if DRAW_BOUNDING_BOXES && 0
+				#if DRAW_BOUNDING_BOXES
 					DrawAABB(d3dmesh);
 				#endif
 				DrawXMesh(d3dmesh);

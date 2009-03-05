@@ -21,6 +21,8 @@ using namespace std;
 
 Game::Game(Application * app)
 {
+	
+
 	m_application = app;
 
 	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_EXPLOSION_ID);
@@ -933,14 +935,14 @@ void Game::InitializeMeshes()
 	m_testScene = new DefaultScene1();	
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
-	
-	//m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
+	/*
+	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
 
 	
 
 
-	//m_testScene->AddTerrain(m_auei);
-
+	m_testScene->AddTerrain(m_auei);
+*/
 	
 
 #if 1
@@ -950,6 +952,7 @@ void Game::InitializeMeshes()
 
 	//m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
 
+	m_cube->SetPosition(0.0f, 0.0f,5.0f);
 	//m_testScene->AddMesh(m_cube);
 	
 #endif
@@ -959,7 +962,8 @@ void Game::InitializeMeshes()
 	m_cubeMovie = new CubeMovie();
 	m_cubeMovie->SetPosition(0.0f, 0.0f, 5.0f);
 	
-	/*
+	
+/*
 	Tree0 *t_tree0 = new Tree0();
 	t_tree0->Scale(0.2f, 0.2f, 0.2f);
 	t_tree0->SetPosition(5.0f, m_auei->GetHeight(5.0f, 10.0f), 10.0f);
@@ -976,13 +980,14 @@ void Game::InitializeMeshes()
 	t_tree3->Scale(0.2f, 0.2f, 0.2f);
 	t_tree3->SetPosition(20.0f, m_auei->GetHeight(20.0f, 10.0f), 10.0f);
 	*/
+
 	
 	Castle *t_castle = new Castle();
 	
 
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_TREE_0_LEAVES_ID));	
 	
-	Grass *t_grass = new Grass();
+	Grass *t_grass = new Grass(25, D3DXVECTOR3(5.0f, 0.0f, 1.0f));
 	m_testScene->AddMesh(t_grass);
 
 	m_billboard = new BillboardMesh(d3dImage);
@@ -991,12 +996,12 @@ void Game::InitializeMeshes()
 	CreateMeshBuffers(m_billboard);
 	//m_testScene->AddMesh(m_billboard);
 
-	
-	//m_testScene->AddMesh(t_tree0);
-	//m_testScene->AddMesh(t_tree1);
-	//m_testScene->AddMesh(t_tree2);
-	//m_testScene->AddMesh(t_tree3);
-
+	/*
+	m_testScene->AddMesh(t_tree0);
+	m_testScene->AddMesh(t_tree1);
+	m_testScene->AddMesh(t_tree2);
+	m_testScene->AddMesh(t_tree3);
+*/
 	m_testScene->Initialize();
 	
 }

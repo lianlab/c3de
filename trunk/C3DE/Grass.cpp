@@ -7,8 +7,10 @@
 
 IDirect3DVertexDeclaration9* GrassVertex::Decl = 0;
 
-Grass::Grass() : D3DMesh()
+Grass::Grass(int a_numBlocks, D3DXVECTOR3 a_blockOffset) : D3DMesh()
 {
+	m_numBlocks = a_numBlocks;
+	m_blockOffset = a_blockOffset;
 	BuildGrass();
 
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_GRASS_BILLBOARD_ID));	
@@ -47,8 +49,8 @@ void Grass::BuildGrass()
 	UINT numElems = 0;
 	HR(GrassVertex::Decl->GetDeclaration(elems, &numElems));
 
-	const int NUM_GRASS_BLOCKS = 1;
-	HR(D3DXCreateMesh(NUM_GRASS_BLOCKS*2, NUM_GRASS_BLOCKS*4, D3DXMESH_MANAGED, 
+	//const int NUM_GRASS_BLOCKS = 5;
+	HR(D3DXCreateMesh(m_numBlocks*2, m_numBlocks*4, D3DXMESH_MANAGED, 
 		elems, t_device, &m_xMesh));
 
 	GrassVertex* v = 0;
@@ -58,26 +60,27 @@ void Grass::BuildGrass()
 	
 	int indexOffset = 0;
 
-	// Scale down the region in which we generate grass.
-	int w = 1;
-	int d = 1;
+	
+
 
 	// Randomly generate a grass block (three intersecting quads) around the 
 	// terrain in the height range [35, 50] (similar to the trees).
-	for(int i = 0; i < NUM_GRASS_BLOCKS; ++i)
+	for(int i = 0; i < m_numBlocks; ++i)
 	{
 		//============================================
 		// Construct vertices.
 
 		// Generate random position in region.  Note that we also shift
 		// this region to place it in the world.
-		float x = 0.0f;
-		float z = 5.0f;
-		float y = 0.0f;		
+		float x = m_blockOffset.x*i;
+		float z = m_blockOffset.z* i;
+		float y = m_blockOffset.y*i;		
 
 		float sx = GetRandomFloat(0.75f, 1.25f); 
 		float sy = GetRandomFloat(0.75f, 1.25f);
 		float sz = GetRandomFloat(0.75f, 1.25f);
+
+		
 		D3DXVECTOR3 pos(x, y, z);
 		D3DXVECTOR3 scale(sx, sy, sz);
 
@@ -164,7 +167,10 @@ void Grass::BuildGrassFin(GrassVertex *v, WORD *k, int & indexOffset, D3DXVECTOR
 		v[i].pos.y *= scale.y;
 		v[i].pos.z *= scale.z;
 
-		v[i].colorOffset = D3DXCOLOR(GetRandomFloat(0.0f, 1.0f), GetRandomFloat(0.0f, 0.2f), GetRandomFloat(0.0f, 0.1f), 0.0f);
+		
+
+		//v[i].colorOffset = D3DXCOLOR(GetRandomFloat(0.0f, 1.0f), GetRandomFloat(0.0f, 0.2f), GetRandomFloat(0.0f, 0.1f), 0.0f);
+		v[i].colorOffset = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 	}
 
 	float heightOver2 = (v[1].pos.y - v[0].pos.y) /2;

@@ -985,17 +985,17 @@ void Game::InitializeMeshes()
 	Castle *t_castle = new Castle();
 	
 
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_TREE_0_LEAVES_ID));	
+	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_TIGER_SKIN_ID));	
 	
-	Grass *t_grass = new Grass(5, D3DXVECTOR3(5.0f, 0.0f, 1.0f));
-	t_grass->SetPosition(5.0f, 5.0f, 5.0f);
-	m_testScene->AddMesh(t_grass);
+	Grass *t_grass = new Grass(25, D3DXVECTOR3(1.0f, 0.0f, 0.0f));
+	t_grass->SetPosition(0.0f,0.0f, 0.0f);
+	//m_testScene->AddMesh(t_grass);
 
 	m_billboard = new BillboardMesh(d3dImage);
 	m_billboard->AddMaterial(t_material);
-	m_billboard->SetPosition(0.0f, 0.0f, 5.0f);
-	CreateMeshBuffers(m_billboard);
-	//m_testScene->AddMesh(m_billboard);
+	m_billboard->SetPosition(5.0f, 5.0f, 5.0f);
+	//CreateMeshBuffers(m_billboard);
+	m_testScene->AddMesh(m_billboard);
 
 	/*
 	m_testScene->AddMesh(t_tree0);

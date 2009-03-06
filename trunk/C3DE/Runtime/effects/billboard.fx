@@ -22,8 +22,7 @@ uniform extern texture gTex;
 uniform extern float4x4 gTransformMatrix;
 uniform extern float gAlpha;
 
-uniform extern float3   gDirToSunW;
-uniform extern float    gTime;
+
 
 static float3 gFogColor = (0.5f, 0.5f, 0.5f);
 static float gFogStart = 1.0f;
@@ -50,24 +49,23 @@ struct OutputVS
     float4 posH    : POSITION0;
     float2 tex0    : TEXCOORD0;
     float  fogLerpParam : TEXCOORD1;
-    float4 colorOffset : COLOR0;
+    
 };
 
-OutputVS GrassVS(float3 posL : POSITION0,  
-                 float3 quadPosW : TEXCOORD0, 
-                 float2 tex0 : TEXCOORD1,  
-                 float amplitude : TEXCOORD2,
-                 float4 colorOffset : COLOR0)
+OutputVS GrassVS(float3 posL : POSITION0, 
+                 float3 normal:NORMAL0,  
+                 float2 tex0 : TEXCOORD0)
 {
     
 	// Zero out our output.
 	OutputVS outVS = (OutputVS)0;
 	
-	float3 t_transformedQuadPos = mul(float4(quadPosW, 1.0f), gTransformMatrix);
-	//float3 t_transformedQuadPos = quadPosW;
+	float3 t_pos = float3(0.0f, 0.0f, 0.0f);
+	float3 t_transformedQuadPos = mul(float4(t_pos, 1.0f), gTransformMatrix);
+	
 	// Compute billboard matrix.
 	float3 look = normalize(gEyePosW - t_transformedQuadPos);
-	//float3 look = normalize(gEyePosW - posL);
+	
 	float3 right = normalize(cross(float3(0.0f, 1.0f, 0.0f), look));
 	float3 up    = cross(look, right);
 	
@@ -79,30 +77,13 @@ OutputVS GrassVS(float3 posL : POSITION0,
 	lookAtMtx[3] = float4(t_transformedQuadPos, 1.0f);
 	//lookAtMtx[3] = float4(posL, 1.0f);
 	
-	float3 t_transformedPosL = mul(float4(posL, 1.0f), gTransformMatrix);
-	//float3 t_transformedPosL = posL;
+	float3 t_transformedPosL = mul(float4(posL, 1.0f), gTransformMatrix);	
 	float3 t_pseudo = t_transformedPosL - t_transformedQuadPos;
 	
 	
 	// Transform to world space.
-	//float4 posW = mul(float4(posL, 1.0f), lookAtMtx);
-	float4 posW = mul(float4(t_pseudo, 1.0f), lookAtMtx);
-	//float4 posW = float4(posL, 1.0f);
-		
-	// Oscillate the vertices based on their amplitude factor.  Note that
-	// the bottom vertices of the grass fins (i.e., the vertices fixed to 
-	// the ground) have zero amplitude, hence they do not move, which is what
-	// we want since they are fixed.
-	float sine = amplitude*sin(amplitude*gTime);
-
-	// Oscillate along right vector.
-	posW.xyz += sine*right;
 	
-	// Oscillate the color channels as well for variety (we add this
-	// color perturbation to the color of the texture to offset it).
-	outVS.colorOffset.r = colorOffset.r + 0.1f*sine;
-	outVS.colorOffset.g = colorOffset.g + 0.2f*sine;
-	outVS.colorOffset.b = colorOffset.b + 0.1f*sine;
+	float4 posW = mul(float4(t_pseudo, 1.0f), lookAtMtx);
 	
 	// Transform to homogeneous clip space.
 	outVS.posH = mul(posW, gWVP);
@@ -122,13 +103,13 @@ OutputVS GrassVS(float3 posL : POSITION0,
 }
 
 float4 GrassPS(float2 tex0 : TEXCOORD0,
-               float fogLerpParam : TEXCOORD1,
-               float4 colorOffset : COLOR0) : COLOR
+               float fogLerpParam : TEXCOORD1/*,
+               float4 colorOffset : COLOR0*/) : COLOR
 {
 	// Get the texture color.
 	float4 texColor = tex2D(TexS, tex0);
 	
-	texColor += colorOffset; // Add in color.
+	
 	
 	 // Add fog.
     float3 final = lerp(texColor.rgb, gFogColor, fogLerpParam);

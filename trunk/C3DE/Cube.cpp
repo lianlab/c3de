@@ -19,7 +19,7 @@ Cube::Cube()
 	m_vertices->push_back(VertexPos(-1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f));
 	m_vertices->push_back(VertexPos( 1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f));
 	m_vertices->push_back(VertexPos( 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f));
-/*
+
 	// Fill in the back face vertex data.
 	m_vertices->push_back(VertexPos(-1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f));
 	m_vertices->push_back(VertexPos( 1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f));
@@ -49,7 +49,7 @@ Cube::Cube()
 	m_vertices->push_back(VertexPos( 1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 	m_vertices->push_back(VertexPos( 1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f));
 	m_vertices->push_back(VertexPos( 1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f));
-	*/
+	
 #endif
 	
 	//indices
@@ -64,7 +64,7 @@ Cube::Cube()
 	m_indices->push_back(0);
 	m_indices->push_back(2);
 	m_indices->push_back(3);
-	/*
+	
 	m_indices->push_back(4);
 	m_indices->push_back(5);
 	m_indices->push_back(6);
@@ -97,7 +97,7 @@ Cube::Cube()
 	m_indices->push_back(20);
 	m_indices->push_back(22);
 	m_indices->push_back(23);
-	*/
+	
 #endif
 
 	

@@ -73,7 +73,7 @@ void Grass::BuildGrass()
 		// Generate random position in region.  Note that we also shift
 		// this region to place it in the world.
 		float x = m_blockOffset.x*i;
-		float z = m_blockOffset.z* i;
+		float z = m_blockOffset.z*i;
 		float y = m_blockOffset.y*i;		
 
 		float sx = GetRandomFloat(0.75f, 1.25f); 

@@ -82,7 +82,7 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 	m_input->AddKeyboardListener((KeyboardListener *)m_game);
 	m_input->AddMouseListener((MouseListener *)m_game);	
 
-	//m_game->SetInputer(m_input);
+	m_game->SetInputer(m_input);
 
 	return true;
 }

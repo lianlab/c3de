@@ -15,6 +15,8 @@ public:
 
 	void SetAlpha(float alpha);
 
+	void SetTime(float a_time);
+
 	void ResetHandlers();
 protected:
 	D3DXHANDLE m_shaderObjectAmbientMaterial;//gAmbientMtrl

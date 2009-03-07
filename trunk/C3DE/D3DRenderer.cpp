@@ -15,7 +15,7 @@
 #include "Dwarf.h"
 
 #define REAL_HACK 0
-#define DRAW_BOUNDING_BOXES 1
+#define DRAW_BOUNDING_BOXES 0
 
 #if REAL_HACK
 IDirect3DVertexDeclaration9* VertexPosHACK::Decl = 0;
@@ -357,7 +357,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 		
 		if(d3dmesh->GetXMesh())
 		{
-			if(true || IsAABBWithinView(d3dmesh->GetBoundingBox()))
+			if(IsAABBWithinView(d3dmesh->GetBoundingBox()))
 			{
 				this->shown++;
 				#if DRAW_BOUNDING_BOXES

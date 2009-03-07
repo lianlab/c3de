@@ -28,11 +28,18 @@ GrassGrid::GrassGrid(int a_numBlockRows, int a_numBlocksCols, D3DXVECTOR3 a_bloc
 	
 
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_GRASS_FX_ID);
+
+	m_time = 0.0f;
 }
 
 GrassGrid::~GrassGrid() 
 {
 
+}
+
+void GrassGrid::Update(int deltaTime)
+{
+	m_time += deltaTime / 1000.0f;
 }
 
 void GrassGrid::BuildGrass()
@@ -206,6 +213,9 @@ void GrassGrid::SetShaderHandlers()
 	t_effect->SetObjectTexture(t_d3dText->GetTexture());
 
 	t_effect->SetTransformMatrix(GetTransformMatrix());
+
+	t_effect->SetTime(m_time);
+	
 	//t_effect->SetAlpha(m_alpha);
 	
 }

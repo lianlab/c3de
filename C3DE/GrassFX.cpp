@@ -51,6 +51,11 @@ FX(effect)
 	
 }
 
+void GrassFX::SetTime(float a_time)
+{
+	HR(m_effect->SetValue(m_shaderGrassTime, &a_time,sizeof(float)));
+}
+
 GrassFX::~GrassFX()
 {
 

@@ -76,8 +76,7 @@ OutputVS GrassVS(float3 posL : POSITION0,
 	lookAtMtx[0] = float4(right, 0.0f);
 	lookAtMtx[1] = float4(up, 0.0f);
 	lookAtMtx[2] = float4(look, 0.0f);
-	lookAtMtx[3] = float4(t_transformedQuadPos, 1.0f);
-	//lookAtMtx[3] = float4(posL, 1.0f);
+	lookAtMtx[3] = float4(t_transformedQuadPos, 1.0f);	
 	
 	float3 t_transformedPosL = mul(float4(posL, 1.0f), gTransformMatrix);
 	//float3 t_transformedPosL = posL;
@@ -144,6 +143,7 @@ technique ShaderTech
         vertexShader = compile vs_2_0 GrassVS();
         pixelShader  = compile ps_2_0 GrassPS();
         
+      
         AlphaRef = 200;
         AlphaFunc = GreaterEqual;
         AlphaTestEnable = true;

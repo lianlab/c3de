@@ -2,6 +2,7 @@
 #include "ResourceManager.h"
 #include "ShaderManager.h"
 #include "SkinnedMeshBookFX.h"
+#include "D3DRenderer.h"
 
 WomanMesh::WomanMesh() : D3DSkinnedMesh()
 {
@@ -13,6 +14,8 @@ WomanMesh::WomanMesh() : D3DSkinnedMesh()
 	AddMaterial(Material::WHITE);
 
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_SKINNED_MESH_BOOK_FX_ID);
+
+	LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TINY_ANIM_ID), D3DRenderer::GetDevice());
 
 }
 

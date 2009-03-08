@@ -272,7 +272,8 @@ void Game::UpdateInput()
 	D3DXVec3TransformCoord(&m_carDirection, &m_carDirection, &R);
 	D3DXVec3Normalize(&m_carDirection, &m_carDirection);
 	
-	m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + t_dAngle, m_cube->GetRotationZ());
+	//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + t_dAngle, m_cube->GetRotationZ());
+	m_woman->Rotate(m_woman->GetRotationX(), m_woman->GetRotationY() + t_dAngle, m_woman->GetRotationZ());
 
 	m_cubeX += newPos.x;
 	m_cubeY += newPos.y;
@@ -283,7 +284,8 @@ void Game::UpdateInput()
 	hy = (int)m_auei->GetHeight(m_cubeX, m_cubeZ);
 	//hy = (int)m_cubeZ;
 
-	m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
+	//m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
+	m_woman->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
 
 #define LOCK_CAMERA 1
 #define FIXED_CAMERA !LOCK_CAMERA
@@ -490,9 +492,10 @@ void Game::OnKeyDown(int key)
 
 	
 	//float step = 0.1f;
-	Mesh * target = (Mesh*)m_cube;
+	//Mesh * target = (Mesh*)m_cube;
+	Mesh * target = (Mesh*)m_woman;
 	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 0.1f;
+	float step = 0.01f;
 
 	if(key == 1)
 	{
@@ -529,6 +532,19 @@ void Game::OnKeyDown(int key)
 	{
 		target->Scale(target->GetXScale() - step, target->GetYScale(), target->GetZScale());
 	}
+#endif
+#if 0
+else if(key == 200)
+	{		
+		target->Scale(target->GetXScale()-step, target->GetYScale()-step, target->GetZScale() - step);		
+		
+		
+	}
+	else if(key == 208)
+	{		
+		target->Scale(target->GetXScale() + step, target->GetYScale() + step, target->GetZScale() + step);		
+	}	
+	
 #endif
 #if 0
 	else if(key == 200)
@@ -939,10 +955,10 @@ void Game::InitializeMeshes()
 	m_cube->AddMaterial(t_material);
 	CreateMeshBuffers(m_cube);
 
-	m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
+	//m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
 
-	m_cube->SetPosition(0.0f, 0.0f,5.0f);
-	m_testScene->AddMesh(m_cube);
+	//m_cube->SetPosition(0.0f, 0.0f,5.0f);
+	//m_testScene->AddMesh(m_cube);
 	
 #endif
 
@@ -982,20 +998,27 @@ void Game::InitializeMeshes()
 	D3DImage * t_d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_GRASS_BILLBOARD_ID));	
 	GrassGrid *t_grassGrid = new GrassGrid(5, 5, D3DXVECTOR3(0.5f, 0.0f, 0.5f), t_d3dImage, 2.0f, 2.0f);
 	t_grassGrid->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
-	m_testScene->AddMesh(t_grassGrid);
+	//m_testScene->AddMesh(t_grassGrid);
 
 	m_billboard = new BillboardMesh(d3dImage);
 	m_billboard->AddMaterial(t_material);
 	m_billboard->SetPosition(5.0f, 5.0f, 5.0f);
 	//CreateMeshBuffers(m_billboard);
-	m_testScene->AddMesh(m_billboard);
+	//m_testScene->AddMesh(m_billboard);
 
-	
+	m_woman = new WomanMesh();
+	m_woman->Scale(0.01f, 0.01f, 0.01f);
+	m_woman->Rotate(-81.0f, 0.0f, 0.0f);
+	m_woman->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
+	//CreateMeshBuffers(t_woman);
+	//m_testScene->AddMesh(m_woman);
+
+	/*
 	m_testScene->AddMesh(t_tree0);
 	m_testScene->AddMesh(t_tree1);
 	m_testScene->AddMesh(t_tree2);
 	m_testScene->AddMesh(t_tree3);
-
+*/
 	m_testScene->Initialize();
 	
 }

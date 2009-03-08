@@ -31,6 +31,8 @@ void D3DApplication::SetupWindow()
 }
 
 
+
+
 bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windowed)
 {	
 

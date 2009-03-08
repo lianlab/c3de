@@ -143,6 +143,8 @@ private:
 	float m_cubeY;
 	float m_cubeZ;
 
+	WomanMesh *m_woman;
+
 	D3DXVECTOR3 m_carDirection;
 
 	BillboardMesh * m_billboard;

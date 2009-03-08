@@ -196,22 +196,10 @@ Game::~Game()
 }
 
 void Game::Update(int deltaTime)
-{
-	
-	//m_sprite->SetX(m_sprite->GetX() + m_speed);
-	//m_sprite->SetY(m_sprite->GetY() + m_yspeed);
-
+{		
 	UpdateInput();
 
-	if(m_sprite->GetX() > 640 || m_sprite->GetX() < 0)
-	{
-		m_speed = m_speed * -1;
-	}
-
-	if(m_sprite->GetY() > 480 || m_sprite->GetY() < 0)
-	{
-		m_yspeed = m_yspeed * -1;
-	}
+	
 	m_sprite->Update(deltaTime);
 
 	m_deltaTime = deltaTime;
@@ -229,7 +217,7 @@ void Game::Update(int deltaTime)
 #if 1
 void Game::UpdateInput()
 {
-return;
+
 
 	float step = 1.1f;
 	float t_fleps = 0.0f;
@@ -948,13 +936,13 @@ void Game::InitializeMeshes()
 
 #if 1
 	m_cube = new Cube();
-	//m_cube->AddMaterial(t_material);
-	//CreateMeshBuffers(m_cube);
+	m_cube->AddMaterial(t_material);
+	CreateMeshBuffers(m_cube);
 
-	//m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
+	m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
 
 	m_cube->SetPosition(0.0f, 0.0f,5.0f);
-	//m_testScene->AddMesh(m_cube);
+	m_testScene->AddMesh(m_cube);
 	
 #endif
 

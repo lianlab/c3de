@@ -31,6 +31,8 @@ public:
 
 	Renderer *GetRenderer(){return (Renderer *)m_renderer;}
 
+	
+
 
 	
 private:

@@ -1,4 +1,6 @@
 #include "DirectInput.h"
+#include "CommonDefs.h"
+#include "ReplayDefs.h"
 #include "DebugMemory.h"
 
 DirectInput* DirectInput::m_instance = NULL;
@@ -9,6 +11,8 @@ DirectInput::DirectInput()
 	int ret = GetCursorPos(&point);
 	m_mouseAbsX = (int)point.x;
 	m_mouseAbsY = (int)point.y;
+
+	
 }
 
 DirectInput * DirectInput::GetInstance()
@@ -32,6 +36,10 @@ DirectInput::~DirectInput()
 
 void DirectInput::Update()
 {
+#if ENABLE_REPLAY && REPLAYING
+	return;
+#endif
+
 	HRESULT hr = m_keyboard->GetDeviceState(sizeof(m_keyboardState), (void**)&m_keyboardState);
 	
 	POINT point;
@@ -101,6 +109,8 @@ void DirectInput::Update()
 		
 	}
 
+
+
 	hr = m_keyboard->GetDeviceState(sizeof(m_previousKeyboardState), (void**)&m_previousKeyboardState);
 	hr = m_mouse->GetDeviceState(sizeof(m_previousMouseState), (void**)&m_previousMouseState);
 
@@ -144,16 +154,52 @@ void DirectInput::Init(HINSTANCE hInstance, HWND hwnd)
 
 }
 
+void DirectInput::SetKeyDown(int key, bool a_isDown)
+{
+	if(key > 255 || key < 0) return;
+	m_keyboardState[key] = (a_isDown) ? -128 : 0;
+}
 
+void DirectInput::ClearAllKeys()
+{
+	for(int i = 0; i< 256; i++)
+	{
+		m_keyboardState[i] = 0;
+		
+	}
+}
 
 bool DirectInput::IsKeyDown(int key)
 {
-	if(key > 255) return false;
+	if(key > 255) return false;	
 	return (m_keyboardState[key] & 0x80);
 }
 
 bool DirectInput::IsMouseButtonDown(int button)
 {
 	return false;
+}
+
+int * DirectInput::GetKeysDown()
+{
+	m_downKeys[0] = -1;
+	m_downKeys[1] = -1;
+	m_downKeys[2] = -1;
+	m_downKeys[3] = -1;
+	int t_iterator = 0;
+	for(int i = 0; i< 256; i++)
+	{
+		if(IsKeyDown(i))
+		{
+			m_downKeys[t_iterator] = i;
+			t_iterator++;
+			if(t_iterator == MAX_DOWN_KEYS_AT_A_TIME)
+			{
+				break;
+			}
+		}
+	}
+
+	return m_downKeys;
 }
 

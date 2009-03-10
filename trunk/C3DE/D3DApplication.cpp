@@ -2,6 +2,8 @@
 #include "Debug.h"
 #include "WindowsPerformanceCounter.h"
 #include "DirectInput.h"
+#include "ResourceManager.h"
+#include "TerrainFactory.h"
 #include "DebugMemory.h"
 
 
@@ -17,6 +19,8 @@ D3DApplication::~D3DApplication()
 	delete m_renderer;
 	delete m_input;
 	delete m_game;
+
+	
 }
 
 
@@ -138,6 +142,7 @@ bool D3DApplication::Quit()
 
 bool D3DApplication::Cleanup()
 {
+	
 	return true;
 }
 

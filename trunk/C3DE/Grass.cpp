@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 
 
+
 IDirect3DVertexDeclaration9* GrassVertex::Decl = 0;
 
 Grass::Grass(int a_numBlocks, D3DXVECTOR3 a_blockOffset) : D3DMesh()

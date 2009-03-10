@@ -1,5 +1,6 @@
 #include "FXManager.h"
 #include "D3DMesh.h"
+#include "DebugMemory.h"
 
 FXManager * FXManager::m_instance = NULL;
 
@@ -141,10 +142,30 @@ void FXManager::SetSceneEffects(Scene *scene)
 
 	AddEffect(ShaderManager::GetInstance()->GetDefaultShadowFX());
 
+
+	if(t_meshes)
+	{
+		delete t_meshes;
+		t_meshes = NULL;
+	}
 	
 }
 
 FXManager::~FXManager()
-{
-
+{	
+	if(m_effects)
+	{
+		int totalEffects = m_effects->size();
+		for(int i = 0; i < totalEffects; i++)
+		{
+			FX * t_effect = m_effects->at(i);
+			if(t_effect)
+			{
+				delete t_effect;
+				t_effect = NULL;
+			}
+		}
+		delete m_effects;
+		m_effects = NULL;
+	}
 }

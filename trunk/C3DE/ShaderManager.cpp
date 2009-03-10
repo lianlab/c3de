@@ -1,5 +1,5 @@
 #include "ShaderManager.h"
-#include "DebugMemory.h"
+
 #include "D3DCommonDefs.h"
 
 #include "BookLights.h"
@@ -14,6 +14,7 @@
 #include "SkinnedMeshBookFX.h"
 #include "BillboardFX.h"
 #include "GrassFX.h"
+#include "DebugMemory.h"
 
 ShaderManager * ShaderManager::m_instance = NULL;
 

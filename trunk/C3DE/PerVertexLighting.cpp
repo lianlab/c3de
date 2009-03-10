@@ -1,4 +1,5 @@
 #include "PerVertexLighting.h"
+#include "DebugMemory.h"
 
 
 PerVertexLighting::PerVertexLighting(ID3DXEffect *effect):

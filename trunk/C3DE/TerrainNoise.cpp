@@ -2,6 +2,7 @@
 #include "Material.h"
 #include "D3DImage.h"
 #include "ResourceManager.h"
+#include "DebugMemory.h"
 
 TerrainNoise::TerrainNoise(IDirect3DDevice9 * a_device):
 Terrain(TERRAIN_NOISE_ID, 512, 512, a_device,ResourceManager::GetInstance()->GetTextureByID(IMAGE_TERRAIN_NOISE_ID), 10.0f, 1.0f)
@@ -15,5 +16,6 @@ Terrain(TERRAIN_NOISE_ID, 512, 512, a_device,ResourceManager::GetInstance()->Get
 
 TerrainNoise::~TerrainNoise()
 {
-
+	FreeMaterials();
+	FreeTextures();
 }

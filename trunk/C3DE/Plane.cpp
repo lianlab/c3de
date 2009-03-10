@@ -4,6 +4,7 @@
 #include "Plane.h"
 #include "PerPixelLighting.h"
 #include "PerVertexLighting.h"
+#include "D3DRenderer.h"
 #include "DebugMemory.h"
 
 
@@ -25,6 +26,8 @@ Plane::Plane(float width, float height)
 	m_indices->push_back(2);
 	m_indices->push_back(3);
 	m_indices->push_back(1);
+
+	CreateXMesh(D3DRenderer::GetDevice());
 
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_PIXEL_TEXTURES_ID);
 	PerPixelLighting *t_effect = (PerPixelLighting *) m_effect;

@@ -1,7 +1,8 @@
 #include "ResourceManager.h"
 #include <fstream>
-#include "DebugMemory.h"
 #include "D3DCommonDefs.h"
+#include "DebugMemory.h"
+
 
 using namespace std;
 

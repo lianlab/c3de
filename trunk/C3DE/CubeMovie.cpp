@@ -1,5 +1,6 @@
 #include "CubeMovie.h"
 #include "ResourceManager.h"
+#include "DebugMemory.h"
 
 CubeMovie::CubeMovie():VideoMesh(ResourceManager::GetInstance()->GetVideoByID(VIDEO_FIRST_ID))
 {

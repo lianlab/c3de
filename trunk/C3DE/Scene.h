@@ -54,6 +54,8 @@ public:
 
 	void FreeMeshes();
 
+	void FreeTerrains();
+
 	virtual void Update(int deltaTime);
 
 protected:

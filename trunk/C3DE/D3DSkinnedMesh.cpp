@@ -18,12 +18,7 @@ IDirect3DVertexDeclaration9* VertexPNT::Decl = 0;
 D3DSkinnedMesh::D3DSkinnedMesh() : D3DMesh()
 {
 	
-	//m_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
-	//									D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);
 
-
-	//m_materials->push_back(m_material);
-	
 
 }
 

@@ -141,6 +141,8 @@ Cube::~Cube()
 {
 	ReleaseCOM(m_vertexDeclaration);
 
+	FreeTextures();
+	FreeMaterials();
 	
 }
 

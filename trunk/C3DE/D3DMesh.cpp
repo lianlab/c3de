@@ -30,6 +30,8 @@ D3DMesh::D3DMesh():Mesh()
 	//m_materials = NULL;
 	//m_textures = NULL;
 
+	m_vertexDeclaration = NULL;
+
 
 	m_effect = NULL;
 
@@ -60,15 +62,6 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 	}
 
 
-	//m_materials->push_back(m_material);
-#if 0
-	D3DImage *t_image = (D3DImage *)m_texture;
-	if(t_image)
-	{
-
-		m_textures->push_back((Image*)t_image);
-	}
-#endif
 	
 
 	D3DVERTEXELEMENT9 VertexPosElements[] = 
@@ -148,7 +141,7 @@ AABB* D3DMesh::GetBoundingBox()
 	D3DXVECTOR4 t_max = D3DXVECTOR4(m_boundingBox->maxPoint, 1.0f);
 	D3DXVec3Transform(&t_min, &m_boundingBox->minPoint, &t_matrix);
 	D3DXVec3Transform(&t_max, &m_boundingBox->maxPoint, &t_matrix);
-
+#if 1
 	if(m_transformedBox)
 	{
 		delete m_transformedBox;
@@ -159,6 +152,8 @@ AABB* D3DMesh::GetBoundingBox()
 	m_transformedBox = new AABB(D3DXVECTOR3(t_min.x, t_min.y, t_min.z), D3DXVECTOR3(t_max.x, t_max.y, t_max.z));		
 
 	return m_transformedBox;
+	#endif
+	return NULL;
 
 }
 

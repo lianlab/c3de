@@ -1,9 +1,11 @@
 #include "Terrain.h"
 #include "PerVertexLighting.h"
 #include "SkinnedMeshFX.h"
-//#include "DebugMemory.h"
+
 #include "ResourceManager.h"
 #include "CommonDefs.h"
+
+//#include "DebugMemory.h"
 
 Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDirect3DTexture9 *a_texture, float maxHeight, float cellSize)
 {	
@@ -154,15 +156,7 @@ Terrain::Terrain(int a_ID, int a_rows, int a_cols, IDirect3DDevice9*a_device,IDi
 	{
 		for(int j = 0; j < (a_cols); j++)
 		{
-			/*
-			int index1 = i*(a_rows + 1) + j;
-			int index2 = i*(a_rows + 1) + j + 1;
-			int index3 = (i+1)*(a_rows + 1) + j;
 			
-			int index4 = (i+1)*(a_rows + 1) + j;
-			int index5 = i*(a_rows + 1) + j + 1;
-			int index6 = (i+1)*(a_rows + 1) + j + 1;
-			*/
 
 			int index1 = (i+1)*(a_cols+1) + j;
 			int index2 = i*(a_cols+1) + j;
@@ -429,6 +423,20 @@ void Terrain::BuildSubGridMesh(RECT& R, VertexPos* gridVerts)
 
 Terrain::~Terrain()
 {
+	//FREE SUBGRIDS
+	if(m_subMeshes)
+	{
+		int t_totalSubmeshes = m_subMeshes->size();
+		for(int i = 0; i < t_totalSubmeshes; i++)
+		{
+			D3DMesh * t_subMesh = m_subMeshes->at(i);
+			delete t_subMesh;
+			t_subMesh = NULL;
+		}
+
+		delete m_subMeshes;
+		m_subMeshes = NULL;
+	}
 	ReleaseCOM(m_vertexDeclaration);
 	delete [] m_heights;
 }

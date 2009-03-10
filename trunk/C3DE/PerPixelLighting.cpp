@@ -1,4 +1,5 @@
 #include "PerPixelLighting.h"
+#include "DebugMemory.h"
 
 
 PerPixelLighting::PerPixelLighting(ID3DXEffect *effect):

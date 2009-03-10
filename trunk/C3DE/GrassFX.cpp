@@ -1,4 +1,5 @@
 #include "GrassFX.h"
+#include "DebugMemory.h"
 
 
 GrassFX::GrassFX(ID3DXEffect *effect):

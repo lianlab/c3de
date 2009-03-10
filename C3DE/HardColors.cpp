@@ -1,4 +1,5 @@
 #include "HardColors.h"
+#include "DebugMemory.h"
 
 
 HardColors::HardColors(ID3DXEffect *effect):

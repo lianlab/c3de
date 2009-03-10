@@ -3,6 +3,7 @@
 #include "ShaderManager.h"
 #include "SkinnedMeshBookFX.h"
 #include "D3DRenderer.h"
+#include "DebugMemory.h"
 
 WomanMesh::WomanMesh() : D3DSkinnedMesh()
 {
@@ -42,5 +43,6 @@ void WomanMesh::SetShaderHandlers()
 
 WomanMesh::~WomanMesh()
 {
-
+	FreeTextures();
+	FreeMaterials();
 }

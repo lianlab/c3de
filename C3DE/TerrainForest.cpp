@@ -1,5 +1,6 @@
 #include "TerrainForest.h"
 #include "ResourceManager.h"
+#include "DebugMemory.h"
 
 TerrainForest::TerrainForest(IDirect3DDevice9 * a_device):
 Terrain(TERRAIN_FOREST_ID, 256,256,a_device,ResourceManager::GetInstance()->GetTextureByID(IMAGE_TERRAIN_FOREST_ID), 10.0f)
@@ -13,5 +14,6 @@ Terrain(TERRAIN_FOREST_ID, 256,256,a_device,ResourceManager::GetInstance()->GetT
 
 TerrainForest::~TerrainForest()
 {
-
+	FreeMaterials();
+	FreeTextures();
 }

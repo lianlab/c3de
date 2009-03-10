@@ -1,4 +1,5 @@
 #include "FX.h"
+#include "DebugMemory.h"
 
 FX::FX(ID3DXEffect * effect)
 {

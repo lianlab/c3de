@@ -2,6 +2,7 @@
 #include "Material.h"
 #include "D3DImage.h"
 #include "ResourceManager.h"
+#include "DebugMemory.h"
 
 TerrainNormal::TerrainNormal(IDirect3DDevice9 * a_device):
 Terrain(TERRAIN_NORMAL_ID, 128,128,a_device,ResourceManager::GetInstance()->GetTextureByID(IMAGE_TERRAIN_ID), 10.0f)
@@ -15,5 +16,6 @@ Terrain(TERRAIN_NORMAL_ID, 128,128,a_device,ResourceManager::GetInstance()->GetT
 
 TerrainNormal::~TerrainNormal()
 {
-
+	FreeMaterials();
+	FreeTextures();
 }

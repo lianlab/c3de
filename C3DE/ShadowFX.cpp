@@ -1,4 +1,5 @@
 #include "ShadowFX.h"
+#include "DebugMemory.h"
 
 
 ShadowFX::ShadowFX(ID3DXEffect *effect):

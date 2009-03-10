@@ -4,6 +4,7 @@
 #include "Terrain.h"
 #include "TerrainFactory.h"
 
+
 Billboard::Billboard():VideoMesh(ResourceManager::GetInstance()->GetVideoByID(VIDEO_FIRST_ID))
 {
 	m_vertices = new vector<VertexPos>;

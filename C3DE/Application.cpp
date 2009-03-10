@@ -4,7 +4,9 @@
 #include "WindowsPerformanceCounter.h"
 #include "Debug.h"
 #include "ResourceManager.h"
+#include "TerrainFactory.h"
 #include "ShaderManager.h"
+#include "FXManager.h"
 #include "DebugMemory.h"
 
 Application::Application()
@@ -19,7 +21,9 @@ Application::~Application()
 	delete WindowsPerformanceCounter::GetInstance();
 	delete Debug::GetInstance();
 	delete ResourceManager::GetInstance();
+	delete TerrainFactory::GetInstance();
 	delete ShaderManager::GetInstance();
+	delete FXManager::GetInstance();
 }
 
 bool Application::Init()

@@ -1,4 +1,5 @@
 #include "SkinnedMeshBookFX.h"
+#include "DebugMemory.h"
 
 
 SkinnedMeshBookFX::SkinnedMeshBookFX(ID3DXEffect *effect):

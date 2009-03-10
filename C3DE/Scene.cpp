@@ -22,6 +22,8 @@ Scene::~Scene()
 
 	FreeMirrors();
 
+	FreeTerrains();
+
 	FreeShadowSurfaces();
 
 	if(m_ambientLight)
@@ -130,6 +132,7 @@ void Scene::FreeMeshes()
 		if(t_mesh)
 		{
 			delete t_mesh;
+			t_mesh = NULL;
 		}
 	}
 
@@ -137,6 +140,28 @@ void Scene::FreeMeshes()
 	{
 		delete m_meshes;
 		m_meshes = NULL;
+	}
+}
+
+void Scene::FreeTerrains()
+{
+#if 0
+	int totalTerrains = m_terrains->size();
+
+	for(int i = 0; i < totalTerrains; i++)
+	{
+		Terrain *t_terrain = m_terrains->at(i);
+		if(t_terrain)
+		{
+			delete t_terrain;
+			t_terrain = NULL;
+		}
+	}
+#endif
+	if(m_terrains)
+	{
+		delete m_terrains;
+		m_terrains = NULL;
 	}
 }
 

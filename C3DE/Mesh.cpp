@@ -33,39 +33,19 @@ Mesh::Mesh()
 Mesh::~Mesh()
 {
 
-	/*
-	if(m_material)
+	
+
+	if(m_materials)
 	{
-		delete m_material;
-		m_material = NULL;
+		delete m_materials;
+		m_materials = NULL;
+	}
+
+	if(m_textures)
+	{
+		delete m_textures;
+		m_textures = NULL;
 	}
 
 
-	if(m_texture)
-	{
-		delete m_texture;
-		m_texture = NULL;
-	}
-	*/
 }
-
-/*
-void Mesh::SetMaterial(Material *material)
-{
-	
-	//if(m_material)
-	//{
-	//	delete m_material;
-	//	m_material = NULL;
-	//}
-	
-	
-}
-*/
-
-/*
-void Mesh::auei(Renderer *a_renderer)
-{
-	a_renderer->nada();
-}
-*/

@@ -1,6 +1,7 @@
 #include "VideoMesh.h"
 #include "PerVertexLighting.h"
 #include "D3DRenderer.h"
+#include "DebugMemory.h"
 
 VideoMesh::VideoMesh(VideoStructure *a_video):D3DMesh()
 {
@@ -8,8 +9,8 @@ VideoMesh::VideoMesh(VideoStructure *a_video):D3DMesh()
 	
 	m_currentFrameTexture = NULL;
 	m_currentFrame = 0;
-	m_vertices = new vector<VertexPos>;
-	m_indices = new vector<int>;
+	//m_vertices = new vector<VertexPos>;
+	//m_indices = new vector<int>;
 
 	//vertices
 
@@ -26,7 +27,9 @@ VideoMesh::VideoMesh(VideoStructure *a_video):D3DMesh()
 
 VideoMesh::~VideoMesh()
 {
-
+	FreeMaterials();
+	FreeTextures();
+	
 }
 
 void VideoMesh::Update(int deltaTime)

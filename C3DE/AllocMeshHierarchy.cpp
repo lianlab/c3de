@@ -4,6 +4,7 @@
 
 #include "AllocMeshHierarchy.h"
 //#include "SkinnedMesh.h"
+#include "DebugMemory.h"
 
 void CopyString(const char* input, char** output)
 {

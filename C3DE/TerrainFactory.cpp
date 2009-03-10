@@ -6,6 +6,7 @@
 #include "TerrainForest.h"
 #include "TerrainNoise.h"
 #include "D3DRenderer.h"
+#include "DebugMemory.h"
 
 TerrainFactory * TerrainFactory::m_instance = NULL;
 
@@ -21,13 +22,22 @@ TerrainFactory * TerrainFactory::GetInstance()
 
 TerrainFactory::TerrainFactory()
 {
-	//m_terrains[TERRAIN_NORMAL_ID] = new TerrainNormal(D3DRenderer::GetDevice());
-	//m_terrains[TERRAIN_FOREST_ID] = new TerrainForest(D3DRenderer::GetDevice());
+	m_terrains[TERRAIN_NORMAL_ID] = new TerrainNormal(D3DRenderer::GetDevice());
+	m_terrains[TERRAIN_FOREST_ID] = new TerrainForest(D3DRenderer::GetDevice());
 	m_terrains[TERRAIN_NOISE_ID] = new TerrainNoise(D3DRenderer::GetDevice());
 }
 
 TerrainFactory::~TerrainFactory()
 {
+	
+	for(int i = 0; i < TOTAL_TERRAINS; i++)
+	{
+		Terrain *t_terrain = m_terrains[i];
+		delete t_terrain;
+		t_terrain = NULL;
+	}
+	
+
 
 }
 	

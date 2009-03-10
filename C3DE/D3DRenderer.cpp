@@ -254,6 +254,7 @@ void D3DRenderer::CalculateFrustumPlanes()
 
 bool D3DRenderer::IsAABBWithinView(AABB *a_box)
 {
+	
 	D3DXVECTOR3 P;
 	D3DXVECTOR3 Q;
 
@@ -312,6 +313,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 	int t_totalTerrains = scene->GetTerrains()->size();
 
+	
 	for(int i = 0; i < t_totalTerrains; i++)
 	{		
 		Terrain *t_terrain = scene->GetTerrains()->at(i);	
@@ -321,7 +323,10 @@ void D3DRenderer::DrawScene(Scene *scene)
 		for(int j = 0; j < t_totalSubMeshes; j++)
 		//for(int j = 0; j < 1; j++)
 		{
+			
 			if(!IsAABBWithinView(t_terrain->GetSubMeshes()->at(j)->GetBoundingBox()))
+			//if(false)
+			
 			{
 				this->hidden++;
 				continue;
@@ -357,7 +362,8 @@ void D3DRenderer::DrawScene(Scene *scene)
 		
 		if(d3dmesh->GetXMesh())
 		{
-			if(IsAABBWithinView(d3dmesh->GetBoundingBox()))
+			//if(IsAABBWithinView(d3dmesh->GetBoundingBox()))
+			if(true)
 			{
 				this->shown++;
 				#if DRAW_BOUNDING_BOXES

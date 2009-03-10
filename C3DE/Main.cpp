@@ -2,10 +2,11 @@
 #include "ReplayDefs.h"
 #include "RandomDefs.h"
 #include "Debug.h"
-#include "DebugMemory.h"
+
 #include "D3DApplication.h"
 #include "DirectInput.h"
 #include <ctime>
+#include "DebugMemory.h"
 
 
 

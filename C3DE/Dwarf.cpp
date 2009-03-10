@@ -1,6 +1,6 @@
 
+#include "D3DRenderer.h"
 
-#include "Renderer.h"
 #include "Dwarf.h"
 #include "ResourceManager.h"
 #include "PerVertexLighting.h"
@@ -25,6 +25,8 @@ Dwarf::Dwarf()
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
 	
 	m_vertexDeclaration = NULL;
+
+	LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_DWARF_ID), D3DRenderer::GetDevice());
 
 	//m_material = NULL;
 	

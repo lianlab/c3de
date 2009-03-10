@@ -1,4 +1,5 @@
 #include "SkinnedMeshFX.h"
+#include "DebugMemory.h"
 
 
 SkinnedMeshFX::SkinnedMeshFX(ID3DXEffect *effect):

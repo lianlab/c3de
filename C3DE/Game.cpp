@@ -168,7 +168,7 @@ void Game::SetInputer(DirectInput *inputer)
 
 Game::~Game()
 {
-	//delete m_testScene;
+	delete m_testScene;
 	delete m_sprite;
 	delete m_button;
 
@@ -217,6 +217,7 @@ void Game::Update(int deltaTime)
 #if 1
 void Game::UpdateInput()
 {
+	
 
 
 	float step = 1.1f;
@@ -495,7 +496,7 @@ void Game::OnKeyDown(int key)
 	//Mesh * target = (Mesh*)m_cube;
 	Mesh * target = (Mesh*)m_woman;
 	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 0.01f;
+	float step = 0.1f;
 
 	if(key == 1)
 	{
@@ -934,9 +935,12 @@ void Game::CreateMeshBuffers(D3DMesh *mesh)
 	//mesh->Translate(0.0f, 0.0f, 0.0f);
 	mesh->CreateXMesh(((D3DRenderer *)m_renderer)->GetDevice());
 }
+#if 1
 
 void Game::InitializeMeshes()
 {	
+
+
 	m_testScene = new DefaultScene1();	
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
@@ -950,44 +954,52 @@ void Game::InitializeMeshes()
 
 	
 
-#if 1
-	m_cube = new Cube();
-	m_cube->AddMaterial(t_material);
-	CreateMeshBuffers(m_cube);
+
+	//m_cube = new Cube();
+	//m_cube->AddMaterial(t_material);
+	//CreateMeshBuffers(m_cube);
 
 	//m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
 
 	//m_cube->SetPosition(0.0f, 0.0f,5.0f);
 	//m_testScene->AddMesh(m_cube);
 	
-#endif
+
 
 	
 
-	m_cubeMovie = new CubeMovie();
-	m_cubeMovie->SetPosition(0.0f, 0.0f, 5.0f);
+	//m_cubeMovie = new CubeMovie();
+	//m_cubeMovie->SetPosition(0.0f, 0.0f, 15.0f);
+	//m_testScene->AddMesh(m_cubeMovie);
+	//m_cubeMovie->CreateXMesh(D3DRenderer::GetDevice());
 	
 	
 
 	Tree0 *t_tree0 = new Tree0();
 	t_tree0->Scale(0.2f, 0.2f, 0.2f);
+	//
+
 	t_tree0->SetPosition(5.0f, m_auei->GetHeight(5.0f, 10.0f), 10.0f);
+	//t_tree0->SetPosition(5.0f, 0.0f, 10.0f);
 
 	Tree1 *t_tree1 = new Tree1();
 	t_tree1->Scale(0.2f, 0.2f, 0.2f);
 	t_tree1->SetPosition(10.0f, m_auei->GetHeight(10.0f, 10.0f), 10.0f);
+	//t_tree1->SetPosition(10.0f, 0.0f, 10.0f);
 
 	Tree2 *t_tree2 = new Tree2();
 	t_tree2->Scale(0.2f, 0.2f, 0.2f);
 	t_tree2->SetPosition(15.0f, m_auei->GetHeight(15.0f, 10.0f), 10.0f);
+	//t_tree2->SetPosition(15.0f, 0.0f, 10.0f);
 
 	Tree3 *t_tree3 = new Tree3();
 	t_tree3->Scale(0.2f, 0.2f, 0.2f);
 	t_tree3->SetPosition(20.0f, m_auei->GetHeight(20.0f, 10.0f), 10.0f);
+	//t_tree3->SetPosition(20.0f, 0.0f, 10.0f);
 
 
 	
-	Castle *t_castle = new Castle();
+	//Castle *t_castle = new Castle();
 	
 
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_TIGER_SKIN_ID));	
@@ -998,30 +1010,63 @@ void Game::InitializeMeshes()
 	D3DImage * t_d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_GRASS_BILLBOARD_ID));	
 	GrassGrid *t_grassGrid = new GrassGrid(5, 5, D3DXVECTOR3(0.5f, 0.0f, 0.5f), t_d3dImage, 2.0f, 2.0f);
 	t_grassGrid->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
-	//m_testScene->AddMesh(t_grassGrid);
+	//t_grassGrid->SetPosition(0.0f, 0.0f, 0.0f);
+	m_testScene->AddMesh(t_grassGrid);
 
-	m_billboard = new BillboardMesh(d3dImage);
-	m_billboard->AddMaterial(t_material);
-	m_billboard->SetPosition(5.0f, 5.0f, 5.0f);
+	
+	//m_billboard = new BillboardMesh(d3dImage);
+	//m_billboard->AddMaterial(t_material);
+	//m_billboard->SetPosition(5.0f, 5.0f, 5.0f);
 	//CreateMeshBuffers(m_billboard);
 	//m_testScene->AddMesh(m_billboard);
-
+	
+	
 	m_woman = new WomanMesh();
 	m_woman->Scale(0.01f, 0.01f, 0.01f);
 	m_woman->Rotate(-81.0f, 0.0f, 0.0f);
 	m_woman->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
-	//CreateMeshBuffers(t_woman);
-	//m_testScene->AddMesh(m_woman);
+	m_testScene->AddMesh(m_woman);
+	
 
-	/*
+	
 	m_testScene->AddMesh(t_tree0);
 	m_testScene->AddMesh(t_tree1);
 	m_testScene->AddMesh(t_tree2);
 	m_testScene->AddMesh(t_tree3);
-*/
+
 	m_testScene->Initialize();
 	
 }
+
+#endif
+
+#if 0
+
+void Game::InitializeMeshes()
+{	
+	m_testScene = new DefaultScene1();	
+	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
+										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
+	
+
+	m_cube = new Cube();
+	
+	CreateMeshBuffers(m_cube);
+	m_testScene->AddMesh(m_cube);	
+	
+	D3DImage * t_d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_GRASS_BILLBOARD_ID));	
+	Wall *t_grid = new Wall();
+	t_grid->AddMaterial(t_material);
+	t_grid->AddTexture((Image*)t_d3dImage);
+	m_testScene->AddMesh(t_grid);
+	
+
+	m_testScene->Initialize();
+	
+}
+
+#endif
+
 
 
 void Game::OnKeyUp(int key)

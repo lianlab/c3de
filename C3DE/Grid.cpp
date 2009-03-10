@@ -1,6 +1,7 @@
 #include "Grid.h"
 #include "PerVertexLighting.h"
 #include "SkinnedMeshFX.h"
+#include "D3DRenderer.h"
 #include "DebugMemory.h"
 
 Grid::Grid(int numCellsRows, int numCellsCols, float dx, float dz)
@@ -147,6 +148,8 @@ Grid::Grid(int numCellsRows, int numCellsCols, float dx, float dz)
 	m_indices->push_back(22);
 	m_indices->push_back(23);
 #endif
+
+	CreateXMesh(D3DRenderer::GetDevice());
 
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
 	PerVertexLighting *t_effect = (PerVertexLighting *) m_effect;

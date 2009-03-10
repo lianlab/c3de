@@ -3,7 +3,7 @@
 #include "Math.h"
 #include "BillboardFX.h"
 #include "ResourceManager.h"
-
+#include "DebugMemory.h"
 
 
 BillboardMesh::BillboardMesh(D3DImage *a_texture) : D3DMesh()
@@ -43,9 +43,10 @@ BillboardMesh::BillboardMesh(D3DImage *a_texture) : D3DMesh()
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_BILLBOARD_FX_ID);
 }
 
-BillboardMesh::~BillboardMesh() 
+BillboardMesh::~BillboardMesh()
 {
-
+	FreeMaterials();
+	FreeTextures();
 }
 
 void BillboardMesh::SetShaderHandlers()

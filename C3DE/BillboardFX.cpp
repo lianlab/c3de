@@ -1,4 +1,5 @@
 #include "BillboardFX.h"
+#include "DebugMemory.h"
 
 
 BillboardFX::BillboardFX(ID3DXEffect *effect):

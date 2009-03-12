@@ -152,6 +152,7 @@ void Grass::BuildGrass()
 	//t_min = D3DXVECTOR3(-1.0f, 0.0f, 0.0f);
 	//t_max = D3DXVECTOR3(21.0f, 1.0f, 4.0f);
 	m_boundingBox = new AABB(t_min, t_max);
+	//m_boundingBox = new AABB();
 	
 	HR(m_xMesh->UnlockVertexBuffer());
 

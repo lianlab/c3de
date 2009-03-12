@@ -1,3 +1,4 @@
+#if 0
 #ifdef DEBUG_MEMORY
 #ifndef _DEBUG_MEMORY_INCLUDED_
 #define _DEBUG_MEMORY_INCLUDED_
@@ -54,4 +55,7 @@ void DumpUnfreed(BOOL bFreeList);
 void DumpMemoryLogAllAllocations(BOOL bEnable);
 
 #endif
+#endif
+
+
 #endif

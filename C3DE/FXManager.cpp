@@ -121,10 +121,8 @@ void FXManager::SetSceneEffects(Scene *scene)
 	for(int i = 0; i < totalMeshes; i++)
 	{
 		D3DMesh *t_mesh = static_cast<D3DMesh *>(t_meshes->at(i));
-		AddEffect(t_mesh->GetEffect());
-		
-	}
-	
+		AddEffect(t_mesh->GetEffect());		
+	}	
 
 	D3DXCOLOR ambient = scene->GetAmbientLight()->GetColor();
 	D3DXCOLOR diffuse = scene->GetDiffuseLight()->GetColor();
@@ -136,8 +134,7 @@ void FXManager::SetSceneEffects(Scene *scene)
 	for(int i = 0; i < totalEffecs; i++)
 	{
 		FX *t_effect = m_effects->at(i);
-		t_effect->SetLightHandlers(ambient, diffuse, specular, lightPosition);
-		
+		t_effect->SetLightHandlers(ambient, diffuse, specular, lightPosition);		
 	}
 
 	AddEffect(ShaderManager::GetInstance()->GetDefaultShadowFX());
@@ -155,17 +152,23 @@ FXManager::~FXManager()
 {	
 	if(m_effects)
 	{
+#if 0
 		int totalEffects = m_effects->size();
 		for(int i = 0; i < totalEffects; i++)
 		{
 			FX * t_effect = m_effects->at(i);
+
 			if(t_effect)
 			{
 				delete t_effect;
 				t_effect = NULL;
 			}
 		}
+		
+#endif
+
 		delete m_effects;
 		m_effects = NULL;
+
 	}
 }

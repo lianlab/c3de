@@ -333,6 +333,7 @@ void Terrain::BuildSubGridMesh(RECT& R, VertexPos* gridVerts)
 		sizeof(VertexPos), &t_min, &t_max));
 
 	AABB *t_boundingBox = new AABB(t_min, t_max);
+	//AABB *t_boundingBox = new AABB();
 
 	//m_boundingBoxes->push_back(t_boundingBox);
 

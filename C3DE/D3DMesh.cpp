@@ -8,11 +8,14 @@ D3DMesh::D3DMesh():Mesh()
 {
 
 
+	m_hack = NULL;
 	m_vertices = NULL;
 	m_indices = NULL;
 
 	m_transformedBox = NULL;
 	
+	m_fleps = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_auei = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	
 
 	m_numShaderPasses = 1;
@@ -102,6 +105,7 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 		sizeof(VertexPos), &t_min, &t_max));
 
 	m_boundingBox = new AABB(t_min, t_max);
+	//m_boundingBox = new AABB();
 	
 	m_xMesh->UnlockVertexBuffer();
 
@@ -141,19 +145,41 @@ AABB* D3DMesh::GetBoundingBox()
 	D3DXVECTOR4 t_max = D3DXVECTOR4(m_boundingBox->maxPoint, 1.0f);
 	D3DXVec3Transform(&t_min, &m_boundingBox->minPoint, &t_matrix);
 	D3DXVec3Transform(&t_max, &m_boundingBox->maxPoint, &t_matrix);
-#if 1
+#if 0
+	
+
+	if(m_transformedBox)
+	{		
+		return m_transformedBox;
+	}
+	else
+	{
+		//m_transformedBox = new AABB(D3DXVECTOR3(t_min.x, t_min.y, t_min.z), D3DXVECTOR3(t_max.x, t_max.y, t_max.z));		
+		m_transformedBox = new AABB();		
+	}
+
+	
+	
+
+	return m_transformedBox;
+	
+#else
 	if(m_transformedBox)
 	{
 		delete m_transformedBox;
 		m_transformedBox = NULL;
 	}
-	//D3DXVECTOR3 t_diff2 = D3DXVECTOR3(t_max.x - t_min.x, t_max.y - t_min.y, t_max.z - t_min.z);
-	//D3DXVECTOR3 t_max3 = D3DXVECTOR3(t_min.x + t_diff.x,t_min.y + t_diff.y, t_min.z + t_diff.z);
+	
+	
+
 	m_transformedBox = new AABB(D3DXVECTOR3(t_min.x, t_min.y, t_min.z), D3DXVECTOR3(t_max.x, t_max.y, t_max.z));		
+	//m_transformedBox = new AABB();		
+	//m_transformedBox = new AABB(m_fleps, m_auei);		
 
 	return m_transformedBox;
-	#endif
-	return NULL;
+#endif
+
+	//return NULL;
 
 }
 
@@ -291,6 +317,7 @@ void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_dev
 	m_xMesh->UnlockVertexBuffer();
 
 	m_boundingBox = new AABB(t_min, t_max);
+	//m_boundingBox = new AABB();
 
 
 	ReleaseCOM(materialBuffer);

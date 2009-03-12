@@ -308,6 +308,10 @@
 						Name="Mesh"
 						>
 						<File
+							RelativePath=".\Castle.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\Cube.cpp"
 							>
 						</File>
@@ -368,6 +372,66 @@
 							</File>
 							<File
 								RelativePath=".\WomanMesh.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="VideoMesh"
+							>
+							<File
+								RelativePath=".\Billboard.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\CubeMovie.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\VideoMesh.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="Billboard"
+							>
+							<File
+								RelativePath=".\BillboardMesh.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\Grass.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\GrassGrid.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="Trees"
+							>
+							<File
+								RelativePath=".\Tree0.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\Tree1.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\Tree2.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\Tree3.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="GrassFactory"
+							>
+							<File
+								RelativePath=".\GrassFactory.cpp"
 								>
 							</File>
 						</Filter>
@@ -460,6 +524,34 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="Terrain"
+						>
+						<File
+							RelativePath=".\Terrain.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TerrainFactory.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TerrainForest.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TerrainGrid.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TerrainNoise.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TerrainNormal.cpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Camera"
@@ -488,11 +580,19 @@
 						Name="Effects"
 						>
 						<File
+							RelativePath=".\BillboardFX.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\BookLights.cpp"
 							>
 						</File>
 						<File
 							RelativePath=".\EmptyFX.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\GrassFX.cpp"
 							>
 						</File>
 						<File
@@ -593,6 +693,14 @@
 				</File>
 				<File
 					RelativePath=".\DebugMemory.h"
+					>
+				</File>
+				<File
+					RelativePath=".\RandomDefs.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ReplayDefs.h"
 					>
 				</File>
 			</Filter>
@@ -706,6 +814,14 @@
 						Name="Mesh"
 						>
 						<File
+							RelativePath=".\AABB.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Castle.h"
+							>
+						</File>
+						<File
 							RelativePath=".\Cube.h"
 							>
 						</File>
@@ -766,6 +882,58 @@
 							</File>
 							<File
 								RelativePath=".\WomanMesh.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="VideoMesh"
+							>
+							<File
+								RelativePath=".\Billboard.h"
+								>
+							</File>
+							<File
+								RelativePath=".\CubeMovie.h"
+								>
+							</File>
+							<File
+								RelativePath=".\VideoMesh.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="Billboard"
+							>
+							<File
+								RelativePath=".\BillboardMesh.h"
+								>
+							</File>
+							<File
+								RelativePath=".\Grass.h"
+								>
+							</File>
+							<File
+								RelativePath=".\GrassGrid.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="Trees"
+							>
+							<File
+								RelativePath=".\Tree0.h"
+								>
+							</File>
+							<File
+								RelativePath=".\Tree1.h"
+								>
+							</File>
+							<File
+								RelativePath=".\Tree2.h"
+								>
+							</File>
+							<File
+								RelativePath=".\Tree3.h"
 								>
 							</File>
 						</Filter>
@@ -858,6 +1026,34 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="Terrain"
+						>
+						<File
+							RelativePath=".\Terrain.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TerrainFactory.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TerrainForest.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TerrainGrid.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TerrainNoise.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TerrainNormal.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Camera"
@@ -886,11 +1082,19 @@
 						Name="Effects"
 						>
 						<File
+							RelativePath=".\BillboardFX.h"
+							>
+						</File>
+						<File
 							RelativePath=".\BookLights.h"
 							>
 						</File>
 						<File
 							RelativePath=".\EmptyFX.h"
+							>
+						</File>
+						<File
+							RelativePath=".\GrassFX.h"
 							>
 						</File>
 						<File

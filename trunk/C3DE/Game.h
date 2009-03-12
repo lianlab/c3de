@@ -148,6 +148,8 @@ private:
 	D3DXVECTOR3 m_carDirection;
 
 	BillboardMesh * m_billboard;
+
+	int * m_hack;
 #endif	
 };
 #endif

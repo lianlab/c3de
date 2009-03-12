@@ -37,8 +37,9 @@ ShaderManager::~ShaderManager()
 	int totalEffects = TOTAL_SHADERS;
 	for(int i = 0; i< totalEffects; i++)
 	{
-		delete m_effects[i];
-		m_effects[i] = NULL;
+		FX *t_fx = m_effects[i];
+		delete t_fx;
+		t_fx = NULL;
 	}
 }
 

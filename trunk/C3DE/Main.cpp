@@ -226,7 +226,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #endif
 	// Turn on the trace file 'dumpmemorylog.txt'
 
-	DumpMemoryLogAllAllocations(TRUE);
+	//DumpMemoryLogAllAllocations(TRUE);
 
     D3DApplication *app = new D3DApplication();
 
@@ -278,7 +278,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 	delete app;
 
 	// Dump a report of any unfreed blocks to 'memoryleak.txt', then free the breadcrumb list
-	DumpUnfreed(TRUE);
+	//DumpUnfreed(TRUE);
 
     return msg.wParam;
 	

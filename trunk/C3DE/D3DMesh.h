@@ -8,6 +8,7 @@
 #include "D3DImage.h"
 #include "ShaderManager.h"
 #include "FX.h"
+#include "AABB.h"
 
 using namespace std;
 
@@ -34,12 +35,7 @@ struct Vertex
 
 #endif
 
-struct AABB
-{
-	AABB(D3DXVECTOR3 a_min, D3DXVECTOR3 a_max) : minPoint(a_min),maxPoint(a_max){}
-	D3DXVECTOR3 minPoint;
-	D3DXVECTOR3 maxPoint;
-};
+
 
 struct VertexPos
 {
@@ -142,6 +138,8 @@ public:
 	
 protected:
 
+	D3DXVECTOR3 m_fleps;
+	D3DXVECTOR3 m_auei;
 	AABB *m_boundingBox;
 	AABB *m_transformedBox;
 
@@ -178,6 +176,8 @@ protected:
 	int m_numSubsets;
 
 	D3DXMATRIX m_transformMatrix;
+
+	int * m_hack;
 
 	
 	

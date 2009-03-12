@@ -169,8 +169,8 @@ void Game::SetInputer(DirectInput *inputer)
 Game::~Game()
 {
 	delete m_testScene;
-	delete m_sprite;
-	delete m_button;
+	//delete m_sprite;
+	//delete m_button;
 
 
 #if 1
@@ -206,6 +206,8 @@ void Game::Update(int deltaTime)
 
 	m_testScene->Update(deltaTime);
 
+	
+
 	//m_videoMesh->Update(deltaTime);
 
 	//m_testMesh->Update(1);
@@ -218,6 +220,7 @@ void Game::Update(int deltaTime)
 void Game::UpdateInput()
 {
 	
+	Mesh * t_target = (Mesh*)m_cube;
 
 
 	float step = 1.1f;
@@ -274,7 +277,8 @@ void Game::UpdateInput()
 	D3DXVec3Normalize(&m_carDirection, &m_carDirection);
 	
 	//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + t_dAngle, m_cube->GetRotationZ());
-	m_woman->Rotate(m_woman->GetRotationX(), m_woman->GetRotationY() + t_dAngle, m_woman->GetRotationZ());
+	//m_woman->Rotate(m_woman->GetRotationX(), m_woman->GetRotationY() + t_dAngle, m_woman->GetRotationZ());
+	t_target->Rotate(t_target->GetRotationX(), t_target->GetRotationY() + t_dAngle, t_target->GetRotationZ());
 
 	m_cubeX += newPos.x;
 	m_cubeY += newPos.y;
@@ -286,7 +290,8 @@ void Game::UpdateInput()
 	//hy = (int)m_cubeZ;
 
 	//m_cube->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
-	m_woman->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
+	//m_woman->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
+	t_target->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
 
 #define LOCK_CAMERA 1
 #define FIXED_CAMERA !LOCK_CAMERA
@@ -955,14 +960,14 @@ void Game::InitializeMeshes()
 	
 
 
-	//m_cube = new Cube();
-	//m_cube->AddMaterial(t_material);
+	m_cube = new Cube();
+	m_cube->AddMaterial(t_material);
 	//CreateMeshBuffers(m_cube);
 
-	//m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
+	m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
 
 	//m_cube->SetPosition(0.0f, 0.0f,5.0f);
-	//m_testScene->AddMesh(m_cube);
+	m_testScene->AddMesh(m_cube);
 	
 
 
@@ -1021,19 +1026,22 @@ void Game::InitializeMeshes()
 	//m_testScene->AddMesh(m_billboard);
 	
 	
-	m_woman = new WomanMesh();
-	m_woman->Scale(0.01f, 0.01f, 0.01f);
-	m_woman->Rotate(-81.0f, 0.0f, 0.0f);
-	m_woman->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
-	m_testScene->AddMesh(m_woman);
+
+	//m_woman = new WomanMesh();
+	//m_woman->Scale(0.01f, 0.01f, 0.01f);
+	//m_woman->Rotate(-81.0f, 0.0f, 0.0f);
+	//m_woman->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
+	//m_testScene->AddMesh(m_woman);
 	
 
+	
 	
 	m_testScene->AddMesh(t_tree0);
 	m_testScene->AddMesh(t_tree1);
 	m_testScene->AddMesh(t_tree2);
 	m_testScene->AddMesh(t_tree3);
 
+	
 	m_testScene->Initialize();
 	
 }

@@ -8,7 +8,8 @@ class D3DImage : Image
 {
 public:
 	D3DImage(IDirect3DTexture9 * tex){m_tex = tex;}
-	~D3DImage(){delete m_tex;}
+	//~D3DImage(){if(m_tex)delete m_tex;}
+	~D3DImage(){}
 	IDirect3DTexture9 * GetTexture(){ return m_tex;}
 private:
 	IDirect3DTexture9 * m_tex;

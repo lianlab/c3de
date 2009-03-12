@@ -1,3 +1,5 @@
+#if 0
+
 #ifdef DEBUG_MEMORY
 #define DEBUG_MEMORY_IMPLEMENTATION 1
 #include "DebugMemory.h"
@@ -285,5 +287,8 @@ void DumpUnfreed(BOOL bFreeList)
 				allocList = NULL;
 		}
  };
+
+#endif
+
 
 #endif

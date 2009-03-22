@@ -290,43 +290,44 @@ bool D3DRenderer::IsAABBWithinView(AABB *a_box)
 }
 
 
-//float t_time = 0.0f;
+
 D3DXMATRIX mWorld;
 D3DXMATRIX mWorldInv;
 
-void D3DRenderer::DrawScene(Scene *scene)
-{		
-	
+void D3DRenderer::DrawParticleSystem(ParticleSystem *a_particleSystem)
+{
 	//HR(m_device->SetRenderState(D3DRS_POINTSPRITEENABLE, true));
 	D3DCamera *cam2 = (D3DCamera *) m_camera;		
 	D3DXMATRIX t_view2 = cam2->GetMatrix();	
 	
-	D3DXMATRIX t_projView2 = t_view2*m_proj;	
-	//t_time += 1.0f;
-	m_fireRingParticleSystem->Update(0.01f);
+	D3DXMATRIX t_projView2 = t_view2*m_proj;		
+	a_particleSystem->Update(0.01f);
 	
 
-	FireRingFX *t_effect;
+	FX *t_effect;
 	
-	t_effect =  (FireRingFX*) m_fireRingParticleSystem->GetEffect();
+	t_effect =  (FireRingFX*) a_particleSystem->GetEffect();
 
 	D3DXVECTOR3 eyePosW = cam2->GetPosition();
 	D3DXVECTOR3 eyePosL;
 	D3DXVec3TransformCoord(&eyePosL, &eyePosW, &mWorldInv);
 	D3DXMATRIX fleps = (mWorld*t_projView2);
 
+
+	//TO BE CALLED  like FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
 	t_effect->SetWorldHandlers(cam2->GetPosition(), fleps);	
 
-	m_fireRingParticleSystem->SetShaderHandlers();
+	a_particleSystem->SetShaderHandlers();
 
 	UINT numPasses = 0;
 	ID3DXEffect *t_fx = t_effect->GetEffect();
 
-	HR(t_fx->Begin(&numPasses, 0));
-	HR(t_fx->BeginPass(0));
+	FXManager::GetInstance()->Begin(t_effect);		
+	//mesh->SetShaderHandlers();
+	FXManager::GetInstance()->PreRender();	
 
-	IDirect3DVertexBuffer9* t_vb = m_fireRingParticleSystem->GetVertexBuffer();
-	std::vector<VertexParticle*> mAliveParticles = m_fireRingParticleSystem->GetAliveParticles();
+	IDirect3DVertexBuffer9* t_vb = a_particleSystem->GetVertexBuffer();
+	std::vector<VertexParticle*> *mAliveParticles = a_particleSystem->GetAliveParticles();
 
 	HR(m_device->SetStreamSource(0, t_vb, 0, sizeof(VertexParticle)));
 	HR(m_device->SetVertexDeclaration(VertexParticle::Decl));
@@ -344,10 +345,12 @@ void D3DRenderer::DrawScene(Scene *scene)
 		int vbIndex = 0;
 
 		// For each living particle.
-		for(UINT i = 0; i < mAliveParticles.size(); ++i)		
+		int t_size = mAliveParticles->size();
+		for(UINT i = 0; i < t_size; ++i)		
 		{
 			// Copy particle to VB
-			p[vbIndex] = *mAliveParticles[i];			
+			//p[vbIndex] = *mAliveParticles->at(i);			
+			p[vbIndex] = *(*mAliveParticles)[i];			
 			++vbIndex;
 		}
 		
@@ -361,26 +364,20 @@ void D3DRenderer::DrawScene(Scene *scene)
 	}
 
 
-	HR(t_fx->EndPass());
-	HR(t_fx->End());
+
+	FXManager::GetInstance()->PosRender();		
+	//mesh->SetShaderHandlers();
+	FXManager::GetInstance()->End();
 
 	return;
+}
 
+void D3DRenderer::DrawScene(Scene *scene)
+{		
+	
+	DrawParticleSystem((*scene->GetParticleSystems())[0]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	return;
 
 
 
@@ -1056,36 +1053,14 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	
 #endif
 
+	InitAllVertexDeclarations(m_device);
+	HR(m_device->SetRenderState(D3DRS_POINTSPRITEENABLE, true));
 
-#if 1
-	// Initialize the particle system.
 	D3DXMATRIX psysWorld;
 	D3DXMatrixTranslation(&psysWorld, 0.0f, 0.0f, 5.0f);
 	D3DXMatrixTranslation(&mWorld, 0.0f, 0.0f, 5.0f);
 	D3DXMatrixInverse(&mWorldInv, 0, &mWorld);
 
-	
-
-	
-	
-	
-	ShaderManager::GetInstance()->SetDevice(m_device);
-
-
-	
-
-#endif
-	
-	IDirect3DTexture9 * t_texture;
-	// Create the texture.
-	HR(D3DXCreateTextureFromFile(m_device, "Images/Particles/torch.dds", &t_texture));
-	
-	InitAllVertexDeclarations(m_device);
-
-	HR(m_device->SetRenderState(D3DRS_POINTSPRITEENABLE, true));
-
-	m_fireRingParticleSystem = new FireRingParticleSystem(t_texture, 1500, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f));
-	
 	return true;
 }
 
@@ -1303,7 +1278,7 @@ void D3DRenderer::Reset()
 
 void D3DRenderer::Clear()
 {		
-	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0, 1.0f, 0L );
+	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0xff666666, 1.0f, 0L );
 }
 
 bool D3DRenderer::BeginRender()

@@ -20,6 +20,10 @@
 //#define HACK_FROM_SCRATCH 1
 #include "CommonDefs.h"
 
+#include "FireRing.h"
+#include "FireRingParticleSystem.h"
+
+
 
 #if HACK_FROM_SCRATCH
 	struct VertexPosHACK
@@ -73,6 +77,7 @@ public:
 	
 
 private:
+	void DrawParticleSystem(ParticleSystem *a_particleSystem);
 	void DrawTerrainSubMesh(D3DMesh * a_parentMesh, D3DMesh *t_subMesh);
 	static IDirect3DDevice9* m_device; 
 	D3DPRESENT_PARAMETERS m_d3dpp;
@@ -131,6 +136,11 @@ private:
 
 	int hidden;
 	int shown;
+
+	IDirect3DVertexBuffer9* mVB2;
+
+
+	//FireRingParticleSystem *m_fireRingParticleSystem;
 
 };
 

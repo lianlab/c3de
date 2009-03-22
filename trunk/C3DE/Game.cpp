@@ -17,12 +17,20 @@
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
 //#include "DebugMemory.h"
 
+#define CONST_RATIO 8
+
 
 using namespace std;
 
 Game::Game(Application * app)
 {
-	
+	m_physPosX = 200;
+	m_physPosY = 0;
+	m_physSpeedX = 0;
+	m_physSpeedY  = 0;
+	m_gAcc = 10;
+
+	hack = 0;
 
 	m_application = app;
 
@@ -195,9 +203,78 @@ Game::~Game()
 #endif
 }
 
+int eita = 0;
 void Game::Update(int deltaTime)
 {		
+	//deltaTime = 1000;
+	
 	UpdateInput();
+
+	eita++;
+	
+#if 0
+	///////////////////////////////////////////////
+	m_gAcc = 1;	
+	deltaTime = 1;
+	int const_ratio = 1000;
+	int t_formula = m_physPosY+ m_physSpeedY *deltaTime* const_ratio + (deltaTime * deltaTime*m_gAcc*const_ratio)/2;
+	m_physPosY = t_formula;	
+	m_physSpeedY = m_physSpeedY + deltaTime*m_gAcc;
+	///////////////////////////////////////////////
+#endif
+	m_gAcc = 10;	
+	deltaTime = 1000;
+
+	int t_timeRatio = 1;
+	int t_spaceRatio = 50;
+	
+	int formula = (m_physSpeedY*deltaTime/t_timeRatio) + ((m_gAcc*deltaTime*deltaTime)/(2 * t_timeRatio));
+	
+	int maxInt = 2147483647;
+
+
+	if(maxInt - formula < m_physPosY || maxInt - formula == m_physPosY)
+	{
+		int jhgfgf = 987;
+	}
+
+	int t_transformedFormula = formula / 10000;
+	
+	//m_physPosY = m_physPosY + formula;
+	m_physPosY = m_physPosY + t_transformedFormula;
+
+	int t_forReal = m_physPosY / 10000;
+
+	m_sprite->SetY(t_forReal);
+
+	m_physSpeedY = m_physSpeedY + ((deltaTime * m_gAcc));
+	
+
+	int fleps = 0;
+	int t_accumulating = 0;
+	int t_transformed = 0;
+	while(false)
+	{
+		fleps++;
+		if(fleps == maxInt)
+		{	
+			t_accumulating++;
+			fleps= 0;
+		}
+		t_transformed = ((maxInt >> 8 )*t_accumulating) + (fleps >> 8 );
+	}
+	
+	
+	
+	m_sprite->SetX(200);
+	int screenY = m_physPosY / 10000000;
+	//m_sprite->SetY(screenY);
+	
+	if(m_physPosY < 0)
+	{
+		int fkjdfds = 876;
+	}
+
 
 	
 	m_sprite->Update(deltaTime);
@@ -219,7 +296,7 @@ void Game::Update(int deltaTime)
 #if 1
 void Game::UpdateInput()
 {
-	
+	return;
 	Mesh * t_target = (Mesh*)m_cube;
 
 
@@ -388,7 +465,9 @@ void Game::UpdateInput()
 void Game::Render(Renderer *renderer)
 {
 	//
-
+	//m_camX = 0.0f;
+	//m_camY = 0.0f;
+	//m_camZ = -20.0f;
 	D3DCamera * cam = (D3DCamera *)renderer->GetCamera();
 	float x = m_cameraRadius * cosf(m_cameraRotation);
 	float z =  m_cameraRadius * sinf(m_cameraRotation);
@@ -398,8 +477,8 @@ void Game::Render(Renderer *renderer)
 	cam->SetTarget(m_camTargetX, m_camTargetY, m_camTargetZ);
 	
 	renderer->DrawScene(m_testScene);
-	renderer->DrawSprite(m_button);
-	renderer->DrawSprite((Sprite *)m_sprite);
+	//renderer->DrawSprite(m_button);
+	//renderer->DrawSprite((Sprite *)m_sprite);
 	static_cast<D3DRenderer *>(renderer)->DrawAxis();
 
 	
@@ -940,7 +1019,7 @@ void Game::CreateMeshBuffers(D3DMesh *mesh)
 	//mesh->Translate(0.0f, 0.0f, 0.0f);
 	mesh->CreateXMesh(((D3DRenderer *)m_renderer)->GetDevice());
 }
-#if 1
+#if 0
 
 void Game::InitializeMeshes()
 {	
@@ -1046,6 +1125,30 @@ void Game::InitializeMeshes()
 	
 }
 
+#endif
+
+#if 1
+void Game::InitializeMeshes()
+{	
+	
+
+	
+	IDirect3DTexture9 * t_texture = ResourceManager::GetInstance()->GetTextureByID(IMAGE_PARTICLE_TORCH_ID);
+	
+	
+	FireRingParticleSystem *t_fireRing = new FireRingParticleSystem(t_texture, 1500, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f));
+
+	m_testScene = new DefaultScene1();	
+	
+	m_cube = new Cube();
+	
+	
+	m_testScene->AddMesh(m_cube);	
+	m_testScene->AddParticleSystem((ParticleSystem*)t_fireRing);
+	
+	m_testScene->Initialize();
+	
+}
 #endif
 
 #if 0

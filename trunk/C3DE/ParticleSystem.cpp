@@ -16,30 +16,33 @@ ParticleSystem::ParticleSystem(const D3DXVECTOR3& accel,
 	m_timePerParticle = timePerParticle;
 
 	// Allocate memory for maximum number of particles.
-	//m_particles = new std::vector<VertexParticle*>;
-	//m_aliveParticles = new std::vector<VertexParticle*>;
+	m_particles = new std::vector<VertexParticle*>;
+	m_aliveParticles = new std::vector<VertexParticle*>;
 	m_deadParticles = new std::vector<VertexParticle*>;
 
-	m_particles.resize(m_maxNumParticles);
-	m_aliveParticles.reserve(m_maxNumParticles);
+	//m_particles->resize(m_maxNumParticles);
+	m_aliveParticles->reserve(m_maxNumParticles);
 	m_deadParticles->reserve(m_maxNumParticles);
 
 	// They start off all dead.
 	for(int i = 0; i < m_maxNumParticles; ++i)
 	{
+#if 1
+		VertexParticle *t_particle = new VertexParticle();
+		t_particle->lifeTime = -1.0f;
+		t_particle->initialTime = 0.0f;
+
+		m_particles->push_back(t_particle);
+		//m_deadParticles.push_back(t_particle);
+#endif
+
 #if 0
 		VertexParticle *t_particle = new VertexParticle();
 		t_particle->lifeTime = -1.0f;
 		t_particle->initialTime = 0.0f;
 
-		m_particles.push_back(t_particle);
-		m_deadParticles.push_back(t_particle);
-#endif
-		VertexParticle *t_particle = new VertexParticle();
-		t_particle->lifeTime = -1.0f;
-		t_particle->initialTime = 0.0f;
-
 		m_particles[i] = t_particle;
+#endif
 	}
 
 	IDirect3DDevice9 *t_device = D3DRenderer::GetDevice();
@@ -64,7 +67,7 @@ void ParticleSystem::AddParticle()
 
 		// No longer dead.
 		m_deadParticles->pop_back();
-		m_aliveParticles.push_back(p);
+		m_aliveParticles->push_back(p);
 	}
 }
 
@@ -76,7 +79,7 @@ void ParticleSystem::Update(float dt)
 	// not deallocate memory (i.e., the capacity of the vector does
 	// not change).
 	m_deadParticles->resize(0);
-	m_aliveParticles.resize(0);
+	m_aliveParticles->resize(0);
 
 	// For each particle.
 #if 1
@@ -84,13 +87,13 @@ void ParticleSystem::Update(float dt)
 	{
 		// Is the particle dead?
 		//VertexParticle *t = m_particles->operator[i];
-		if( (m_time - m_particles[i]->initialTime) > m_particles[i]->lifeTime)
+		if( (m_time - (*m_particles)[i]->initialTime) > (*m_particles)[i]->lifeTime)
 		{
-			m_deadParticles->push_back(m_particles[i]);
+			m_deadParticles->push_back((*m_particles)[i]);
 		}
 		else
 		{
-			m_aliveParticles.push_back(m_particles[i]);
+			m_aliveParticles->push_back((*m_particles)[i]);
 		}
 	}
 #endif

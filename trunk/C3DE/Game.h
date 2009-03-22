@@ -150,6 +150,14 @@ private:
 	BillboardMesh * m_billboard;
 
 	int * m_hack;
+
+	int m_physPosX;
+	int m_physPosY;
+	int m_physSpeedX;
+	int m_physSpeedY;
+	int m_gAcc;
+
+	int hack;
 #endif	
 };
 #endif

@@ -30,7 +30,7 @@ public:
 
 	virtual void InitParticle(VertexParticle& out) = 0;
 	virtual void Update(float dt);
-	std::vector<VertexParticle*> GetAliveParticles(){return m_aliveParticles;}
+	std::vector<VertexParticle*> *GetAliveParticles(){return m_aliveParticles;}
 	
 
 protected:
@@ -45,8 +45,8 @@ protected:
 	int m_maxNumParticles;
 	float m_timePerParticle;
 
-	std::vector<VertexParticle*> m_particles;
-	std::vector<VertexParticle*> m_aliveParticles;
+	std::vector<VertexParticle*> *m_particles;
+	std::vector<VertexParticle*> *m_aliveParticles;
 	std::vector<VertexParticle*> *m_deadParticles; 
 
 };

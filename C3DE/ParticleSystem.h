@@ -25,13 +25,6 @@ public:
 		float timePerParticle);
 
 	virtual ~ParticleSystem();
-
-	// Access Methods
-	float getTime();
-	void  setTime(float t);
-	//const AABB& getAABB()const;
-
-	
 	void AddParticle();
 
 
@@ -52,9 +45,9 @@ protected:
 	int m_maxNumParticles;
 	float m_timePerParticle;
 
-	std::vector<VertexParticle> m_particles;
+	std::vector<VertexParticle*> m_particles;
 	std::vector<VertexParticle*> m_aliveParticles;
-	std::vector<VertexParticle*> m_deadParticles; 
+	std::vector<VertexParticle*> *m_deadParticles; 
 
 };
 #endif

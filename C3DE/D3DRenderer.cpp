@@ -12,10 +12,17 @@
 //#include "DebugMemory.h"
 #include "SkinnedMeshBookFX.h"
 
+#include "VertexDeclarations.h"
+
 #include "Dwarf.h"
+#include "FireRingFX.h"
 
 #define REAL_HACK 0
 #define DRAW_BOUNDING_BOXES 0
+
+#define MAX_NUM_PARTICLES 50
+
+
 
 #if REAL_HACK
 IDirect3DVertexDeclaration9* VertexPosHACK::Decl = 0;
@@ -283,8 +290,102 @@ bool D3DRenderer::IsAABBWithinView(AABB *a_box)
 }
 
 
+//float t_time = 0.0f;
+D3DXMATRIX mWorld;
+D3DXMATRIX mWorldInv;
+
 void D3DRenderer::DrawScene(Scene *scene)
 {		
+	
+	//HR(m_device->SetRenderState(D3DRS_POINTSPRITEENABLE, true));
+	D3DCamera *cam2 = (D3DCamera *) m_camera;		
+	D3DXMATRIX t_view2 = cam2->GetMatrix();	
+	
+	D3DXMATRIX t_projView2 = t_view2*m_proj;	
+	//t_time += 1.0f;
+	m_fireRingParticleSystem->Update(0.01f);
+	
+
+	FireRingFX *t_effect;
+	
+	t_effect =  (FireRingFX*) m_fireRingParticleSystem->GetEffect();
+
+	D3DXVECTOR3 eyePosW = cam2->GetPosition();
+	D3DXVECTOR3 eyePosL;
+	D3DXVec3TransformCoord(&eyePosL, &eyePosW, &mWorldInv);
+	D3DXMATRIX fleps = (mWorld*t_projView2);
+
+	t_effect->SetWorldHandlers(cam2->GetPosition(), fleps);	
+
+	m_fireRingParticleSystem->SetShaderHandlers();
+
+	UINT numPasses = 0;
+	ID3DXEffect *t_fx = t_effect->GetEffect();
+
+	HR(t_fx->Begin(&numPasses, 0));
+	HR(t_fx->BeginPass(0));
+
+	IDirect3DVertexBuffer9* t_vb = m_fireRingParticleSystem->GetVertexBuffer();
+	std::vector<VertexParticle*> mAliveParticles = m_fireRingParticleSystem->GetAliveParticles();
+
+	HR(m_device->SetStreamSource(0, t_vb, 0, sizeof(VertexParticle)));
+	HR(m_device->SetVertexDeclaration(VertexParticle::Decl));
+
+	
+
+	//AABB boxWorld;
+	//mBox.xform(mWorld, boxWorld);
+	//if( gCamera->isVisible( boxWorld ) )
+	if(true)
+	{
+		// Initial lock of VB for writing.
+		VertexParticle* p = 0;		
+		HR(t_vb->Lock(0, 0, (void**)&p, D3DLOCK_DISCARD));
+		int vbIndex = 0;
+
+		// For each living particle.
+		for(UINT i = 0; i < mAliveParticles.size(); ++i)		
+		{
+			// Copy particle to VB
+			p[vbIndex] = *mAliveParticles[i];			
+			++vbIndex;
+		}
+		
+		HR(t_vb->Unlock());
+
+		// Render however many particles we copied over.
+		if(vbIndex > 0)
+		{
+			HR(m_device->DrawPrimitive(D3DPT_POINTLIST, 0, vbIndex));
+		}
+	}
+
+
+	HR(t_fx->EndPass());
+	HR(t_fx->End());
+
+	return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	this->hidden = 0;
 	this->shown = 0;
 	int totalMeshes = scene->GetMeshesVector()->size();		
@@ -390,6 +491,8 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 
 }
+
+
 
 #endif
 
@@ -648,7 +751,12 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh)
 	
 	HR(m_device->SetStreamSource(0, mesh->GetVertexBuffer(), 0, mesh->GetVertexSize()));	
 	
-	HR(m_device->SetIndices(mesh->GetIndexBuffer()));	
+	IDirect3DIndexBuffer9 * t_indexBuffer = mesh->GetIndexBuffer();
+	if(t_indexBuffer)
+	{
+		HR(m_device->SetIndices(t_indexBuffer));	
+	}
+	
 	HR(m_device->SetVertexDeclaration(mesh->GetVertexDeclaration()));
 	
 
@@ -884,12 +992,14 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	D3DXMatrixPerspectiveFovLH(&P, D3DX_PI * 0.25f, width/height, 1.0f, 5000.0f);
 	HR(m_device->SetTransform(D3DTS_PROJECTION, &P));
 
+	
 	HR(m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW));
 	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
 
 #if REAL_HACK
 
 #else
+	
 	
 	HR(m_device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR));
 	HR(m_device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR));
@@ -946,6 +1056,35 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	
 #endif
 
+
+#if 1
+	// Initialize the particle system.
+	D3DXMATRIX psysWorld;
+	D3DXMatrixTranslation(&psysWorld, 0.0f, 0.0f, 5.0f);
+	D3DXMatrixTranslation(&mWorld, 0.0f, 0.0f, 5.0f);
+	D3DXMatrixInverse(&mWorldInv, 0, &mWorld);
+
+	
+
+	
+	
+	
+	ShaderManager::GetInstance()->SetDevice(m_device);
+
+
+	
+
+#endif
+	
+	IDirect3DTexture9 * t_texture;
+	// Create the texture.
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Particles/torch.dds", &t_texture));
+	
+	InitAllVertexDeclarations(m_device);
+
+	HR(m_device->SetRenderState(D3DRS_POINTSPRITEENABLE, true));
+
+	m_fireRingParticleSystem = new FireRingParticleSystem(t_texture, 1500, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f));
 	
 	return true;
 }
@@ -1164,7 +1303,7 @@ void D3DRenderer::Reset()
 
 void D3DRenderer::Clear()
 {		
-	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0xffffffff, 1.0f, 0L );
+	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0, 1.0f, 0L );
 }
 
 bool D3DRenderer::BeginRender()

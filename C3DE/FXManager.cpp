@@ -116,6 +116,13 @@ void FXManager::SetSceneEffects(Scene *scene)
 		t_meshes->push_back((Mesh*)scene->GetTerrains()->at(i));
 	}
 
+	int t_totalParticleSystems = scene->GetParticleSystems()->size();
+
+	for(int i= 0; i < t_totalParticleSystems; i++)
+	{
+		t_meshes->push_back((Mesh*)scene->GetParticleSystems()->at(i));
+	}
+
 	totalMeshes = t_meshes->size();
 
 	for(int i = 0; i < totalMeshes; i++)

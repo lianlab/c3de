@@ -99,6 +99,11 @@ void ResourceManager::InitializeResources()
 	//GRASS BILLBOARD
 	IDirect3DTexture9 * TEX_GRASS_BILLBOARD;
 
+	//PARTICLES
+
+	//TORCH
+	IDirect3DTexture9 * TEX_PARTICLES_TORCH;
+
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/alienship.bmp", &TEX_SHIP));
 	
@@ -175,6 +180,11 @@ void ResourceManager::InitializeResources()
 	//GRASS BILLBOARD
 	HR(D3DXCreateTextureFromFile(m_device, "Images/Grass/grassfin0.dds", &TEX_GRASS_BILLBOARD));
 
+
+	//PARTICLES
+
+	//TORCH
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Particles/torch.dds", &TEX_PARTICLES_TORCH));
 	///////////////////
 
 	
@@ -238,6 +248,11 @@ void ResourceManager::InitializeResources()
 
 	//GRASS BILLBOARD
 	m_imageResources[IMAGE_GRASS_BILLBOARD_ID] = TEX_GRASS_BILLBOARD;
+
+	//PARTICLES
+
+	//TORCH
+	m_imageResources[IMAGE_PARTICLE_TORCH_ID] = TEX_PARTICLES_TORCH;
 
 	InitializeVideos();
 }
@@ -409,6 +424,14 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 	else if(strcmp(a_filename.c_str(), "grassfin0.dds") == 0)
 	{
 		return m_imageResources[IMAGE_GRASS_BILLBOARD_ID];
+	}
+
+	//PARTICLES
+
+	//TORCH
+	else if(strcmp(a_filename.c_str(), "torch.dds") == 0)
+	{
+		return m_imageResources[IMAGE_PARTICLE_TORCH_ID];
 	}
 	else
 	{

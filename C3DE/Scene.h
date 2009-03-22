@@ -12,6 +12,7 @@
 #include "Mirror.h"
 #include "ShadowSurface.h"
 #include "Terrain.h"
+#include "ParticleSystem.h"
 
 using namespace std;
 
@@ -25,6 +26,9 @@ public:
 	void RemoveMesh(Mesh*mesh);
 	void AddTerrain(Terrain *a_terrain);
 	void RemoveTerrain(Terrain *a_terrain);
+	void AddParticleSystem(ParticleSystem *a_particleSystem);
+	vector<ParticleSystem*> *GetParticleSystems();
+	void RemoveParticleSystem(ParticleSystem* a_particleSystem);
 	vector<Terrain*> *GetTerrains(){return m_terrains;}
 
 	vector<Mesh *> *GetMeshesVector()
@@ -63,6 +67,7 @@ protected:
 	vector<Mirror *> *m_mirrors;
 	vector<ShadowSurface *> *m_shadowSurfaces;
 	vector<Terrain*> * m_terrains;
+	vector<ParticleSystem*> * m_particleSystems;
 	
 	
 	AmbientLight * m_ambientLight;

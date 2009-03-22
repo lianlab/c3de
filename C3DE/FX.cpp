@@ -42,11 +42,30 @@ void FX::SetTransformMatrix(D3DXMATRIX matrix)
 void FX::SetLightHandlers(	D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
 							D3DXCOLOR specularLightColor, D3DXVECTOR3 lightVector)
 {
-	HR(m_effect->SetValue(m_shaderLightPosition, &lightVector, sizeof(D3DXVECTOR3)));	
+	if(m_shaderLightPosition)
+	{
+		HR(m_effect->SetValue(m_shaderLightPosition, &lightVector, sizeof(D3DXVECTOR3)));	
+	}
+
+	if(m_shaderAmbientLightMaterial)
+	{
+		HR(m_effect->SetValue(m_shaderAmbientLightMaterial, &ambientLightColor, sizeof(D3DXCOLOR)));
+	}
+
+	if(m_shaderDiffuseLightMaterial)
+	{
+		HR(m_effect->SetValue(m_shaderDiffuseLightMaterial, &diffuseLightColor, sizeof(D3DXCOLOR)));		
+	}
+
+	if(m_shaderSpecularLightMaterial)
+	{
+		HR(m_effect->SetValue(m_shaderSpecularLightMaterial, &specularLightColor, sizeof(D3DXCOLOR)));
+	}
 	
-	HR(m_effect->SetValue(m_shaderAmbientLightMaterial, &ambientLightColor, sizeof(D3DXCOLOR)));
-	HR(m_effect->SetValue(m_shaderDiffuseLightMaterial, &diffuseLightColor, sizeof(D3DXCOLOR)));		
-	HR(m_effect->SetValue(m_shaderSpecularLightMaterial, &specularLightColor, sizeof(D3DXCOLOR)));
+	
+	
+	
+	
 }
 
 	

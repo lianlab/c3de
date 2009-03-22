@@ -14,6 +14,8 @@ Scene::Scene()
 	m_specularLight = new SpecularLight();;
 	m_pointLight = new PointLight();
 
+	m_particleSystems = new vector<ParticleSystem*>;
+
 }
 
 Scene::~Scene()
@@ -220,9 +222,34 @@ void Scene::RemoveTerrain(Terrain *a_terrain)
 	}
 }
 
+void Scene::RemoveParticleSystem(ParticleSystem *a_particleSystem)
+{
+	int totalParticleSystems = m_particleSystems->size();
+
+	for(int i = 0; i < totalParticleSystems; i++)
+	{
+		ParticleSystem *t_particleSystem = m_particleSystems->at(i);
+		if(a_particleSystem == t_particleSystem)
+		{
+			m_particleSystems->erase(m_particleSystems->begin() + i);
+			return;
+		}
+	}
+}
+
 void Scene::AddTerrain(Terrain *a_terrain)
 {
 	m_terrains->push_back(a_terrain);
+}
+
+void Scene::AddParticleSystem(ParticleSystem *a_particleSystem)
+{
+	m_particleSystems->push_back(a_particleSystem);
+}
+
+vector<ParticleSystem*> *Scene::GetParticleSystems()
+{
+	return m_particleSystems;
 }
 
 

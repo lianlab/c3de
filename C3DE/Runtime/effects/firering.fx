@@ -6,11 +6,13 @@
 
 uniform extern float4x4 gWVP;
 uniform extern texture  gTex;
-uniform extern float3   gEyePosL;
+uniform extern float3   gEyePosW;
 uniform extern float3   gAccel;
 uniform extern float    gTime;
 uniform extern int      gViewportHeight;
 uniform extern float4x4 gTransformMatrix;
+uniform extern float4x4 gWorld;
+uniform extern float4x4 gWorldInvTrans;
 
 sampler TexS = sampler_state
 {
@@ -74,7 +76,7 @@ OutputVS FireRingVS(float3 posL    : POSITION0,
 	// experimenting.
 	//float d = distance(posL, gEyePosL);
 	float3 newPos3 = newPos.xyz;
-	float d = distance(newPos3, gEyePosL);
+	float d = distance(newPos3, gEyePosW);
 	outVS.size = gViewportHeight*size/(1.0f + 8.0f*d);
 	
 	//outVS.size = 100.0f;

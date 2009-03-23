@@ -10,6 +10,7 @@ uniform extern float3   gEyePosL;
 uniform extern float3   gAccel;
 uniform extern float    gTime;
 uniform extern int      gViewportHeight;
+uniform extern float4x4 gTransformMatrix;
 
 sampler TexS = sampler_state
 {
@@ -37,6 +38,7 @@ OutputVS FireRingVS(float3 posL    : POSITION0,
                     float mass     : TEXCOORD4,
                     float4 color   : COLOR0)
 {
+	float4x4 transformedWVP = mul(gWVP,gTransformMatrix);
     // Zero out our output.
 	OutputVS outVS = (OutputVS)0;
 	
@@ -53,12 +55,16 @@ OutputVS FireRingVS(float3 posL    : POSITION0,
 	float s = sin(6.0f*t);
 	posL.x = x;
 	posL.y = y + mass*s;
+	//posL.y = y;
 	
 	// Constant acceleration.
 	posL = posL + vel*t + 0.5f * gAccel * t * t;
 	
 	// Transform to homogeneous clip space.
-	outVS.posH = mul(float4(posL, 1.0f), gWVP);
+	//outVS.posH = mul(float4(posL, 1.0f), gWVP);
+	float4 newPos = mul(float4(posL, 1.0f), gTransformMatrix);
+	//outVS.posH = mul(float4(posL, 1.0f), transformedWVP);
+	outVS.posH = mul(newPos, gWVP);
 		
 	// Ramp up size over time.
 	size += 8.0f*t*t;
@@ -66,7 +72,9 @@ OutputVS FireRingVS(float3 posL    : POSITION0,
 	// Also compute size as a function of the distance from the camera,
 	// and the viewport heights.  The constants were found by 
 	// experimenting.
-	float d = distance(posL, gEyePosL);
+	//float d = distance(posL, gEyePosL);
+	float3 newPos3 = newPos.xyz;
+	float d = distance(newPos3, gEyePosL);
 	outVS.size = gViewportHeight*size/(1.0f + 8.0f*d);
 	
 	//outVS.size = 100.0f;

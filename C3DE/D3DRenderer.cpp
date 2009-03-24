@@ -290,32 +290,13 @@ bool D3DRenderer::IsAABBWithinView(AABB *a_box)
 }
 
 
-
-D3DXMATRIX mWorld;
-D3DXMATRIX mWorldInv;
-
 void D3DRenderer::DrawParticleSystem(ParticleSystem *a_particleSystem)
-{
-	//HR(m_device->SetRenderState(D3DRS_POINTSPRITEENABLE, true));
-	D3DCamera *cam2 = (D3DCamera *) m_camera;		
-	D3DXMATRIX t_view2 = cam2->GetMatrix();	
-	
-	D3DXMATRIX t_projView2 = t_view2*m_proj;		
-	a_particleSystem->Update(0.01f);
-	
-
+{	
 	FX *t_effect;
 	
 	t_effect =  (FireRingFX*) a_particleSystem->GetEffect();
 
-	D3DXVECTOR3 eyePosW = cam2->GetPosition();
-	D3DXVECTOR3 eyePosL;
-	D3DXVec3TransformCoord(&eyePosL, &eyePosW, &mWorldInv);
-	D3DXMATRIX fleps = (mWorld*t_projView2);
 
-
-	//TO BE CALLED  like FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
-	t_effect->SetWorldHandlers(cam2->GetPosition(), fleps);	
 
 	a_particleSystem->SetShaderHandlers();
 
@@ -369,20 +350,11 @@ void D3DRenderer::DrawParticleSystem(ParticleSystem *a_particleSystem)
 	//mesh->SetShaderHandlers();
 	FXManager::GetInstance()->End();
 
-	return;
+	
 }
 
 void D3DRenderer::DrawScene(Scene *scene)
-{		
-	
-	DrawParticleSystem((*scene->GetParticleSystems())[0]);
-
-	return;
-
-
-
-
-
+{	
 	this->hidden = 0;
 	this->shown = 0;
 	int totalMeshes = scene->GetMeshesVector()->size();		
@@ -480,6 +452,12 @@ void D3DRenderer::DrawScene(Scene *scene)
 		}
 		
 	}	
+
+	int t_totalParticleSystems = scene->GetParticleSystems()->size();
+	for(int i = 0; i < t_totalParticleSystems; i++)
+	{
+		DrawParticleSystem((*scene->GetParticleSystems())[i]);
+	}
 
 	for(int i = 0; i < totalShadowSurfaces; i++)
 	{				
@@ -1056,10 +1034,10 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	InitAllVertexDeclarations(m_device);
 	HR(m_device->SetRenderState(D3DRS_POINTSPRITEENABLE, true));
 
-	D3DXMATRIX psysWorld;
-	D3DXMatrixTranslation(&psysWorld, 0.0f, 0.0f, 5.0f);
-	D3DXMatrixTranslation(&mWorld, 0.0f, 0.0f, 5.0f);
-	D3DXMatrixInverse(&mWorldInv, 0, &mWorld);
+	//D3DXMATRIX psysWorld;
+	//D3DXMatrixTranslation(&psysWorld, 0.0f, 0.0f, 5.0f);
+	//D3DXMatrixTranslation(&mWorld, 0.0f, 0.0f, 5.0f);
+	//D3DXMatrixInverse(&mWorldInv, 0, &mWorld);
 
 	return true;
 }

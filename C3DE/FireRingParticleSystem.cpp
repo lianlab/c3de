@@ -69,5 +69,7 @@ void FireRingParticleSystem::SetShaderHandlers()
 	t_effect->SetAcceleration(m_acceleration);
 	t_effect->SetTime(m_time);
 
+	t_effect->SetTransformMatrix(GetTransformMatrix());
+
 	
 }

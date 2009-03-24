@@ -20,7 +20,7 @@
 //#define HACK_FROM_SCRATCH 1
 #include "CommonDefs.h"
 
-#include "FireRing.h"
+//#include "FireRing.h"
 #include "FireRingParticleSystem.h"
 
 

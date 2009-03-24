@@ -3,7 +3,7 @@
 FireRingFX::FireRingFX(ID3DXEffect * effect) : FX(effect)
 {
 
-	m_shaderEyePosL = m_effect->GetParameterByName(0, "gEyePosL"); 
+	//m_shaderEyePosL = m_effect->GetParameterByName(0, "gEyePosL"); 
 	m_shaderTex     = m_effect->GetParameterByName(0, "gTex");
 	m_shaderTime    = m_effect->GetParameterByName(0, "gTime");
 	m_shaderAccel   = m_effect->GetParameterByName(0, "gAccel");
@@ -17,42 +17,15 @@ FireRingFX::~FireRingFX()
 
 
 //USE THE BASE ONE
+#if 0
 void FireRingFX::SetWorldHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldViewProjection)
 {
-#if 0
-	HR(mFX->SetValue(mhEyePosL, &eyePosL, sizeof(D3DXVECTOR3)));
-	D3DXMATRIX fleps = (mWorld*viewProj);
-	HR(mFX->SetMatrix(mhWVP, &fleps));
-#endif
-
-#if 0
-	D3DXMATRIX W;		
-	D3DXMatrixIdentity(&W);			
-
-	D3DXMATRIX WIT;
-	D3DXMatrixInverse(&WIT, 0, &W);
-	D3DXMatrixTranspose(&WIT, &WIT);														
-	
-	
-	HR(m_effect->SetMatrix(m_shaderWorldMatrix, &W));	
-	HR(m_effect->SetMatrix(m_shaderViewMatrix, &worldViewProjection));	
-	HR(m_effect->SetMatrix(m_shaderWorldInverseTransposeMatrix, &WIT));												
-	HR(m_effect->SetValue(m_shaderEyePosition, cameraPosition, sizeof(D3DXVECTOR3)));	
-
-
-	HR(m_effect->SetValue(mhEyePos, &cameraPosition, sizeof(D3DXVECTOR3)));
-	//HR(m_effect->SetMatrixArray(mhFinalXForms, a_mesh->getFinalXFormArray(), a_mesh->numBones()));			
-	HR(m_effect->SetMatrix(mhWVP, &(worldViewProjection)));		
-	HR(m_effect->SetMatrix(mhWorld, &WIT));
-#endif
-
 	D3DXMATRIX viewProj = worldViewProjection;
 	D3DXMATRIX mWorld;
 	D3DXMATRIX mInvWorld;
 
 	D3DXMATRIX world;
 	D3DXMatrixTranslation(&world, 0.0f, 0.0f, 5.0f);
-
 
 	mWorld = world;
 
@@ -66,13 +39,13 @@ void FireRingFX::SetWorldHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldVi
 	D3DXVec3TransformCoord(&eyePosL, &eyePosW, &mInvWorld);
 
 	// Set FX parameters.
-
-
-	HR(m_effect->SetValue(m_shaderEyePosL, &eyePosL, sizeof(D3DXVECTOR3)));
+	HR(m_effect->SetValue(m_shaderEyePosL, &cameraPosition, sizeof(D3DXVECTOR3)));
 	
-	D3DXMATRIX fleps = (mWorld*viewProj);
-	HR(m_effect->SetMatrix(m_shaderViewMatrix, &fleps));
+	//D3DXMATRIX fleps = (mWorld*viewProj);
+	//HR(m_effect->SetMatrix(m_shaderViewMatrix, &fleps));
+	HR(m_effect->SetMatrix(m_shaderViewMatrix, &worldViewProjection));
 }
+#endif
 
 void FireRingFX::SetTexture(IDirect3DTexture9 *texture)
 {

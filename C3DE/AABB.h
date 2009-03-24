@@ -2,6 +2,7 @@
 #define AABB_H
 
 #include <d3dx9.h>
+#include "D3DCommonDefs.h"
 //#include "DebugMemory.h"
 
 class AABB

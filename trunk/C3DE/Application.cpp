@@ -21,7 +21,7 @@ Application::~Application()
 	delete WindowsPerformanceCounter::GetInstance();
 	delete Debug::GetInstance();
 	delete ResourceManager::GetInstance();
-	delete TerrainFactory::GetInstance();
+	//delete TerrainFactory::GetInstance();
 	delete ShaderManager::GetInstance();
 	delete FXManager::GetInstance();
 }

@@ -66,6 +66,24 @@ void Scene::Update(int deltaTime)
 			
 		}
 	}
+
+	int totalParticleSystems = m_particleSystems->size();
+
+	for(int i = 0; i < totalParticleSystems; i++)
+	{
+		ParticleSystem *t_particleSystem = (*m_particleSystems)[i];
+		if(t_particleSystem)
+		{
+			//TODO, fix me
+			t_particleSystem->Update(10);
+			if(t_particleSystem->GetIsFinished())
+			{
+				RemoveParticleSystem(t_particleSystem);
+				totalParticleSystems--;
+			}
+			
+		}
+	}
 }
 
 void Scene::SetAmbientLight(AmbientLight *light)

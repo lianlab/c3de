@@ -9,7 +9,7 @@ public:
 	FireRingFX(ID3DXEffect * effect);
 	~FireRingFX();
 
-	void SetWorldHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldViewProjection);
+	//void SetWorldHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldViewProjection);
 
 	void SetTexture(IDirect3DTexture9 *texture);
 

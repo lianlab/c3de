@@ -552,6 +552,18 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="ParticlesSystems"
+						>
+						<File
+							RelativePath=".\FireRingParticleSystem.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ParticleSystem.cpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Camera"
@@ -589,6 +601,10 @@
 						</File>
 						<File
 							RelativePath=".\EmptyFX.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\FireRingFX.cpp"
 							>
 						</File>
 						<File
@@ -765,6 +781,10 @@
 				</File>
 				<File
 					RelativePath=".\RendererListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\VertexDeclarations.h"
 					>
 				</File>
 				<Filter
@@ -1054,6 +1074,18 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="ParticlesSystems"
+						>
+						<File
+							RelativePath=".\FireRingParticleSystem.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ParticleSystem.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Camera"
@@ -1091,6 +1123,10 @@
 						</File>
 						<File
 							RelativePath=".\EmptyFX.h"
+							>
+						</File>
+						<File
+							RelativePath=".\FireRingFX.h"
 							>
 						</File>
 						<File

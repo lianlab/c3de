@@ -1138,6 +1138,7 @@ void Game::InitializeMeshes()
 	
 	FireRingParticleSystem *t_fireRing = new FireRingParticleSystem(t_texture, 1500, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f));
 
+	t_fireRing->SetPosition(0.0f, 0.0f, 25.0f);
 	m_testScene = new DefaultScene1();	
 	
 	m_cube = new Cube();

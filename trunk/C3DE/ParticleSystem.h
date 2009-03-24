@@ -16,25 +16,36 @@ struct VertexParticle
 	static IDirect3DVertexDeclaration9* Decl;
 };
 
+
+
+//TODO: AABB
 class ParticleSystem : public D3DMesh
 {
 public:
 	ParticleSystem(const D3DXVECTOR3& accel, 
 		//const AABB& box,
 		int maxNumParticles,
-		float timePerParticle);
+		float timePerParticle, bool a_isFinite = false);
 
 	virtual ~ParticleSystem();
 	void AddParticle();
 
+	bool GetIsFinished();
+
+	bool GetIsFinite();
+
 
 	virtual void InitParticle(VertexParticle& out) = 0;
-	virtual void Update(float dt);
+	virtual void Update(int dt);
 	std::vector<VertexParticle*> *GetAliveParticles(){return m_aliveParticles;}
 	
 
 protected:
 
+	bool m_isFinite;
+	int m_emmittedParticles;
+
+	bool m_isFinished;
 
 	IDirect3DTexture9* m_texture;
 	IDirect3DVertexBuffer9* mVB;

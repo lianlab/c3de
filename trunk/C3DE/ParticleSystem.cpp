@@ -6,9 +6,12 @@ IDirect3DVertexDeclaration9* VertexParticle::Decl  = 0;
 ParticleSystem::ParticleSystem(const D3DXVECTOR3& accel,
 		        // const AABB& box,
 				 int maxNumParticles,
-				 float timePerParticle) : D3DMesh()
+				 float timePerParticle, bool a_isFinite) : D3DMesh()
 	 
 {
+	m_isFinite = a_isFinite;
+	m_isFinished = false;
+	m_emmittedParticles = 0;
 	//m_device = a_device;
 	m_accel = accel;
 	m_time = 0.0f;
@@ -36,13 +39,7 @@ ParticleSystem::ParticleSystem(const D3DXVECTOR3& accel,
 		//m_deadParticles.push_back(t_particle);
 #endif
 
-#if 0
-		VertexParticle *t_particle = new VertexParticle();
-		t_particle->lifeTime = -1.0f;
-		t_particle->initialTime = 0.0f;
 
-		m_particles[i] = t_particle;
-#endif
 	}
 
 	IDirect3DDevice9 *t_device = D3DRenderer::GetDevice();
@@ -59,6 +56,7 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::AddParticle()
 {
+	
 	if( m_deadParticles->size() > 0)
 	{
 		// Reinitialize a particle.
@@ -71,9 +69,17 @@ void ParticleSystem::AddParticle()
 	}
 }
 
-void ParticleSystem::Update(float dt)
+bool ParticleSystem::GetIsFinished()
 {
+	return m_isFinished;
+}
+	
+void ParticleSystem::Update(int deltaTime)
+{
+	float dt = deltaTime/1000.0f;
 	m_time += dt;
+
+	
 
 	// Rebuild the dead and alive list.  Note that resize(0) does
 	// not deallocate memory (i.e., the capacity of the vector does
@@ -82,7 +88,7 @@ void ParticleSystem::Update(float dt)
 	m_aliveParticles->resize(0);
 
 	// For each particle.
-#if 1
+
 	for(int i = 0; i < m_maxNumParticles; ++i)
 	{
 		// Is the particle dead?
@@ -96,7 +102,7 @@ void ParticleSystem::Update(float dt)
 			m_aliveParticles->push_back((*m_particles)[i]);
 		}
 	}
-#endif
+
 
 
 
@@ -109,8 +115,24 @@ void ParticleSystem::Update(float dt)
 		timeAccum += dt;
 		while( timeAccum >= m_timePerParticle )
 		{
+			m_emmittedParticles++;
+			if(m_emmittedParticles > m_maxNumParticles)
+			{
+				int t_deadParticlesCount = m_deadParticles->size();
+				m_isFinished = t_deadParticlesCount == m_maxNumParticles;
+				//return;
+			}
+			if(m_isFinished && m_isFinite)
+			{
+				return;
+			}
 			AddParticle();
 			timeAccum -= m_timePerParticle;
 		}
 	}
+}
+
+bool ParticleSystem::GetIsFinite()
+{
+	return m_isFinite;
 }

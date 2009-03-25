@@ -21,7 +21,7 @@
 #include "CommonDefs.h"
 
 //#include "FireRing.h"
-#include "FireRingParticleSystem.h"
+//#include "FireRingParticleSystem.h"
 
 
 

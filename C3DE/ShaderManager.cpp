@@ -118,6 +118,11 @@ void ShaderManager::InitializeResources()
 	errors = 0;	
 	HR(D3DXCreateEffectFromFile(m_device, "effects/firering.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_FIRE_RING_FX, &errors));	
 	m_effectResources[SHADER_FIRE_RING_FX_ID] = SHADER_FIRE_RING_FX;
+
+	ID3DXEffect * SHADER_SUPERNOVA_FX;
+	errors = 0;	
+	HR(D3DXCreateEffectFromFile(m_device, "effects/supernova.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_SUPERNOVA_FX, &errors));	
+	m_effectResources[SHADER_SUPERNOVA_FX_ID] = SHADER_SUPERNOVA_FX;
 	
 	m_effects[SHADER_BOOK_LIGHTS_ID] = new BookLights(SHADER_BOOK_LIGHTS);
 	m_effects[SHADER_LIGHTS_AND_TEXTURES_ID] = new LightsAndTextures(SHADER_LIGHTS_AND_TEXTURES);
@@ -132,6 +137,7 @@ void ShaderManager::InitializeResources()
 	m_effects[SHADER_BILLBOARD_FX_ID] = new BillboardFX(SHADER_BILLBOARD_FX);
 	m_effects[SHADER_GRASS_FX_ID] = new GrassFX(SHADER_GRASS_FX);
 	m_effects[SHADER_FIRE_RING_FX_ID] = new FireRingFX(SHADER_FIRE_RING_FX);
+	m_effects[SHADER_SUPERNOVA_FX_ID] = new FireRingFX(SHADER_SUPERNOVA_FX);
 }
 
 ShadowFX * ShaderManager::GetDefaultShadowFX()

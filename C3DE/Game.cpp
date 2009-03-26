@@ -1138,10 +1138,10 @@ void Game::InitializeMeshes()
 	IDirect3DTexture9 * t_texture = ResourceManager::GetInstance()->GetTextureByID(IMAGE_PARTICLE_TORCH_ID);
 	
 	
-//	SupernovaParticleSystem *t_fireRing = new SupernovaParticleSystem(t_texture, 5, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f), true);
-	FireRingParticleSystem *t_fireRing = new FireRingParticleSystem(t_texture, 1500, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f), true);
+	SupernovaParticleSystem *t_fireRing = new SupernovaParticleSystem(t_texture, 15, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f), true);
+	//FireRingParticleSystem *t_fireRing = new FireRingParticleSystem(t_texture, 1500, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f), true);
 
-	t_fireRing->SetPosition(0.0f, 0.0f, 25.0f);
+	//t_fireRing->SetPosition(0.0f, 0.0f, 25.0f);
 	m_testScene = new DefaultScene1();	
 	
 	m_cube = new Cube();

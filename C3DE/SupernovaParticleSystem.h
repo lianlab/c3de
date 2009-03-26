@@ -12,8 +12,12 @@ public:
 
 	void SetShaderHandlers();
 
+	void Update(int deltaTime);
+
 protected:
 	void InitParticle(VertexParticle& out);
+
+
 
 	D3DXVECTOR3 m_acceleration;
 };

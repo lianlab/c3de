@@ -7,7 +7,7 @@
 class FireRingParticleSystem : public ParticleSystem
 {
 public:
-	FireRingParticleSystem(IDirect3DTexture9 * a_texture,int a_maxNumParticles, float a_timePerParticle, D3DXVECTOR3 a_acceleration);
+	FireRingParticleSystem(IDirect3DTexture9 * a_texture,int a_maxNumParticles, float a_timePerParticle, D3DXVECTOR3 a_acceleration, bool a_isFinite = false);
 	~FireRingParticleSystem();
 
 	void SetShaderHandlers();

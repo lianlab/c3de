@@ -13,6 +13,7 @@
 #include "Grass.h"
 #include "GrassGrid.h"
 #include "SupernovaParticleSystem.h"
+#include "FireRingParticleSystem.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -1137,7 +1138,8 @@ void Game::InitializeMeshes()
 	IDirect3DTexture9 * t_texture = ResourceManager::GetInstance()->GetTextureByID(IMAGE_PARTICLE_TORCH_ID);
 	
 	
-	SupernovaParticleSystem *t_fireRing = new SupernovaParticleSystem(t_texture, 1500, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f));
+//	SupernovaParticleSystem *t_fireRing = new SupernovaParticleSystem(t_texture, 5, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f), true);
+	FireRingParticleSystem *t_fireRing = new FireRingParticleSystem(t_texture, 1500, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f), true);
 
 	t_fireRing->SetPosition(0.0f, 0.0f, 25.0f);
 	m_testScene = new DefaultScene1();	
@@ -1145,7 +1147,7 @@ void Game::InitializeMeshes()
 	m_cube = new Cube();
 	
 	
-	m_testScene->AddMesh(m_cube);	
+	//m_testScene->AddMesh(m_cube);	
 	m_testScene->AddParticleSystem((ParticleSystem*)t_fireRing);
 	
 	m_testScene->Initialize();

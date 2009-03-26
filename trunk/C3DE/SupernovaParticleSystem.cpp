@@ -1,8 +1,8 @@
 #include "SupernovaParticleSystem.h"
 #include "SupernovaFX.h"
 
-SupernovaParticleSystem::SupernovaParticleSystem(IDirect3DTexture9 * a_texture,int a_maxNumParticles, float a_timePerParticle, D3DXVECTOR3 a_acceleration):
-ParticleSystem(a_acceleration,a_maxNumParticles, a_timePerParticle)
+SupernovaParticleSystem::SupernovaParticleSystem(IDirect3DTexture9 * a_texture,int a_maxNumParticles, float a_timePerParticle, D3DXVECTOR3 a_acceleration, bool a_isFinite):
+ParticleSystem(a_acceleration,a_maxNumParticles, a_timePerParticle, a_isFinite)
 {
 	m_acceleration = a_acceleration;
 
@@ -34,14 +34,17 @@ void SupernovaParticleSystem::InitParticle(VertexParticle& out)
 	out.initialTime = m_time;
 
 	// Flare lives for 2-4 seconds.
-	out.lifeTime   = GetRandomFloat(2.0f, 4.0f);
+	//out.lifeTime   = GetRandomFloat(2.0f, 4.0f);
+	out.lifeTime = 4.0f;
 
 	// Initial size in pixels.
-	out.initialSize  = GetRandomFloat(10.0f, 15.0f);
+	//out.initialSize  = GetRandomFloat(10.0f, 15.0f);
+	out.initialSize  = 10.0f;
 
 	// Give a very small initial velocity to give the flares
 	// some randomness.
-	GetRandomVec(out.initialVelocity);
+	//GetRandomVec(out.initialVelocity);
+	out.initialVelocity = D3DXVECTOR3(0.0f, 0.0f, 15.0f);
 
 	// Scalar value used in vertex shader as an amplitude factor.
 	out.mass = GetRandomFloat(1.0f, 2.0f);
@@ -55,11 +58,12 @@ void SupernovaParticleSystem::InitParticle(VertexParticle& out)
 	float t = GetRandomFloat(0, 2.0f*D3DX_PI);
 
 	// Convert to Cartesian coordinates.
-	out.initialPos.x = r*cosf(t);
-	out.initialPos.y = r*sinf(t);
+	//out.initialPos.x = r*cosf(t);
+	//out.initialPos.y = r*sinf(t);
+	out.initialPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	// Random depth value in [-1, 1] (depth of the ring)
-	out.initialPos.z = GetRandomFloat(-1.0f, 1.0f);
+	//out.initialPos.z = GetRandomFloat(-1.0f, 1.0f);
 }
 
 void SupernovaParticleSystem::SetShaderHandlers()

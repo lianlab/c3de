@@ -7,7 +7,7 @@
 class SupernovaParticleSystem : public ParticleSystem
 {
 public:
-	SupernovaParticleSystem(IDirect3DTexture9 * a_texture,int a_maxNumParticles, float a_timePerParticle, D3DXVECTOR3 a_acceleration);
+	SupernovaParticleSystem(IDirect3DTexture9 * a_texture,int a_maxNumParticles, float a_timePerParticle, D3DXVECTOR3 a_acceleration, bool a_isFinite = false);
 	~SupernovaParticleSystem();
 
 	void SetShaderHandlers();

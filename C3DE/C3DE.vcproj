@@ -563,6 +563,10 @@
 							RelativePath=".\ParticleSystem.cpp"
 							>
 						</File>
+						<File
+							RelativePath=".\SupernovaParticleSystem.cpp"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
@@ -645,6 +649,10 @@
 						</File>
 						<File
 							RelativePath=".\SkinnedMeshFX.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\SupernovaFX.cpp"
 							>
 						</File>
 					</Filter>
@@ -1085,6 +1093,10 @@
 							RelativePath=".\ParticleSystem.h"
 							>
 						</File>
+						<File
+							RelativePath=".\SupernovaParticleSystem.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
@@ -1167,6 +1179,10 @@
 						</File>
 						<File
 							RelativePath=".\SkinnedMeshFX.h"
+							>
+						</File>
+						<File
+							RelativePath=".\SupernovaFX.h"
 							>
 						</File>
 					</Filter>

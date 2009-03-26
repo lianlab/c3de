@@ -76,6 +76,11 @@ bool ParticleSystem::GetIsFinished()
 	
 void ParticleSystem::Update(int deltaTime)
 {
+	if(m_isFinished && m_isFinite)
+	{
+		return;
+	}
+
 	float dt = deltaTime/1000.0f;
 	m_time += dt;
 
@@ -116,17 +121,30 @@ void ParticleSystem::Update(int deltaTime)
 		while( timeAccum >= m_timePerParticle )
 		{
 			m_emmittedParticles++;
-			if(m_emmittedParticles > m_maxNumParticles)
+
+			if(m_isFinite)
 			{
-				int t_deadParticlesCount = m_deadParticles->size();
-				m_isFinished = t_deadParticlesCount == m_maxNumParticles;
-				//return;
+				if(m_emmittedParticles > m_maxNumParticles)
+				{
+					int t_deadParticlesCount = m_deadParticles->size();
+					m_isFinished = t_deadParticlesCount == m_maxNumParticles;
+
+					
+					//return;
+				}
+				else
+				{
+					AddParticle();
+				}
 			}
-			if(m_isFinished && m_isFinite)
+			else
 			{
-				return;
+				AddParticle();
 			}
-			AddParticle();
+		
+			
+			
+			
 			timeAccum -= m_timePerParticle;
 		}
 	}

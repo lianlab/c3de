@@ -104,6 +104,9 @@ void ResourceManager::InitializeResources()
 	//TORCH
 	IDirect3DTexture9 * TEX_PARTICLES_TORCH;
 
+	//BOLT
+	IDirect3DTexture9 * TEX_PARTICLES_BOLT;
+
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/alienship.bmp", &TEX_SHIP));
 	
@@ -185,6 +188,9 @@ void ResourceManager::InitializeResources()
 
 	//TORCH
 	HR(D3DXCreateTextureFromFile(m_device, "Images/Particles/torch.dds", &TEX_PARTICLES_TORCH));
+
+	//BOLT
+	HR(D3DXCreateTextureFromFile(m_device, "Images/Particles/bolt.dds", &TEX_PARTICLES_BOLT));
 	///////////////////
 
 	
@@ -253,6 +259,8 @@ void ResourceManager::InitializeResources()
 
 	//TORCH
 	m_imageResources[IMAGE_PARTICLE_TORCH_ID] = TEX_PARTICLES_TORCH;
+	//BOLT
+	m_imageResources[IMAGE_PARTICLE_BOLT_ID] = TEX_PARTICLES_BOLT;
 
 	InitializeVideos();
 }
@@ -432,6 +440,10 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 	else if(strcmp(a_filename.c_str(), "torch.dds") == 0)
 	{
 		return m_imageResources[IMAGE_PARTICLE_TORCH_ID];
+	}
+	else if(strcmp(a_filename.c_str(), "bolt.dds") == 0)
+	{
+		return m_imageResources[IMAGE_PARTICLE_BOLT_ID];
 	}
 	else
 	{

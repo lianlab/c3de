@@ -35,7 +35,7 @@ public:
 	bool GetIsFinite();
 
 
-	virtual void InitParticle(VertexParticle& out) = 0;
+	virtual void InitParticle(VertexParticle& out){};
 	virtual void Update(int dt);
 	std::vector<VertexParticle*> *GetAliveParticles(){return m_aliveParticles;}
 	

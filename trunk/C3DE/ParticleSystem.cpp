@@ -82,6 +82,7 @@ void ParticleSystem::Update(int deltaTime)
 	}
 
 	float dt = deltaTime/1000.0f;
+	//dt = 0.0001f;
 	m_time += dt;
 
 	

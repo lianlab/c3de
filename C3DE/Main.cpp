@@ -264,6 +264,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 			//For each frame update and render our app
 			app->Update(deltaTime);
 			app->Render();
+
+			
 			
 			
 			

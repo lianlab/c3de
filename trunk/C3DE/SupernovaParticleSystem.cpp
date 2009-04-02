@@ -1,5 +1,6 @@
 #include "SupernovaParticleSystem.h"
 #include "SupernovaFX.h"
+#include "DebugMemory.h"
 
 SupernovaParticleSystem::SupernovaParticleSystem(IDirect3DTexture9 * a_texture,int a_maxNumParticles, D3DXVECTOR3 a_acceleration, bool a_isFinite):
 ParticleSystem(a_acceleration,a_maxNumParticles, -1.0f, a_isFinite)
@@ -9,6 +10,7 @@ ParticleSystem(a_acceleration,a_maxNumParticles, -1.0f, a_isFinite)
 	//m_acceleration = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	m_texture = a_texture;
+
 
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_SUPERNOVA_FX_ID);
 
@@ -47,17 +49,14 @@ ParticleSystem(a_acceleration,a_maxNumParticles, -1.0f, a_isFinite)
 
 		VertexParticle *t_particle;
 		t_particle = (*m_particles)[i];
-		delete t_particle;
-		t_particle = NULL;
+		//delete t_particle;
+		//t_particle = NULL;
 
-		t_particle = new VertexParticle();
+		//t_particle = new VertexParticle();
 		t_particle->lifeTime = 5.0f;
 		t_particle->initialTime = 0.0f;
-		t_particle->initialSize  = 10.0f;
-		
-
-		t_particle->initialVelocity = t_speed;
-		
+		t_particle->initialSize  = 10.0f;		
+		t_particle->initialVelocity = t_speed;		
 		t_particle->mass = 1.5f;
 		t_particle->initialColor = D3DXCOLOR(0.75f, 0.75f, 0.75f, 0.75f);
 		t_particle->initialPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);

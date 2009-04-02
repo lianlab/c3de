@@ -79,6 +79,8 @@ protected:
 
 	void FreeShadowSurfaces();
 	void FreeMirrors();
+
+	void FreeParticleSystems();
 	
 };
 #endif

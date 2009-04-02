@@ -1,5 +1,6 @@
 #include "ParticleSystem.h"
 #include "D3DRenderer.h"
+#include "DebugMemory.h"
 
 IDirect3DVertexDeclaration9* VertexParticle::Decl  = 0;
 
@@ -52,6 +53,25 @@ ParticleSystem::ParticleSystem(const D3DXVECTOR3& accel,
 ParticleSystem::~ParticleSystem()
 {
 
+	
+	int t_allCount = m_particles->size();
+	
+	for(int i = 0; i < t_allCount; i++)
+	{
+		VertexParticle *t_particle = (*m_particles)[i];
+		delete t_particle;
+		t_particle = NULL;
+	}
+
+	delete m_particles;
+	m_particles = NULL;
+
+	delete m_aliveParticles;
+	m_aliveParticles = NULL;
+
+	delete m_deadParticles;
+	m_deadParticles = NULL;
+		
 }
 
 void ParticleSystem::AddParticle()

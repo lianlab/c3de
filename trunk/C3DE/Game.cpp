@@ -1135,19 +1135,24 @@ void Game::InitializeMeshes()
 	
 
 	
-	IDirect3DTexture9 * t_texture = ResourceManager::GetInstance()->GetTextureByID(IMAGE_PARTICLE_TORCH_ID);
+	IDirect3DTexture9 * t_texture = ResourceManager::GetInstance()->GetTextureByID(IMAGE_PARTICLE_BOLT_ID);
 	
 	
-	SupernovaParticleSystem *t_fireRing = new SupernovaParticleSystem(t_texture, 15, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f), true);
-	//FireRingParticleSystem *t_fireRing = new FireRingParticleSystem(t_texture, 1500, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f), true);
+	//SupernovaParticleSystem *t_fireRing = new SupernovaParticleSystem(t_texture, 1500, D3DXVECTOR3(0.0f, -9.8f, 0.0f), true);
+	//SupernovaParticleSystem *t_fireRing = new SupernovaParticleSystem(t_texture, 500, D3DXVECTOR3(0.0f, -9.8f, 0.0f), true);
+	//SupernovaParticleSystem *t_fireRing = new SupernovaParticleSystem(t_texture, 2000, 0.003f, D3DXVECTOR3(-3.0f, -9.8f, 0.0f), false);
+	
+	FireRingParticleSystem *t_fireRing = new FireRingParticleSystem(t_texture, 1500, 0.0025f, D3DXVECTOR3(0.0f, 0.9f, 0.0f), true);
 
-	//t_fireRing->SetPosition(0.0f, 0.0f, 25.0f);
+	t_fireRing->SetPosition(0.0f, 0.0f, 150.0f);
 	m_testScene = new DefaultScene1();	
 	
 	m_cube = new Cube();
+
 	
 	
-	//m_testScene->AddMesh(m_cube);	
+	
+	m_testScene->AddMesh(m_cube);	
 	m_testScene->AddParticleSystem((ParticleSystem*)t_fireRing);
 	
 	m_testScene->Initialize();

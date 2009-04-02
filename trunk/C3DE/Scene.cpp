@@ -28,6 +28,8 @@ Scene::~Scene()
 
 	FreeShadowSurfaces();
 
+	FreeParticleSystems();
+
 	if(m_ambientLight)
 	{
 		delete m_ambientLight;
@@ -160,6 +162,28 @@ void Scene::FreeMeshes()
 	{
 		delete m_meshes;
 		m_meshes = NULL;
+	}
+}
+
+
+void Scene::FreeParticleSystems()
+{
+	int totalParticleSystems = m_particleSystems->size();
+
+	for(int i = 0; i < totalParticleSystems; i++)
+	{
+		ParticleSystem *t_particleSystem = m_particleSystems->at(i);
+		if(t_particleSystem)
+		{
+			delete t_particleSystem;
+			t_particleSystem = NULL;
+		}
+	}
+
+	if(m_particleSystems)
+	{
+		delete m_particleSystems;
+		m_particleSystems = NULL;
 	}
 }
 

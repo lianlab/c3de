@@ -31,7 +31,8 @@
 #include "Billboard.h"
 #include "CubeMovie.h"
 #include "BillboardMesh.h"
-
+#include "Castle.h"
+#include "LandscapeMesh.h"
 
 
 #include "Grid.h"
@@ -114,6 +115,8 @@ private:
 	WomanMesh *m_skinMesh;
 
 #if 1
+
+	LandscapeMesh *m_castle;
 	float m_camX;
 	float m_camY;
 	float m_camZ;

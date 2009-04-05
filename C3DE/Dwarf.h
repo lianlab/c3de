@@ -14,6 +14,9 @@ public:
 
 	void SetShaderHandlers();
 
+	void PreRender(Renderer * a_renderer);
+	void PosRender(Renderer * a_renderer);
+
 	
 protected:
 

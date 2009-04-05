@@ -26,7 +26,8 @@ D3DApplication::~D3DApplication()
 
 void D3DApplication::SetupRenderer()
 {
-	m_renderer = new D3DRenderer();
+	//m_renderer = new D3DRenderer();
+	m_renderer = D3DRenderer::GetInstance();
 }
 
 void D3DApplication::SetupWindow()
@@ -66,7 +67,7 @@ bool D3DApplication::Init(HINSTANCE hInstance, int width, int height, bool windo
 	RegisterClass(&wc);
 	
 	m_mainWindow = CreateWindow("D3DWND", "C3DE", WS_EX_TOPMOST| WS_POPUPWINDOW, 0, 0, width, height, 0, 0, hInstance, 0); 
-	SetCursor(NULL);
+	//SetCursor(NULL);
 	ShowWindow(m_mainWindow, SW_SHOW);
 	UpdateWindow(m_mainWindow);
 	

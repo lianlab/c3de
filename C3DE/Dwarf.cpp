@@ -13,29 +13,13 @@ Dwarf::Dwarf()
 	m_vertices = new vector<VertexPos>;
 	m_indices = new vector<int>;
 
-	
-
-	
-
-	//D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_CRATE_ID));
-	//m_texture = (Image *) d3dImage;
-
-
-	//m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
 	
 	m_vertexDeclaration = NULL;
 
 	LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_DWARF_ID), D3DRenderer::GetDevice());
 
-	//m_material = NULL;
-	
 }
-
-
-
-
-
 
 void Dwarf::SetShaderHandlers()
 {		
@@ -47,7 +31,6 @@ void Dwarf::SetShaderHandlers()
 									m_currentMaterial->GetSpecular(), m_currentMaterial->GetSpecularPower());
 									
 	
-	//t_effect->SetObjectTexture(m_d3dTex);
 
 	D3DImage *t_image = (D3DImage*) m_currentTexture;
 
@@ -67,6 +50,18 @@ Dwarf::~Dwarf()
 	}
 	
 
+	
+}
+
+
+void Dwarf::PreRender(Renderer * a_renderer)
+{
+
+
+}
+	
+void Dwarf::PosRender(Renderer *a_renderer)
+{
 	
 }
 

@@ -29,6 +29,29 @@ ResourceManager::ResourceManager()
 	m_meshesFilenames[MESH_TREE_2_ID] = "Meshes/tree2.x";
 	m_meshesFilenames[MESH_TREE_3_ID] = "Meshes/tree3.x";
 	m_meshesFilenames[MESH_CASTLE_ID] = "Meshes/castle.x";
+	//LANDSCAPE
+	m_meshesFilenames[MESH_CAFE_TABLE_ID] = "Meshes/landscape/cafeTable.x";
+	m_meshesFilenames[MESH_GARDEN_BORDER_ID] = "Meshes/landscape/gardenBorder.x";
+	m_meshesFilenames[MESH_MAILBOX01_ID] = "Meshes/landscape/mailbox01.x";
+	m_meshesFilenames[MESH_MAILBOX02_ID] = "Meshes/landscape/mailbox02.x";
+	m_meshesFilenames[MESH_MAILBOX03_ID] = "Meshes/landscape/mailbox03.x";
+	m_meshesFilenames[MESH_PARKING_BARRIER_ID] = "Meshes/landscape/parkingBarrier.x";
+	m_meshesFilenames[MESH_PALETTE_ID] = "Meshes/landscape/palette.x";
+	m_meshesFilenames[MESH_PIPE_CAGE_ID] = "Meshes/landscape/pipeCage.x";
+	m_meshesFilenames[MESH_SANDWICH_BOARD_ID] = "Meshes/landscape/sandwichBoard.x";
+	m_meshesFilenames[MESH_SIDEWALK_BARRIER_ID] = "Meshes/landscape/sidewalkBarrier.x";
+	m_meshesFilenames[MESH_SIGN01_ID] = "Meshes/landscape/sign01.x";
+	m_meshesFilenames[MESH_SIGN02_ID] = "Meshes/landscape/sign02.x";
+	m_meshesFilenames[MESH_SIGN03_ID] = "Meshes/landscape/sign03.x";
+	m_meshesFilenames[MESH_SIGN04_ID] = "Meshes/landscape/sign04.x";
+	m_meshesFilenames[MESH_SIGN05_ID] = "Meshes/landscape/sign05.x";
+	m_meshesFilenames[MESH_SIGN06_ID] = "Meshes/landscape/sign06.x";
+	m_meshesFilenames[MESH_SPRINKLER_ID] = "Meshes/landscape/sprinkler.x";
+	m_meshesFilenames[MESH_BENCH_ID] = "Meshes/landscape/bench.x";
+	m_meshesFilenames[MESH_STREET_LIGHT_01_ID] = "Meshes/landscape/streetLight01.x";
+	m_meshesFilenames[MESH_STREET_LIGHT_02_ID] = "Meshes/landscape/streetLight02.x";	
+	m_meshesFilenames[MESH_SWITCHBOX_ID] = "Meshes/landscape/switchBox.x";
+	m_meshesFilenames[MESH_TRAFFIC_CONE_ID] = "Meshes/landscape/trafficCone.x";
 
 
 }
@@ -106,6 +129,34 @@ void ResourceManager::InitializeResources()
 
 	//BOLT
 	IDirect3DTexture9 * TEX_PARTICLES_BOLT;
+
+
+	//LANDSCAPE
+	IDirect3DTexture9 * TEX_CAFE_TABLE;
+	IDirect3DTexture9 * TEX_GARDEN_BORDER;
+	IDirect3DTexture9 * TEX_MAILBOX01;
+	IDirect3DTexture9 * TEX_MAILBOX02;
+	IDirect3DTexture9 * TEX_MAILBOX03;
+	IDirect3DTexture9 * TEX_PARKING_BARRIER;
+	IDirect3DTexture9 * TEX_PALETTE;
+	IDirect3DTexture9 * TEX_PIPE_CAGE;
+	IDirect3DTexture9 * TEX_SANDWICH_BOARD;
+	IDirect3DTexture9 * TEX_SIDEWALK_BARRIER;
+	IDirect3DTexture9 * TEX_SIGN01;
+	IDirect3DTexture9 * TEX_SIGN02;
+	IDirect3DTexture9 * TEX_SIGN03;
+	IDirect3DTexture9 * TEX_SIGN04;
+	IDirect3DTexture9 * TEX_SIGN05;
+	IDirect3DTexture9 * TEX_SIGN06;
+	IDirect3DTexture9 * TEX_SPRINKLER;
+	IDirect3DTexture9 * TEX_BENCH;
+	IDirect3DTexture9 * TEX_STREET_LIGHT_01;
+	IDirect3DTexture9 * TEX_STREET_LIGHT_01_LIT;
+	IDirect3DTexture9 * TEX_STREET_LIGHT_02;
+	IDirect3DTexture9 * TEX_STREET_LIGHT_02_LIT;
+	IDirect3DTexture9 * TEX_SWITCHBOX;
+	IDirect3DTexture9 * TEX_TRAFFIC_CONE;						
+	
 
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/alienship.bmp", &TEX_SHIP));
@@ -192,6 +243,34 @@ void ResourceManager::InitializeResources()
 	//BOLT
 	HR(D3DXCreateTextureFromFile(m_device, "Images/Particles/bolt.dds", &TEX_PARTICLES_BOLT));
 	///////////////////
+	//LANDSCAPE
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/cafeTable.png", &TEX_CAFE_TABLE));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/gardenBorder.png", &TEX_GARDEN_BORDER));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/mailbox01.png", &TEX_MAILBOX01));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/mailbox02.png", &TEX_MAILBOX02));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/mailbox03.png", &TEX_MAILBOX03));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/parkingBarrier.png", &TEX_PARKING_BARRIER));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/palette.png", &TEX_PALETTE));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/pipeCage.png", &TEX_PIPE_CAGE));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/sandwichBoard.png", &TEX_SANDWICH_BOARD));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/sidewalkBarrier.png", &TEX_SIDEWALK_BARRIER));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/sign01.png", &TEX_SIGN01));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/sign02.png", &TEX_SIGN02));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/sign03.png", &TEX_SIGN03));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/sign04.png", &TEX_SIGN04));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/sign05.png", &TEX_SIGN05));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/sign06.png", &TEX_SIGN06));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/sprinkler.png", &TEX_SPRINKLER));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/bench.png", &TEX_BENCH));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/streetLight01.png", &TEX_STREET_LIGHT_01));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/streetLight01_lit.png", &TEX_STREET_LIGHT_01_LIT));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/streetLight02.png", &TEX_STREET_LIGHT_02));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/streetLight02_lit.png", &TEX_STREET_LIGHT_02_LIT));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/switchbox.png", &TEX_SWITCHBOX));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/trafficCone.png", &TEX_TRAFFIC_CONE));
+
+
+
 
 	
 
@@ -261,6 +340,32 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_PARTICLE_TORCH_ID] = TEX_PARTICLES_TORCH;
 	//BOLT
 	m_imageResources[IMAGE_PARTICLE_BOLT_ID] = TEX_PARTICLES_BOLT;
+
+	//LANDSCAPE
+	m_imageResources[IMAGE_CAFE_TABLE_ID] = TEX_CAFE_TABLE;
+	m_imageResources[IMAGE_GARDEN_BORDER_ID] = TEX_GARDEN_BORDER;
+	m_imageResources[IMAGE_MAILBOX01_ID] = TEX_MAILBOX01;
+	m_imageResources[IMAGE_MAILBOX02_ID] = TEX_MAILBOX02;
+	m_imageResources[IMAGE_MAILBOX03_ID] = TEX_MAILBOX03;
+	m_imageResources[IMAGE_PARKING_BARRIER_ID] = TEX_PARKING_BARRIER;
+	m_imageResources[IMAGE_PALETTE_ID] = TEX_PALETTE;
+	m_imageResources[IMAGE_PIPE_CAGE_ID] = TEX_PIPE_CAGE;
+	m_imageResources[IMAGE_SANDWICH_BOARD_ID] = TEX_SANDWICH_BOARD;
+	m_imageResources[IMAGE_SIDEWALK_BARRIER_ID] = TEX_SIDEWALK_BARRIER;
+	m_imageResources[IMAGE_SIGN01_ID] = TEX_SIGN01;
+	m_imageResources[IMAGE_SIGN02_ID] = TEX_SIGN02;
+	m_imageResources[IMAGE_SIGN03_ID] = TEX_SIGN03;
+	m_imageResources[IMAGE_SIGN04_ID] = TEX_SIGN04;
+	m_imageResources[IMAGE_SIGN05_ID] = TEX_SIGN05;
+	m_imageResources[IMAGE_SIGN06_ID] = TEX_SIGN06;
+	m_imageResources[IMAGE_SPRINKLER_ID] = TEX_SPRINKLER;
+	m_imageResources[IMAGE_BENCH_ID] = TEX_BENCH;
+	m_imageResources[IMAGE_STREET_LIGHT_01_ID] = TEX_STREET_LIGHT_01;
+	m_imageResources[IMAGE_STREET_LIGHT_01_LIT_ID] = TEX_STREET_LIGHT_01_LIT;
+	m_imageResources[IMAGE_STREET_LIGHT_02_ID] = TEX_STREET_LIGHT_02;
+	m_imageResources[IMAGE_STREET_LIGHT_02_LIT_ID] = TEX_STREET_LIGHT_02_LIT;
+	m_imageResources[IMAGE_SWITCHBOX_ID] = TEX_SWITCHBOX;
+	m_imageResources[IMAGE_TRAFFIC_CONE_ID] = TEX_TRAFFIC_CONE;
 
 	InitializeVideos();
 }
@@ -444,7 +549,7 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 	else if(strcmp(a_filename.c_str(), "bolt.dds") == 0)
 	{
 		return m_imageResources[IMAGE_PARTICLE_BOLT_ID];
-	}
+	}	
 	else
 	{
 		return NULL;

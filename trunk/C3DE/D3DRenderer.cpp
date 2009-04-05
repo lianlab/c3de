@@ -29,6 +29,17 @@ IDirect3DVertexDeclaration9* VertexPosHACK::Decl = 0;
 #endif
 
 IDirect3DDevice9 * D3DRenderer::m_device = NULL;
+D3DRenderer * D3DRenderer::m_instance = NULL;
+
+D3DRenderer * D3DRenderer::GetInstance()
+{
+	if(!m_instance)
+	{
+		m_instance = new D3DRenderer();
+	}
+
+	return m_instance;
+}
 
 D3DRenderer::D3DRenderer()
 {	
@@ -1362,3 +1373,56 @@ void D3DRenderer::buildViewMtx()
 
 #endif
 
+void D3DRenderer::GetPickingRay(const D3DXMATRIX *worldMatrix, D3DXVECTOR3 *pOutOrigin, D3DXVECTOR3 *pOutDir, int mouseX, int mouseY)
+{
+	
+	D3DXMATRIX worldViewInverse;//, worldMatrix;
+		
+	//projectionMatrix = m_proj;
+	//viewMatrix = (D3DCamera*)m_camera->GetMatrix();
+	
+	float width = (float)m_d3dpp.BackBufferWidth;
+	float height = (float)m_d3dpp.BackBufferHeight;
+	
+	float angle_x = (((2.0f * mouseX) / width) - 1.0f) / m_proj(0,0);
+	float angle_y = (((-2.0f * mouseY) / height) + 1.0f) / m_proj(1,1); 
+			
+	*pOutOrigin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	*pOutDir = D3DXVECTOR3(angle_x, angle_y, 1.0f);
+
+
+	D3DCamera *t_camera = (D3DCamera*)m_camera;
+	D3DXMATRIX t_matrix = t_camera->GetMatrix();
+	D3DXMATRIX m = *worldMatrix * t_matrix;
+	D3DXMatrixInverse(&worldViewInverse, 0, &m);
+	
+	D3DXVec3TransformCoord(pOutOrigin, pOutOrigin, &worldViewInverse);
+	D3DXVec3TransformNormal(pOutDir, pOutDir, &worldViewInverse);
+	D3DXVec3Normalize(pOutDir, pOutDir);	
+}
+
+bool D3DRenderer::IsMousePicked(D3DMesh *a_mesh, int mouseX, int mouseY)
+{
+	D3DXVECTOR3 t_origin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 t_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	D3DXMATRIX t_transformMatrix = a_mesh->GetTransformMatrix();
+
+	GetPickingRay(&t_transformMatrix, &t_origin, &t_dir, mouseX, mouseY);
+
+	BOOL hit = 0;
+	DWORD faceIndex = -1;
+	float u = 0.0f;
+	float v = 0.0f;
+	float dist = 0.0f;
+	ID3DXBuffer* allhits = 0;
+	DWORD numHits = 0;
+
+
+	HR(D3DXIntersect(a_mesh->GetXMesh(), &t_origin, &t_dir, &hit,
+		&faceIndex, &u, &v, &dist, &allhits, &numHits));
+	ReleaseCOM(allhits);
+
+	return hit;
+
+}

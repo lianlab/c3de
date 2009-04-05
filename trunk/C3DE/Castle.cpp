@@ -18,8 +18,16 @@ Castle::Castle()
 
 	//m_material = NULL;
 
-	LoadFromXFile(	ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_CASTLE_ID), 
+	LoadFromXFile(	ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_CAFE_TABLE_ID), 
 		D3DRenderer::GetDevice());
+
+	AddMaterial(new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
+										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f));
+	IDirect3DTexture9 *tex = 0;
+	tex = ResourceManager::GetInstance()->GetTextureByID(IMAGE_CAFE_TABLE_ID);
+
+	D3DImage *t_image = new D3DImage(tex);
+	AddTexture((Image*) t_image);
 	
 }
 
@@ -64,15 +72,18 @@ Castle::~Castle()
 
 void Castle::PreRender(Renderer * a_renderer)
 {
+	/*
+	HR(D3DRenderer::GetDevice()->SetRenderState(D3DRS_ALPHATESTENABLE, true));
+	HR(D3DRenderer::GetDevice()->SetRenderState(D3DRS_ALPHAREF, 200));
+	HR(D3DRenderer::GetDevice()->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER));
 	
-	
-
+*/
 }
 	
 void Castle::PosRender(Renderer *a_renderer)
 {
-	
-
-	
+	/*
+HR(D3DRenderer::GetDevice()->SetRenderState(D3DRS_ALPHATESTENABLE, false));
+	*/
 }
 

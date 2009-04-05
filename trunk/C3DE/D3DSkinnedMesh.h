@@ -52,6 +52,9 @@ public:
 	virtual void Update(int deltaTime);
 	//void draw();
 
+	void SetAnimation(int a_animationIdx);
+	int GetAnimation();
+
 	
 protected:
 	
@@ -70,18 +73,20 @@ protected:
 protected:
 	
 	//ID3DXMesh*     mSkinnedMesh;
-	D3DXFRAME*     mRoot;
-	DWORD          mMaxVertInfluences;
-	DWORD          mNumBones;
-	ID3DXSkinInfo* mSkinInfo;
-	ID3DXAnimationController* mAnimCtrl;  
+	D3DXFRAME*     m_root;
+	DWORD          m_maxVertInfluences;
+	DWORD          m_numBones;
+	ID3DXSkinInfo* m_skinInfo;
+	ID3DXAnimationController* m_animCtrl;  
 	
-	std::vector<D3DXMATRIX>  mFinalXForms;
-	std::vector<D3DXMATRIX*> mToRootXFormPtrs;
+	std::vector<D3DXMATRIX>  m_finalXForms;
+	std::vector<D3DXMATRIX*> m_toRootXFormPtrs;
 
 	static const int MAX_NUM_BONES_SUPPORTED = 35; 
 
 	IDirect3DDevice9 *m_device;
+
+	int m_currentAnimation;
 	
 };
 

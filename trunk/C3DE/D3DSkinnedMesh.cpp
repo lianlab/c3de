@@ -18,8 +18,23 @@ IDirect3DVertexDeclaration9* VertexPNT::Decl = 0;
 D3DSkinnedMesh::D3DSkinnedMesh() : D3DMesh()
 {
 	
+	m_currentAnimation = 0;
+
+}
+
+int D3DSkinnedMesh::GetAnimation()
+{
+	return m_currentAnimation;
+}
 
 
+void D3DSkinnedMesh::SetAnimation(int a_animationIdx)
+{
+	LPD3DXANIMATIONSET t_animationSet;	
+	m_animCtrl->GetAnimationSet(a_animationIdx, &t_animationSet);	
+	m_animCtrl->SetTrackAnimationSet(0, t_animationSet);
+	m_animCtrl->ResetTime();
+	m_currentAnimation = a_animationIdx;
 }
 
 void D3DSkinnedMesh::LoadFromXFile(const std::string &XFilename, IDirect3DDevice9 *a_device)
@@ -39,26 +54,23 @@ void D3DSkinnedMesh::LoadFromXFile(const std::string &XFilename, IDirect3DDevice
 	AllocMeshHierarchy allocMeshHierarchy;
 	HR(D3DXLoadMeshHierarchyFromX(XFilename.c_str(), D3DXMESH_SYSTEMMEM,
 		a_device, &allocMeshHierarchy, 0, /* ignore user data */ 
-		&mRoot,	&mAnimCtrl));
+		&m_root,	&m_animCtrl));
 
-	/*
-	LPD3DXANIMATIONSET auei;	
-	mAnimCtrl->GetAnimationSet(0, &auei);	
-	mAnimCtrl->SetTrackAnimationSet(0, auei);
-	mAnimCtrl->ResetTime();
-	*/
+	
+	
+	
 
 	// In this demo we assume that the input .X file contains only one
 	// mesh.  So search for that one and only mesh.
-	D3DXFRAME* f = findNodeWithMesh(mRoot);
+	D3DXFRAME* f = findNodeWithMesh(m_root);
 	if( f == 0 ) HR(E_FAIL);
 	D3DXMESHCONTAINER* meshContainer = f->pMeshContainer;
-	mSkinInfo = meshContainer->pSkinInfo;
-	mSkinInfo->AddRef();
+	m_skinInfo = meshContainer->pSkinInfo;
+	m_skinInfo->AddRef();
 
-	mNumBones = meshContainer->pSkinInfo->GetNumBones();
-	mFinalXForms.resize(mNumBones);
-	mToRootXFormPtrs.resize(mNumBones, 0);
+	m_numBones = meshContainer->pSkinInfo->GetNumBones();
+	m_finalXForms.resize(m_numBones);
+	m_toRootXFormPtrs.resize(m_numBones, 0);
 	
 	buildSkinnedMesh(meshContainer->MeshData.pMesh);
 	buildToRootXFormPtrArray();
@@ -69,16 +81,16 @@ void D3DSkinnedMesh::LoadFromXFile(const std::string &XFilename, IDirect3DDevice
 
 D3DSkinnedMesh::~D3DSkinnedMesh()
 {
-	if( mRoot )
+	if( m_root )
 	{
 		AllocMeshHierarchy allocMeshHierarchy;
-		HR(D3DXFrameDestroy(mRoot, &allocMeshHierarchy));
-		mRoot = 0;
+		HR(D3DXFrameDestroy(m_root, &allocMeshHierarchy));
+		m_root = 0;
 	}
 
 	ReleaseCOM(m_xMesh);
-	ReleaseCOM(mSkinInfo);
-	ReleaseCOM(mAnimCtrl);
+	ReleaseCOM(m_skinInfo);
+	ReleaseCOM(m_animCtrl);
 }
 
 UINT D3DSkinnedMesh::numVertices()
@@ -93,12 +105,12 @@ UINT D3DSkinnedMesh::numTriangles()
 
 UINT D3DSkinnedMesh::numBones()
 {
-	return mNumBones;
+	return m_numBones;
 }
 
 const D3DXMATRIX* D3DSkinnedMesh::getFinalXFormArray()
 {
-	return &mFinalXForms[0];
+	return &m_finalXForms[0];
 }
 
 void D3DSkinnedMesh::Update(int deltaTime)
@@ -107,23 +119,23 @@ void D3DSkinnedMesh::Update(int deltaTime)
 	// transform matrices.  The AnimationController updates these matrices to reflect 
 	// the given pose at the current time by interpolating between animation keyframes.
 	float t_time = (float) deltaTime / 1000;
-	HR(mAnimCtrl->AdvanceTime(t_time, 0));
+	HR(m_animCtrl->AdvanceTime(t_time, 0));
 
 	
 	// Recurse down the tree and generate a frame's toRoot transform from the updated pose.
 	D3DXMATRIX identity;
 	D3DXMatrixIdentity(&identity);
-	buildToRootXForms((FrameEx*)mRoot, identity);
+	buildToRootXForms((FrameEx*)m_root, identity);
 
 
 	// Premultiply the offset-transform to transform the vertices to the bone's local
 	// coordinate system first, before applying the other transforms.
 	D3DXMATRIX offsetTemp, toRootTemp;
-	for(UINT i = 0; i < mNumBones; ++i)
+	for(UINT i = 0; i < m_numBones; ++i)
 	{
-		offsetTemp = *mSkinInfo->GetBoneOffsetMatrix(i);
-		toRootTemp = *mToRootXFormPtrs[i];
-		mFinalXForms[i] = offsetTemp * toRootTemp;
+		offsetTemp = *m_skinInfo->GetBoneOffsetMatrix(i);
+		toRootTemp = *m_toRootXFormPtrs[i];
+		m_finalXForms[i] = offsetTemp * toRootTemp;
 	}
 }
 
@@ -206,7 +218,7 @@ void D3DSkinnedMesh::buildSkinnedMesh(ID3DXMesh* mesh)
 	// vertex indices to the vertices the bone _does_ influence, we simply need to specify
 	// where we remapped the vertices to, so that the vertex indices can be updated to 
 	// match.  This is done with the ID3DXSkinInfo::Remap method.
-	HR(mSkinInfo->Remap(optimizedTempMesh->GetNumVertices(), 
+	HR(m_skinInfo->Remap(optimizedTempMesh->GetNumVertices(), 
 		(DWORD*)remap->GetBufferPointer()));
 	ReleaseCOM(remap); // Done with remap info.
 
@@ -218,8 +230,8 @@ void D3DSkinnedMesh::buildSkinnedMesh(ID3DXMesh* mesh)
 
 	DWORD        numBoneComboEntries = 0;
 	ID3DXBuffer* boneComboTable      = 0;
-	HR(mSkinInfo->ConvertToIndexedBlendedMesh(optimizedTempMesh, D3DXMESH_MANAGED | D3DXMESH_WRITEONLY,  
-		MAX_NUM_BONES_SUPPORTED, 0, 0, 0, 0, &mMaxVertInfluences,
+	HR(m_skinInfo->ConvertToIndexedBlendedMesh(optimizedTempMesh, D3DXMESH_MANAGED | D3DXMESH_WRITEONLY,  
+		MAX_NUM_BONES_SUPPORTED, 0, 0, 0, 0, &m_maxVertInfluences,
 		&numBoneComboEntries, &boneComboTable, &m_xMesh));
 
 	ReleaseCOM(optimizedTempMesh); // Done with tempMesh.
@@ -268,15 +280,15 @@ void D3DSkinnedMesh::buildToRootXFormPtrArray()
 	// transformation with a simple array look up, instead of traversing the
 	// tree.
 
-	for(UINT i = 0; i < mNumBones; ++i)
+	for(UINT i = 0; i < m_numBones; ++i)
 	{
 		// Find the frame that corresponds with the ith bone offset matrix.
-		const char* boneName = mSkinInfo->GetBoneName(i);
-		D3DXFRAME* frame = D3DXFrameFind(mRoot, boneName);
+		const char* boneName = m_skinInfo->GetBoneName(i);
+		D3DXFRAME* frame = D3DXFrameFind(m_root, boneName);
 		if( frame )
 		{
 			FrameEx* frameEx = static_cast<FrameEx*>( frame );
-			mToRootXFormPtrs[i] = &frameEx->toRoot;
+			m_toRootXFormPtrs[i] = &frameEx->toRoot;
 		}
 	}
 }

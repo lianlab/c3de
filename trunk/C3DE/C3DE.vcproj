@@ -435,6 +435,14 @@
 								>
 							</File>
 						</Filter>
+						<Filter
+							Name="Landscape"
+							>
+							<File
+								RelativePath=".\LandscapeMesh.cpp"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Lighting"
@@ -962,6 +970,14 @@
 							</File>
 							<File
 								RelativePath=".\Tree3.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="Landscape"
+							>
+							<File
+								RelativePath=".\LandscapeMesh.h"
 								>
 							</File>
 						</Filter>

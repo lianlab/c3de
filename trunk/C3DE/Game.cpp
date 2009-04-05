@@ -225,7 +225,7 @@ void Game::Update(int deltaTime)
 	///////////////////////////////////////////////
 #endif
 	m_gAcc = 10;	
-	deltaTime = 1000;
+	//deltaTime = 1000;
 
 	int t_timeRatio = 1;
 	int t_spaceRatio = 50;
@@ -294,8 +294,142 @@ void Game::Update(int deltaTime)
 	//m_grid->Update(10);
 	
 }
+void Game::UpdateInput()
+{
+	
+	Mesh * t_target = (Mesh*)m_woman;
 
-#if 1
+
+	float step = 0.1f;
+	float t_fleps = 0.0f;
+
+	float t_angle = 0.0f;
+	const float angleStepNormal = 0.003f;
+	const float angleStepFast = 0.01f;
+
+	if(DirectInput::GetInstance()->IsKeyDown(1))
+	{
+		m_application->Quit();
+		return;
+		
+	}
+
+	bool isRunning = false;
+	if(DirectInput::GetInstance()->IsKeyDown(42))
+	{
+		step = 0.3f;
+		isRunning = true;
+		
+	}
+	
+	
+
+	D3DXVECTOR3 newPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	bool upDown = false;
+	bool downDown = false;
+	bool leftDown = false;
+	bool rightDown = false;
+
+	if(DirectInput::GetInstance()->IsKeyDown(200))
+	//UP
+	{		
+		//m_cubeZ += step;
+		newPos = step*m_carDirection;
+		upDown = true;
+		
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(208))
+	{	
+	//DOWN	
+		
+		//m_cubeZ -= step;
+		newPos = -step*m_carDirection;
+		downDown = true;
+	}	
+	if(DirectInput::GetInstance()->IsKeyDown(205))
+	{
+		//RIGHT		
+		t_angle = (isRunning)?angleStepFast:angleStepNormal;	
+		leftDown = true;
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(203))
+	{
+		//LEFT		
+		t_angle = (isRunning)?-angleStepFast:-angleStepNormal;
+		rightDown = true;
+
+		
+	}
+
+	if(!upDown && !downDown && !leftDown && !rightDown && m_woman->GetAnimation() != WomanMesh::ANIMATION_IDLE)
+	{
+		m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
+	}
+	else
+	{
+		if(upDown)
+		{
+			if(isRunning)
+			{
+				m_woman->SetAnimation(WomanMesh::ANIMATION_JOGGING);
+			}
+			else
+			{
+				m_woman->SetAnimation(WomanMesh::ANIMATION_WALKING);
+			}
+		}
+	}
+
+	float t_dAngle = 57.29577951308232286465f * t_angle;
+	D3DXMATRIX R;
+	D3DXMatrixRotationY(&R, t_angle);
+	D3DXVec3TransformCoord(&m_carDirection, &m_carDirection, &R);
+	D3DXVec3Normalize(&m_carDirection, &m_carDirection);
+	
+	
+	t_target->Rotate(t_target->GetRotationX(), t_target->GetRotationY() + t_dAngle, t_target->GetRotationZ());
+
+	m_cubeX += newPos.x;
+	//m_cubeY += newPos.y;
+	m_cubeY = 0;
+	m_cubeZ += newPos.z;
+
+	hx = (int)m_cubeX ;
+	//hy = (int)m_auei->GetHeight(m_cubeX, m_cubeZ);	
+	hy = 0;	
+	
+	t_target->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
+
+
+	D3DXVECTOR3 t_camLook = m_carDirection * -15.0f;
+	t_camLook.x = m_cubeX + t_camLook.x;
+	t_camLook.y = m_cubeY + t_camLook.y;
+	t_camLook.z = m_cubeZ + t_camLook.z;
+
+	//m_cubeY = m_auei->GetHeight(m_cubeX, m_cubeZ) + 1.5f;
+	m_cubeY = 1.5f;
+
+	m_camX = t_camLook.x;
+	m_camY = m_cubeY + 3.0f;
+	m_camZ = t_camLook.z;
+
+	D3DXVECTOR3 t_camTarget = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	t_camTarget.x = m_camX + (m_carDirection*2.0f).x;
+	t_camTarget.y = m_camY + (m_carDirection*2.0f).y;
+	t_camTarget.z = m_camZ + (m_carDirection*2.0f).z;
+	
+
+	m_camTargetX = t_camTarget.x;
+	m_camTargetY = t_camTarget.y;
+	m_camTargetZ = t_camTarget.z;
+
+
+
+
+}
+
+#if 0
 void Game::UpdateInput()
 {
 	return;
@@ -464,6 +598,9 @@ void Game::UpdateInput()
 
 
 
+int clickedX = 999999;
+int clickedY = 999999;
+
 void Game::Render(Renderer *renderer)
 {
 	//
@@ -484,16 +621,31 @@ void Game::Render(Renderer *renderer)
 	static_cast<D3DRenderer *>(renderer)->DrawAxis();
 
 	
+
+	
 }
 
 void Game::OnMouseDown(int button, int x , int y)
 {
-	int fdfd = 878;
+#if 0
+	
+
+	clickedX = x;
+	clickedY = y;
+
+	D3DRenderer * t_renderer = D3DRenderer::GetInstance();
+	if(t_renderer->IsMousePicked(m_woman, x, y))
+	{
+		int gfdgfd= 8787;
+	}
+#endif
 }
 
 void Game::OnMouseUp(int button, int x, int y)
 {
 	int moueskfd = button;
+	int clickedX = 999999;
+	int clickedY = 999999;
 }
 
 #if 1
@@ -573,14 +725,181 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 }
 #endif
 
-
 void Game::OnKeyDown(int key)
 {
-
+	return;
 	
 	//float step = 0.1f;
 	//Mesh * target = (Mesh*)m_cube;
-	Mesh * target = (Mesh*)m_woman;
+	Mesh * t_target = (Mesh*)m_castle;
+	//Mesh * target = (Mesh*)m_skinMesh;
+	float step = 0.1f;
+
+	if(key == 1)
+	{
+		m_application->Quit();
+	}
+
+	if(DirectInput::GetInstance()->IsKeyDown(42))
+	{
+		step = 0.01f;
+		
+		
+	}
+
+	
+
+	
+	if(DirectInput::GetInstance()->IsKeyDown(200))
+	//UP
+	{		
+		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
+		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 look = target - pos;
+		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
+		D3DXVECTOR3 right;
+		D3DXVec3Cross(&right, &up, &look);
+		D3DXVec3Normalize(&right, &right);
+
+		m_dir = look*step;
+
+		m_camX += m_dir.x;
+		m_camY += m_dir.y;
+		m_camZ += m_dir.z;
+
+		m_camTargetX += m_dir.x;
+		m_camTargetY += m_dir.y;
+		m_camTargetZ += m_dir.z;
+	}
+	else if(DirectInput::GetInstance()->IsKeyDown(208))
+	{	
+	//DOWN	
+		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
+		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 look = target - pos;
+		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
+		D3DXVECTOR3 right;
+		D3DXVec3Cross(&right, &up, &look);
+		D3DXVec3Normalize(&right, &right);
+
+		m_dir = -look*step;
+
+		m_camX += m_dir.x;
+		m_camY += m_dir.y;
+		m_camZ += m_dir.z;
+
+		m_camTargetX += m_dir.x;
+		m_camTargetY += m_dir.y;
+		m_camTargetZ += m_dir.z;
+		
+	}	
+	else if(DirectInput::GetInstance()->IsKeyDown(205))
+	{
+		//RIGHT
+		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
+		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 look = target - pos;
+		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
+		D3DXVECTOR3 right;
+		D3DXVec3Cross(&right, &up, &look);
+		D3DXVec3Normalize(&right, &right);
+
+		m_dir = right*step;
+
+		m_camX += m_dir.x;
+		m_camY += m_dir.y;
+		m_camZ += m_dir.z;
+
+		m_camTargetX += m_dir.x;
+		m_camTargetY += m_dir.y;
+		m_camTargetZ += m_dir.z;
+	}
+	else if(DirectInput::GetInstance()->IsKeyDown(203))
+	{
+		//LEFT
+		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
+		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
+		D3DXVECTOR3 look = target - pos;
+		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
+		D3DXVECTOR3 right;
+		D3DXVec3Cross(&right, &up, &look);
+		D3DXVec3Normalize(&right, &right);
+
+		m_dir = -right*step;
+
+		m_camX += m_dir.x;
+		m_camY += m_dir.y;
+		m_camZ += m_dir.z;
+
+		m_camTargetX += m_dir.x;
+		m_camTargetY += m_dir.y;
+		m_camTargetZ += m_dir.z;
+		
+	}
+	else if(DirectInput::GetInstance()->IsKeyDown(17))
+	{
+		//W
+		t_target->SetPosition(t_target->GetX() , t_target->GetY(), t_target->GetZ() + step);
+
+	}
+	else if(DirectInput::GetInstance()->IsKeyDown(30))
+	{
+		//A
+		t_target->SetPosition(t_target->GetX() -step , t_target->GetY(), t_target->GetZ());
+
+	}
+	else if(DirectInput::GetInstance()->IsKeyDown(31))
+	{
+		//S
+		t_target->SetPosition(t_target->GetX() , t_target->GetY(), t_target->GetZ() -step);
+
+	}
+	else if(DirectInput::GetInstance()->IsKeyDown(32))
+	{
+		//D
+		t_target->SetPosition(t_target->GetX() +step , t_target->GetY(), t_target->GetZ());
+
+	}
+	else if(DirectInput::GetInstance()->IsKeyDown(44))
+	{
+		//Z
+		t_target->Scale(t_target->GetXScale() -step , t_target->GetYScale() - step, t_target->GetZScale() - step);
+
+	}
+
+	else if(DirectInput::GetInstance()->IsKeyDown(45))
+	{
+		//X
+		t_target->Scale(t_target->GetXScale() +step , t_target->GetYScale() + step, t_target->GetZScale() + step);
+
+	}
+	else if(DirectInput::GetInstance()->IsKeyDown(49))
+	{
+		//N
+		t_target->Rotate(t_target->GetRotationX(), t_target->GetRotationY() + step, t_target->GetRotationZ());
+
+	}
+	else if(DirectInput::GetInstance()->IsKeyDown(50))
+	{
+		//M
+		t_target->Rotate(t_target->GetRotationX(), t_target->GetRotationY() - step, t_target->GetRotationZ());
+
+	}
+
+}
+
+#if 0
+void Game::OnKeyDown(int key)
+{
+	
+	
+	//float step = 0.1f;
+	//Mesh * target = (Mesh*)m_cube;
+	Mesh * target = (Mesh*)m_castle;
 	//Mesh * target = (Mesh*)m_skinMesh;
 	float step = 0.1f;
 
@@ -592,16 +911,16 @@ void Game::OnKeyDown(int key)
 	
 	
 
-#if 0
+#if 1
 	else if(key == 200)
 	{		
-		target->Scale(target->GetXScale(), target->GetYScale(), target->GetZScale() - step);		
+		target->Scale(target->GetXScale() - step, target->GetYScale() - step, target->GetZScale() - step);		
 		
 		
 	}
 	else if(key == 208)
 	{		
-		target->Scale(target->GetXScale(), target->GetYScale(), target->GetZScale() + step);		
+		target->Scale(target->GetXScale()+ step, target->GetYScale()+ step, target->GetZScale() + step);		
 	}	
 	else if(key == 205)
 	{
@@ -822,7 +1141,7 @@ else if(key == 200)
 	
 #endif
 
-#if 1
+#if 0
 	
 	else if(key == 200)
 	//UP
@@ -953,6 +1272,7 @@ else if(key == 200)
 	
 #endif
 }
+#endif
 
 void Game::CreateMeshBuffers(D3DMesh *mesh)
 {
@@ -1031,12 +1351,12 @@ void Game::InitializeMeshes()
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	
-	m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
+	//m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);	
 
 	
 
 
-	m_testScene->AddTerrain(m_auei);
+	//m_testScene->AddTerrain(m_auei);
 
 	
 
@@ -1045,7 +1365,8 @@ void Game::InitializeMeshes()
 	m_cube->AddMaterial(t_material);
 	//CreateMeshBuffers(m_cube);
 
-	m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
+	//m_cube->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
+	m_cube->SetPosition(5.0f, 5.0f, 5.0f);
 
 	//m_cube->SetPosition(0.0f, 0.0f,5.0f);
 	m_testScene->AddMesh(m_cube);
@@ -1059,7 +1380,7 @@ void Game::InitializeMeshes()
 	//m_testScene->AddMesh(m_cubeMovie);
 	//m_cubeMovie->CreateXMesh(D3DRenderer::GetDevice());
 	
-	
+#if 0
 
 	Tree0 *t_tree0 = new Tree0();
 	t_tree0->Scale(0.2f, 0.2f, 0.2f);
@@ -1083,7 +1404,7 @@ void Game::InitializeMeshes()
 	t_tree3->SetPosition(20.0f, m_auei->GetHeight(20.0f, 10.0f), 10.0f);
 	//t_tree3->SetPosition(20.0f, 0.0f, 10.0f);
 
-
+#endif
 	
 	//Castle *t_castle = new Castle();
 	
@@ -1095,9 +1416,9 @@ void Game::InitializeMeshes()
 	//m_testScene->AddMesh(t_grass);
 	D3DImage * t_d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_GRASS_BILLBOARD_ID));	
 	GrassGrid *t_grassGrid = new GrassGrid(5, 5, D3DXVECTOR3(0.5f, 0.0f, 0.5f), t_d3dImage, 2.0f, 2.0f);
-	t_grassGrid->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
+	//t_grassGrid->SetPosition(0.0f, m_auei->GetHeight(0.0f, 0.0f), 0.0f);
 	//t_grassGrid->SetPosition(0.0f, 0.0f, 0.0f);
-	m_testScene->AddMesh(t_grassGrid);
+	//m_testScene->AddMesh(t_grassGrid);
 
 	
 	//m_billboard = new BillboardMesh(d3dImage);
@@ -1117,10 +1438,10 @@ void Game::InitializeMeshes()
 
 	
 	
-	m_testScene->AddMesh(t_tree0);
-	m_testScene->AddMesh(t_tree1);
-	m_testScene->AddMesh(t_tree2);
-	m_testScene->AddMesh(t_tree3);
+	//m_testScene->AddMesh(t_tree0);
+	//m_testScene->AddMesh(t_tree1);
+	//m_testScene->AddMesh(t_tree2);
+	//m_testScene->AddMesh(t_tree3);
 
 	
 	m_testScene->Initialize();
@@ -1129,7 +1450,7 @@ void Game::InitializeMeshes()
 
 #endif
 
-#if 1
+#if 0
 void Game::InitializeMeshes()
 {	
 	
@@ -1186,6 +1507,76 @@ void Game::InitializeMeshes()
 }
 
 #endif
+
+void Game::InitializeMeshes()
+{	
+
+
+	m_testScene = new DefaultScene1();	
+	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
+										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
+	
+
+	//m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);
+	//m_testScene->AddTerrain(m_auei);
+
+
+	m_woman = new WomanMesh();
+	m_woman->SetPosition(0.0f, 0.0f, 0.0f);
+	m_woman->Scale(0.01f, 0.01f, 0.01f);
+	m_woman->Rotate(-90.0f, 0.0f, 0.0f);
+	m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
+	m_testScene->AddMesh(m_woman);	
+
+	
+
+	float t_scales[22];
+	t_scales[MESH_CAFE_TABLE_ID - MESH_CAFE_TABLE_ID]				= 2.2f;
+	t_scales[MESH_GARDEN_BORDER_ID - MESH_CAFE_TABLE_ID]			= 4.49f;
+	t_scales[MESH_MAILBOX01_ID - MESH_CAFE_TABLE_ID]				= 2.29f;
+	t_scales[MESH_MAILBOX02_ID - MESH_CAFE_TABLE_ID]				= 2.24f;
+	t_scales[MESH_MAILBOX03_ID - MESH_CAFE_TABLE_ID]				= 1.99f;
+	t_scales[MESH_PARKING_BARRIER_ID - MESH_CAFE_TABLE_ID]			= 2.9f;
+	t_scales[MESH_PALETTE_ID - MESH_CAFE_TABLE_ID]					= 2.5f;
+	t_scales[MESH_PIPE_CAGE_ID - MESH_CAFE_TABLE_ID]				= 3.47f;
+	t_scales[MESH_SANDWICH_BOARD_ID - MESH_CAFE_TABLE_ID]			= 3.19f;
+	t_scales[MESH_SIDEWALK_BARRIER_ID - MESH_CAFE_TABLE_ID]			= 1.57f;
+	t_scales[MESH_SIGN01_ID - MESH_CAFE_TABLE_ID]					= 2.68f;
+	t_scales[MESH_SIGN02_ID - MESH_CAFE_TABLE_ID]					= 2.23f;
+	t_scales[MESH_SIGN03_ID - MESH_CAFE_TABLE_ID]					= 2.68f;
+	t_scales[MESH_SIGN04_ID - MESH_CAFE_TABLE_ID]					= 2.42f;
+	t_scales[MESH_SIGN05_ID - MESH_CAFE_TABLE_ID]					= 3.25f;
+	t_scales[MESH_SIGN06_ID - MESH_CAFE_TABLE_ID]					= 3.31f;
+	t_scales[MESH_SPRINKLER_ID - MESH_CAFE_TABLE_ID]				= 6.83f;
+	t_scales[MESH_BENCH_ID - MESH_CAFE_TABLE_ID]					= 1.94f;
+	t_scales[MESH_STREET_LIGHT_01_ID - MESH_CAFE_TABLE_ID]			= 0.51f;
+	t_scales[MESH_STREET_LIGHT_02_ID - MESH_CAFE_TABLE_ID]			= 2.97f;
+	t_scales[MESH_SWITCHBOX_ID - MESH_CAFE_TABLE_ID]				= 1.66f;
+	t_scales[MESH_TRAFFIC_CONE_ID - MESH_CAFE_TABLE_ID]				= 2.04f;
+	
+
+	int t_meshOffset = MESH_CAFE_TABLE_ID;
+	int t_texOffset = IMAGE_CAFE_TABLE_ID;
+	int t_idx = 2;
+
+	int tt = 0;
+	for(int i = 0; i < MESH_TRAFFIC_CONE_ID - MESH_CAFE_TABLE_ID + 1; i++)
+	{
+		
+
+		m_castle = new LandscapeMesh(t_meshOffset + i, t_texOffset + i + tt);
+		m_castle->UniformScale(t_scales[i]);
+		m_castle->SetPosition(0.0f, 0.0f, i*5.0f);
+		m_testScene->AddMesh(m_castle);
+	}
+
+	
+	
+	m_testScene->Initialize();
+	
+}
+
+
 
 
 

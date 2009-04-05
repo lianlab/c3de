@@ -40,7 +40,7 @@
 class D3DRenderer : public Renderer
 {
 public:
-	D3DRenderer();
+	
 	~D3DRenderer();	
 	bool Init(WindowsApplicationWindow *window, bool windowed);
 	void Reset();
@@ -74,9 +74,18 @@ public:
 
 	void DrawAxis();
 
-	
+	void GetPickingRay(const D3DXMATRIX *worldMatrix, D3DXVECTOR3 *pOutOrigin, D3DXVECTOR3 *pOutDir, int mouseX, int mouseY);
+
+	bool IsMousePicked(D3DMesh *a_mesh, int mouseX, int mouseY);
+
+	static D3DRenderer * GetInstance();
 
 private:
+
+
+
+	D3DRenderer();
+	static D3DRenderer *m_instance;
 	void DrawParticleSystem(ParticleSystem *a_particleSystem);
 	void DrawTerrainSubMesh(D3DMesh * a_parentMesh, D3DMesh *t_subMesh);
 	static IDirect3DDevice9* m_device; 

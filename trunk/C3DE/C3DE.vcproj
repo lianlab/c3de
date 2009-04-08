@@ -332,6 +332,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\Ground.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\LightMesh.cpp"
 							>
 						</File>
@@ -345,6 +349,10 @@
 						</File>
 						<File
 							RelativePath=".\Plane.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Townhall.cpp"
 							>
 						</File>
 						<File
@@ -648,6 +656,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\PerVertexLightingNoFog.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\ShadowFX.cpp"
 							>
 						</File>
@@ -878,6 +890,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\Ground.h"
+							>
+						</File>
+						<File
 							RelativePath=".\LightMesh.h"
 							>
 						</File>
@@ -891,6 +907,10 @@
 						</File>
 						<File
 							RelativePath=".\Plane.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Townhall.h"
 							>
 						</File>
 						<File
@@ -1183,6 +1203,10 @@
 						</File>
 						<File
 							RelativePath=".\PerVertexLighting.h"
+							>
+						</File>
+						<File
+							RelativePath=".\PerVertexLightingNoFog.h"
 							>
 						</File>
 						<File

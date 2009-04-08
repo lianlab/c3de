@@ -1,13 +1,13 @@
 
 #include "D3DRenderer.h"
 
-#include "Dwarf.h"
+#include "Townhall.h"
 #include "ResourceManager.h"
 #include "PerVertexLighting.h"
 
 #include "DebugMemory.h"
 
-Dwarf::Dwarf()
+Townhall::Townhall()
 {
 	
 	m_vertices = new vector<VertexPos>;
@@ -17,11 +17,11 @@ Dwarf::Dwarf()
 	
 	m_vertexDeclaration = NULL;
 
-	LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_DWARF_ID), D3DRenderer::GetDevice());
+	LoadFromXFile(ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TOWNHALL_ID), D3DRenderer::GetDevice());
 
 }
 
-void Dwarf::SetShaderHandlers()
+void Townhall::SetShaderHandlers()
 {		
 	PerVertexLighting *t_effect = (PerVertexLighting *) m_effect;
 
@@ -41,7 +41,7 @@ void Dwarf::SetShaderHandlers()
 	
 }
 
-Dwarf::~Dwarf()
+Townhall::~Townhall()
 {
 
 	if(m_vertexDeclaration)
@@ -54,13 +54,13 @@ Dwarf::~Dwarf()
 }
 
 
-void Dwarf::PreRender(Renderer * a_renderer)
+void Townhall::PreRender(Renderer * a_renderer)
 {
 	HR(D3DRenderer::GetDevice()->SetRenderState(D3DRS_ALPHATESTENABLE, false));
 
 }
 	
-void Dwarf::PosRender(Renderer *a_renderer)
+void Townhall::PosRender(Renderer *a_renderer)
 {
 	
 }

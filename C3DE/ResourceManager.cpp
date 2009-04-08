@@ -52,6 +52,7 @@ ResourceManager::ResourceManager()
 	m_meshesFilenames[MESH_STREET_LIGHT_02_ID] = "Meshes/landscape/streetLight02.x";	
 	m_meshesFilenames[MESH_SWITCHBOX_ID] = "Meshes/landscape/switchBox.x";
 	m_meshesFilenames[MESH_TRAFFIC_CONE_ID] = "Meshes/landscape/trafficCone.x";
+	m_meshesFilenames[MESH_TOWNHALL_ID] = "Meshes/landscape/townhall.x";
 
 
 }
@@ -132,6 +133,7 @@ void ResourceManager::InitializeResources()
 
 
 	//LANDSCAPE
+	IDirect3DTexture9 * TEX_STREET_GROUND;
 	IDirect3DTexture9 * TEX_CAFE_TABLE;
 	IDirect3DTexture9 * TEX_GARDEN_BORDER;
 	IDirect3DTexture9 * TEX_MAILBOX01;
@@ -156,6 +158,7 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_STREET_LIGHT_02_LIT;
 	IDirect3DTexture9 * TEX_SWITCHBOX;
 	IDirect3DTexture9 * TEX_TRAFFIC_CONE;						
+	IDirect3DTexture9 * TEX_TOWNHALL;	
 	
 
 
@@ -244,6 +247,7 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/Particles/bolt.dds", &TEX_PARTICLES_BOLT));
 	///////////////////
 	//LANDSCAPE
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/streetGround.png", &TEX_STREET_GROUND));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/cafeTable.png", &TEX_CAFE_TABLE));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/gardenBorder.png", &TEX_GARDEN_BORDER));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/mailbox01.png", &TEX_MAILBOX01));
@@ -268,6 +272,7 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/streetLight02_lit.png", &TEX_STREET_LIGHT_02_LIT));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/switchbox.png", &TEX_SWITCHBOX));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/trafficCone.png", &TEX_TRAFFIC_CONE));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/townhall.dds", &TEX_TOWNHALL));
 
 
 
@@ -342,6 +347,7 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_PARTICLE_BOLT_ID] = TEX_PARTICLES_BOLT;
 
 	//LANDSCAPE
+	m_imageResources[IMAGE_STREET_GROUND_ID] = TEX_STREET_GROUND;
 	m_imageResources[IMAGE_CAFE_TABLE_ID] = TEX_CAFE_TABLE;
 	m_imageResources[IMAGE_GARDEN_BORDER_ID] = TEX_GARDEN_BORDER;
 	m_imageResources[IMAGE_MAILBOX01_ID] = TEX_MAILBOX01;
@@ -366,6 +372,7 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_STREET_LIGHT_02_LIT_ID] = TEX_STREET_LIGHT_02_LIT;
 	m_imageResources[IMAGE_SWITCHBOX_ID] = TEX_SWITCHBOX;
 	m_imageResources[IMAGE_TRAFFIC_CONE_ID] = TEX_TRAFFIC_CONE;
+	m_imageResources[IMAGE_TOWNHALL_ID] = TEX_TOWNHALL;
 
 	InitializeVideos();
 }
@@ -549,6 +556,10 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 	else if(strcmp(a_filename.c_str(), "bolt.dds") == 0)
 	{
 		return m_imageResources[IMAGE_PARTICLE_BOLT_ID];
+	}	
+	else if(strcmp(a_filename.c_str(), "townhall.dds") == 0)
+	{
+		return m_imageResources[IMAGE_TOWNHALL_ID];
 	}	
 	else
 	{

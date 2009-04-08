@@ -14,6 +14,8 @@
 #include "GrassGrid.h"
 #include "SupernovaParticleSystem.h"
 #include "FireRingParticleSystem.h"
+#include "Ground.h"
+#include "Townhall.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -727,8 +729,6 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 
 void Game::OnKeyDown(int key)
 {
-	return;
-	
 	//float step = 0.1f;
 	//Mesh * target = (Mesh*)m_cube;
 	Mesh * t_target = (Mesh*)m_castle;
@@ -1521,6 +1521,7 @@ void Game::InitializeMeshes()
 	//m_testScene->AddTerrain(m_auei);
 
 
+
 	m_woman = new WomanMesh();
 	m_woman->SetPosition(0.0f, 0.0f, 0.0f);
 	m_woman->Scale(0.01f, 0.01f, 0.01f);
@@ -1528,7 +1529,7 @@ void Game::InitializeMeshes()
 	m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
 	m_testScene->AddMesh(m_woman);	
 
-	
+
 
 	float t_scales[22];
 	t_scales[MESH_CAFE_TABLE_ID - MESH_CAFE_TABLE_ID]				= 2.2f;
@@ -1559,6 +1560,7 @@ void Game::InitializeMeshes()
 	int t_texOffset = IMAGE_CAFE_TABLE_ID;
 	int t_idx = 2;
 
+
 	int tt = 0;
 	for(int i = 0; i < MESH_TRAFFIC_CONE_ID - MESH_CAFE_TABLE_ID + 1; i++)
 	{
@@ -1569,6 +1571,15 @@ void Game::InitializeMeshes()
 		m_castle->SetPosition(0.0f, 0.0f, i*5.0f);
 		m_testScene->AddMesh(m_castle);
 	}
+
+	Ground *t_ground = new Ground();
+	m_testScene->AddMesh(t_ground);
+
+	Townhall *t_townhall = new Townhall();
+	m_testScene->AddMesh(t_townhall);
+	Dwarf * t_dwarf = new Dwarf();
+	t_dwarf->Scale(5.0f, 5.0f, 5.0f);
+	m_testScene->AddMesh(t_dwarf);
 
 	
 	

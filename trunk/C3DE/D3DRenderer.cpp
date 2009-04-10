@@ -441,10 +441,10 @@ void D3DRenderer::DrawScene(Scene *scene)
 		Mesh *mesh = scene->GetMeshesVector()->at(i);	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
 		
-		if(d3dmesh->GetXMesh())
+		if(d3dmesh->GetXMesh() && d3dmesh->GetBoundingBox())
 		{
-			//if(IsAABBWithinView(d3dmesh->GetBoundingBox()))
-			if(true)
+			if(IsAABBWithinView(d3dmesh->GetBoundingBox()))
+			//if(true)
 			{
 				this->shown++;
 				#if DRAW_BOUNDING_BOXES

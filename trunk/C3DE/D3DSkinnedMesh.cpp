@@ -75,6 +75,20 @@ void D3DSkinnedMesh::LoadFromXFile(const std::string &XFilename, IDirect3DDevice
 	buildSkinnedMesh(meshContainer->MeshData.pMesh);
 	buildToRootXFormPtrArray();
 
+
+
+	D3DXVECTOR3 t_min;
+	D3DXVECTOR3 t_max;
+	VertexPos *v = NULL;
+	m_xMesh->LockVertexBuffer(0, (void**)&v);
+
+	HR(D3DXComputeBoundingBox((D3DXVECTOR3*)v, m_xMesh->GetNumVertices(), 
+		sizeof(VertexPos), &t_min, &t_max));
+
+	m_xMesh->UnlockVertexBuffer();
+
+	m_boundingBox = new AABB(t_min, t_max);
+
 	
 	
 }

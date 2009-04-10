@@ -1,4 +1,12 @@
-﻿var doc = fl.getDocumentDOM();
+﻿var lastIndex = document.path.lastIndexOf("\\");
+var documentRoot = document.path.substr(0, lastIndex + 1);
+
+while(documentRoot.indexOf("\\") > 0)
+{
+	documentRoot = documentRoot.replace("\\", "/");
+}
+
+var doc = fl.getDocumentDOM();
 var lyrs = doc.getTimeline().layers;
 
 var len = lyrs.length;
@@ -8,17 +16,14 @@ var layerNames = [];
 var layerSizes = [];
 var layerElementsArray = [];
 
-fl.trace("D3DXVECTOR2 t_planePositions;");
-fl.trace("LandscapeMesh *t_mesh;");
+var contents = "";
+contents += "D3DXVECTOR2 t_planePositions;\n";
+contents += "LandscapeMesh *t_mesh;\n";
 
-
-
-for (i=0; i < len; i++) {
-		
+for (i=0; i < len; i++) {		
 		
 		if(lyrs[i].name != "startpoint" && lyrs[i].name != "bg")
-		{
-			
+		{			
 			lyr = lyrs[i];
 		
 			layerNames[i] = lyr.name;
@@ -55,38 +60,28 @@ for (i=0; i < len; i++) {
 				
 				//fl.trace("t_" + layerNames[i] + "_ARRAY[" + j + "] = D3DXVECTOR2(" + tx + "," + ty + ");");
 				//fl.trace("");
+				contents += "t_mesh = new LandscapeMesh(" + layerNames[i] +",GetCorrespondingTextID("+ layerNames[i]+"));" + "\n";
+				contents += "t_mesh->UniformScale(GetCorrespondingScale("+layerNames[i]+"));" + "\n";
+				contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
+				contents += "t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
+				contents += "m_testScene->AddMesh(t_mesh);" + "\n\n";
+				
+				/*
 				fl.trace("t_mesh = new LandscapeMesh(" + layerNames[i] +",GetCorrespondingTextID("+ layerNames[i]+"));");
 				fl.trace("t_mesh->UniformScale(GetCorrespondingScale("+layerNames[i]+"));");
 				fl.trace("t_planePositions = GetPlanePositions("+tx+", "+ty+");");
 				fl.trace("t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);");
 				fl.trace("m_testScene->AddMesh(t_mesh);");
 				fl.trace("");
-				/*
-				t_mesh = new LandscapeMesh(MESH_TRAFFIC_CONE_ID,GetCorrespondingTextID(MESH_TRAFFIC_CONE_ID));
-		
-		t_mesh->UniformScale(GetCorrespondingScale(MESH_TRAFFIC_CONE_ID));
-		D3DXVECTOR2 t_planePositions = GetPlanePositions(D3DXVECTOR2(t_conesArray[i].x, t_conesArray[i].y));
-		t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
-		m_testScene->AddMesh(t_mesh);*/
+				*/
+				
 				
 			}
-			fl.trace("");
+			//fl.trace("");
 			//fl.trace("for(int i = 0; i< " + elementsSize + "; i++)\n{\n}");
 			
 			
-			/*
-			for(int i = 0; i< t_totalCones; i++)
-	{
-		
-		LandscapeMesh *t_mesh = new LandscapeMesh(MESH_TRAFFIC_CONE_ID,GetCorrespondingTextID(MESH_TRAFFIC_CONE_ID));
-		
-		t_mesh->UniformScale(GetCorrespondingScale(MESH_TRAFFIC_CONE_ID));
-		D3DXVECTOR2 t_planePositions = GetPlanePositions(D3DXVECTOR2(t_conesArray[i].x, t_conesArray[i].y));
-		t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
-		m_testScene->AddMesh(t_mesh);
-		
-	}
-			*/
+			
 			
 			
 		}
@@ -95,17 +90,8 @@ for (i=0; i < len; i++) {
 	};
 	
 	var len2 = layerNames.length;
+
+fl.trace("CONTENTS:\n" + contents)
+FLfile.write("file:///"+documentRoot + "/mapPositions.h", contents);
 	
-	
-for(i= 0; i< len2;i++)
-{
-	if(layerNames[i] != "")
-	{
-		//fl.trace("#define t_" + layerNames[i] + "_COUNT " + layerSizes[i]);
-		//fl.trace("D3DXVECTOR2 t_" + layerNames[i] + "_ARRAY[" + layerSizes[i] + "]");
-		
-		
-		
-	}
-}
 	

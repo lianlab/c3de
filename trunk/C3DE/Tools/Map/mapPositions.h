@@ -132,7 +132,6 @@ t_planePositions = GetPlanePositions(17.5f, 423.95f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
 
-
 t_mesh = new LandscapeMesh(MESH_STREET_LIGHT_01_ID,GetCorrespondingTextID(MESH_STREET_LIGHT_01_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_STREET_LIGHT_01_ID));
 t_planePositions = GetPlanePositions(15.5f, 245.95f);
@@ -259,7 +258,6 @@ t_planePositions = GetPlanePositions(237.5f, 291.95f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
 
-
 t_mesh = new LandscapeMesh(MESH_BENCH_ID,GetCorrespondingTextID(MESH_BENCH_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_BENCH_ID));
 t_planePositions = GetPlanePositions(21.5f, 37.95f);
@@ -284,7 +282,6 @@ t_planePositions = GetPlanePositions(21.5f, 207.95f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
 
-
 t_mesh = new LandscapeMesh(MESH_SIGN03_ID,GetCorrespondingTextID(MESH_SIGN03_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_SIGN03_ID));
 t_planePositions = GetPlanePositions(63.5f, 245.95f);
@@ -297,13 +294,11 @@ t_planePositions = GetPlanePositions(69.5f, 421.9f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
 
-
 t_mesh = new LandscapeMesh(MESH_SIGN02_ID,GetCorrespondingTextID(MESH_SIGN02_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_SIGN02_ID));
 t_planePositions = GetPlanePositions(311.45f, 381.95f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
-
 
 t_mesh = new LandscapeMesh(MESH_SIGN01_ID,GetCorrespondingTextID(MESH_SIGN01_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_SIGN01_ID));
@@ -316,7 +311,6 @@ t_mesh->UniformScale(GetCorrespondingScale(MESH_SIGN01_ID));
 t_planePositions = GetPlanePositions(358.45f, 31.95f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
-
 
 t_mesh = new LandscapeMesh(MESH_SIDEWALK_BARRIER_ID,GetCorrespondingTextID(MESH_SIDEWALK_BARRIER_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_SIDEWALK_BARRIER_ID));
@@ -354,7 +348,6 @@ t_planePositions = GetPlanePositions(159.45f, 497.95f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
 
-
 t_mesh = new LandscapeMesh(MESH_MAILBOX02_ID,GetCorrespondingTextID(MESH_MAILBOX02_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_MAILBOX02_ID));
 t_planePositions = GetPlanePositions(130.45f, 383.95f);
@@ -372,7 +365,6 @@ t_mesh->UniformScale(GetCorrespondingScale(MESH_MAILBOX02_ID));
 t_planePositions = GetPlanePositions(361.45f, 242.95f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
-
 
 t_mesh = new LandscapeMesh(MESH_MAILBOX01_ID,GetCorrespondingTextID(MESH_MAILBOX01_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_MAILBOX01_ID));
@@ -428,7 +420,6 @@ t_planePositions = GetPlanePositions(382.45f, 457.95f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
 
-
 t_mesh = new LandscapeMesh(MESH_GARDEN_BORDER_ID,GetCorrespondingTextID(MESH_GARDEN_BORDER_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_GARDEN_BORDER_ID));
 t_planePositions = GetPlanePositions(60.5f, 304.95f);
@@ -465,7 +456,6 @@ t_planePositions = GetPlanePositions(15.5f, 441.9f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
 
-
 t_mesh = new LandscapeMesh(MESH_CAFE_TABLE_ID,GetCorrespondingTextID(MESH_CAFE_TABLE_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_CAFE_TABLE_ID));
 t_planePositions = GetPlanePositions(227.5f, 245.95f);
@@ -483,7 +473,6 @@ t_mesh->UniformScale(GetCorrespondingScale(MESH_CAFE_TABLE_ID));
 t_planePositions = GetPlanePositions(297.45f, 244.95f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
-
 
 t_mesh = new LandscapeMesh(MESH_PARKING_BARRIER_ID,GetCorrespondingTextID(MESH_PARKING_BARRIER_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_PARKING_BARRIER_ID));
@@ -515,7 +504,6 @@ t_planePositions = GetPlanePositions(182.0f, 501.0f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
 
-
 t_mesh = new LandscapeMesh(MESH_TRAFFIC_CONE_ID,GetCorrespondingTextID(MESH_TRAFFIC_CONE_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_TRAFFIC_CONE_ID));
 t_planePositions = GetPlanePositions(5.0f, 261.0f);
@@ -539,3 +527,4 @@ t_mesh->UniformScale(GetCorrespondingScale(MESH_TRAFFIC_CONE_ID));
 t_planePositions = GetPlanePositions(340.0f, 501.0f);
 t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 m_testScene->AddMesh(t_mesh);
+

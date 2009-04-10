@@ -22,7 +22,7 @@ contents += "LandscapeMesh *t_mesh;\n";
 
 for (i=0; i < len; i++) {		
 		
-		if(lyrs[i].name != "startpoint" && lyrs[i].name != "bg")
+		if(lyrs[i].name != "startpoint" && lyrs[i].name != "bg" && lyrs[i].visible)
 		{			
 			lyr = lyrs[i];
 		
@@ -39,6 +39,17 @@ for (i=0; i < len; i++) {
 				
 				var tx = "" + elementMatrix.tx;
 				var ty = "" + elementMatrix.ty;
+				
+				var t_rotation = "" + layerElements[j].rotation;
+				
+				if(t_rotation.indexOf(".") < 0)
+				{
+					t_rotation += ".0f";
+				}
+				else
+				{
+					t_rotation += "f";
+				}
 				
 				if(tx.indexOf(".") < 0)
 				{
@@ -64,6 +75,7 @@ for (i=0; i < len; i++) {
 				contents += "t_mesh->UniformScale(GetCorrespondingScale("+layerNames[i]+"));" + "\n";
 				contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
 				contents += "t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
+				contents += "t_mesh->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
 				contents += "m_testScene->AddMesh(t_mesh);" + "\n\n";
 				
 				/*

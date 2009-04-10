@@ -83,7 +83,7 @@ OutputVS FireRingVS(float3 posL    : POSITION0,
 	
 	// Fade color from white to black over time to fade particles out.
 	outVS.color = (1.0f - (t / lifeTime));
-	outVS.color = 1.0f;
+	//outVS.color = 1.0f;
 	// Done--return the output.
     return outVS;
 }

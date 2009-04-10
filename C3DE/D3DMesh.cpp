@@ -354,6 +354,15 @@ D3DMesh::~D3DMesh()
 		delete m_indices;
 		m_indices =NULL;
 	}
+
+	if(m_boundingBox != NULL)
+	{
+		delete m_boundingBox;
+		m_boundingBox = NULL;
+	}
+
+	FreeTextures();
+	FreeMaterials();
 /*
 	if(m_vertices)
 	{

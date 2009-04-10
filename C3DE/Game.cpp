@@ -1508,6 +1508,10 @@ void Game::InitializeMeshes()
 
 #endif
 
+int GetCorrespondingTextID(int meshID);
+float GetCorrespondingScale(int meshID);
+D3DXVECTOR2 GetPlanePositions(float x, float y);
+
 void Game::InitializeMeshes()
 {	
 
@@ -1529,8 +1533,63 @@ void Game::InitializeMeshes()
 	m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
 	m_testScene->AddMesh(m_woman);	
 
+	Ground *t_ground = new Ground();
+	m_testScene->AddMesh(t_ground);
 
 
+
+	//GENERATED CODE		
+	#include "Tools/Map/mapPositions.h"
+
+	//Townhall *t_townhall = new Townhall();
+	//m_testScene->AddMesh(t_townhall);
+	Dwarf * t_dwarf = new Dwarf();
+	t_dwarf->SetPosition(5.0f, 0.0f, 5.0f);
+	t_dwarf->Rotate(0.0f, 90.0f, 0.0f);
+	m_testScene->AddMesh(t_dwarf);
+
+	
+	
+	m_testScene->Initialize();
+	
+}
+
+
+
+int GetCorrespondingTextID(int meshID)
+{
+	int t[22];
+	t[MESH_CAFE_TABLE_ID - MESH_CAFE_TABLE_ID] = IMAGE_CAFE_TABLE_ID;
+	t[MESH_GARDEN_BORDER_ID - MESH_CAFE_TABLE_ID] = IMAGE_GARDEN_BORDER_ID;
+	t[MESH_MAILBOX01_ID - MESH_CAFE_TABLE_ID] = IMAGE_MAILBOX01_ID;
+	t[MESH_MAILBOX02_ID - MESH_CAFE_TABLE_ID] = IMAGE_MAILBOX02_ID;
+	t[MESH_MAILBOX03_ID - MESH_CAFE_TABLE_ID] = IMAGE_MAILBOX03_ID;
+	t[MESH_PARKING_BARRIER_ID - MESH_CAFE_TABLE_ID] = IMAGE_PARKING_BARRIER_ID;
+	t[MESH_PALETTE_ID - MESH_CAFE_TABLE_ID] = IMAGE_PALETTE_ID;
+	t[MESH_PIPE_CAGE_ID - MESH_CAFE_TABLE_ID] = IMAGE_PIPE_CAGE_ID;
+	t[MESH_SANDWICH_BOARD_ID - MESH_CAFE_TABLE_ID] = IMAGE_SANDWICH_BOARD_ID;
+	t[MESH_SIDEWALK_BARRIER_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIDEWALK_BARRIER_ID;
+	t[MESH_SIGN01_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN01_ID;
+	t[MESH_SIGN02_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN02_ID;
+	t[MESH_SIGN03_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN03_ID;
+	t[MESH_SIGN04_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN04_ID;
+	t[MESH_SIGN05_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN05_ID;
+	t[MESH_SIGN06_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN06_ID;
+	t[MESH_SPRINKLER_ID - MESH_CAFE_TABLE_ID] = IMAGE_SPRINKLER_ID;
+	t[MESH_BENCH_ID - MESH_CAFE_TABLE_ID] = IMAGE_BENCH_ID;
+	t[MESH_STREET_LIGHT_01_ID - MESH_CAFE_TABLE_ID] = 	IMAGE_STREET_LIGHT_01_ID;
+	t[MESH_STREET_LIGHT_02_ID - MESH_CAFE_TABLE_ID] = 	IMAGE_STREET_LIGHT_02_ID;
+	t[MESH_SWITCHBOX_ID - MESH_CAFE_TABLE_ID] = IMAGE_SWITCHBOX_ID;
+	t[MESH_TRAFFIC_CONE_ID - MESH_CAFE_TABLE_ID] = IMAGE_TRAFFIC_CONE_ID;
+
+	return t[meshID - MESH_CAFE_TABLE_ID];
+	
+	
+}
+
+float GetCorrespondingScale(int meshID)
+{
+	
 	float t_scales[22];
 	t_scales[MESH_CAFE_TABLE_ID - MESH_CAFE_TABLE_ID]				= 2.2f;
 	t_scales[MESH_GARDEN_BORDER_ID - MESH_CAFE_TABLE_ID]			= 4.49f;
@@ -1554,40 +1613,22 @@ void Game::InitializeMeshes()
 	t_scales[MESH_STREET_LIGHT_02_ID - MESH_CAFE_TABLE_ID]			= 2.97f;
 	t_scales[MESH_SWITCHBOX_ID - MESH_CAFE_TABLE_ID]				= 1.66f;
 	t_scales[MESH_TRAFFIC_CONE_ID - MESH_CAFE_TABLE_ID]				= 2.04f;
-	
-
-	int t_meshOffset = MESH_CAFE_TABLE_ID;
-	int t_texOffset = IMAGE_CAFE_TABLE_ID;
-	int t_idx = 2;
 
 
-	int tt = 0;
-	for(int i = 0; i < MESH_TRAFFIC_CONE_ID - MESH_CAFE_TABLE_ID + 1; i++)
-	{
-		
-
-		m_castle = new LandscapeMesh(t_meshOffset + i, t_texOffset + i + tt);
-		m_castle->UniformScale(t_scales[i]);
-		m_castle->SetPosition(0.0f, 0.0f, i*5.0f);
-		m_testScene->AddMesh(m_castle);
-	}
-
-	Ground *t_ground = new Ground();
-	m_testScene->AddMesh(t_ground);
-
-	Townhall *t_townhall = new Townhall();
-	m_testScene->AddMesh(t_townhall);
-	Dwarf * t_dwarf = new Dwarf();
-	t_dwarf->Scale(5.0f, 5.0f, 5.0f);
-	m_testScene->AddMesh(t_dwarf);
-
-	
-	
-	m_testScene->Initialize();
-	
+	return t_scales[meshID - MESH_CAFE_TABLE_ID];
 }
 
+D3DXVECTOR2 GetPlanePositions(float x, float y)
+{
+	float tx = x;
+	float ty = y;
+	float t_normalizedX = tx / 512.0f;
+	float t_normalizedZ = ty / 512.0f;
+	float t_groundSize = 500.0f;
 
+	D3DXVECTOR2 t_returned = D3DXVECTOR2(t_normalizedX * t_groundSize - (t_groundSize/2.0f),250.0f - t_normalizedZ * t_groundSize);
+	return t_returned;
+}
 
 
 

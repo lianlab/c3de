@@ -450,6 +450,10 @@
 								RelativePath=".\LandscapeMesh.cpp"
 								>
 							</File>
+							<File
+								RelativePath=".\LandscapeWall.cpp"
+								>
+							</File>
 						</Filter>
 					</Filter>
 					<Filter
@@ -998,6 +1002,10 @@
 							>
 							<File
 								RelativePath=".\LandscapeMesh.h"
+								>
+							</File>
+							<File
+								RelativePath=".\LandscapeWall.h"
 								>
 							</File>
 						</Filter>

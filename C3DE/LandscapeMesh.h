@@ -14,7 +14,7 @@ public:
 
 	void SetShaderHandlers();
 
-	void UniformScale(float a_value);
+	//void UniformScale(float a_value);
 
 	void PreRender(Renderer * a_renderer);
 	void PosRender(Renderer * a_renderer);

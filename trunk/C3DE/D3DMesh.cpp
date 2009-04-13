@@ -60,6 +60,7 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 
 	if(m_xMesh)
 	{
+		ReleaseCOM(m_xMesh);
 		delete m_xMesh;
 		m_xMesh = NULL;
 	}

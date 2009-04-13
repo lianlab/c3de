@@ -159,6 +159,7 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_SWITCHBOX;
 	IDirect3DTexture9 * TEX_TRAFFIC_CONE;						
 	IDirect3DTexture9 * TEX_TOWNHALL;	
+	IDirect3DTexture9 * TEX_BRICKS;	
 	
 
 
@@ -273,6 +274,7 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/switchbox.png", &TEX_SWITCHBOX));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/trafficCone.png", &TEX_TRAFFIC_CONE));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/townhall.dds", &TEX_TOWNHALL));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/brick.jpg", &TEX_BRICKS));
 
 
 
@@ -373,6 +375,7 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_SWITCHBOX_ID] = TEX_SWITCHBOX;
 	m_imageResources[IMAGE_TRAFFIC_CONE_ID] = TEX_TRAFFIC_CONE;
 	m_imageResources[IMAGE_TOWNHALL_ID] = TEX_TOWNHALL;
+	m_imageResources[IMAGE_BRICKS_ID] = TEX_BRICKS;
 
 	InitializeVideos();
 }
@@ -560,6 +563,10 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 	else if(strcmp(a_filename.c_str(), "townhall.dds") == 0)
 	{
 		return m_imageResources[IMAGE_TOWNHALL_ID];
+	}	
+	else if(strcmp(a_filename.c_str(), "brick.jpg") == 0)
+	{
+		return m_imageResources[IMAGE_BRICKS_ID];
 	}	
 	else
 	{

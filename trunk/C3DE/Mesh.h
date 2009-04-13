@@ -27,6 +27,7 @@ public:
 	float GetRotationZ(){return m_rotateZ;}
 
 	virtual void Scale(float x, float y, float z){m_scaleX=x;m_scaleY=y;m_scaleZ=z;}
+	virtual void UniformScale(float value){m_scaleX=value;m_scaleY=value;m_scaleZ=value;}
 	float GetXScale(){return m_scaleX;}
 	float GetYScale(){return m_scaleY;}
 	float GetZScale(){return m_scaleZ;}

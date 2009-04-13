@@ -389,7 +389,8 @@ void D3DRenderer::DrawScene(Scene *scene)
 	
 	for(int i = 0; i < totalMirrors; i++)
 	{
-		DrawMirror(scene->GetMirrorsVector()->at(i), scene);		
+		//DrawMirror(scene->GetMirrorsVector()->at(i), scene);		
+		DrawMirror((*scene->GetMirrorsVector())[i], scene);		
 	}	
 
 	int t_totalTerrains = scene->GetTerrains()->size();
@@ -397,7 +398,7 @@ void D3DRenderer::DrawScene(Scene *scene)
 	
 	for(int i = 0; i < t_totalTerrains; i++)
 	{		
-		Terrain *t_terrain = scene->GetTerrains()->at(i);	
+		Terrain *t_terrain = (*scene->GetTerrains())[i];	
 
 		int t_totalSubMeshes = t_terrain->GetSubMeshes()->size();
 
@@ -405,7 +406,8 @@ void D3DRenderer::DrawScene(Scene *scene)
 		//for(int j = 0; j < 1; j++)
 		{
 			
-			if(!IsAABBWithinView(t_terrain->GetSubMeshes()->at(j)->GetBoundingBox()))
+			//if(!IsAABBWithinView(t_terrain->GetSubMeshes()->at(j)->GetBoundingBox()))
+			if(!IsAABBWithinView((*t_terrain->GetSubMeshes())[j]->GetBoundingBox()))
 			//if(false)
 			
 			{
@@ -418,11 +420,14 @@ void D3DRenderer::DrawScene(Scene *scene)
 			}
 			//if(j%3)continue;
 			FXManager::GetInstance()->Begin(t_terrain->GetEffect());			
-			ID3DXMesh *t_mesh = t_terrain->GetSubMeshes()->at(j)->GetXMesh();																
+			//ID3DXMesh *t_mesh = t_terrain->GetSubMeshes()->at(j)->GetXMesh();																
+			ID3DXMesh *t_mesh = (*t_terrain->GetSubMeshes())[j]->GetXMesh();																
 			//ID3DXMesh *t_mesh = t_terrain->GetXMesh();		
-			t_terrain->SetCurrentMaterial(t_terrain->GetMaterials()->at(0));			
+			//t_terrain->SetCurrentMaterial(t_terrain->GetMaterials()->at(0));			
+			t_terrain->SetCurrentMaterial((*t_terrain->GetMaterials())[0]);			
 			
-			Image *t_image = t_terrain->GetTextures()->at(0);			
+			//Image *t_image = t_terrain->GetTextures()->at(0);			
+			Image *t_image = (*t_terrain->GetTextures())[0];			
 			t_terrain->SetCurrentTexture(t_image);			
 			
 			t_terrain->SetShaderHandlers();
@@ -438,7 +443,8 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 	for(int i = 0; i < totalMeshes; i++)
 	{				
-		Mesh *mesh = scene->GetMeshesVector()->at(i);	
+		//Mesh *mesh = scene->GetMeshesVector()->at(i);	
+		Mesh *mesh = (*scene->GetMeshesVector())[i];	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
 		
 		if(d3dmesh->GetXMesh() && d3dmesh->GetBoundingBox())
@@ -472,7 +478,8 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 	for(int i = 0; i < totalShadowSurfaces; i++)
 	{				
-		DrawShadowSurface(scene->GetShadowSurfacesVector()->at(i), scene);
+		//DrawShadowSurface(scene->GetShadowSurfacesVector()->at(i), scene);
+		DrawShadowSurface((*scene->GetShadowSurfacesVector())[i], scene);
 	}
 
 
@@ -498,14 +505,16 @@ void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 	for(int j = 0; j < t_totalMaterials; j++)
 	{				
 		
-		a_mesh->SetCurrentMaterial(a_mesh->GetMaterials()->at(j));
+		//a_mesh->SetCurrentMaterial(a_mesh->GetMaterials()->at(j));
+		a_mesh->SetCurrentMaterial((*a_mesh->GetMaterials())[j]);
 
 		
 		int t_totalTextures = a_mesh->GetTextures()->size();
 		
 		if(j < t_totalTextures)
 		{			
-			Image *t_image = a_mesh->GetTextures()->at(j);			
+			//Image *t_image = a_mesh->GetTextures()->at(j);			
+			Image *t_image = (*a_mesh->GetTextures())[j];			
 			a_mesh->SetCurrentTexture(t_image);
 		}
 		
@@ -542,14 +551,14 @@ void D3DRenderer::DrawTerrainSubMesh(D3DMesh * a_mesh, D3DMesh *a_subMesh)
 	for(int j = 0; j < t_totalMaterials; j++)
 	{				
 		
-		a_mesh->SetCurrentMaterial(a_mesh->GetMaterials()->at(j));
+		a_mesh->SetCurrentMaterial((*a_mesh->GetMaterials())[j]);
 
 		
 		int t_totalTextures = a_mesh->GetTextures()->size();
 		
 		if(j < t_totalTextures)
 		{			
-			Image *t_image = a_mesh->GetTextures()->at(j);			
+			Image *t_image = (*a_mesh->GetTextures())[j];			
 			a_mesh->SetCurrentTexture(t_image);
 		}
 		
@@ -603,7 +612,7 @@ void D3DRenderer::DrawShadowSurface(ShadowSurface *shadowSurface, Scene *scene)
 	
 	for(int i = 0; i < totalMeshes; i++)
 	{		
-		Mesh *mesh = scene->GetMeshesVector()->at(i);	
+		Mesh *mesh = (*scene->GetMeshesVector())[i];	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;					
 		D3DXMATRIX previous = d3dmesh->GetTransformMatrix();
 		d3dmesh->SetTransformMatrix(previous*S*eps);				
@@ -688,7 +697,7 @@ void D3DRenderer::DrawMirror(Mirror *mirror, Scene *scene)
 
 	for(int i = 0; i < totalMeshes; i++)
 	{		
-		Mesh *mesh = scene->GetMeshesVector()->at(i);	
+		Mesh *mesh = (*scene->GetMeshesVector())[i];	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;			
 		D3DXMatrixReflect(&R,plane);
 		D3DXMATRIX previous = d3dmesh->GetTransformMatrix();

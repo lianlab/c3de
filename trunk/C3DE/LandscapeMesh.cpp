@@ -31,10 +31,7 @@ LandscapeMesh::LandscapeMesh(int a_meshId, int a_texId)
 	
 }
 
-void LandscapeMesh::UniformScale(float a_value)
-{
-	Scale(a_value, a_value, a_value);
-}
+
 
 
 

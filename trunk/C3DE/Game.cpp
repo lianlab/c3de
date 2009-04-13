@@ -16,6 +16,7 @@
 #include "FireRingParticleSystem.h"
 #include "Ground.h"
 #include "Townhall.h"
+#include "LandscapeWall.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -333,6 +334,7 @@ void Game::UpdateInput()
 	bool leftDown = false;
 	bool rightDown = false;
 
+#if 1
 	if(DirectInput::GetInstance()->IsKeyDown(200))
 	//UP
 	{		
@@ -382,6 +384,34 @@ void Game::UpdateInput()
 			}
 		}
 	}
+
+#endif
+
+#if 0
+	if(DirectInput::GetInstance()->IsKeyDown(200))
+	//UP
+	{	
+		m_cube->Scale(m_cube->GetXScale() + step, m_cube->GetYScale(), m_cube->GetZScale());
+		
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(208))
+	{	
+	//DOWN	
+		m_cube->Scale(m_cube->GetXScale() - step, m_cube->GetYScale(), m_cube->GetZScale());
+		
+	}	
+	if(DirectInput::GetInstance()->IsKeyDown(205))
+	{
+		m_cube->Scale(m_cube->GetXScale(), m_cube->GetYScale() + step, m_cube->GetZScale());
+		
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(203))
+	{
+		m_cube->Scale(m_cube->GetXScale(), m_cube->GetYScale() - step, m_cube->GetZScale());
+		
+	}
+
+#endif
 
 	float t_dAngle = 57.29577951308232286465f * t_angle;
 	D3DXMATRIX R;
@@ -1511,6 +1541,7 @@ void Game::InitializeMeshes()
 int GetCorrespondingTextID(int meshID);
 float GetCorrespondingScale(int meshID);
 D3DXVECTOR2 GetPlanePositions(float x, float y);
+float GetRelativeScale(float a_mapScale);
 
 void Game::InitializeMeshes()
 {	
@@ -1541,6 +1572,16 @@ void Game::InitializeMeshes()
 	//GENERATED CODE		
 	#include "Tools/Map/mapPositions.h"
 
+	m_cube = new Cube();
+	m_testScene->AddMesh(m_cube);
+	m_cube->SetPosition(0.0f, 1.0f, 0.0f);
+
+#if 0
+	LandscapeWall *t_wall  = new LandscapeWall();
+	
+	t_wall->Scale(10.0f, 0.0f, 0.0f);
+	m_testScene->AddMesh(t_wall);
+#endif
 	//Townhall *t_townhall = new Townhall();
 	//m_testScene->AddMesh(t_townhall);
 	Dwarf * t_dwarf = new Dwarf();
@@ -1587,6 +1628,14 @@ int GetCorrespondingTextID(int meshID)
 	
 }
 
+float GetRelativeScale(float a_mapScale)
+{
+	float mapSize = 512.0f;
+	float planeSize = 500.0f;
+
+	return a_mapScale * (planeSize/mapSize);
+}
+
 float GetCorrespondingScale(int meshID)
 {
 	
@@ -1613,6 +1662,11 @@ float GetCorrespondingScale(int meshID)
 	t_scales[MESH_STREET_LIGHT_02_ID - MESH_CAFE_TABLE_ID]			= 2.97f;
 	t_scales[MESH_SWITCHBOX_ID - MESH_CAFE_TABLE_ID]				= 1.66f;
 	t_scales[MESH_TRAFFIC_CONE_ID - MESH_CAFE_TABLE_ID]				= 2.04f;
+
+	if(meshID == MESH_TREE_0_ID || meshID == MESH_TREE_1_ID || meshID == MESH_TREE_2_ID || meshID == MESH_TREE_3_ID)
+	{
+		return 0.2f;
+	}
 
 
 	return t_scales[meshID - MESH_CAFE_TABLE_ID];

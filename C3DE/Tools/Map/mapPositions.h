@@ -1,5 +1,87 @@
 D3DXVECTOR2 t_planePositions;
 LandscapeMesh *t_mesh;
+Tree0 *t_tree0;
+Tree1 *t_tree1;
+Tree2 *t_tree2;
+Tree3 *t_tree3;
+LandscapeWall *t_wall;
+t_wall = new LandscapeWall();
+t_wall->Scale(GetRelativeScale(112.2f), 0.0f, 0.0f);
+t_planePositions = GetPlanePositions(454.95f, 225.7f);
+t_wall->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_wall->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_wall);
+
+t_wall = new LandscapeWall();
+t_wall->Scale(GetRelativeScale(112.2f), 0.0f, 0.0f);
+t_planePositions = GetPlanePositions(454.95f, 61.7f);
+t_wall->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_wall->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_wall);
+
+t_wall = new LandscapeWall();
+t_wall->Scale(GetRelativeScale(112.2f), 0.0f, 0.0f);
+t_planePositions = GetPlanePositions(454.95f, 148.7f);
+t_wall->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_wall->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_wall);
+
+t_wall = new LandscapeWall();
+t_wall->Scale(GetRelativeScale(112.2f), 0.0f, 0.0f);
+t_planePositions = GetPlanePositions(454.95f, 313.7f);
+t_wall->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_wall->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_wall);
+
+t_wall = new LandscapeWall();
+t_wall->Scale(GetRelativeScale(112.2f), 0.0f, 0.0f);
+t_planePositions = GetPlanePositions(454.95f, 366.7f);
+t_wall->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_wall->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_wall);
+
+t_wall = new LandscapeWall();
+t_wall->Scale(GetRelativeScale(40.0f), 0.0f, 0.0f);
+t_planePositions = GetPlanePositions(399.0f, 333.85f);
+t_wall->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_wall->Rotate(0.0f,90.0f, 0.0f);
+m_testScene->AddMesh(t_wall);
+
+t_wall = new LandscapeWall();
+t_wall->Scale(GetRelativeScale(112.2f), 0.0f, 0.0f);
+t_planePositions = GetPlanePositions(454.95f, 456.7f);
+t_wall->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_wall->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_wall);
+
+t_tree3 = new Tree3();
+t_tree3->UniformScale(GetCorrespondingScale(MESH_TREE_3_ID));
+t_planePositions = GetPlanePositions(63.5f, 16.95f);
+t_tree3->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_tree3->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_tree3);
+
+t_tree2 = new Tree2();
+t_tree2->UniformScale(GetCorrespondingScale(MESH_TREE_2_ID));
+t_planePositions = GetPlanePositions(50.45f, 17.95f);
+t_tree2->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_tree2->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_tree2);
+
+t_tree1 = new Tree1();
+t_tree1->UniformScale(GetCorrespondingScale(MESH_TREE_1_ID));
+t_planePositions = GetPlanePositions(37.5f, 17.95f);
+t_tree1->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_tree1->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_tree1);
+
+t_tree0 = new Tree0();
+t_tree0->UniformScale(GetCorrespondingScale(MESH_TREE_0_ID));
+t_planePositions = GetPlanePositions(23.6f, 19.95f);
+t_tree0->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_tree0->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_tree0);
+
 t_mesh = new LandscapeMesh(MESH_STREET_LIGHT_02_ID,GetCorrespondingTextID(MESH_STREET_LIGHT_02_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_STREET_LIGHT_02_ID));
 t_planePositions = GetPlanePositions(267.45f, 294.95f);

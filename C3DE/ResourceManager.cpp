@@ -160,6 +160,8 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_TRAFFIC_CONE;						
 	IDirect3DTexture9 * TEX_TOWNHALL;	
 	IDirect3DTexture9 * TEX_BRICKS;	
+	IDirect3DTexture9 * TEX_WALL_GRASS;	
+	IDirect3DTexture9 * TEX_WALL_WOOD;	
 	
 
 
@@ -275,6 +277,8 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/trafficCone.png", &TEX_TRAFFIC_CONE));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/townhall.dds", &TEX_TOWNHALL));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/brick.jpg", &TEX_BRICKS));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/wall_grass.jpg", &TEX_WALL_GRASS));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/wall_wood.jpg", &TEX_WALL_WOOD));
 
 
 
@@ -376,6 +380,8 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_TRAFFIC_CONE_ID] = TEX_TRAFFIC_CONE;
 	m_imageResources[IMAGE_TOWNHALL_ID] = TEX_TOWNHALL;
 	m_imageResources[IMAGE_BRICKS_ID] = TEX_BRICKS;
+	m_imageResources[IMAGE_WALL_GRASS_ID] = TEX_WALL_GRASS;
+	m_imageResources[IMAGE_WALL_WOOD_ID] = TEX_WALL_WOOD;
 
 	InitializeVideos();
 }
@@ -567,6 +573,14 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 	else if(strcmp(a_filename.c_str(), "brick.jpg") == 0)
 	{
 		return m_imageResources[IMAGE_BRICKS_ID];
+	}	
+	else if(strcmp(a_filename.c_str(), "wall_grass.jpg") == 0)
+	{
+		return m_imageResources[IMAGE_WALL_GRASS_ID];
+	}	
+	else if(strcmp(a_filename.c_str(), "wall_wood.jpg") == 0)
+	{
+		return m_imageResources[IMAGE_WALL_WOOD_ID];
 	}	
 	else
 	{

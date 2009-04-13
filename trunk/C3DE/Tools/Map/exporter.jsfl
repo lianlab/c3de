@@ -23,7 +23,9 @@ contents += "Tree0 *t_tree0;\n";
 contents += "Tree1 *t_tree1;\n";
 contents += "Tree2 *t_tree2;\n";
 contents += "Tree3 *t_tree3;\n";
-contents += "LandscapeWall *t_wall;\n";
+contents += "LandscapeWall1 *t_wall1;\n";
+contents += "LandscapeWall2 *t_wall2;\n";
+contents += "LandscapeWall3 *t_wall3;\n";
 
 for (i=0; i < len; i++) {		
 		
@@ -129,15 +131,35 @@ for (i=0; i < len; i++) {
 					contents += "t_tree3->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
 					contents += "m_testScene->AddMesh(t_tree3);" + "\n\n";
 				}
-				else if(layerNames[i] == "WALLS")
+				else if(layerNames[i] == "WALL_1")
 				{
-					contents += "t_wall = new LandscapeWall();\n";
-					contents += "t_wall->Scale(GetRelativeScale(" + t_width + "), 0.0f, 0.0f);\n";
+					contents += "t_wall1 = new LandscapeWall1();\n";
+					contents += "t_wall1->Scale(GetRelativeScale(" + t_width + "), 0.0f, 0.0f);\n";
 					//contents += "t_tree3->UniformScale(GetCorrespondingScale("+layerNames[i]+"));" + "\n";
 					contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
-					contents += "t_wall->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
-					contents += "t_wall->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
-					contents += "m_testScene->AddMesh(t_wall);" + "\n\n";
+					contents += "t_wall1->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
+					contents += "t_wall1->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
+					contents += "m_testScene->AddMesh(t_wall1);" + "\n\n";
+				}
+				else if(layerNames[i] == "WALL_2")
+				{
+					contents += "t_wall2 = new LandscapeWall2();\n";
+					contents += "t_wall2->Scale(GetRelativeScale(" + t_width + "), 0.0f, 0.0f);\n";
+					//contents += "t_tree3->UniformScale(GetCorrespondingScale("+layerNames[i]+"));" + "\n";
+					contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
+					contents += "t_wall2->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
+					contents += "t_wall2->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
+					contents += "m_testScene->AddMesh(t_wall2);" + "\n\n";
+				}
+				else if(layerNames[i] == "WALL_3")
+				{
+					contents += "t_wall3 = new LandscapeWall3();\n";
+					contents += "t_wall3->Scale(GetRelativeScale(" + t_width + "), 0.0f, 0.0f);\n";
+					//contents += "t_tree3->UniformScale(GetCorrespondingScale("+layerNames[i]+"));" + "\n";
+					contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
+					contents += "t_wall3->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
+					contents += "t_wall3->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
+					contents += "m_testScene->AddMesh(t_wall3);" + "\n\n";
 				}
 				else
 				{					

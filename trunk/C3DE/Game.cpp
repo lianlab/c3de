@@ -16,7 +16,9 @@
 #include "FireRingParticleSystem.h"
 #include "Ground.h"
 #include "Townhall.h"
-#include "LandscapeWall.h"
+#include "LandscapeWall1.h"
+#include "LandscapeWall2.h"
+#include "LandscapeWall3.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING

@@ -8,7 +8,7 @@
 class LandscapeWall : public D3DMesh
 {
 public:
-	LandscapeWall();
+	LandscapeWall(int texID);
 	~LandscapeWall();
 
 	void Scale(float x, float y, float z);

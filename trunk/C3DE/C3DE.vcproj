@@ -450,10 +450,26 @@
 								RelativePath=".\LandscapeMesh.cpp"
 								>
 							</File>
-							<File
-								RelativePath=".\LandscapeWall.cpp"
+							<Filter
+								Name="Walls"
 								>
-							</File>
+								<File
+									RelativePath=".\LandscapeWall.cpp"
+									>
+								</File>
+								<File
+									RelativePath=".\LandscapeWall1.cpp"
+									>
+								</File>
+								<File
+									RelativePath=".\LandscapeWall2.cpp"
+									>
+								</File>
+								<File
+									RelativePath=".\LandscapeWall3.cpp"
+									>
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -1004,10 +1020,26 @@
 								RelativePath=".\LandscapeMesh.h"
 								>
 							</File>
-							<File
-								RelativePath=".\LandscapeWall.h"
+							<Filter
+								Name="Walls"
 								>
-							</File>
+								<File
+									RelativePath=".\LandscapeWall.h"
+									>
+								</File>
+								<File
+									RelativePath=".\LandscapeWall1.h"
+									>
+								</File>
+								<File
+									RelativePath=".\LandscapeWall2.h"
+									>
+								</File>
+								<File
+									RelativePath=".\LandscapeWall3.h"
+									>
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter

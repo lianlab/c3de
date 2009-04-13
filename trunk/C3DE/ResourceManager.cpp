@@ -162,6 +162,15 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_BRICKS;	
 	IDirect3DTexture9 * TEX_WALL_GRASS;	
 	IDirect3DTexture9 * TEX_WALL_WOOD;	
+
+	IDirect3DTexture9 * TEX_SKYBOX;
+	IDirect3DTexture9 * TEX_SKYBOX_UP;
+	IDirect3DTexture9 * TEX_SKYBOX_DOWN;
+	IDirect3DTexture9 * TEX_SKYBOX_LEFT;
+	IDirect3DTexture9 * TEX_SKYBOX_RIGHT;
+	IDirect3DTexture9 * TEX_SKYBOX_FRONT;
+	IDirect3DTexture9 * TEX_SKYBOX_BACK;
+	
 	
 
 
@@ -281,6 +290,19 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/wall_wood.jpg", &TEX_WALL_WOOD));
 
 
+	HR(D3DXCreateTextureFromFile(m_device, "Images/skybox/skybox.png", &TEX_SKYBOX));
+	
+
+
+	HR(D3DXCreateTextureFromFile(m_device, "Images/skybox/skybox_UP.jpg", &TEX_SKYBOX_UP));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/skybox/skybox_DN.jpg", &TEX_SKYBOX_DOWN));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/skybox/skybox_LF.jpg", &TEX_SKYBOX_LEFT));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/skybox/skybox_RT.jpg", &TEX_SKYBOX_RIGHT));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/skybox/skybox_FR.jpg", &TEX_SKYBOX_FRONT));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/skybox/skybox_BK.jpg", &TEX_SKYBOX_BACK));
+
+
+
 
 
 	
@@ -382,6 +404,15 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_BRICKS_ID] = TEX_BRICKS;
 	m_imageResources[IMAGE_WALL_GRASS_ID] = TEX_WALL_GRASS;
 	m_imageResources[IMAGE_WALL_WOOD_ID] = TEX_WALL_WOOD;
+
+	m_imageResources[IMAGE_SKYBOX_ID] = TEX_SKYBOX;
+
+	m_imageResources[IMAGE_SKYBOX_UP_ID] = TEX_SKYBOX_UP;
+	m_imageResources[IMAGE_SKYBOX_DOWN_ID] = TEX_SKYBOX_DOWN;
+	m_imageResources[IMAGE_SKYBOX_LEFT_ID] = TEX_SKYBOX_LEFT;
+	m_imageResources[IMAGE_SKYBOX_RIGHT_ID] = TEX_SKYBOX_RIGHT;
+	m_imageResources[IMAGE_SKYBOX_FRONT_ID] = TEX_SKYBOX_FRONT;
+	m_imageResources[IMAGE_SKYBOX_BACK_ID] = TEX_SKYBOX_BACK;
 
 	InitializeVideos();
 }
@@ -581,6 +612,10 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 	else if(strcmp(a_filename.c_str(), "wall_wood.jpg") == 0)
 	{
 		return m_imageResources[IMAGE_WALL_WOOD_ID];
+	}	
+	else if(strcmp(a_filename.c_str(), "skybox.jpg") == 0)
+	{
+		return m_imageResources[IMAGE_SKYBOX_ID];
 	}	
 	else
 	{

@@ -471,6 +471,14 @@
 								</File>
 							</Filter>
 						</Filter>
+						<Filter
+							Name="Skybox"
+							>
+							<File
+								RelativePath=".\Skybox.cpp"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Lighting"
@@ -1040,6 +1048,14 @@
 									>
 								</File>
 							</Filter>
+						</Filter>
+						<Filter
+							Name="Skybox"
+							>
+							<File
+								RelativePath=".\Skybox.h"
+								>
+							</File>
 						</Filter>
 					</Filter>
 					<Filter

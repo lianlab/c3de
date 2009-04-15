@@ -447,9 +447,20 @@ void D3DRenderer::DrawScene(Scene *scene)
 		Mesh *mesh = (*scene->GetMeshesVector())[i];	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
 		
-		if(d3dmesh->GetXMesh() && d3dmesh->GetBoundingBox())
+		//if(d3dmesh->GetXMesh() && d3dmesh->GetBoundingBox())
+		if(d3dmesh->GetXMesh())
 		{
-			if(IsAABBWithinView(d3dmesh->GetBoundingBox()))
+			AABB *t_boundingBox = d3dmesh->GetBoundingBox();
+			if(!t_boundingBox)
+			{
+				this->shown++;
+				#if DRAW_BOUNDING_BOXES
+					DrawAABB(d3dmesh);
+				#endif
+				DrawXMesh(d3dmesh);
+				continue;
+			}
+			if(IsAABBWithinView(t_boundingBox))
 			//if(true)
 			{
 				this->shown++;

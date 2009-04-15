@@ -19,6 +19,7 @@
 #include "LandscapeWall1.h"
 #include "LandscapeWall2.h"
 #include "LandscapeWall3.h"
+#include "Skybox.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -322,7 +323,7 @@ void Game::UpdateInput()
 	bool isRunning = false;
 	if(DirectInput::GetInstance()->IsKeyDown(42))
 	{
-		step = 0.3f;
+		step = 0.8f;
 		isRunning = true;
 		
 	}
@@ -1573,23 +1574,12 @@ void Game::InitializeMeshes()
 
 	//GENERATED CODE		
 	#include "Tools/Map/mapPositions.h"
-
-	m_cube = new Cube();
-	m_testScene->AddMesh(m_cube);
-	m_cube->SetPosition(0.0f, 1.0f, 0.0f);
-
-#if 0
-	LandscapeWall *t_wall  = new LandscapeWall();
 	
-	t_wall->Scale(10.0f, 0.0f, 0.0f);
-	m_testScene->AddMesh(t_wall);
-#endif
-	//Townhall *t_townhall = new Townhall();
-	//m_testScene->AddMesh(t_townhall);
-	Dwarf * t_dwarf = new Dwarf();
-	t_dwarf->SetPosition(5.0f, 0.0f, 5.0f);
-	t_dwarf->Rotate(0.0f, 90.0f, 0.0f);
-	m_testScene->AddMesh(t_dwarf);
+
+	Skybox *t_skybox = new Skybox(1000);
+	t_skybox->SetPosition(0.0f, 200, 0.0f);
+
+	m_testScene->AddMesh(t_skybox);
 
 	
 	

@@ -41,6 +41,7 @@ D3DMesh::D3DMesh():Mesh()
 	m_xMesh = NULL;
 
 	//m_currentTex = NULL;
+	m_boundingBox = NULL;
 }
 
 void D3DMesh::SetXMesh(ID3DXMesh *a_mesh)
@@ -87,10 +88,7 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 	HRESULT err = D3DXCreateMesh(indices, vertices, D3DXMESH_MANAGED, VertexPosElements, a_device, &m_xMesh);
 	//HRESULT err = D3DXCreateMesh(totalIndices/3, totalVertices, D3DXMESH_32BIT, VertexPosElements, a_device, &m_xMesh);
 
-	if(err == D3DERR_INVALIDCALL)
-	{
-		int picles = 39872;
-	}
+	
 	VertexPos *v = NULL;
 	m_xMesh->LockVertexBuffer(0, (void**)&v);
 
@@ -128,6 +126,10 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 
 AABB* D3DMesh::GetBoundingBox()
 {
+	if(!m_boundingBox)
+	{
+		return NULL;
+	}
 //IMPORTANT, THIS METHOD IS NOT WORKING FOR ROTATIONS
 	float t_rotationX = m_rotateX;
 	float t_rotationY = m_rotateY;
@@ -387,6 +389,8 @@ D3DMesh::~D3DMesh()
 	if(m_xMesh)
 	{
 		ReleaseCOM(m_xMesh);
+		//HR(m_xMesh->Release());
+		int gffd = 9876;
 	}
 }
 

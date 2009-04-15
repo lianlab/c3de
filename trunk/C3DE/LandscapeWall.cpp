@@ -27,6 +27,7 @@ LandscapeWall::LandscapeWall(int texID)
 	m_vertices->push_back(VertexPos(-0.5f,  5.8f, 0.25f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f));
 
 	// Fill in the top face vertex data.
+#if 0
 	m_vertices->push_back(VertexPos(-0.5f, 5.8f, -0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f));
 	m_vertices->push_back(VertexPos(-0.5f, 5.8f,  0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));
 	m_vertices->push_back(VertexPos( 0.5f, 5.8f,  0.25f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f));
@@ -37,7 +38,7 @@ LandscapeWall::LandscapeWall(int texID)
 	m_vertices->push_back(VertexPos( 0.5f, 0.0f, -0.25f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f));
 	m_vertices->push_back(VertexPos( 0.5f, 0.0f,  0.25f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f));
 	m_vertices->push_back(VertexPos(-0.5f, 0.0f,  0.25f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f));
-
+#endif
 	// Fill in the left face vertex data.
 	m_vertices->push_back(VertexPos(-0.5f, 0.0f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f));
 	m_vertices->push_back(VertexPos(-0.5f,  5.8f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
@@ -56,7 +57,7 @@ LandscapeWall::LandscapeWall(int texID)
 	
 
 
-#if 1
+
 	m_indices->push_back(0);
 	m_indices->push_back(1);
 	m_indices->push_back(2);
@@ -71,6 +72,7 @@ LandscapeWall::LandscapeWall(int texID)
 	m_indices->push_back(6);
 	m_indices->push_back(7);
 
+
 	m_indices->push_back(8);
 	m_indices->push_back(9);
 	m_indices->push_back(10);
@@ -84,20 +86,22 @@ LandscapeWall::LandscapeWall(int texID)
 	m_indices->push_back(12);
 	m_indices->push_back(14);
 	m_indices->push_back(15);
+#if 0
 	m_indices->push_back(16);
 	m_indices->push_back(17);
 	m_indices->push_back(18);
 	m_indices->push_back(16);
 	m_indices->push_back(18);
 	m_indices->push_back(19);
+
 	m_indices->push_back(20);
 	m_indices->push_back(21);
 	m_indices->push_back(22);
 	m_indices->push_back(20);
 	m_indices->push_back(22);
 	m_indices->push_back(23);
-	
-#endif
+	#endif
+
 
 	
 
@@ -139,6 +143,7 @@ void LandscapeWall::Scale(float x, float y, float z)
 	m_vertices->push_back(VertexPos( t_halfX,  5.8f, 0.25f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 	m_vertices->push_back(VertexPos(-t_halfX,  5.8f, 0.25f, 0.0f, 0.0f, 1.0f, x, 0.0f));
 
+#if 0
 	// Fill in the top face vertex data.
 	m_vertices->push_back(VertexPos(-t_halfX, 5.8f, -0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f));
 	m_vertices->push_back(VertexPos(-t_halfX, 5.8f,  0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));
@@ -150,7 +155,7 @@ void LandscapeWall::Scale(float x, float y, float z)
 	m_vertices->push_back(VertexPos( t_halfX, 0.0f, -0.25f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f));
 	m_vertices->push_back(VertexPos( t_halfX, 0.0f,  0.25f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f));
 	m_vertices->push_back(VertexPos(-t_halfX, 0.0f,  0.25f, 0.0f, -1.0f, 0.0f, x, 0.0f));
-
+#endif
 	// Fill in the left face vertex data.
 	m_vertices->push_back(VertexPos(-t_halfX, 0.0f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f));
 	m_vertices->push_back(VertexPos(-t_halfX,  5.8f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
@@ -164,6 +169,15 @@ void LandscapeWall::Scale(float x, float y, float z)
 	m_vertices->push_back(VertexPos( t_halfX, 0.0f,  0.25f, 1.0f, 0.0f, 0.0f, 0.12f, 1.0f));
 
 	CreateXMesh(D3DRenderer::GetDevice());
+
+	//RIGHT NOW, the bounding box are screwed if you rotate them. Since the wall
+	// has a big difference when rotated, we delete its bounding box
+	if(m_boundingBox)
+	{
+		delete m_boundingBox;
+		m_boundingBox = NULL;
+	}
+
 }
 
 void LandscapeWall::SetShaderHandlers()

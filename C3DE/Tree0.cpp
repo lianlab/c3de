@@ -9,23 +9,8 @@
 Tree0::Tree0()
 {
 	
-	//m_vertices = new vector<VertexPos>;
-	//m_indices = new vector<int>;
-
-	
-
-	
-
-	//D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_CRATE_ID));
-	//m_texture = (Image *) d3dImage;
-
-
-	//m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
 	
-	//m_vertexDeclaration = NULL;
-
-	//m_material = NULL;
 
 	LoadFromXFile(	ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TREE_0_ID), 
 		D3DRenderer::GetDevice());

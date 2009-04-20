@@ -90,7 +90,6 @@ void D3DSkinnedMesh::LoadFromXFile(const std::string &XFilename, IDirect3DDevice
 	m_boundingBox = new AABB(t_min, t_max);
 
 	
-	
 }
 
 D3DSkinnedMesh::~D3DSkinnedMesh()

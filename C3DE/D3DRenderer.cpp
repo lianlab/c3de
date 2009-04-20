@@ -270,17 +270,53 @@ void D3DRenderer::CalculateFrustumPlanes()
 	}
 }
 
-bool D3DRenderer::IsAABBWithinView(AABB *a_box)
+bool D3DRenderer::IsAABBWithinView(D3DXMATRIX a_transform,AABB *a_box)
 {
 	
 	D3DXVECTOR3 P;
 	D3DXVECTOR3 Q;
 
+	D3DXPLANE t_planes[6];
+	D3DXPLANE t_plane1;
+	D3DXPLANE t_plane2;
+	D3DXPLANE t_plane3;
+	D3DXPLANE t_plane4;
+	D3DXPLANE t_plane5;
+	D3DXPLANE t_plane6;
+
+
+	D3DXMATRIX t_matrix = a_transform;	
+
+	D3DXMatrixTranspose(&t_matrix, &t_matrix);
+
+	D3DXPlaneTransform(&t_plane1, &m_frustumPlane[0], &t_matrix);
+	D3DXPlaneTransform(&t_plane2, &m_frustumPlane[1], &t_matrix);
+	D3DXPlaneTransform(&t_plane3, &m_frustumPlane[2], &t_matrix);
+	D3DXPlaneTransform(&t_plane4, &m_frustumPlane[3], &t_matrix);
+	D3DXPlaneTransform(&t_plane5, &m_frustumPlane[4], &t_matrix);
+	D3DXPlaneTransform(&t_plane6, &m_frustumPlane[5], &t_matrix);
+
+	D3DXPlaneNormalize(&t_plane1, &t_plane1);
+	D3DXPlaneNormalize(&t_plane2, &t_plane2);
+	D3DXPlaneNormalize(&t_plane3, &t_plane3);
+	D3DXPlaneNormalize(&t_plane4, &t_plane4);
+	D3DXPlaneNormalize(&t_plane5, &t_plane5);
+	D3DXPlaneNormalize(&t_plane6, &t_plane6);
+
+	t_planes[0] = t_plane1;
+	t_planes[1] = t_plane2;
+	t_planes[2] = t_plane3;
+	t_planes[3] = t_plane4;
+	t_planes[4] = t_plane5;
+	t_planes[5] = t_plane6;
+	
+
 	for(int i = 0; i < 6; ++i)
 	{
+
 		for(int j = 0; j < 3; ++j)
 		{
-			if(m_frustumPlane[i][j] >= 0.0f)
+			if(t_planes[i][j] >= 0.0f)
 			{
 				P[j] = a_box->minPoint[j];
 				Q[j] = a_box->maxPoint[j];
@@ -291,7 +327,8 @@ bool D3DRenderer::IsAABBWithinView(AABB *a_box)
 				Q[j] = a_box->minPoint[j];
 			}
 		}
-		if(D3DXPlaneDotCoord(&m_frustumPlane[i], &Q) < 0.0f)
+		if(D3DXPlaneDotCoord(&t_planes[i], &Q) < 0.0f)
+
 		return false;
 	}
 
@@ -299,6 +336,178 @@ bool D3DRenderer::IsAABBWithinView(AABB *a_box)
 
 	
 }
+
+bool D3DRenderer::IsMeshWithinView(D3DMesh *a_mesh)
+{
+	
+	D3DXVECTOR3 P;
+	D3DXVECTOR3 Q;
+
+	D3DXPLANE t_planes[6];
+	D3DXPLANE t_plane1;
+	D3DXPLANE t_plane2;
+	D3DXPLANE t_plane3;
+	D3DXPLANE t_plane4;
+	D3DXPLANE t_plane5;
+	D3DXPLANE t_plane6;
+
+	AABB *t_box = a_mesh->GetBoundingBox();
+
+	D3DXMATRIX t_scaleMatrix;
+	D3DXMatrixScaling(&t_scaleMatrix, a_mesh->GetXScale(), a_mesh->GetYScale(), a_mesh->GetZScale());
+
+	D3DXVECTOR3 t_min = t_box->minPoint;
+	D3DXVECTOR3 t_max = t_box->maxPoint;
+
+	
+	D3DXVECTOR4 t_min4 = D3DXVECTOR4(t_min, 1.0f);
+	D3DXVECTOR4 t_max4 = D3DXVECTOR4(t_min, 1.0f);
+	D3DXVec3Transform(&t_min4, &t_min, &t_scaleMatrix);
+	D3DXVec3Transform(&t_max4, &t_max, &t_scaleMatrix);
+
+	t_min.x = t_min4.x;
+	t_min.y = t_min4.y;
+	t_min.z = t_min4.z;
+
+	t_max.x = t_max4.x;
+	t_max.y = t_max4.y;
+	t_max.z = t_max4.z;	
+
+	float t_x = a_mesh->GetX();
+	float t_y = a_mesh->GetY();
+	float t_z = a_mesh->GetZ();
+
+	float t_rotateX = a_mesh->GetRotationX();
+	float t_rotateY = a_mesh->GetRotationY();
+	float t_rotateZ = a_mesh->GetRotationZ();
+
+	#define RADIAN_TO_DEGREES 57.29577951308232286465f
+	D3DXMATRIX matRotation,matTranslation;
+	int mat;
+	D3DXVECTOR3 vAxis1, vAxis2, vAxis3;
+	D3DXQUATERNION qR;
+
+	// Set default translation
+	D3DXMatrixIdentity( &matTranslation );
+
+	//D3DXMatrixScaling( &matScale, m_scaleX, m_scaleY, m_scaleZ );
+
+	vAxis2.x = 0.0f;
+	vAxis2.y = 1.0f;
+	vAxis2.z = 0.0f;
+	D3DXQuaternionNormalize(&qR, &qR);
+	D3DXQuaternionRotationAxis( &qR, &vAxis2, t_rotateY/RADIAN_TO_DEGREES );
+	D3DXMatrixRotationQuaternion( &matRotation, &qR );
+	D3DXMatrixMultiply( &matTranslation, &matRotation , &matTranslation );
+	vAxis1.x = 1.0f;
+	vAxis1.y = 0.0f;
+	vAxis1.z = 0.0f;
+	D3DXQuaternionNormalize(&qR, &qR);
+	D3DXQuaternionRotationAxis( &qR, &vAxis1, t_rotateX/RADIAN_TO_DEGREES );
+	D3DXMatrixRotationQuaternion( &matRotation, &qR );
+	D3DXMatrixMultiply( &matTranslation, &matRotation , &matTranslation );
+	vAxis3.x = 0.0f;
+	vAxis3.y = 0.0f;
+	vAxis3.z = 1.0f;
+	D3DXQuaternionNormalize(&qR, &qR);
+	D3DXQuaternionRotationAxis( &qR, &vAxis3, t_rotateZ/RADIAN_TO_DEGREES );
+	D3DXMatrixRotationQuaternion( &matRotation, &qR );
+
+
+	
+	D3DXMatrixMultiply( &matTranslation, &matRotation , &matTranslation );
+
+	//D3DXMatrixMultiply(&matTranslation, &matScale, &matTranslation);
+
+	// Move to X,Y,Z coordinates
+	matTranslation._41 = t_x;
+	matTranslation._42 = t_y;
+	matTranslation._43 = t_z;
+	// Set the matrix
+
+	D3DXMATRIX t_matrix = matTranslation;
+
+	D3DXMatrixTranspose(&t_matrix, &t_matrix);
+
+	D3DXPlaneTransform(&t_plane1, &m_frustumPlane[0], &t_matrix);
+	D3DXPlaneTransform(&t_plane2, &m_frustumPlane[1], &t_matrix);
+	D3DXPlaneTransform(&t_plane3, &m_frustumPlane[2], &t_matrix);
+	D3DXPlaneTransform(&t_plane4, &m_frustumPlane[3], &t_matrix);
+	D3DXPlaneTransform(&t_plane5, &m_frustumPlane[4], &t_matrix);
+	D3DXPlaneTransform(&t_plane6, &m_frustumPlane[5], &t_matrix);
+
+	D3DXPlaneNormalize(&t_plane1, &t_plane1);
+	D3DXPlaneNormalize(&t_plane2, &t_plane2);
+	D3DXPlaneNormalize(&t_plane3, &t_plane3);
+	D3DXPlaneNormalize(&t_plane4, &t_plane4);
+	D3DXPlaneNormalize(&t_plane5, &t_plane5);
+	D3DXPlaneNormalize(&t_plane6, &t_plane6);
+
+	t_planes[0] = t_plane1;
+	t_planes[1] = t_plane2;
+	t_planes[2] = t_plane3;
+	t_planes[3] = t_plane4;
+	t_planes[4] = t_plane5;
+	t_planes[5] = t_plane6;
+	
+
+	for(int i = 0; i < 6; ++i)
+	{
+		for(int j = 0; j < 3; ++j)
+		{
+			if(t_planes[i][j] >= 0.0f)
+			{
+				P[j] = t_min[j];
+				Q[j] = t_max[j];
+			}
+			else
+			{
+				P[j] = t_max[j];
+				Q[j] = t_min[j];
+			}
+		}
+		if(D3DXPlaneDotCoord(&t_planes[i], &Q) < 0.0f)
+
+		return false;
+	}
+
+	return true;
+
+	
+}
+
+
+bool D3DRenderer::IsPointWithinView(D3DXVECTOR3 aPoint)
+{
+	//0 == left
+	//1 == right
+	//2 == front
+	//3 == back
+	//4 == top
+	//5 == bottom
+
+	D3DXPLANE t_left = m_frustumPlane[2];
+	D3DXPLANE t_right = m_frustumPlane[3];
+	D3DXPLANE t_front= m_frustumPlane[1];
+	D3DXPLANE t_back = m_frustumPlane[0];
+	D3DXPLANE t_top = m_frustumPlane[4];
+	D3DXPLANE t_bottom = m_frustumPlane[5];
+
+
+	for(int i = 0; i < 6; i++)
+	{
+		float d = D3DXPlaneDotCoord(&m_frustumPlane[i], &aPoint);
+		if(d < 0.0f)
+		{
+			return false;
+		}
+	}
+	
+	return true;
+
+	
+}
+
 
 
 void D3DRenderer::DrawParticleSystem(ParticleSystem *a_particleSystem)
@@ -407,7 +616,9 @@ void D3DRenderer::DrawScene(Scene *scene)
 		{
 			
 			//if(!IsAABBWithinView(t_terrain->GetSubMeshes()->at(j)->GetBoundingBox()))
-			if(!IsAABBWithinView((*t_terrain->GetSubMeshes())[j]->GetBoundingBox()))
+			D3DXMATRIX t_terrainTransform;
+			D3DXMatrixIdentity(&t_terrainTransform);
+			if(!IsAABBWithinView(t_terrainTransform,(*t_terrain->GetSubMeshes())[j]->GetBoundingBox()))
 			//if(false)
 			
 			{
@@ -447,25 +658,26 @@ void D3DRenderer::DrawScene(Scene *scene)
 		Mesh *mesh = (*scene->GetMeshesVector())[i];	
 		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
 		
+		
 		//if(d3dmesh->GetXMesh() && d3dmesh->GetBoundingBox())
 		if(d3dmesh->GetXMesh())
 		{
+
 			AABB *t_boundingBox = d3dmesh->GetBoundingBox();
 			if(!t_boundingBox)
 			{
 				this->shown++;
-				#if DRAW_BOUNDING_BOXES
-					DrawAABB(d3dmesh);
-				#endif
+				
 				DrawXMesh(d3dmesh);
 				continue;
 			}
-			if(IsAABBWithinView(t_boundingBox))
+			//if(IsAABBWithinView(d3dmesh->GetTransformMatrix(),t_boundingBox))
+			if(IsMeshWithinView(d3dmesh))
 			//if(true)
 			{
 				this->shown++;
 				#if DRAW_BOUNDING_BOXES
-					DrawAABB(d3dmesh);
+				DrawOBB(d3dmesh);
 				#endif
 				DrawXMesh(d3dmesh);
 			}
@@ -474,12 +686,10 @@ void D3DRenderer::DrawScene(Scene *scene)
 				this->hidden++;
 			}
 		}
-		else
-		{
-			DrawMesh(mesh);
-		}
-		
+			
+
 	}	
+
 
 	int t_totalParticleSystems = scene->GetParticleSystems()->size();
 	for(int i = 0; i < t_totalParticleSystems; i++)
@@ -496,9 +706,9 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 }
 
-
-
 #endif
+
+
 
 
 
@@ -536,9 +746,6 @@ void D3DRenderer::DrawXMesh(D3DMesh * a_mesh)
 		a_mesh->PosRender((Renderer*)this);
 		FXManager::GetInstance()->PosRender();
 	}		
-
-
-
 	
 	FXManager::GetInstance()->End();
 
@@ -554,10 +761,7 @@ void D3DRenderer::DrawTerrainSubMesh(D3DMesh * a_mesh, D3DMesh *a_subMesh)
 	//int t_totalMaterials = a_mesh->GetMaterials()->size();
 	int t_totalMaterials = a_mesh->GetMaterials()->size();
 
-	ID3DXMesh *t_mesh = a_subMesh->GetXMesh();
-
-		
-	
+	ID3DXMesh *t_mesh = a_subMesh->GetXMesh();			
 
 	for(int j = 0; j < t_totalMaterials; j++)
 	{				
@@ -1159,19 +1363,37 @@ void D3DRenderer::DrawAABB(D3DMesh * a_mesh)
 	AABB* t_boundingBox = a_mesh->GetBoundingBox();
 
 
+	D3DXVECTOR3 t_minPoint = t_boundingBox->minPoint;
+	D3DXVECTOR3 t_maxPoint = t_boundingBox->maxPoint;
+
+	D3DXMATRIX t_matrix = a_mesh->GetTransformMatrix();
+
+	D3DXVECTOR4 t_min4 = D3DXVECTOR4(t_minPoint, 1.0f);
+	D3DXVECTOR4 t_max4 = D3DXVECTOR4(t_maxPoint, 1.0f);
+
+	D3DXVec3Transform(&t_min4, &t_minPoint, &t_matrix);
+	D3DXVec3Transform(&t_max4, &t_maxPoint, &t_matrix);
+
+	t_minPoint.x = t_min4.x;
+	t_minPoint.y = t_min4.y;
+	t_minPoint.z = t_min4.z;
+
+	t_maxPoint.x = t_max4.x;
+	t_maxPoint.y = t_max4.y;
+	t_maxPoint.z = t_max4.z;
 
 	float t_offset = 0.1f;
 
 	VertexCol *v = 0;
 	HR(m_aabbBuffer->Lock(0,0,(void**)&v,0));
 
-	float t_minX = t_boundingBox->minPoint.x - t_offset;
-	float t_minY = t_boundingBox->minPoint.y - t_offset;
-	float t_minZ = t_boundingBox->minPoint.z - t_offset ;
+	float t_minX = t_minPoint.x - t_offset;
+	float t_minY = t_minPoint.y - t_offset;
+	float t_minZ = t_minPoint.z - t_offset ;
 
-	float t_maxX = t_boundingBox->maxPoint.x + t_offset;
-	float t_maxY = t_boundingBox->maxPoint.y + t_offset;
-	float t_maxZ = t_boundingBox->maxPoint.z + t_offset;
+	float t_maxX = t_maxPoint.x + t_offset;
+	float t_maxY = t_maxPoint.y + t_offset;
+	float t_maxZ = t_maxPoint.z + t_offset;
 
 	float t_lengthX = t_maxX - t_minX;
 	float t_lengthY = t_maxY - t_minY;
@@ -1179,6 +1401,7 @@ void D3DRenderer::DrawAABB(D3DMesh * a_mesh)
 
 	D3DXCOLOR t_color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 	
+
 	
 	v[0] = VertexCol(t_minX, t_minY, t_minZ, t_color);
 	v[1] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ, t_color);
@@ -1226,41 +1449,7 @@ void D3DRenderer::DrawAABB(D3DMesh * a_mesh)
 	
 	
 	
-	
-	
-	
-	/*
-	v[2] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ, t_color);	
-	v[3] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);	
-	v[4] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);	
-	v[5] = VertexCol(t_minX, t_minY, t_minZ + t_lengthZ, t_color);	
-	v[6] = VertexCol(t_minX, t_minY, t_minZ + t_lengthZ, t_color);	
-	v[7] = VertexCol(t_minX, t_minY, t_minZ, t_color);
-
-	v[8] = VertexCol(t_minX, t_minY, t_minZ, t_color);
-	v[9] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ, t_color);
-	v[10] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ, t_color);	
-	v[11] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);	
-	v[12] = VertexCol(t_minX, t_minY + t_lengthY, t_minZ + t_lengthZ, t_color);	
-	v[13] = VertexCol(t_minX, t_minY, t_minZ + t_lengthZ, t_color);	
-	v[14] = VertexCol(t_minX, t_minY, t_minZ + t_lengthZ, t_color);	
-	v[15] = VertexCol(t_minX, t_minY, t_minZ, t_color);
-	*/
-	
 	HR(m_aabbBuffer->Unlock());
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	HR(m_device->SetStreamSource(0, m_aabbBuffer, 0, sizeof(VertexCol)));	
@@ -1277,6 +1466,147 @@ void D3DRenderer::DrawAABB(D3DMesh * a_mesh)
 	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
 	
 	m_device->DrawPrimitive( D3DPT_LINELIST, 0, 12 );
+}
+
+
+void D3DRenderer::DrawOBB(D3DMesh * a_mesh)
+{
+	VertexCol *v = 0;
+	HR(m_aabbBuffer->Lock(0,0,(void**)&v,0));
+
+	D3DXVECTOR3 minPoint = a_mesh->GetBoundingBox()->minPoint;
+	D3DXVECTOR3 maxPoint = a_mesh->GetBoundingBox()->maxPoint;
+
+	D3DXVECTOR3 t_0 = minPoint;
+	D3DXVECTOR3 t_1 = D3DXVECTOR3(minPoint.x, minPoint.y, maxPoint.z);
+	D3DXVECTOR3 t_2 = D3DXVECTOR3(maxPoint.x, minPoint.y, maxPoint.z);
+	D3DXVECTOR3 t_3 = D3DXVECTOR3(maxPoint.x, minPoint.y, minPoint.z);
+
+	D3DXVECTOR3 t_4 = D3DXVECTOR3(minPoint.x, maxPoint.y, minPoint.z);
+	D3DXVECTOR3 t_5 = D3DXVECTOR3(minPoint.x, maxPoint.y, maxPoint.z);
+	D3DXVECTOR3 t_6 = maxPoint;
+	D3DXVECTOR3 t_7 = D3DXVECTOR3(maxPoint.x, maxPoint.y, minPoint.z);
+
+	
+	D3DXVECTOR4 t_quat0;
+	D3DXVECTOR4 t_quat1;
+	D3DXVECTOR4 t_quat2;
+	D3DXVECTOR4 t_quat3;
+	D3DXVECTOR4 t_quat4;
+	D3DXVECTOR4 t_quat5;
+	D3DXVECTOR4 t_quat6;
+	D3DXVECTOR4 t_quat7;
+	D3DXMATRIX t_matrix = a_mesh->GetTransformMatrix();
+	D3DXVec3Transform(&t_quat0, &t_0, &t_matrix);
+	D3DXVec3Transform(&t_quat1, &t_1, &t_matrix);
+	D3DXVec3Transform(&t_quat2, &t_2, &t_matrix);
+	D3DXVec3Transform(&t_quat3, &t_3, &t_matrix);
+	D3DXVec3Transform(&t_quat4, &t_4, &t_matrix);
+	D3DXVec3Transform(&t_quat5, &t_5, &t_matrix);
+	D3DXVec3Transform(&t_quat6, &t_6, &t_matrix);
+	D3DXVec3Transform(&t_quat7, &t_7, &t_matrix);
+	
+	
+
+	t_0.x = t_quat0.x;
+	t_0.y = t_quat0.y;
+	t_0.z = t_quat0.z;
+
+	t_1.x = t_quat1.x;
+	t_1.y = t_quat1.y;
+	t_1.z = t_quat1.z;
+
+	t_2.x = t_quat2.x;
+	t_2.y = t_quat2.y;
+	t_2.z = t_quat2.z;
+
+	t_3.x = t_quat3.x;
+	t_3.y = t_quat3.y;
+	t_3.z = t_quat3.z;
+
+	t_4.x = t_quat4.x;
+	t_4.y = t_quat4.y;
+	t_4.z = t_quat4.z;
+
+	t_5.x = t_quat5.x;
+	t_5.y = t_quat5.y;
+	t_5.z = t_quat5.z;
+
+	t_6.x = t_quat6.x;
+	t_6.y = t_quat6.y;
+	t_6.z = t_quat6.z;
+	
+	t_7.x = t_quat7.x;
+	t_7.y = t_quat7.y;
+	t_7.z = t_quat7.z;
+
+
+	D3DXCOLOR t_color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+	
+	D3DXVECTOR3 t_vertices[8];
+	t_vertices[0] = t_0;
+	t_vertices[1] = t_1;
+	t_vertices[2] = t_2;
+	t_vertices[3] = t_3;
+	t_vertices[4] = t_4;
+	t_vertices[5] = t_5;
+	t_vertices[6] = t_6;
+	t_vertices[7] = t_7;
+
+	v[0] = VertexCol(t_vertices[0].x, t_vertices[0].y, t_vertices[0].z, t_color);
+	v[1] = VertexCol(t_vertices[1].x, t_vertices[1].y, t_vertices[1].z, t_color);
+
+	v[2] = VertexCol(t_vertices[1].x, t_vertices[1].y, t_vertices[1].z, t_color);
+	v[3] = VertexCol(t_vertices[2].x, t_vertices[2].y, t_vertices[2].z, t_color);
+
+	v[4] = VertexCol(t_vertices[2].x, t_vertices[2].y, t_vertices[2].z, t_color);
+	v[5] = VertexCol(t_vertices[3].x, t_vertices[3].y, t_vertices[3].z, t_color);
+
+	v[6] = VertexCol(t_vertices[3].x, t_vertices[3].y, t_vertices[3].z, t_color);
+	v[7] = VertexCol(t_vertices[0].x, t_vertices[0].y, t_vertices[0].z, t_color);
+
+	v[8] = VertexCol(t_vertices[4].x, t_vertices[4].y, t_vertices[4].z, t_color);
+	v[9] = VertexCol(t_vertices[5].x, t_vertices[5].y, t_vertices[5].z, t_color);
+
+	v[10] = VertexCol(t_vertices[5].x, t_vertices[5].y, t_vertices[5].z, t_color);
+	v[11] = VertexCol(t_vertices[6].x, t_vertices[6].y, t_vertices[6].z, t_color);
+
+	v[12] = VertexCol(t_vertices[6].x, t_vertices[6].y, t_vertices[6].z, t_color);
+	v[13] = VertexCol(t_vertices[7].x, t_vertices[7].y, t_vertices[7].z, t_color);
+
+	v[14] = VertexCol(t_vertices[7].x, t_vertices[7].y, t_vertices[7].z, t_color);
+	v[15] = VertexCol(t_vertices[4].x, t_vertices[4].y, t_vertices[4].z, t_color);
+
+	v[16] = VertexCol(t_vertices[0].x, t_vertices[0].y, t_vertices[0].z, t_color);
+	v[17] = VertexCol(t_vertices[4].x, t_vertices[4].y, t_vertices[4].z, t_color);
+
+	v[18] = VertexCol(t_vertices[1].x, t_vertices[1].y, t_vertices[1].z, t_color);
+	v[19] = VertexCol(t_vertices[5].x, t_vertices[5].y, t_vertices[5].z, t_color);
+
+	v[20] = VertexCol(t_vertices[2].x, t_vertices[2].y, t_vertices[2].z, t_color);
+	v[21] = VertexCol(t_vertices[6].x, t_vertices[6].y, t_vertices[6].z, t_color);
+
+	v[22] = VertexCol(t_vertices[3].x, t_vertices[3].y, t_vertices[3].z, t_color);
+	v[23] = VertexCol(t_vertices[7].x, t_vertices[7].y, t_vertices[7].z, t_color);
+	
+	
+	
+	HR(m_aabbBuffer->Unlock());
+	HR(m_device->SetStreamSource(0, m_aabbBuffer, 0, sizeof(VertexCol)));	
+	HR(m_device->SetVertexDeclaration(m_aabbDeclaration));
+
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	
+	D3DXMATRIX W;
+	D3DXMatrixIdentity(&W);
+	HR(m_device->SetTransform(D3DTS_WORLD, &W));
+	
+	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
+	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
+	
+	m_device->DrawPrimitive( D3DPT_LINELIST, 0, 12 );
+
 }
 
 void D3DRenderer::Reset()
@@ -1439,7 +1769,7 @@ bool D3DRenderer::IsMousePicked(D3DMesh *a_mesh, int mouseX, int mouseY)
 	ID3DXBuffer* allhits = 0;
 	DWORD numHits = 0;
 
-
+	
 	HR(D3DXIntersect(a_mesh->GetXMesh(), &t_origin, &t_dir, &hit,
 		&faceIndex, &u, &v, &dist, &allhits, &numHits));
 	ReleaseCOM(allhits);

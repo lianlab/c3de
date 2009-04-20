@@ -10,6 +10,7 @@
 #include "FX.h"
 #include "AABB.h"
 
+
 using namespace std;
 
 #if 1
@@ -91,15 +92,7 @@ public:
 
 	void Update(int deltaTime);
 
-	//void SetTexture(Image *tex){m_texture = tex;}
-
-	//void SetCurrentD3DTexture(IDirect3DTexture9 *a_tex);
-
-
 	
-	//void SetD3DTexture(IDirect3DTexture9 *a_tex);
-	//Image * GetTexture(){return m_texture;}
-
 	vector<VertexPos> * GetVertices(){return m_vertices;}
 	vector<int> * GetIndices(){return m_indices;}
 
@@ -143,8 +136,7 @@ protected:
 	AABB *m_boundingBox;
 	AABB *m_transformedBox;
 
-	//IDirect3DTexture9 *m_currentTex;
-
+	
 	UINT m_numShaderPasses;
 	IDirect3DVertexBuffer9 * m_vertexBuffer;
 	IDirect3DIndexBuffer9 * m_indexBuffer;

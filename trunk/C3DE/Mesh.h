@@ -34,9 +34,7 @@ public:
 	virtual ~Mesh() = 0;
 	virtual void Update(int deltaTime) = 0;
 
-	//virtual void SetTexture(Image *tex) = 0;
-
-	//virtual Image * GetTexture() = 0;
+	
 
 	std::vector<Material*> *GetMaterials(){return m_materials;};
 	std::vector<Image*> *GetTextures(){return m_textures;}

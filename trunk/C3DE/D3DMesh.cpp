@@ -103,8 +103,10 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 	HR(D3DXComputeBoundingBox((D3DXVECTOR3*)v, m_xMesh->GetNumVertices(), 
 		sizeof(VertexPos), &t_min, &t_max));
 
+	
+
 	m_boundingBox = new AABB(t_min, t_max);
-	//m_boundingBox = new AABB();
+	
 	
 	m_xMesh->UnlockVertexBuffer();
 
@@ -124,65 +126,12 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 
 }
 
+
+
 AABB* D3DMesh::GetBoundingBox()
 {
-	if(!m_boundingBox)
-	{
-		return NULL;
-	}
-//IMPORTANT, THIS METHOD IS NOT WORKING FOR ROTATIONS
-	float t_rotationX = m_rotateX;
-	float t_rotationY = m_rotateY;
-	float t_rotationZ = m_rotateZ;
 
-	m_rotateX = 0.0f;
-	m_rotateY = 0.0f;
-	m_rotateZ = 0.0f;
-	D3DXMATRIX t_matrix = GetTransformMatrix();
-
-	m_rotateX = t_rotationX;
-	m_rotateY = t_rotationY;
-	m_rotateZ = t_rotationZ;
-
-	D3DXVECTOR4 t_min = D3DXVECTOR4(m_boundingBox->minPoint, 1.0f);
-	D3DXVECTOR4 t_max = D3DXVECTOR4(m_boundingBox->maxPoint, 1.0f);
-	D3DXVec3Transform(&t_min, &m_boundingBox->minPoint, &t_matrix);
-	D3DXVec3Transform(&t_max, &m_boundingBox->maxPoint, &t_matrix);
-#if 0
-	
-
-	if(m_transformedBox)
-	{		
-		return m_transformedBox;
-	}
-	else
-	{
-		//m_transformedBox = new AABB(D3DXVECTOR3(t_min.x, t_min.y, t_min.z), D3DXVECTOR3(t_max.x, t_max.y, t_max.z));		
-		m_transformedBox = new AABB();		
-	}
-
-	
-	
-
-	return m_transformedBox;
-	
-#else
-	if(m_transformedBox)
-	{
-		delete m_transformedBox;
-		m_transformedBox = NULL;
-	}
-	
-	
-
-	m_transformedBox = new AABB(D3DXVECTOR3(t_min.x, t_min.y, t_min.z), D3DXVECTOR3(t_max.x, t_max.y, t_max.z));		
-	//m_transformedBox = new AABB();		
-	//m_transformedBox = new AABB(m_fleps, m_auei);		
-
-	return m_transformedBox;
-#endif
-
-	//return NULL;
+	return m_boundingBox;
 
 }
 
@@ -320,29 +269,13 @@ void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_dev
 	m_xMesh->UnlockVertexBuffer();
 
 	m_boundingBox = new AABB(t_min, t_max);
+
+	//m_obb = new OBB(t_min, t_max);
 	//m_boundingBox = new AABB();
 
 
 	ReleaseCOM(materialBuffer);
 }
-
-#if 0
-void D3DMesh::SetD3DTexture(IDirect3DTexture9 *a_tex)
-{
-
-}
-#endif
-
-
-/*
-void D3DMesh::SetCurrentD3DTexture(IDirect3DTexture9 *a_tex)
-{
-	m_currentTex = a_tex;
-
-	
-}
-*/
-
 
 D3DMesh::~D3DMesh()
 {
@@ -366,26 +299,7 @@ D3DMesh::~D3DMesh()
 
 	FreeTextures();
 	FreeMaterials();
-/*
-	if(m_vertices)
-	{
-		delete m_vertices;
-		m_vertices = NULL;
-	}
 
-	if(m_indices)
-	{
-		delete m_indices;
-		m_indices =NULL;
-	}
-
-	if(m_texture)
-	{
-		delete m_texture;
-		m_texture = NULL;
-	}
-
-	*/
 	if(m_xMesh)
 	{
 		ReleaseCOM(m_xMesh);
@@ -436,56 +350,7 @@ bool auei = false;
 D3DXMATRIX D3DMesh::GetTransformMatrix()
 {
 	
-		
-		
-#if 0
-	D3DXMATRIX T;
-	D3DXMATRIX S;
-	D3DXMATRIX Rx;
-	D3DXMATRIX Ry;
-	D3DXMATRIX Rz;
-	D3DXMATRIX R;
-	D3DXMATRIX O;
-	
-	D3DXMatrixScaling(&S, m_scaleX, m_scaleY, m_scaleZ);
-	
-	D3DXMatrixTranslation(&T, m_x, m_y, m_z);
 
-	D3DXMatrixIdentity(&R);
-	D3DXMatrixIdentity(&Rx);
-	D3DXMatrixIdentity(&Ry);
-	D3DXMatrixIdentity(&Rz);
-
-	D3DXMatrixMultiply(&O, &S, &T);
-
-
-	if((m_rotateX > 0.0f || m_rotateY > 0.0f || m_rotateZ > 0.0f) && !auei)
-	{
-		D3DXMatrixRotationX(&Rx, m_rotateX);
-		D3DXMatrixRotationY(&Ry, m_rotateY);
-		D3DXMatrixRotationZ(&Rz, m_rotateZ);
-
-
-		D3DXMatrixMultiply(&R, &Rx, &Ry);
-		D3DXMatrixMultiply(&R, &R, &Rz);
-
-		D3DXMatrixMultiply(&O, &O, &R);
-
-		auei = true;
-	}
-	
-
-	
-
-	
-
-	return O;
-	
-
-	return m_transformMatrix;
-	
-#endif
-#if 1
 
 	auei = true;
 #define RADIAN_TO_DEGREES 57.29577951308232286465f
@@ -520,6 +385,7 @@ D3DXMATRIX D3DMesh::GetTransformMatrix()
 	D3DXQuaternionRotationAxis( &qR, &vAxis3, m_rotateZ/RADIAN_TO_DEGREES );
 	D3DXMatrixRotationQuaternion( &matRotation, &qR );
 
+
 	
 	D3DXMatrixMultiply( &matTranslation, &matRotation , &matTranslation );
 
@@ -533,7 +399,7 @@ D3DXMATRIX D3DMesh::GetTransformMatrix()
 
 	return matTranslation;
 
-#endif
+
 }
 
 

@@ -170,13 +170,6 @@ void LandscapeWall::Scale(float x, float y, float z)
 
 	CreateXMesh(D3DRenderer::GetDevice());
 
-	//RIGHT NOW, the bounding box are screwed if you rotate them. Since the wall
-	// has a big difference when rotated, we delete its bounding box
-	if(m_boundingBox)
-	{
-		delete m_boundingBox;
-		m_boundingBox = NULL;
-	}
 
 }
 

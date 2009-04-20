@@ -20,8 +20,6 @@
 //#define HACK_FROM_SCRATCH 1
 #include "CommonDefs.h"
 
-//#include "FireRing.h"
-//#include "FireRingParticleSystem.h"
 
 
 
@@ -94,6 +92,7 @@ private:
 	HWND m_mainWindow;
 
 	void DrawAABB(D3DMesh * a_mesh);
+	void DrawOBB(D3DMesh * a_mesh);
 	
 	ID3DXFont *m_font;
 	ID3DXSprite *m_sprite;
@@ -118,7 +117,11 @@ private:
 
 	void CalculateFrustumPlanes();
 
-	bool IsAABBWithinView(AABB *a_box);
+	bool IsAABBWithinView(D3DXMATRIX a_matrix,AABB *a_box);
+	bool IsMeshWithinView(D3DMesh *a_mesh);
+
+	
+	bool IsPointWithinView(D3DXVECTOR3 aPoint);
 
 
 #if HACK_FROM_SCRATCH
@@ -147,9 +150,6 @@ private:
 	int shown;
 
 	IDirect3DVertexBuffer9* mVB2;
-
-
-	//FireRingParticleSystem *m_fireRingParticleSystem;
 
 };
 

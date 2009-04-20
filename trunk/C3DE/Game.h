@@ -86,7 +86,7 @@ private:
 
 	Plane *m_plane;
 
-	void UpdateInput();
+	void UpdateInput(int deltaTime);
 	
 
 	Pivot *m_pivot;

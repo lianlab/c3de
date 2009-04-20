@@ -216,7 +216,7 @@ void Game::Update(int deltaTime)
 {		
 	//deltaTime = 1000;
 	
-	UpdateInput();
+	UpdateInput(deltaTime);
 
 	eita++;
 	
@@ -300,18 +300,34 @@ void Game::Update(int deltaTime)
 	//m_grid->Update(10);
 	
 }
-void Game::UpdateInput()
+void Game::UpdateInput(int deltaTime)
 {
 	
 	Mesh * t_target = (Mesh*)m_woman;
 
 
-	float step = 0.1f;
+#define USE_RELATIVE_SPEED 1
+#if USER_RELATIVE_SPEED
+	
+	float f_deltaTime = deltaTime/1000.0f;
+
+	float step = 17.0f;
 	float t_fleps = 0.0f;
 
 	float t_angle = 0.0f;
-	const float angleStepNormal = 0.003f;
-	const float angleStepFast = 0.01f;
+	const float angleStepNormal = 0.3f * f_deltaTime;
+	const float angleStepFast = angleStepNormal * 5.0f;
+#else
+	float f_deltaTime = deltaTime/1000.0f;
+
+	float step = 17.0f;
+	float t_fleps = 0.0f;
+
+	float t_angle = 0.0f;
+	const float angleStepNormal = 0.3f * f_deltaTime;
+	const float angleStepFast = angleStepNormal * 5.0f;
+
+#endif
 
 	if(DirectInput::GetInstance()->IsKeyDown(1))
 	{
@@ -323,12 +339,13 @@ void Game::UpdateInput()
 	bool isRunning = false;
 	if(DirectInput::GetInstance()->IsKeyDown(42))
 	{
-		step = 0.8f;
+		step *= 5.0f;
 		isRunning = true;
 		
 	}
 	
-	
+	//makes step a function of the deltaTime
+	step = step * f_deltaTime;
 
 	D3DXVECTOR3 newPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
@@ -359,13 +376,14 @@ void Game::UpdateInput()
 		//RIGHT		
 		t_angle = (isRunning)?angleStepFast:angleStepNormal;	
 		leftDown = true;
+		//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + 0.1f, m_cube->GetRotationZ());
 	}
 	if(DirectInput::GetInstance()->IsKeyDown(203))
 	{
 		//LEFT		
 		t_angle = (isRunning)?-angleStepFast:-angleStepNormal;
 		rightDown = true;
-
+		//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() - 0.1f, m_cube->GetRotationZ());
 		
 	}
 
@@ -1565,24 +1583,41 @@ void Game::InitializeMeshes()
 	m_woman->Scale(0.01f, 0.01f, 0.01f);
 	m_woman->Rotate(-90.0f, 0.0f, 0.0f);
 	m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
-	m_testScene->AddMesh(m_woman);	
+	
 
 	Ground *t_ground = new Ground();
-	m_testScene->AddMesh(t_ground);
+	
+#if 0
 
+	LandscapeWall3 *t_wall = new LandscapeWall3();
+	t_wall->Scale(15.0f, 0.0f, 0.0f);
+	
+	t_wall->Rotate(0.0f, 90.0f, 0.0f);
+	m_testScene->AddMesh(t_wall);
 
+	Cube *t_cube = new Cube();
+	t_cube->SetPosition(5.0f, 5.0f, 5.0f);
+	m_testScene->AddMesh(t_cube);
+#endif
 
+#if 1
 	//GENERATED CODE		
 	#include "Tools/Map/mapPositions.h"
+
+	
+
+
+
+	m_testScene->AddMesh(t_ground);
+
+	m_testScene->AddMesh(m_woman);	
 	
 
 	Skybox *t_skybox = new Skybox(1000);
 	t_skybox->SetPosition(0.0f, 200, 0.0f);
 
-	m_testScene->AddMesh(t_skybox);
-
-	
-	
+	m_testScene->AddMesh(t_skybox);	
+#endif
 	m_testScene->Initialize();
 	
 }

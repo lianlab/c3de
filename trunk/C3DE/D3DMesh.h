@@ -126,6 +126,8 @@ public:
 
 	AABB* GetBoundingBox();
 
+	void SetBoundingBox(D3DXVECTOR3 a_min, D3DXVECTOR3 a_max);
+
 	void SetBoundingBox(AABB *a_aabb){m_boundingBox = a_aabb;}
 
 	

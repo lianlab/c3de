@@ -18,6 +18,7 @@ public:
 	void SetXScale(float xscale);
 	void SetYScale(float yscale);
 	void SetRotation(float angle);
+	
 	vector<RECT> *GetFrameRects(){return m_frameRects;}
 	void SetFrameRects(vector<RECT> * frameRects){m_frameRects = frameRects;}
 private:

@@ -126,7 +126,16 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 
 }
 
+void D3DMesh::SetBoundingBox(D3DXVECTOR3 a_min, D3DXVECTOR3 a_max)
+{
+	if(m_boundingBox)
+	{
+		delete m_boundingBox;
+		m_boundingBox = NULL;
+	}
 
+	m_boundingBox = new AABB(a_min, a_max);
+}
 
 AABB* D3DMesh::GetBoundingBox()
 {

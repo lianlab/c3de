@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,7 +9,7 @@ class Exporter
 	{
 		try{
 			// Create file 
-			//FileWriter fstream = new FileWriter("out.txt");
+//			FileWriter fstream = new FileWriter("out.txt");
 //			BufferedWriter out = new BufferedWriter(fstream);
 			
 			FileOutputStream fileOutputStream = new FileOutputStream("out.bin");
@@ -50,6 +51,9 @@ class Exporter
 		    String widthList = "";
 		    String rectList = "";
 		    String offsetList = "";
+		    
+		   
+		    
 		    
 		    
 		    
@@ -137,14 +141,14 @@ class Exporter
 		    
 //		    write total of characters
 //		    out.write(t_chars.size());
-		    t_out.writeInt(t_chars.size());
+		    t_out.writeInt(swabInt(t_chars.size()));
 		    totalWrites++;
 //		    write the characters indexes
 		    for(int i = 0 ; i < t_chars.size(); i++)
 		    {
 		    	int charInt = (Integer)t_chars.elementAt(i);
 //		    	out.write(charInt);
-		    	t_out.writeInt(charInt);
+		    	t_out.writeInt(swabInt(charInt));
 		    	totalWrites++;
 		    }
 		    
@@ -153,7 +157,8 @@ class Exporter
 		    {
 		    	int width = (Integer)t_widths.elementAt(i);
 //		    	out.write(width);
-		    	t_out.writeInt(width);
+		    	t_out.writeInt(swabInt(width));
+		    	
 		    	totalWrites++;
 		    }
 		    
@@ -162,7 +167,7 @@ class Exporter
 		    {
 		    	int rect = (Integer)t_rects.elementAt(i);
 //		    	out.write(rect);
-		    	t_out.writeInt(rect);
+		    	t_out.writeInt(swabInt(rect));
 		    	totalWrites++;
 		    }
 		    
@@ -171,12 +176,14 @@ class Exporter
 		    {
 		    	int offset = (Integer)t_offsets.elementAt(i);
 //		    	out.write(offset);
-		    	t_out.writeInt(offset);
+		    	t_out.writeInt(swabInt(offset));
 		    	totalWrites++;
 		    }
 		    
 		    t_out.flush();
 		    t_out.close();
+		    
+		    int picles = swabInt(872415232);
 			
 		    System.out.println("TOTAL: " + totalWrites);
 //			out.write("Hello Java");
@@ -186,4 +193,10 @@ class Exporter
 			System.err.println("Error: " + e.getMessage());
 		}
 	}
+	
+	public final static int swabInt(int v) {
+	     return  (v >>> 24) | (v << 24) | 
+	       ((v << 8) & 0x00FF0000) | ((v >> 8) & 0x0000FF00);
+	     }
+
 }

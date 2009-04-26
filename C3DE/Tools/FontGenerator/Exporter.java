@@ -8,8 +8,11 @@ class Exporter
 	{
 		try{
 			// Create file 
-			FileWriter fstream = new FileWriter("out.txt");
-			BufferedWriter out = new BufferedWriter(fstream);
+			//FileWriter fstream = new FileWriter("out.txt");
+//			BufferedWriter out = new BufferedWriter(fstream);
+			
+			FileOutputStream fileOutputStream = new FileOutputStream("out.bin");
+			DataOutputStream t_out = new DataOutputStream(fileOutputStream);
 			
 			
 			FileInputStream instream = new FileInputStream("in.txt");
@@ -130,39 +133,55 @@ class Exporter
 		    
 		    in.close();
 		    
+		    int totalWrites = 0;
+		    
 //		    write total of characters
-		    out.write(t_chars.size());
+//		    out.write(t_chars.size());
+		    t_out.writeInt(t_chars.size());
+		    totalWrites++;
 //		    write the characters indexes
 		    for(int i = 0 ; i < t_chars.size(); i++)
 		    {
 		    	int charInt = (Integer)t_chars.elementAt(i);
-		    	out.write(charInt);
+//		    	out.write(charInt);
+		    	t_out.writeInt(charInt);
+		    	totalWrites++;
 		    }
 		    
 //		    writes the widths
 		    for(int i = 0 ; i < t_widths.size(); i++)
 		    {
 		    	int width = (Integer)t_widths.elementAt(i);
-		    	out.write(width);
+//		    	out.write(width);
+		    	t_out.writeInt(width);
+		    	totalWrites++;
 		    }
 		    
 //		    writes the rects
 		    for(int i = 0 ; i < t_rects.size(); i++)
 		    {
 		    	int rect = (Integer)t_rects.elementAt(i);
-		    	out.write(rect);
+//		    	out.write(rect);
+		    	t_out.writeInt(rect);
+		    	totalWrites++;
 		    }
 		    
 //		    writes the offsets
 		    for(int i = 0 ; i < t_offsets.size(); i++)
 		    {
 		    	int offset = (Integer)t_offsets.elementAt(i);
-		    	out.write(offset);
+//		    	out.write(offset);
+		    	t_out.writeInt(offset);
+		    	totalWrites++;
 		    }
+		    
+		    t_out.flush();
+		    t_out.close();
 			
+		    System.out.println("TOTAL: " + totalWrites);
 //			out.write("Hello Java");
 			//Close the output stream
-			out.close();
+//			out.close();
 		}catch (Exception e){//Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 		}

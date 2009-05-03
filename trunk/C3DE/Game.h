@@ -34,7 +34,8 @@
 #include "Castle.h"
 #include "LandscapeMesh.h"
 
-
+#include "Text.h"
+#include "Font.h"
 #include "Grid.h"
 
 class Game : public KeyboardListener, MouseListener, ButtonListener
@@ -116,6 +117,8 @@ private:
 
 #if 1
 
+	Text * m_text;
+	Font *m_font;
 	LandscapeMesh *m_castle;
 	float m_camX;
 	float m_camY;

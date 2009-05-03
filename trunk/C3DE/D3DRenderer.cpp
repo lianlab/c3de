@@ -1032,6 +1032,7 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh, FX *fx)
 void D3DRenderer::DrawSprite(Sprite *sprite)
 {	
 	
+	
 	HR(m_device->SetRenderState(D3DRS_ALPHATESTENABLE, true));
 	HR(m_device->SetRenderState(D3DRS_ALPHAREF, 200));
 	HR(m_device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER));
@@ -1048,11 +1049,88 @@ void D3DRenderer::DrawSprite(Sprite *sprite)
 	IDirect3DTexture9 * t = tex->GetTexture();
 	
 	RECT src = d3dSprite->GetFrameRects()->at(d3dSprite->GetCurrentFrame());
+	
 	m_sprite->Draw(t, &src, 0, 0, D3DCOLOR_XRGB(255,255,255));
 
 	m_sprite->Flush();	
 
 	m_sprite->End();
+
+	HR(m_device->SetRenderState(D3DRS_ALPHATESTENABLE, false));
+
+}
+
+void D3DRenderer::DrawText(Text *a_text)
+{	
+	
+	Font *t_font = a_text->GetFont();
+	HR(m_device->SetRenderState(D3DRS_ALPHATESTENABLE, true));
+	HR(m_device->SetRenderState(D3DRS_ALPHAREF, 200));
+	HR(m_device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER));
+
+	m_sprite->Begin(0);
+
+	
+	Image * image = a_text->GetImage();
+	D3DImage *tex = static_cast<D3DImage *>(image);	
+
+
+	int totalChars = a_text->GetTextLength();
+
+	vector<int> * t_widths = t_font->GetWidths();
+	vector<int> *t_rectsIndices = a_text->GetRectsIndices();
+
+	float t_x = a_text->GetX();
+	for(int i = 0; i < totalChars; i++)
+	{
+		int rectIndex = (*t_rectsIndices)[i];
+
+		if(i > 0)
+		{
+			//t_x += (float)(*t_font->GetWidths())[(*a_text->GetRectsIndices())[i-1]];// + (float)(*t_font->GetOffsets())[(*a_text->GetRectsIndices())[i-1]];
+			int t_index = (*t_rectsIndices)[i-1];
+			if(t_index == Text::TEXT_SPACE || t_index == Text::TEXT_LINE_FEED || t_index == Text::TEXT_INVALID_CHAR)
+			{
+				t_x += (float)t_font->GetSpacing();;
+				
+			}
+			else
+			{
+				float t_width = (float)(*t_widths)[t_index];
+				t_x += t_width;
+			}
+			
+		}				
+
+		
+		m_sprite->Begin(0);
+		D3DXMATRIX t_matrix = a_text->GetTransformationMatrix();
+
+		D3DXMatrixTranslation(&t_matrix, t_x, a_text->GetY(), 0.0f);
+		//D3DXMatrixRotationZ(&t_matrix, 1.0f);
+		m_sprite->SetTransform(&t_matrix);
+	
+		IDirect3DTexture9 * t = tex->GetTexture();		
+
+		if(rectIndex == Text::TEXT_SPACE || rectIndex == Text::TEXT_LINE_FEED || rectIndex == Text::TEXT_INVALID_CHAR)
+		{
+			
+			m_sprite->Flush();	
+
+			m_sprite->End();
+			continue;
+		}
+		
+		RECT src = (*a_text->GetFrameRects())[rectIndex];
+		
+		m_sprite->Draw(t, &src, 0, 0, a_text->GetColor());
+
+		m_sprite->Flush();	
+
+		m_sprite->End();
+
+	}
+
 
 	HR(m_device->SetRenderState(D3DRS_ALPHATESTENABLE, false));
 

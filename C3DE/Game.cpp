@@ -15,11 +15,13 @@
 #include "SupernovaParticleSystem.h"
 #include "FireRingParticleSystem.h"
 #include "Ground.h"
-#include "Townhall.h"
+//#include "Townhall.h"
 #include "LandscapeWall1.h"
 #include "LandscapeWall2.h"
 #include "LandscapeWall3.h"
 #include "Skybox.h"
+#include "Font.h"
+#include "Text.h"
 
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -275,7 +277,7 @@ void Game::Update(int deltaTime)
 	
 	
 	m_sprite->SetX(200);
-	int screenY = m_physPosY / 10000000;
+	//int screenY = m_physPosY / 10000000;
 	//m_sprite->SetY(screenY);
 	
 	if(m_physPosY < 0)
@@ -286,6 +288,10 @@ void Game::Update(int deltaTime)
 
 	
 	m_sprite->Update(deltaTime);
+
+	//m_font->SetX(300);
+	//m_font->SetY(300);
+	//m_font->Update(deltaTime);
 
 	m_deltaTime = deltaTime;
 
@@ -670,7 +676,9 @@ void Game::Render(Renderer *renderer)
 	
 	renderer->DrawScene(m_testScene);
 	//renderer->DrawSprite(m_button);
-	//renderer->DrawSprite((Sprite *)m_sprite);
+	renderer->DrawSprite((Sprite *)m_sprite);
+	//renderer->DrawSprite((Sprite*)m_font);
+	static_cast<D3DRenderer *>(renderer)->DrawText(m_text);
 	static_cast<D3DRenderer *>(renderer)->DrawAxis();
 
 	
@@ -1586,6 +1594,8 @@ void Game::InitializeMeshes()
 	
 
 	Ground *t_ground = new Ground();
+
+	
 	
 #if 0
 
@@ -1602,12 +1612,19 @@ void Game::InitializeMeshes()
 
 #if 1
 	//GENERATED CODE		
-	#include "Tools/Map/mapPositions.h"
+	//#include "Tools/Map/mapPositions.h"
 
 	
+	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_FONT_VERDANA_36_ID);
+	D3DImage *image = new D3DImage(t);		
+	m_font = new Font(	image,ResourceManager::GetInstance()->GetFontDescriptor(FONT_VERDANA_36_ID));
 
 
-
+	m_text = new Text("QWERTY UI", m_font);
+	m_text->SetX(250);
+	m_text->SetY(250);
+	m_text->SetColor(0xffff0000);
+	
 	m_testScene->AddMesh(t_ground);
 
 	m_testScene->AddMesh(m_woman);	

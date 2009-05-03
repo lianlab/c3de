@@ -170,6 +170,8 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_SKYBOX_RIGHT;
 	IDirect3DTexture9 * TEX_SKYBOX_FRONT;
 	IDirect3DTexture9 * TEX_SKYBOX_BACK;
+	IDirect3DTexture9 * TEX_FONT_VERDANA_36;
+	
 	
 	
 
@@ -302,6 +304,13 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/skybox/skybox_BK.jpg", &TEX_SKYBOX_BACK));
 
 
+	//HR(D3DXCreateTextureFromFile(m_device, "Fonts/verdana36.bmp", &TEX_FONT_VERDANA_36));
+
+	D3DXCreateTextureFromFileEx(m_device, "Fonts/verdana36.png", 2048, 64, 1, D3DUSAGE_DYNAMIC, 
+											  D3DFMT_FROM_FILE, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
+											  0xFF000000, NULL, NULL, &TEX_FONT_VERDANA_36);
+
+
 
 
 
@@ -414,7 +423,11 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_SKYBOX_FRONT_ID] = TEX_SKYBOX_FRONT;
 	m_imageResources[IMAGE_SKYBOX_BACK_ID] = TEX_SKYBOX_BACK;
 
+	m_imageResources[IMAGE_FONT_VERDANA_36_ID] = TEX_FONT_VERDANA_36;
+
 	InitializeVideos();
+
+	InitializeFonts();
 }
 
 void ResourceManager::InitializeVideos()
@@ -439,6 +452,40 @@ void ResourceManager::InitializeVideos()
 
 	m_videos[VIDEO_FIRST_ID] = t_structure;
 	//AVIFileExit();
+}
+
+void ResourceManager::InitializeFonts()
+{
+	FILE * pFile;
+	long lSize;
+	size_t result;
+	fpos_t position;
+
+	pFile = fopen ( "Fonts/verdana36.bin", "rb" );	
+
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	// allocate memory to contain the whole file:
+	int *buffer = (int*)malloc((int)lSize);
+
+	int totalCharacters;
+
+	fsetpos(pFile, &position);
+
+	//bool *t_buffer = (bool*)malloc(sizeof(bool)*32);
+	result = fread(buffer,sizeof(int), lSize/sizeof(int),pFile);
+	//result = fread(t_buffer,1,sizeof(int),pFile);
+	
+	totalCharacters = buffer[0];
+	fclose(pFile);
+
+	m_fonts[FONT_VERDANA_36_ID] = buffer;
+	
+	
 }
 
 VideoStructure * ResourceManager::GetVideoByID(int a_ID)
@@ -622,6 +669,11 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 std::string ResourceManager::GetMeshFilenameByID(int a_ID)
 {
 	return m_meshesFilenames[a_ID];
+}
+
+int * ResourceManager::GetFontDescriptor(int a_fontId)
+{
+	return m_fonts[a_fontId];
 }
 
 

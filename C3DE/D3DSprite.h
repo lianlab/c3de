@@ -21,7 +21,7 @@ public:
 	
 	vector<RECT> *GetFrameRects(){return m_frameRects;}
 	void SetFrameRects(vector<RECT> * frameRects){m_frameRects = frameRects;}
-private:
+protected:
 	D3DXMATRIX m_transformationMatrix;
 	D3DXMATRIX m_translationMatrix;
 	D3DXMATRIX m_scalingMatrix;

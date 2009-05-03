@@ -111,6 +111,9 @@ enum TexturesIDs
 	IMAGE_SKYBOX_RIGHT_ID,
 	IMAGE_SKYBOX_FRONT_ID,
 	IMAGE_SKYBOX_BACK_ID,
+
+	//FONTS
+	IMAGE_FONT_VERDANA_36_ID,
 	
 	TOTAL_IMAGES
 };
@@ -122,6 +125,12 @@ enum FilesIDs
 	FILE_TERRAIN_ID,
 	///////////////////////
 	TOTAL_FILES
+};
+
+enum FontsIDs
+{ 		
+	FONT_VERDANA_36_ID,	
+	TOTAL_FONTS
 };
 
 enum MeshesIDs
@@ -201,10 +210,13 @@ public:
 
 	VideoStructure * GetVideoByID(int a_ID);
 
+	int * GetFontDescriptor(int a_fontId);
+
 private:
 	ResourceManager();
 	static ResourceManager *m_instance;	
 	void InitializeResources();
+	void InitializeFonts();
 	IDirect3DDevice9 *m_device;
 
 	IDirect3DTexture9 * temp;
@@ -215,6 +227,10 @@ private:
 	std::string m_meshesFilenames[TOTAL_MESHES];
 	
 	VideoStructure * m_videos[TOTAL_VIDEOS];
+
+	int * m_fonts[TOTAL_FONTS];
+
+	
 
 	void InitializeVideos();
 };

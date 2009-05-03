@@ -16,6 +16,7 @@
 #include "D3DSkinnedMesh.h"
 #include "FX.h"
 #include "ShadowFX.h"
+#include "Text.h"
 
 //#define HACK_FROM_SCRATCH 1
 #include "CommonDefs.h"
@@ -48,6 +49,8 @@ public:
 	void RenderText(char *text);
 
 	bool IsDeviceLost();
+
+	void DrawText(Text *a_text);
 
 	void DrawSprite(Sprite *sprite);
 

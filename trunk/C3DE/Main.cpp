@@ -6,10 +6,11 @@
 #include "D3DApplication.h"
 #include "DirectInput.h"
 #include <ctime>
+#include "Guicon.h"
 #include "DebugMemory.h"
 
 
-
+#define USE_DEBUG_CONSOLE 0
 #define TOTAL_RECORDS 1000
 
 #if 0
@@ -219,6 +220,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd)
 {
+#if USE_DEBUG_CONSOLE
+	RedirectIOToConsole();
+#endif
 #if USE_TIME_SEED
 	srand(time(0));
 #else

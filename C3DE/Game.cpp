@@ -24,10 +24,16 @@
 #include "Text.h"
 
 
+#include <iostream>
+
+
+
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
 //#include "DebugMemory.h"
 
 #define CONST_RATIO 8
+
+#define CAMERA_ON_TOP 0
 
 
 using namespace std;
@@ -306,6 +312,173 @@ void Game::Update(int deltaTime)
 	//m_grid->Update(10);
 	
 }
+
+
+#if CAMERA_ON_TOP
+
+
+void Game::UpdateInput(int deltaTime)
+{
+	
+	Mesh * t_target = (Mesh*)m_woman;
+
+	
+	float f_deltaTime = deltaTime/1000.0f;
+
+	float step = 17.0f;
+	float t_fleps = 0.0f;
+
+	float t_angle = 0.0f;
+	const float angleStepNormal = 1.5f * f_deltaTime;
+	const float angleStepFast = angleStepNormal * 3.0f;
+
+
+	if(DirectInput::GetInstance()->IsKeyDown(1))
+	{
+		m_application->Quit();
+		return;
+		
+	}
+
+	bool isRunning = false;
+	if(DirectInput::GetInstance()->IsKeyDown(42))
+	{
+		step *= 3.0f;
+		isRunning = true;
+		
+		
+	}
+	
+	
+	//makes step a function of the deltaTime
+	step = step * f_deltaTime;
+
+	D3DXVECTOR3 newPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	bool upDown = false;
+	bool downDown = false;
+	bool leftDown = false;
+	bool rightDown = false;
+
+
+	if(DirectInput::GetInstance()->IsKeyDown(200))
+	//UP
+	{		
+		//m_cubeZ += step;
+		newPos = step*m_carDirection;
+		upDown = true;
+
+		
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(208))
+	{	
+	//DOWN	
+		
+		//m_cubeZ -= step;
+		newPos = -step*m_carDirection;
+		downDown = true;
+
+		
+	}	
+	if(DirectInput::GetInstance()->IsKeyDown(205))
+	{
+		//RIGHT		
+		t_angle = (isRunning)?angleStepFast:angleStepNormal;	
+		leftDown = true;
+		//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + 0.1f, m_cube->GetRotationZ());
+		
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(203))
+	{
+		//LEFT		
+		t_angle = (isRunning)?-angleStepFast:-angleStepNormal;
+		rightDown = true;
+		//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() - 0.1f, m_cube->GetRotationZ());
+		
+	}
+
+	
+
+	if(!upDown && !downDown && !leftDown && !rightDown && m_woman->GetAnimation() != WomanMesh::ANIMATION_IDLE)
+	{
+		m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
+	}
+	else
+	{
+		if(upDown)
+		{
+			if(isRunning)
+			{
+				m_woman->SetAnimation(WomanMesh::ANIMATION_JOGGING);
+			}
+			else
+			{
+				m_woman->SetAnimation(WomanMesh::ANIMATION_WALKING);
+			}
+		}
+	}
+
+
+
+
+	float t_dAngle = 57.29577951308232286465f * t_angle;
+	D3DXMATRIX R;
+	D3DXMatrixRotationY(&R, t_angle);
+	D3DXVec3TransformCoord(&m_carDirection, &m_carDirection, &R);
+	D3DXVec3Normalize(&m_carDirection, &m_carDirection);
+	
+	
+	t_target->Rotate(t_target->GetRotationX(), t_target->GetRotationY() + t_dAngle, t_target->GetRotationZ());
+
+	m_cubeX += newPos.x;
+	//m_cubeY += newPos.y;
+	m_cubeY = 0;
+	m_cubeZ += newPos.z;
+
+	hx = (int)m_cubeX ;
+	//hy = (int)m_auei->GetHeight(m_cubeX, m_cubeZ);	
+	hy = 0;	
+	
+	t_target->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
+
+
+	D3DXVECTOR3 t_camLook = m_carDirection * -15.0f;
+	t_camLook.x = m_cubeX + t_camLook.x;
+	t_camLook.y = m_cubeY + t_camLook.y;
+	t_camLook.z = m_cubeZ + t_camLook.z;
+
+	
+	m_cubeY = 1.5f;
+
+	//m_camX = m_cubeX;
+	m_camX = 0.0f;
+	m_camY = 250.0f;
+	//m_camZ = m_cubeZ;
+	m_camZ = 0.0f;
+
+	D3DXVECTOR3 t_camTarget = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	t_camTarget.x = m_camX + (m_carDirection*2.0f).x;
+	t_camTarget.y = m_camY + (m_carDirection*2.0f).y;
+	t_camTarget.z = m_camZ + (m_carDirection*2.0f).z;
+	
+	m_camUpX = 0.0f;
+	m_camUpY = 0.0f;
+	m_camUpZ = 1.0f;
+
+	//m_camTargetX = m_cubeX;
+	m_camTargetX = 0.0f;
+	m_camTargetY = 0.0f;
+	//m_camTargetZ = m_cubeZ;
+	m_camTargetZ = 0.0f;
+
+
+	printf("kjfdgfd");
+
+
+}
+
+
+#else
 void Game::UpdateInput(int deltaTime)
 {
 	
@@ -347,8 +520,12 @@ void Game::UpdateInput(int deltaTime)
 	{
 		step *= 5.0f;
 		isRunning = true;
+
+		t_house->Scale(t_house->GetXScale() + 0.1f, t_house->GetYScale() + 0.1f, t_house->GetZScale() + 0.1f);
+		
 		
 	}
+	
 	
 	//makes step a function of the deltaTime
 	step = step * f_deltaTime;
@@ -367,6 +544,7 @@ void Game::UpdateInput(int deltaTime)
 		//m_cubeZ += step;
 		newPos = step*m_carDirection;
 		upDown = true;
+
 		
 	}
 	if(DirectInput::GetInstance()->IsKeyDown(208))
@@ -376,6 +554,8 @@ void Game::UpdateInput(int deltaTime)
 		//m_cubeZ -= step;
 		newPos = -step*m_carDirection;
 		downDown = true;
+
+		
 	}	
 	if(DirectInput::GetInstance()->IsKeyDown(205))
 	{
@@ -383,6 +563,7 @@ void Game::UpdateInput(int deltaTime)
 		t_angle = (isRunning)?angleStepFast:angleStepNormal;	
 		leftDown = true;
 		//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + 0.1f, m_cube->GetRotationZ());
+		//t_house->Scale(t_house->GetXScale() - 0.1f, t_house->GetYScale() - 0.1f, t_house->GetZScale() - 0.1f);
 	}
 	if(DirectInput::GetInstance()->IsKeyDown(203))
 	{
@@ -392,6 +573,8 @@ void Game::UpdateInput(int deltaTime)
 		//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() - 0.1f, m_cube->GetRotationZ());
 		
 	}
+
+	
 
 	if(!upDown && !downDown && !leftDown && !rightDown && m_woman->GetAnimation() != WomanMesh::ANIMATION_IDLE)
 	{
@@ -487,6 +670,9 @@ void Game::UpdateInput(int deltaTime)
 
 
 }
+
+
+#endif
 
 #if 0
 void Game::UpdateInput()
@@ -790,7 +976,8 @@ void Game::OnKeyDown(int key)
 {
 	//float step = 0.1f;
 	//Mesh * target = (Mesh*)m_cube;
-	Mesh * t_target = (Mesh*)m_castle;
+	//Mesh * t_target = (Mesh*)m_castle;
+	Mesh * t_target = (Mesh*)t_house;
 	//Mesh * target = (Mesh*)m_skinMesh;
 	float step = 0.1f;
 
@@ -1591,6 +1778,9 @@ void Game::InitializeMeshes()
 	m_woman->Scale(0.01f, 0.01f, 0.01f);
 	m_woman->Rotate(-90.0f, 0.0f, 0.0f);
 	m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
+	m_woman->SetBoundingBox(D3DXVECTOR3(-126.0f, 80.0f, 0.0f), D3DXVECTOR3(101.0f, -88.0f, 520.0f));
+
+	
 	
 
 	Ground *t_ground = new Ground();
@@ -1619,7 +1809,9 @@ void Game::InitializeMeshes()
 	D3DImage *image = new D3DImage(t);		
 	m_font = new Font(	image,ResourceManager::GetInstance()->GetFontDescriptor(FONT_VERDANA_36_ID));
 
+	t_house = new LandscapeMesh(MESH_HOUSE_2_ID, IMAGE_HOUSE_2_ID);
 
+	//m_testScene->AddMesh(t_house);
 	m_text = new Text("QWERTY UI", m_font);
 	m_text->SetX(250);
 	m_text->SetY(250);
@@ -1643,7 +1835,7 @@ void Game::InitializeMeshes()
 
 int GetCorrespondingTextID(int meshID)
 {
-	int t[22];
+	int t[27];
 	t[MESH_CAFE_TABLE_ID - MESH_CAFE_TABLE_ID] = IMAGE_CAFE_TABLE_ID;
 	t[MESH_GARDEN_BORDER_ID - MESH_CAFE_TABLE_ID] = IMAGE_GARDEN_BORDER_ID;
 	t[MESH_MAILBOX01_ID - MESH_CAFE_TABLE_ID] = IMAGE_MAILBOX01_ID;
@@ -1666,6 +1858,11 @@ int GetCorrespondingTextID(int meshID)
 	t[MESH_STREET_LIGHT_02_ID - MESH_CAFE_TABLE_ID] = 	IMAGE_STREET_LIGHT_02_ID;
 	t[MESH_SWITCHBOX_ID - MESH_CAFE_TABLE_ID] = IMAGE_SWITCHBOX_ID;
 	t[MESH_TRAFFIC_CONE_ID - MESH_CAFE_TABLE_ID] = IMAGE_TRAFFIC_CONE_ID;
+	t[MESH_HOUSE_ID - MESH_CAFE_TABLE_ID] = IMAGE_HOUSE_ID;
+	t[MESH_HOUSE_2_ID - MESH_CAFE_TABLE_ID] = IMAGE_HOUSE_2_ID;
+	t[MESH_HOUSE_3_ID - MESH_CAFE_TABLE_ID] = IMAGE_HOUSE_3_ID;
+	t[MESH_HOUSE_4_ID - MESH_CAFE_TABLE_ID] = IMAGE_HOUSE_4_ID;
+	t[MESH_HOUSE_5_ID - MESH_CAFE_TABLE_ID] = IMAGE_HOUSE_5_ID;
 
 	return t[meshID - MESH_CAFE_TABLE_ID];
 	
@@ -1683,7 +1880,7 @@ float GetRelativeScale(float a_mapScale)
 float GetCorrespondingScale(int meshID)
 {
 	
-	float t_scales[22];
+	float t_scales[27];
 	t_scales[MESH_CAFE_TABLE_ID - MESH_CAFE_TABLE_ID]				= 2.2f;
 	t_scales[MESH_GARDEN_BORDER_ID - MESH_CAFE_TABLE_ID]			= 4.49f;
 	t_scales[MESH_MAILBOX01_ID - MESH_CAFE_TABLE_ID]				= 2.29f;
@@ -1706,6 +1903,11 @@ float GetCorrespondingScale(int meshID)
 	t_scales[MESH_STREET_LIGHT_02_ID - MESH_CAFE_TABLE_ID]			= 2.97f;
 	t_scales[MESH_SWITCHBOX_ID - MESH_CAFE_TABLE_ID]				= 1.66f;
 	t_scales[MESH_TRAFFIC_CONE_ID - MESH_CAFE_TABLE_ID]				= 2.04f;
+	t_scales[MESH_HOUSE_ID - MESH_CAFE_TABLE_ID]					= 4.39f;
+	t_scales[MESH_HOUSE_2_ID - MESH_CAFE_TABLE_ID]					= 6.99f;
+	t_scales[MESH_HOUSE_3_ID - MESH_CAFE_TABLE_ID]					= 4.39f;
+	t_scales[MESH_HOUSE_4_ID - MESH_CAFE_TABLE_ID]					= 4.39f;
+	t_scales[MESH_HOUSE_5_ID - MESH_CAFE_TABLE_ID]					= 4.39f;
 
 	if(meshID == MESH_TREE_0_ID || meshID == MESH_TREE_1_ID || meshID == MESH_TREE_2_ID || meshID == MESH_TREE_3_ID)
 	{

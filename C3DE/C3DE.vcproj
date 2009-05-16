@@ -205,6 +205,10 @@
 					RelativePath=".\DebugMemory.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\GuiCon.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Application"
@@ -280,6 +284,18 @@
 						RelativePath=".\Sprite.cpp"
 						>
 					</File>
+					<Filter
+						Name="Font"
+						>
+						<File
+							RelativePath=".\Font.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Text.cpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Image"
@@ -349,10 +365,6 @@
 						</File>
 						<File
 							RelativePath=".\Plane.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\Townhall.cpp"
 							>
 						</File>
 						<File
@@ -768,6 +780,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Guicon.h"
+					>
+				</File>
+				<File
 					RelativePath=".\RandomDefs.h"
 					>
 				</File>
@@ -854,6 +870,18 @@
 						RelativePath=".\Sprite.h"
 						>
 					</File>
+					<Filter
+						Name="Font"
+						>
+						<File
+							RelativePath=".\Font.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Text.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Image"
@@ -935,10 +963,6 @@
 						</File>
 						<File
 							RelativePath=".\Plane.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Townhall.h"
 							>
 						</File>
 						<File

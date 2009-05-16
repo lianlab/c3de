@@ -52,6 +52,11 @@ ResourceManager::ResourceManager()
 	m_meshesFilenames[MESH_STREET_LIGHT_02_ID] = "Meshes/landscape/streetLight02.x";	
 	m_meshesFilenames[MESH_SWITCHBOX_ID] = "Meshes/landscape/switchBox.x";
 	m_meshesFilenames[MESH_TRAFFIC_CONE_ID] = "Meshes/landscape/trafficCone.x";
+	m_meshesFilenames[MESH_HOUSE_ID] = "Meshes/house.x";
+	m_meshesFilenames[MESH_HOUSE_2_ID] = "Meshes/house2.x";
+	m_meshesFilenames[MESH_HOUSE_3_ID] = "Meshes/house3.x";
+	m_meshesFilenames[MESH_HOUSE_4_ID] = "Meshes/house4.x";
+	m_meshesFilenames[MESH_HOUSE_5_ID] = "Meshes/house5.x";
 	
 
 
@@ -170,6 +175,12 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_SKYBOX_RIGHT;
 	IDirect3DTexture9 * TEX_SKYBOX_FRONT;
 	IDirect3DTexture9 * TEX_SKYBOX_BACK;
+	IDirect3DTexture9 * TEX_HOUSE;
+	IDirect3DTexture9 * TEX_HOUSE_2;
+	IDirect3DTexture9 * TEX_HOUSE_3;
+	IDirect3DTexture9 * TEX_HOUSE_4;
+	IDirect3DTexture9 * TEX_HOUSE_5;
+
 	IDirect3DTexture9 * TEX_FONT_VERDANA_36;
 	
 	
@@ -303,6 +314,12 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/skybox/skybox_FR.jpg", &TEX_SKYBOX_FRONT));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/skybox/skybox_BK.jpg", &TEX_SKYBOX_BACK));
 
+	HR(D3DXCreateTextureFromFile(m_device, "Images/house/house.png", &TEX_HOUSE));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/house/house2.png", &TEX_HOUSE_2));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/house/house3.png", &TEX_HOUSE_3));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/house/house4.png", &TEX_HOUSE_4));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/house/house5.png", &TEX_HOUSE_5));
+
 
 	//HR(D3DXCreateTextureFromFile(m_device, "Fonts/verdana36.bmp", &TEX_FONT_VERDANA_36));
 
@@ -422,6 +439,12 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_SKYBOX_RIGHT_ID] = TEX_SKYBOX_RIGHT;
 	m_imageResources[IMAGE_SKYBOX_FRONT_ID] = TEX_SKYBOX_FRONT;
 	m_imageResources[IMAGE_SKYBOX_BACK_ID] = TEX_SKYBOX_BACK;
+
+	m_imageResources[IMAGE_HOUSE_ID] = TEX_HOUSE;
+	m_imageResources[IMAGE_HOUSE_2_ID] = TEX_HOUSE_2;
+	m_imageResources[IMAGE_HOUSE_3_ID] = TEX_HOUSE_3;
+	m_imageResources[IMAGE_HOUSE_4_ID] = TEX_HOUSE_4;
+	m_imageResources[IMAGE_HOUSE_5_ID] = TEX_HOUSE_5;
 
 	m_imageResources[IMAGE_FONT_VERDANA_36_ID] = TEX_FONT_VERDANA_36;
 
@@ -659,6 +682,26 @@ IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename
 	else if(strcmp(a_filename.c_str(), "skybox.jpg") == 0)
 	{
 		return m_imageResources[IMAGE_SKYBOX_ID];
+	}	
+	else if(strcmp(a_filename.c_str(), "house.png") == 0)
+	{
+		return m_imageResources[IMAGE_HOUSE_ID];
+	}	
+	else if(strcmp(a_filename.c_str(), "house2.png") == 0)
+	{
+		return m_imageResources[IMAGE_HOUSE_2_ID];
+	}	
+	else if(strcmp(a_filename.c_str(), "house3.png") == 0)
+	{
+		return m_imageResources[IMAGE_HOUSE_3_ID];
+	}	
+	else if(strcmp(a_filename.c_str(), "house4.png") == 0)
+	{
+		return m_imageResources[IMAGE_HOUSE_4_ID];
+	}	
+	else if(strcmp(a_filename.c_str(), "house5.png") == 0)
+	{
+		return m_imageResources[IMAGE_HOUSE_5_ID];
 	}	
 	else
 	{

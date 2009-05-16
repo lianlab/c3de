@@ -163,6 +163,8 @@ private:
 	int m_physSpeedY;
 	int m_gAcc;
 
+	LandscapeMesh *t_house;
+
 	int hack;
 #endif	
 };

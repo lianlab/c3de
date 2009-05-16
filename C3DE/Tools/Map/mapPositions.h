@@ -343,6 +343,41 @@ t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
 t_mesh->Rotate(0.0f,0.0f, 0.0f);
 m_testScene->AddMesh(t_mesh);
 
+t_mesh = new LandscapeMesh(MESH_HOUSE_5_ID,GetCorrespondingTextID(MESH_HOUSE_5_ID));
+t_mesh->UniformScale(GetCorrespondingScale(MESH_HOUSE_5_ID));
+t_planePositions = GetPlanePositions(418.45f, 175.95f);
+t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_mesh->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_mesh);
+
+t_mesh = new LandscapeMesh(MESH_HOUSE_4_ID,GetCorrespondingTextID(MESH_HOUSE_4_ID));
+t_mesh->UniformScale(GetCorrespondingScale(MESH_HOUSE_4_ID));
+t_planePositions = GetPlanePositions(238.45f, 465.95f);
+t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_mesh->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_mesh);
+
+t_mesh = new LandscapeMesh(MESH_HOUSE_3_ID,GetCorrespondingTextID(MESH_HOUSE_3_ID));
+t_mesh->UniformScale(GetCorrespondingScale(MESH_HOUSE_3_ID));
+t_planePositions = GetPlanePositions(258.45f, 175.95f);
+t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_mesh->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_mesh);
+
+t_mesh = new LandscapeMesh(MESH_HOUSE_2_ID,GetCorrespondingTextID(MESH_HOUSE_2_ID));
+t_mesh->UniformScale(GetCorrespondingScale(MESH_HOUSE_2_ID));
+t_planePositions = GetPlanePositions(255.45f, 207.95f);
+t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_mesh->Rotate(0.0f,0.0f, 0.0f);
+m_testScene->AddMesh(t_mesh);
+
+t_mesh = new LandscapeMesh(MESH_HOUSE_ID,GetCorrespondingTextID(MESH_HOUSE_ID));
+t_mesh->UniformScale(GetCorrespondingScale(MESH_HOUSE_ID));
+t_planePositions = GetPlanePositions(429.55f, 338.95f);
+t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);
+t_mesh->Rotate(0.0f,90.0f, 0.0f);
+m_testScene->AddMesh(t_mesh);
+
 t_mesh = new LandscapeMesh(MESH_STREET_LIGHT_01_ID,GetCorrespondingTextID(MESH_STREET_LIGHT_01_ID));
 t_mesh->UniformScale(GetCorrespondingScale(MESH_STREET_LIGHT_01_ID));
 t_planePositions = GetPlanePositions(14.5f, 243.95f);

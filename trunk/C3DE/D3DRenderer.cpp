@@ -18,7 +18,7 @@
 #include "FireRingFX.h"
 
 #define REAL_HACK 0
-#define DRAW_BOUNDING_BOXES 0
+#define DRAW_BOUNDING_BOXES 1
 
 #define MAX_NUM_PARTICLES 50
 

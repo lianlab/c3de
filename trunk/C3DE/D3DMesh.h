@@ -130,7 +130,7 @@ public:
 
 	void SetBoundingBox(AABB *a_aabb){m_boundingBox = a_aabb;}
 
-	
+	bool Collides(D3DMesh *target);
 protected:
 
 	D3DXVECTOR3 m_fleps;

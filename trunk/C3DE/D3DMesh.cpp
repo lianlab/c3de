@@ -442,3 +442,250 @@ void D3DMesh::SetBuffers(IDirect3DVertexBuffer9 *vertexBuffer, IDirect3DIndexBuf
 	m_vertexBuffer = vertexBuffer;
 	m_indexBuffer = indexBuffer;
 }
+
+
+bool D3DMesh::Collides(D3DMesh *target)
+{
+	D3DXVECTOR3 minPoint = GetBoundingBox()->minPoint;
+	D3DXVECTOR3 maxPoint = GetBoundingBox()->maxPoint;
+
+	D3DXVECTOR3 targetMinPoint = target->GetBoundingBox()->minPoint;
+	D3DXVECTOR3 targetMaxPoint = target->GetBoundingBox()->maxPoint;
+
+	D3DXVECTOR3 t_00 = D3DXVECTOR3(minPoint.x, maxPoint.y, minPoint.z);
+	D3DXVECTOR3 t_01 = D3DXVECTOR3(maxPoint.x, maxPoint.y, maxPoint.z);
+	D3DXVECTOR3 t_02 = D3DXVECTOR3(minPoint.x, maxPoint.y, maxPoint.z);
+	D3DXVECTOR3 t_03 = D3DXVECTOR3(maxPoint.x, maxPoint.y, minPoint.z);
+
+	D3DXVECTOR3 t_10 = D3DXVECTOR3(targetMinPoint.x, targetMaxPoint.y, targetMinPoint.z);
+	D3DXVECTOR3 t_11 = D3DXVECTOR3(targetMaxPoint.x, targetMaxPoint.y, targetMaxPoint.z);
+	D3DXVECTOR3 t_12 = D3DXVECTOR3(targetMinPoint.x, targetMaxPoint.y, targetMaxPoint.z);
+	D3DXVECTOR3 t_13 = D3DXVECTOR3(targetMaxPoint.x, targetMaxPoint.y, targetMinPoint.z);
+
+	D3DXVECTOR4 t_quat00;
+	D3DXVECTOR4 t_quat01;
+	D3DXVECTOR4 t_quat02;
+	D3DXVECTOR4 t_quat03;
+	D3DXVECTOR4 t_quat10;
+	D3DXVECTOR4 t_quat11;
+	D3DXVECTOR4 t_quat12;
+	D3DXVECTOR4 t_quat13;
+
+	D3DXMATRIX t_matrix = GetTransformMatrix();
+	D3DXMATRIX t_targetMatrix = target->GetTransformMatrix();
+
+	D3DXVec3Transform(&t_quat00, &t_00, &t_matrix);
+	D3DXVec3Transform(&t_quat01, &t_01, &t_matrix);
+	D3DXVec3Transform(&t_quat02, &t_02, &t_matrix);
+	D3DXVec3Transform(&t_quat03, &t_03, &t_matrix);
+	D3DXVec3Transform(&t_quat10, &t_10, &t_targetMatrix);
+	D3DXVec3Transform(&t_quat11, &t_11, &t_targetMatrix);
+	D3DXVec3Transform(&t_quat12, &t_12, &t_targetMatrix);
+	D3DXVec3Transform(&t_quat13, &t_13, &t_targetMatrix);
+	
+	
+
+	t_00.x = t_quat00.x;
+	t_00.y = t_quat00.y;
+	t_00.z = t_quat00.z;
+
+	t_01.x = t_quat01.x;
+	t_01.y = t_quat01.y;
+	t_01.z = t_quat01.z;
+
+	t_02.x = t_quat02.x;
+	t_02.y = t_quat02.y;
+	t_02.z = t_quat02.z;
+
+	t_03.x = t_quat03.x;
+	t_03.y = t_quat03.y;
+	t_03.z = t_quat03.z;
+
+	t_10.x = t_quat10.x;
+	t_10.y = t_quat10.y;
+	t_10.z = t_quat10.z;
+
+	t_11.x = t_quat11.x;
+	t_11.y = t_quat11.y;
+	t_11.z = t_quat11.z;
+
+	t_12.x = t_quat12.x;
+	t_12.y = t_quat12.y;
+	t_12.z = t_quat12.z;
+	
+	t_13.x = t_quat13.x;
+	t_13.y = t_quat13.y;
+	t_13.z = t_quat13.z;
+
+
+	
+	
+	float tBox10X = t_00.x;
+	float tBox10Y = t_00.z;
+	float tBox11X = t_01.x;
+	float tBox11Y = t_01.z;
+	float tBox12X = t_02.x;
+	float tBox12Y = t_02.z;
+	float tBox13X = t_03.x;
+	float tBox13Y = t_03.z;
+	
+	float tBox20X = t_10.x;
+	float tBox20Y = t_10.z;
+	float tBox21X = t_11.x;
+	float tBox21Y = t_11.z;
+	float tBox22X = t_12.x;
+	float tBox22Y = t_12.z;
+	float tBox23X = t_13.x;
+	float tBox23Y = t_13.z;
+	
+	float aURx = tBox11X;
+	float aURy = tBox11Y;
+	float aULx = tBox10X;
+	float aULy = tBox10Y;
+	float aLRx = tBox13X;
+	float aLRy = tBox13Y;
+	float aLLx = tBox12X;
+	float aLLy = tBox12Y;
+	
+	
+	float bULx = tBox20X;
+	float bULy = tBox20Y;
+	float bLLx = tBox22X;
+	float bLLy = tBox22Y;
+	float bURx = tBox21X;
+	float bURy = tBox21Y;
+	float bLRx = tBox23X;
+	float bLRy = tBox23Y;
+	
+	float axis1X = aURx - aULx;
+
+	float axis1Y = aULy - aURy;
+	float axis2X = aURx - aLRx;
+
+	float axis2Y = aLRy - aURy;
+	float axis3X = bULx - bLLx;
+
+	float axis3Y = bLLy - bULy;
+	float axis4X = bULx - bURx;
+
+	float axis4Y = bURy - bULy;
+	
+	
+	
+	
+	float multiplier = 100.0f;
+	//g.drawLine(0, 0, (int)(axis1X * multiplier), (int)(axis1Y * multiplier));
+	//g.drawLine(0, 0, (int)(axis2X * multiplier), (int)(axis2Y * multiplier));
+	//g.drawLine(0, 0, (int)(axis3X * multiplier), (int)(axis3Y * multiplier));
+
+	//g.drawLine(0, 0, (int)(axis4X * multiplier), (int)(axis4Y * multiplier));
+	
+	float axisX[4] = {axis1X, axis2X, axis3X, axis4X};
+	float axisY[4] = {axis1Y, axis2Y, axis3Y, axis4Y};
+
+	
+	float aPointsX[4] = {aURx, aULx, aLRx, aLLx};
+	float aPointsY[4] = {aURy, aULy, aLRy, aLLy};
+
+	
+	float bPointsX[4] = {bURx, bULx, bLRx, bLLx};
+	float bPointsY[4] = {bURy, bULy, bLRy, bLLy};
+
+	
+	float aProjectedX[4];
+	float aProjectedY[4];
+	
+	float bProjectedX[4];
+	float bProjectedY[4];
+	
+	
+	
+	
+	for(int i = 0 ; i< 4; i++)
+	{
+		float lowPart = (axisX[i]*axisX[i]) + (axisY[i] * axisY[i]);
+		
+		float minA = 0.0f;
+		float maxA = 0.0f;
+		float minB = 0.0f;
+		float maxB = 0.0f;
+		
+		for(int j = 0; j < 4; j++)
+		{
+			float highPart = (aPointsX[j] * axisX[i]) + (aPointsY[j] * axisY[i]);
+			aProjectedX[j] = (highPart / lowPart) * axisX[i];
+			aProjectedY[j] = (highPart / lowPart) * axisY[i];
+			
+			//g.setColor(colors[j]);
+			//g.fillRect((int)aProjectedX[j], (int)aProjectedY[j], (int)10, (int)10);
+			
+			if(j == 0)
+			{
+				minA = (aProjectedX[j] * axisX[i]) + (aProjectedY[j] * axisY[i]);
+				maxA = (aProjectedX[j] * axisX[i]) + (aProjectedY[j] * axisY[i]);
+			}
+			else
+			{
+				float candidate = (aProjectedX[j] * axisX[i]) + (aProjectedY[j] * axisY[i]);
+				if(candidate < minA)
+				{
+					minA = candidate;
+				}
+				if(candidate > maxA)
+				{
+					maxA = candidate;
+				}
+			}
+		}
+		for(int k = 0; k < 4; k++)
+		{
+			float highPart = (bPointsX[k] * axisX[i]) + (bPointsY[k] * axisY[i]);
+			bProjectedX[k] = (highPart / lowPart) * axisX[i];
+			bProjectedY[k] = (highPart / lowPart) * axisY[i];
+			
+			//g.setColor(colors2[k]);
+			//g.fillRect((int)bProjectedX[k], (int)bProjectedY[k], (int)10, (int)10);
+			
+			if(k == 0)
+			{
+				minB = (bProjectedX[k] * axisX[i]) + (bProjectedY[k] * axisY[i]);
+				maxB = (bProjectedX[k] * axisX[i]) + (bProjectedY[k] * axisY[i]);
+			}
+			else
+			{
+				float candidate = (bProjectedX[k] * axisX[i]) + (bProjectedY[k] * axisY[i]);
+				if(candidate < minB)
+				{
+					minB = candidate;
+				}
+				if(candidate > maxB)
+				{
+					maxB = candidate;
+				}
+			}
+		}
+		
+//			boolean collisionOnAxis = (minB < maxA) || (maxB > minA) || (minB == maxA) || (maxB == minA);
+		bool collisionOnAxis = false;
+		
+		if(minB > minA)
+		{
+
+			collisionOnAxis = minB < maxA;
+		}
+		else
+		{
+
+			collisionOnAxis = minA < maxB;
+		}
+		
+		
+		if(!collisionOnAxis)
+		{
+			return false;
+		}
+		
+	}
+
+	return true;
+}

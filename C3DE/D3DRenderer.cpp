@@ -1027,7 +1027,22 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh, FX *fx)
 	
 }
 
+void D3DRenderer::DrawLine(int aX, int aY, int bX, int bY, int color)
+{
+	LPD3DXLINE lpLine;
+	HRESULT hr = D3DXCreateLine(m_device, &lpLine);
+	D3DXVECTOR2 t_vertices[2] = {D3DXVECTOR2(aX, aY),D3DXVECTOR2(bX, bY)};
+	//ID3DXLine::Draw(
+	lpLine->Draw(t_vertices, 2, color);
+}
 
+void D3DRenderer::DrawRect(int x, int y, int w, int h, int color)
+{
+	DrawLine(x, y, x + w, y, color);
+	DrawLine(x, y, x, y + h, color);
+	DrawLine(x, y +h, x + w, y + h, color);
+	DrawLine(x + w, y, x + w, y + h, color);
+}
 
 void D3DRenderer::DrawSprite(Sprite *sprite)
 {	

@@ -81,6 +81,8 @@ public:
 
 	static D3DRenderer * GetInstance();
 
+	void DrawLine(int aX, int aY, int bX, int bY, int color);
+	void DrawRect(int x, int y, int w, int h, int color);
 private:
 
 

@@ -1028,12 +1028,10 @@ void D3DRenderer::DrawMesh(Mesh *a_mesh, FX *fx)
 }
 
 void D3DRenderer::DrawLine(int aX, int aY, int bX, int bY, int color)
-{
-	LPD3DXLINE lpLine;
-	HRESULT hr = D3DXCreateLine(m_device, &lpLine);
-	D3DXVECTOR2 t_vertices[2] = {D3DXVECTOR2(aX, aY),D3DXVECTOR2(bX, bY)};
-	//ID3DXLine::Draw(
-	lpLine->Draw(t_vertices, 2, color);
+{		
+	t_lineVertices[0] = D3DXVECTOR2(aX, aY);
+	t_lineVertices[1] = D3DXVECTOR2(bX, bY);
+	lpLine->Draw(t_lineVertices, 2, color);
 }
 
 void D3DRenderer::DrawRect(int x, int y, int w, int h, int color)
@@ -1042,6 +1040,16 @@ void D3DRenderer::DrawRect(int x, int y, int w, int h, int color)
 	DrawLine(x, y, x, y + h, color);
 	DrawLine(x, y +h, x + w, y + h, color);
 	DrawLine(x + w, y, x + w, y + h, color);
+}
+
+void D3DRenderer::DrawFillRect(int x, int y, int w, int h, int color)
+{
+	for(int i = 0; i < h; i++)
+	{
+		DrawLine(x, y + i, x + w, y + i, color);
+	}
+	
+	
 }
 
 void D3DRenderer::DrawSprite(Sprite *sprite)
@@ -1366,6 +1374,10 @@ bool D3DRenderer::Init(WindowsApplicationWindow *window, bool windowed)
 	//D3DXMatrixTranslation(&psysWorld, 0.0f, 0.0f, 5.0f);
 	//D3DXMatrixTranslation(&mWorld, 0.0f, 0.0f, 5.0f);
 	//D3DXMatrixInverse(&mWorldInv, 0, &mWorld);
+
+	
+	HRESULT hr = D3DXCreateLine(m_device, &lpLine);
+	D3DXVECTOR2 t_vertices[2] = {D3DXVECTOR2(0.0f, 0.0f),D3DXVECTOR2(0.0f, 0.0f)};	
 
 	return true;
 }

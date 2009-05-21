@@ -83,6 +83,7 @@ public:
 
 	void DrawLine(int aX, int aY, int bX, int bY, int color);
 	void DrawRect(int x, int y, int w, int h, int color);
+	void DrawFillRect(int x, int y, int w, int h, int color);
 private:
 
 
@@ -127,6 +128,9 @@ private:
 
 	
 	bool IsPointWithinView(D3DXVECTOR3 aPoint);
+
+	LPD3DXLINE lpLine;	
+	D3DXVECTOR2 t_lineVertices[2];	
 
 
 #if HACK_FROM_SCRATCH

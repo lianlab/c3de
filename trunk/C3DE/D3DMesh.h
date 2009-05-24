@@ -9,6 +9,7 @@
 #include "ShaderManager.h"
 #include "FX.h"
 #include "AABB.h"
+#include "TopCollisionArea.h"
 
 
 using namespace std;
@@ -131,12 +132,27 @@ public:
 	void SetBoundingBox(AABB *a_aabb){m_boundingBox = a_aabb;}
 
 	bool Collides(D3DMesh *target);
+
+	//void CalculateRealBoxPoints();
+	//void SetCollisionPoints(D3DXVECTOR3 a_min, D3DXVECTOR3 a_max);
+	//AABB *GetCollisionPoints();
+
+	TopCollisionArea * GetTopCollisionArea();
+	void SetTopCollisionArea(D3DXVECTOR3 upLeft, D3DXVECTOR3 upRight, D3DXVECTOR3 downLeft, D3DXVECTOR3 downRight);
 protected:
+
+	void CalculateTopCollisionArea();
 
 	D3DXVECTOR3 m_fleps;
 	D3DXVECTOR3 m_auei;
 	AABB *m_boundingBox;
 	AABB *m_transformedBox;
+
+	TopCollisionArea *m_topCollisionArea;
+
+	//AABB *m_collisionPoints;
+	//D3DXVECTOR3 m_collisionPointMax;
+
 
 	
 	UINT m_numShaderPasses;
@@ -172,6 +188,28 @@ protected:
 	D3DXMATRIX m_transformMatrix;
 
 	int * m_hack;
+
+
+
+
+
+	float axisX[4];
+	float axisY[4];
+
+	
+	float aPointsX[4];
+	float aPointsY[4];
+
+	
+	float bPointsX[4];
+	float bPointsY[4];
+
+	
+	float aProjectedX[4];
+	float aProjectedY[4];
+	
+	float bProjectedX[4];
+	float bProjectedY[4];
 
 	
 	

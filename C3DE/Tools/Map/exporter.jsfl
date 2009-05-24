@@ -102,7 +102,9 @@ for (i=0; i < len; i++) {
 					contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
 					contents += "t_tree0->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
 					contents += "t_tree0->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
-					contents += "m_testScene->AddMesh(t_tree0);" + "\n\n";
+					contents += "m_testScene->AddMesh(t_tree0);" + "\n";
+					contents += "m_loadedObjects++;\n";
+					contents += "UpdateLoadingBar(m_loadedObjects, m_totalObjects);\n\n"
 				}
 				else if(layerNames[i] == "MESH_TREE_1_ID")
 				{
@@ -111,7 +113,9 @@ for (i=0; i < len; i++) {
 					contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
 					contents += "t_tree1->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
 					contents += "t_tree1->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
-					contents += "m_testScene->AddMesh(t_tree1);" + "\n\n";
+					contents += "m_testScene->AddMesh(t_tree1);" + "\n";
+					contents += "m_loadedObjects++;\n";
+					contents += "UpdateLoadingBar(m_loadedObjects, m_totalObjects);\n\n"
 				}
 				else if(layerNames[i] == "MESH_TREE_2_ID")
 				{
@@ -120,7 +124,9 @@ for (i=0; i < len; i++) {
 					contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
 					contents += "t_tree2->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
 					contents += "t_tree2->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
-					contents += "m_testScene->AddMesh(t_tree2);" + "\n\n";
+					contents += "m_testScene->AddMesh(t_tree2);" + "\n";
+					contents += "m_loadedObjects++;\n";
+					contents += "UpdateLoadingBar(m_loadedObjects, m_totalObjects);\n\n"
 				}
 				else if(layerNames[i] == "MESH_TREE_3_ID")
 				{
@@ -129,7 +135,9 @@ for (i=0; i < len; i++) {
 					contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
 					contents += "t_tree3->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
 					contents += "t_tree3->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
-					contents += "m_testScene->AddMesh(t_tree3);" + "\n\n";
+					contents += "m_testScene->AddMesh(t_tree3);" + "\n";
+					contents += "m_loadedObjects++;\n";
+					contents += "UpdateLoadingBar(m_loadedObjects, m_totalObjects);\n\n"
 				}
 				else if(layerNames[i] == "WALL_1")
 				{
@@ -139,7 +147,9 @@ for (i=0; i < len; i++) {
 					contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
 					contents += "t_wall1->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
 					contents += "t_wall1->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
-					contents += "m_testScene->AddMesh(t_wall1);" + "\n\n";
+					contents += "m_testScene->AddMesh(t_wall1);" + "\n";
+					contents += "m_loadedObjects++;\n";
+					contents += "UpdateLoadingBar(m_loadedObjects, m_totalObjects);\n\n"
 				}
 				else if(layerNames[i] == "WALL_2")
 				{
@@ -149,7 +159,9 @@ for (i=0; i < len; i++) {
 					contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
 					contents += "t_wall2->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
 					contents += "t_wall2->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
-					contents += "m_testScene->AddMesh(t_wall2);" + "\n\n";
+					contents += "m_testScene->AddMesh(t_wall2);" + "\n";
+					contents += "m_loadedObjects++;\n";
+					contents += "UpdateLoadingBar(m_loadedObjects, m_totalObjects);\n\n"
 				}
 				else if(layerNames[i] == "WALL_3")
 				{
@@ -159,7 +171,9 @@ for (i=0; i < len; i++) {
 					contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
 					contents += "t_wall3->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
 					contents += "t_wall3->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
-					contents += "m_testScene->AddMesh(t_wall3);" + "\n\n";
+					contents += "m_testScene->AddMesh(t_wall3);" + "\n";
+					contents += "m_loadedObjects++;\n";
+					contents += "UpdateLoadingBar(m_loadedObjects, m_totalObjects);\n\n"
 				}
 				else
 				{					
@@ -168,7 +182,9 @@ for (i=0; i < len; i++) {
 					contents += "t_planePositions = GetPlanePositions("+tx+", "+ty+");" + "\n";
 					contents += "t_mesh->SetPosition(t_planePositions.x,0.0f, t_planePositions.y);" + "\n";
 					contents += "t_mesh->Rotate(0.0f,"+t_rotation+", 0.0f);" + "\n";
-					contents += "m_testScene->AddMesh(t_mesh);" + "\n\n";
+					contents += "m_testScene->AddMesh(t_mesh);" + "\n";
+					contents += "m_loadedObjects++;\n";
+					contents += "UpdateLoadingBar(m_loadedObjects, m_totalObjects);\n\n"
 				}
 				
 				/*

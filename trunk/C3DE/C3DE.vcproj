@@ -368,6 +368,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\TopCollisionArea.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\Wall.cpp"
 							>
 						</File>
@@ -963,6 +967,10 @@
 						</File>
 						<File
 							RelativePath=".\Plane.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TopCollisionArea.h"
 							>
 						</File>
 						<File

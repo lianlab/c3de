@@ -37,6 +37,9 @@
 #include "Text.h"
 #include "Font.h"
 #include "Grid.h"
+#include "Ground.h"
+#include "Skybox.h"
+
 
 class Game : public KeyboardListener, MouseListener, ButtonListener
 {
@@ -61,7 +64,15 @@ public:
 	
 	int hx;
 	int hy;
+
+	
 private:
+
+	//for loading
+	int m_loadedObjects;
+	int m_totalObjects;
+
+	void UpdateLoadingBar(int loadedObjects, int totalobjects);
 	Application * m_application;
 
 	D3DSprite *m_sprite;	
@@ -77,7 +88,7 @@ private:
 
 	int m_deltaTime;
 
-	Renderer *m_renderer;
+	//Renderer *m_renderer;
 
 	//testing
 	Cube *m_testMesh;
@@ -151,6 +162,9 @@ private:
 
 	WomanMesh *m_woman;
 
+	Ground *m_ground;
+	Skybox *m_skyBox;
+
 	D3DXVECTOR3 m_carDirection;
 
 	BillboardMesh * m_billboard;
@@ -164,6 +178,10 @@ private:
 	int m_gAcc;
 
 	LandscapeMesh *t_house;
+
+	Renderer *m_renderer;
+
+
 
 	int hack;
 #endif	

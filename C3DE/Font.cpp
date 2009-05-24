@@ -98,6 +98,21 @@ int Font::GetHeight()
 Font::~Font()
 {
 	
+	m_chars->clear();
+	delete m_chars;
+	m_chars = NULL;
+
+	m_widths->clear();
+	delete m_widths;
+	m_widths = NULL;
+
+	m_rects->clear();
+	delete m_rects;
+	m_rects = NULL;
+
+	m_offsets->clear();
+	delete m_offsets;
+	m_offsets = NULL;
 }
 
 

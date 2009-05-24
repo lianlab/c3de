@@ -474,6 +474,40 @@ void D3DMesh::SetTopCollisionArea(D3DXVECTOR3 upLeft, D3DXVECTOR3 upRight, D3DXV
 	}
 
 	m_topCollisionArea = new TopCollisionArea(upLeft, upRight, downLeft, downRight);
+
+	CalculateCollisionRadius();
+}
+
+float D3DMesh::GetCollisionRadius()
+{
+	return m_collisionRadius;
+}
+
+void D3DMesh::CalculateCollisionRadius()
+{
+	float radius = sqrtf((m_topCollisionArea->GetUpLeft().x * m_topCollisionArea->GetUpLeft().x) + (m_topCollisionArea->GetUpLeft().z * m_topCollisionArea->GetUpLeft().z));
+	float candidate = sqrtf((m_topCollisionArea->GetUpRight().x * m_topCollisionArea->GetUpRight().x) + (m_topCollisionArea->GetUpRight().z * m_topCollisionArea->GetUpRight().z));
+	
+	if(candidate > radius)
+	{
+		radius = candidate;
+	}
+	
+	candidate = sqrtf((m_topCollisionArea->GetDownLeft().x * m_topCollisionArea->GetDownLeft().x) + (m_topCollisionArea->GetDownLeft().z * m_topCollisionArea->GetDownLeft().z));
+	
+
+	if(candidate > radius)
+	{
+		radius = candidate;
+	}
+
+	candidate = sqrtf((m_topCollisionArea->GetDownRight().x * m_topCollisionArea->GetDownRight().x) + (m_topCollisionArea->GetDownRight().z * m_topCollisionArea->GetDownRight().z));
+	
+
+	if(candidate > radius)
+	{
+		radius = candidate;
+	}
 }
 
 void D3DMesh::CalculateTopCollisionArea()
@@ -882,11 +916,15 @@ void D3DMesh::CalculateRealBoxPoints()
 bool D3DMesh::Collides(D3DMesh *target)
 {
 #if 0
-	D3DXVECTOR3 minPoint = a_mesh->GetBoundingBox()->minPoint;
-	D3DXVECTOR3 maxPoint = a_mesh->GetBoundingBox()->maxPoint;
+	float diffX = target->GetX() - GetX();
+	float diffZ = target->GetZ() - GetZ();
+	float distance = sqrtf((diffX * diffX) + (diffZ * diffZ));
 
-	D3DXVECTOR3 targetMinPoint = target->GetBoundingBox()->minPoint;
-	D3DXVECTOR3 targetMaxPoint = target->GetBoundingBox()->maxPoint;
+	float transformedRadius = target
+	if(distance > GetCollisionRadius())
+	{
+		return false;
+	}
 #endif
 	
 	D3DXVECTOR3 t_00 = GetTopCollisionArea()->GetUpLeft();
@@ -920,8 +958,6 @@ bool D3DMesh::Collides(D3DMesh *target)
 	D3DXVec3Transform(&t_quat11, &t_11, &t_targetMatrix);
 	D3DXVec3Transform(&t_quat12, &t_12, &t_targetMatrix);
 	D3DXVec3Transform(&t_quat13, &t_13, &t_targetMatrix);
-	
-	
 
 	t_00.x = t_quat00.x;
 	t_00.y = t_quat00.y;
@@ -955,9 +991,6 @@ bool D3DMesh::Collides(D3DMesh *target)
 	t_13.y = t_quat13.y;
 	t_13.z = t_quat13.z;
 
-
-	
-	
 	float tBox10X = t_00.x;
 	float tBox10Y = t_00.z;
 	float tBox11X = t_01.x;
@@ -976,7 +1009,6 @@ bool D3DMesh::Collides(D3DMesh *target)
 	float tBox23X = t_13.x;
 	float tBox23Y = t_13.z;
 
-
 	float aURx = tBox11X;
 	float aURy = tBox11Y;
 	float aULx = tBox10X;
@@ -985,7 +1017,6 @@ bool D3DMesh::Collides(D3DMesh *target)
 	float aLRy = tBox13Y;
 	float aLLx = tBox12X;
 	float aLLy = tBox12Y;
-	
 	
 	float bULx = tBox20X;
 	float bULy = tBox20Y;

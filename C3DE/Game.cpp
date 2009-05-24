@@ -35,6 +35,8 @@
 
 #define CAMERA_ON_TOP 0
 
+#define DISABLE_CAMERA_MOUSE 1
+
 
 using namespace std;
 
@@ -472,9 +474,6 @@ void Game::UpdateInput(int deltaTime)
 	m_camTargetZ = 0.0f;
 
 
-	printf("kjfdgfd");
-
-
 }
 
 
@@ -521,7 +520,6 @@ void Game::UpdateInput(int deltaTime)
 		step *= 5.0f;
 		isRunning = true;
 
-		t_house->Scale(t_house->GetXScale() + 0.1f, t_house->GetYScale() + 0.1f, t_house->GetZScale() + 0.1f);
 		
 		
 	}
@@ -866,6 +864,12 @@ void Game::Render(Renderer *renderer)
 	//renderer->DrawSprite((Sprite*)m_font);
 	static_cast<D3DRenderer *>(renderer)->DrawText(m_text);
 	static_cast<D3DRenderer *>(renderer)->DrawAxis();
+	//bool ret = static_cast<D3DRenderer *>(renderer)->slig(m_woman, t_house);
+	bool ret = m_woman->Collides(t_house);
+	if(ret)
+	{
+		printf("Collision%d\n", timeGetTime());
+	}
 
 	
 
@@ -898,7 +902,9 @@ void Game::OnMouseUp(int button, int x, int y)
 #if 1
 void Game::OnMouseMove(int x, int y, int dx, int dy)
 {		
-	
+#if DISABLE_CAMERA_MOUSE
+	return;
+#endif
 	D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
 	D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
 	D3DXVECTOR3 look = target - pos;
@@ -1779,7 +1785,7 @@ void Game::InitializeMeshes()
 	m_woman->Rotate(-90.0f, 0.0f, 0.0f);
 	m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
 	m_woman->SetBoundingBox(D3DXVECTOR3(-126.0f, 80.0f, 0.0f), D3DXVECTOR3(101.0f, -88.0f, 520.0f));
-
+	m_woman->SetTopCollisionArea(D3DXVECTOR3(-126.0f, -88.0f, 520.0f), D3DXVECTOR3(101.0f, -88.0f, 520.0f), D3DXVECTOR3(-126.0f, 80.0f, 520.0f), D3DXVECTOR3(101.0f, 80.0f, 520.0f));
 	
 	
 
@@ -1811,7 +1817,7 @@ void Game::InitializeMeshes()
 
 	t_house = new LandscapeMesh(MESH_HOUSE_2_ID, IMAGE_HOUSE_2_ID);
 
-	//m_testScene->AddMesh(t_house);
+	m_testScene->AddMesh(t_house);
 	m_text = new Text("QWERTY UI", m_font);
 	m_text->SetX(250);
 	m_text->SetY(250);

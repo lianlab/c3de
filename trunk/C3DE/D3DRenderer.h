@@ -84,6 +84,7 @@ public:
 	void DrawLine(int aX, int aY, int bX, int bY, int color);
 	void DrawRect(int x, int y, int w, int h, int color);
 	void DrawFillRect(int x, int y, int w, int h, int color);
+
 private:
 
 
@@ -159,6 +160,7 @@ private:
 	int shown;
 
 	IDirect3DVertexBuffer9* mVB2;
+
 
 };
 

@@ -65,6 +65,12 @@ ResourceManager::ResourceManager()
 ResourceManager::~ResourceManager()
 {
 
+	for(int i = 0; i < TOTAL_FONTS; i++)
+	{
+		delete m_fonts[i];
+		m_fonts[i] = NULL;
+	}
+
 }
 
 void ResourceManager::SetDevice(IDirect3DDevice9 *device)

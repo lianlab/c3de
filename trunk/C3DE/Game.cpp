@@ -42,6 +42,10 @@ using namespace std;
 
 Game::Game(Application * app)
 {
+
+	int m_loadedObjects = 0;
+	int m_totalObjects = 145;
+
 	m_physPosX = 200;
 	m_physPosY = 0;
 	m_physSpeedX = 0;
@@ -219,12 +223,64 @@ Game::~Game()
 	
 	//delete m_shadowSurface;
 #endif
+
+	if(m_font)
+	{
+		delete m_font;
+		m_font = NULL;
+	}
+
+	if(m_text)
+	{
+		delete m_text;
+		m_text = NULL;
+	}
+}
+
+void Game::UpdateLoadingBar(int loadedObjects, int totalobjects)
+{
+	D3DRenderer *t_renderer = (D3DRenderer*) m_renderer;
+	t_renderer->Clear();
+	t_renderer->BeginRender();
+
+	int rectHeight = 50;
+	int rectOffset = 20;
+	int rectWidth = SCREEN_WIDTH - (rectOffset *2);
+	int y = ( SCREEN_HEIGHT >> 1) - (rectHeight >> 1);
+
+	t_renderer->DrawText(m_text);
+	
+
+	t_renderer->DrawFillRect(rectOffset, y, rectWidth, rectHeight, 0xffff0000);
+	float percentage = (float)((float)loadedObjects / (float)totalobjects);
+	t_renderer->DrawFillRect(rectOffset, y , (int)(rectWidth * percentage), rectHeight, 0xffffffff);		
+
+	t_renderer->EndRender();
 }
 
 int eita = 0;
 void Game::Update(int deltaTime)
 {		
 	//deltaTime = 1000;
+
+	int totalObjects = m_testScene->GetMeshesVector()->size();
+
+	for(int i = 0 ; i< totalObjects; i++)
+	{
+		Mesh * t_target = (*m_testScene->GetMeshesVector())[i];
+		D3DMesh *t_targetMesh = (D3DMesh *)t_target;
+
+		if(t_targetMesh == m_woman || t_targetMesh == m_ground || t_target == m_skyBox)
+		{
+			continue;
+		}
+		
+		bool ret = m_woman->Collides(t_targetMesh);
+		if(ret)
+		{
+			printf("Collision%d\n", timeGetTime());
+		}
+	}
 	
 	UpdateInput(deltaTime);
 
@@ -844,6 +900,7 @@ void Game::UpdateInput()
 int clickedX = 999999;
 int clickedY = 999999;
 
+
 void Game::Render(Renderer *renderer)
 {
 	//
@@ -861,18 +918,10 @@ void Game::Render(Renderer *renderer)
 	renderer->DrawScene(m_testScene);
 	//renderer->DrawSprite(m_button);
 	renderer->DrawSprite((Sprite *)m_sprite);
-	//renderer->DrawSprite((Sprite*)m_font);
-	static_cast<D3DRenderer *>(renderer)->DrawText(m_text);
-	static_cast<D3DRenderer *>(renderer)->DrawAxis();
-	//bool ret = static_cast<D3DRenderer *>(renderer)->slig(m_woman, t_house);
-	bool ret = m_woman->Collides(t_house);
-	if(ret)
-	{
-		printf("Collision%d\n", timeGetTime());
-	}
 
+	//static_cast<D3DRenderer *>(renderer)->DrawText(m_text);
+	//static_cast<D3DRenderer *>(renderer)->DrawAxis();
 	
-
 	
 }
 
@@ -1768,6 +1817,19 @@ float GetRelativeScale(float a_mapScale);
 void Game::InitializeMeshes()
 {	
 
+	m_totalObjects = 145;
+	m_loadedObjects = 0;
+
+	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_FONT_VERDANA_36_ID);
+	D3DImage *image = new D3DImage(t);		
+	m_font = new Font(	image,ResourceManager::GetInstance()->GetFontDescriptor(FONT_VERDANA_36_ID));
+
+
+	m_text = new Text("Loading Meshes...", m_font);
+	m_text->SetX(200);
+	m_text->SetY(150);
+	m_text->SetColor(0xff000000);
+	
 
 	m_testScene = new DefaultScene1();	
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
@@ -1786,52 +1848,41 @@ void Game::InitializeMeshes()
 	m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
 	m_woman->SetBoundingBox(D3DXVECTOR3(-126.0f, 80.0f, 0.0f), D3DXVECTOR3(101.0f, -88.0f, 520.0f));
 	m_woman->SetTopCollisionArea(D3DXVECTOR3(-126.0f, -88.0f, 520.0f), D3DXVECTOR3(101.0f, -88.0f, 520.0f), D3DXVECTOR3(-126.0f, 80.0f, 520.0f), D3DXVECTOR3(101.0f, 80.0f, 520.0f));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+	
+
+	m_ground = new Ground();
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
 	
 	
 
-	Ground *t_ground = new Ground();
-
-	
-	
-#if 0
-
-	LandscapeWall3 *t_wall = new LandscapeWall3();
-	t_wall->Scale(15.0f, 0.0f, 0.0f);
-	
-	t_wall->Rotate(0.0f, 90.0f, 0.0f);
-	m_testScene->AddMesh(t_wall);
-
-	Cube *t_cube = new Cube();
-	t_cube->SetPosition(5.0f, 5.0f, 5.0f);
-	m_testScene->AddMesh(t_cube);
-#endif
 
 #if 1
 	//GENERATED CODE		
-	//#include "Tools/Map/mapPositions.h"
+	#include "Tools/Map/mapPositions.h"
 
 	
-	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_FONT_VERDANA_36_ID);
-	D3DImage *image = new D3DImage(t);		
-	m_font = new Font(	image,ResourceManager::GetInstance()->GetFontDescriptor(FONT_VERDANA_36_ID));
-
-	t_house = new LandscapeMesh(MESH_HOUSE_2_ID, IMAGE_HOUSE_2_ID);
-
-	m_testScene->AddMesh(t_house);
-	m_text = new Text("QWERTY UI", m_font);
-	m_text->SetX(250);
-	m_text->SetY(250);
-	m_text->SetColor(0xffff0000);
 	
-	m_testScene->AddMesh(t_ground);
+	//t_house = new LandscapeMesh(MESH_HOUSE_2_ID, IMAGE_HOUSE_2_ID);
+
+	//m_testScene->AddMesh(t_house);
+	
+	
+	m_testScene->AddMesh(m_ground);
 
 	m_testScene->AddMesh(m_woman);	
 	
 
-	Skybox *t_skybox = new Skybox(1000);
-	t_skybox->SetPosition(0.0f, 200, 0.0f);
+	m_skyBox = new Skybox(1000);
+	m_skyBox->SetPosition(0.0f, 200, 0.0f);
 
-	m_testScene->AddMesh(t_skybox);	
+	m_testScene->AddMesh(m_skyBox);	
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
 #endif
 	m_testScene->Initialize();
 	

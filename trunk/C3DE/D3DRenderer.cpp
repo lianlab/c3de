@@ -18,7 +18,7 @@
 #include "FireRingFX.h"
 
 #define REAL_HACK 0
-#define DRAW_BOUNDING_BOXES 1
+#define DRAW_BOUNDING_BOXES 0
 
 #define MAX_NUM_PARTICLES 50
 
@@ -1723,7 +1723,7 @@ void D3DRenderer::Reset()
 void D3DRenderer::Clear()
 {		
 	//m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0xff666666, 1.0f, 0L );
-	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0xffffffff, 1.0f, 0L );
+	m_device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, 0xff666666, 1.0f, 0L );
 }
 
 bool D3DRenderer::BeginRender()
@@ -1882,3 +1882,4 @@ bool D3DRenderer::IsMousePicked(D3DMesh *a_mesh, int mouseX, int mouseY)
 	return hit;
 
 }
+

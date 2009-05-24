@@ -139,9 +139,14 @@ public:
 
 	TopCollisionArea * GetTopCollisionArea();
 	void SetTopCollisionArea(D3DXVECTOR3 upLeft, D3DXVECTOR3 upRight, D3DXVECTOR3 downLeft, D3DXVECTOR3 downRight);
+
+	float GetCollisionRadius();
 protected:
 
 	void CalculateTopCollisionArea();
+	void CalculateCollisionRadius();
+
+	float m_collisionRadius;
 
 	D3DXVECTOR3 m_fleps;
 	D3DXVECTOR3 m_auei;

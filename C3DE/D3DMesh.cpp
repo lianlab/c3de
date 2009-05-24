@@ -881,23 +881,24 @@ void D3DMesh::CalculateRealBoxPoints()
 //bool Game::boxesCollides(Renderer *renderer)
 bool D3DMesh::Collides(D3DMesh *target)
 {
-	
-
-	D3DXVECTOR3 minPoint = GetBoundingBox()->minPoint;
-	D3DXVECTOR3 maxPoint = GetBoundingBox()->maxPoint;
+#if 0
+	D3DXVECTOR3 minPoint = a_mesh->GetBoundingBox()->minPoint;
+	D3DXVECTOR3 maxPoint = a_mesh->GetBoundingBox()->maxPoint;
 
 	D3DXVECTOR3 targetMinPoint = target->GetBoundingBox()->minPoint;
 	D3DXVECTOR3 targetMaxPoint = target->GetBoundingBox()->maxPoint;
+#endif
+	
+	D3DXVECTOR3 t_00 = GetTopCollisionArea()->GetUpLeft();
+	D3DXVECTOR3 t_01 = GetTopCollisionArea()->GetUpRight();
+	D3DXVECTOR3 t_02 = GetTopCollisionArea()->GetDownLeft();
+	D3DXVECTOR3 t_03 = GetTopCollisionArea()->GetDownRight();
 
-	D3DXVECTOR3 t_00 = D3DXVECTOR3(minPoint.x, maxPoint.y, minPoint.z);
-	D3DXVECTOR3 t_01 = D3DXVECTOR3(maxPoint.x, maxPoint.y, maxPoint.z);
-	D3DXVECTOR3 t_02 = D3DXVECTOR3(minPoint.x, maxPoint.y, maxPoint.z);
-	D3DXVECTOR3 t_03 = D3DXVECTOR3(maxPoint.x, maxPoint.y, minPoint.z);
 
-	D3DXVECTOR3 t_10 = D3DXVECTOR3(targetMinPoint.x, targetMaxPoint.y, targetMinPoint.z);
-	D3DXVECTOR3 t_11 = D3DXVECTOR3(targetMaxPoint.x, targetMaxPoint.y, targetMaxPoint.z);
-	D3DXVECTOR3 t_12 = D3DXVECTOR3(targetMinPoint.x, targetMaxPoint.y, targetMaxPoint.z);
-	D3DXVECTOR3 t_13 = D3DXVECTOR3(targetMaxPoint.x, targetMaxPoint.y, targetMinPoint.z);
+	D3DXVECTOR3 t_10 = target->GetTopCollisionArea()->GetUpLeft();
+	D3DXVECTOR3 t_11 = target->GetTopCollisionArea()->GetUpRight();
+	D3DXVECTOR3 t_12 = target->GetTopCollisionArea()->GetDownLeft();
+	D3DXVECTOR3 t_13 = target->GetTopCollisionArea()->GetDownRight();
 
 	D3DXVECTOR4 t_quat00;
 	D3DXVECTOR4 t_quat01;
@@ -974,20 +975,8 @@ bool D3DMesh::Collides(D3DMesh *target)
 	float tBox22Y = t_12.z;
 	float tBox23X = t_13.x;
 	float tBox23Y = t_13.z;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
 	float aURx = tBox11X;
 	float aURy = tBox11Y;
 	float aULx = tBox10X;
@@ -1008,22 +997,15 @@ bool D3DMesh::Collides(D3DMesh *target)
 	float bLRy = tBox23Y;
 	
 	float axis1X = aURx - aULx;
-	float axis1Y = aURy - aULy;
-	//float axis1Y = aULy - aURy;
+	float axis1Y = aURy - aULy;	
 	float axis2X = aURx - aLRx;
 	float axis2Y = aURy - aLRy;
-	//float axis2Y = aLRy - aURy;
 
 	float axis3X = bULx - bLLx;
 	float axis3Y = bULy - bLLy;
-	//float axis3Y = bLLy - bULy;
 	float axis4X = bULx - bURx;
 	float axis4Y = bULy - bURy;
-	//float axis4Y = bURy - bULy;
-	
-	
-	
-	
+
 	float multiplier = 100.0f;
 	//g->DrawLine(0, 0, (int)(axis1X * multiplier), (int)(axis1Y * multiplier), 0xff0000ff);
 	//g->DrawLine(0, 0, (int)(axis2X * multiplier), (int)(axis2Y * multiplier), 0xff0000ff);

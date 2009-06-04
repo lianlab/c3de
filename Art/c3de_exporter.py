@@ -63,6 +63,8 @@ from Blender.Mathutils import *
 from Blender import Draw, BGL
 from Blender.BGL import *
 import math
+import struct, string
+from types import *
 
 global mat_flip,index_list,space,bone_list,mat_dict
 global anim,flip_norm,swap_zy,flip_z,speed,ticks,no_light,recalc_norm,Bl_norm
@@ -338,7 +340,7 @@ Draw.Register(draw, event, button_event)
 
 class xExport:
 	def __init__(self, filename):
-		self.file = open(filename, "w")
+		self.file = open(filename, "wb")
 
 #*********************************************************************************************************************************************
 	#***********************************************
@@ -514,6 +516,8 @@ class xExport:
 				#	self.file.write("AnimationSet AnimationSet0 {\n")
 				#	self.writeAnimationObj(obj)
 				#	self.file.write("}\n")
+			if obj.type == 'Armature':
+				self.writeMeshcoordArm2(obj, arm_ob = None)
 			else :
 				print "The selected object is not a mesh"
 		print "...finished"
@@ -881,37 +885,135 @@ template SkinWeights {\n\
 				indice_it += 1
 			iterator2 = 0
 			for tt in f.uv:
-					#print "tt: " , tt	
-					vert_uvsU[f.v[iterator2].index] = round(tt[0],2)
-					vert_uvsV[f.v[iterator2].index] = (1.0 - round(tt[1],2))
-					iterator2 += 1
-					new_vert_uvs.append(tt)
+				#print "tt: " , tt	
+				vert_uvsU[f.v[iterator2].index] = round(tt[0],2)
+				vert_uvsV[f.v[iterator2].index] = (1.0 - round(tt[1],2))
+				iterator2 += 1
+				new_vert_uvs.append(tt)
 					
+		#data=struct.pack(indice_it)
+		format = "i"                   # one integer
+		data = struct.pack(format, indice_it) # pack integer in a binary string
+		self.file.write(data)
 					
 		vert_iterator = 0;
 		for vv in new_vert:
 			print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
-			self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
+			#self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
+			
+			
+			format = "ffffffff"                   # one integer
+			data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], (1.0 - new_vert_uvs[vert_iterator][1])) # pack integer in a binary string
+			self.file.write(data)
+			vert_iterator += 1
+			
+		for ii in indices:
+			#print("m_indices->push_back(%d);" % (ii))
+			#self.file.write("m_indices->push_back(%d);\n" % (ii))
+			format = "i"                   # one integer
+			data = struct.pack(format, ii) # pack integer in a binary string
+			self.file.write(data)
+			
+			
+		
+			
+		
+		print "here we end\n"
+		
+	def writeMeshcoordArm2(self, obj ,arm_ob):
+		global index_list,flip_z
+		#TransformMatrix
+		mat = self.getLocMat(obj)
+		#self.writeArmFrames(mat, make_legal_name(obj.name))
+		mesh = NMesh.GetRawFromObject(obj.name)
+		
+		
+		print "Here we are for amarmature\n"
+		
+		
+		
+		me = Mesh.New()              # Create a new mesh
+		
+		me.getFromObject(obj.name)    # Get the object's mesh data
+		
+		print "has " , me.faceUV
+		
+		vert_coords =[]
+		vert_normals =[]
+		vert_uvsU =[]
+		vert_uvsV =[]
+		vert_indices = []
+		
+		verts = me.verts[:]          # Save a copy of the vertices
+		
+		iterator = 0
+		
+		for v in me.verts:
+		
+			vert_coords.append(v.co)
+			vert_normals.append(v.no)
+			vert_uvsU.append(0)
+			vert_uvsV.append(0)
+			
+			
+			iterator += 1
+			
+			
+			
+		me.verts = verts             # Restore the original verts
+		
+		
+		indices = []
+		new_vert = []
+		new_vert_normals = []
+		new_vert_uvs = []
+		
+		indice_it = 0;
+
+		for f in me.faces:
+			for vertice in f.v:		
+				#print ("face: %d;, vertice: %d;" % (f.index, vertice.index))
+				vert_indices.append(vertice.index)
+				new_vert.append(vertice.co)
+				new_vert_normals.append(vertice.no)
+				indices.append(indice_it)
+				indice_it += 1
+			iterator2 = 0
+			for tt in f.uv:
+				#print "tt: " , tt	
+				vert_uvsU[f.v[iterator2].index] = round(tt[0],2)
+				vert_uvsV[f.v[iterator2].index] = (1.0 - round(tt[1],2))
+				iterator2 += 1
+				new_vert_uvs.append(tt)
+					
+		#data=struct.pack(indice_it)
+		format = "i"                   # one integer
+		data = struct.pack(format, indice_it) # pack integer in a binary string
+		self.file.write(data)
+					
+		vert_iterator = 0;
+		for vv in new_vert:
+			print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
+			#self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
+			
+			
+			format = "ffffffff"                   # one integer
+			data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], (1.0 - new_vert_uvs[vert_iterator][1])) # pack integer in a binary string
+			#self.file.write(data)
 			vert_iterator += 1
 			
 		for ii in indices:
 			print("m_indices->push_back(%d);" % (ii))
-			self.file.write("m_indices->push_back(%d);\n" % (ii))
+			#self.file.write("m_indices->push_back(%d);\n" % (ii))
+			format = "i"                   # one integer
+			data = struct.pack(format, ii) # pack integer in a binary string
+			#self.file.write(data)
 			
-			
-		final_iterator = 0
-		for pp in vert_coords:
-			#self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (pp[0], pp[1], pp[2],vert_normals[final_iterator][0], vert_normals[final_iterator][1], vert_normals[final_iterator][2],vert_uvsU[final_iterator], vert_uvsV[final_iterator]))
-			#print("m_vertices->push_back(VertexPos(%f, %f, %f, %f, %f, %f, %f, %f));"	% (pp[0], pp[1], pp[2],vert_normals[final_iterator][0], vert_normals[final_iterator][1], vert_normals[final_iterator][2],vert_uvsU[final_iterator], vert_uvsV[final_iterator]))
-			final_iterator += 1
-			
-		#for qq in vert_indices:
-			#print("vert_indices %d;" % qq)
-			#self.file.write("m_indices->push_back(%d);\n" % (qq))
-			#print("m_indices->push_back(%d);" % (qq))
 			
 		
-		print "here we end\n"
+			
+		
+		print "here we end for armature\n"
 		
 		
 	

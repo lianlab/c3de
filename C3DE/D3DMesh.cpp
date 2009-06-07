@@ -4,6 +4,19 @@
 
 IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
 
+IDirect3DVertexDeclaration9* VertexPosSkin::Decl = 0;
+
+
+VertexPosSkin::VertexPosSkin(float x, float y, float z, 
+		float nx, float ny, float nz,
+		float u, float v, float a_jiraya)
+{
+	pos = D3DXVECTOR3(x,y,z); 
+	normal = D3DXVECTOR3(nx,ny,nz); 
+	tex0 = D3DXVECTOR2(u,v);
+	jiraya = a_jiraya;
+}
+
 D3DMesh::D3DMesh():Mesh()
 {
 
@@ -59,6 +72,55 @@ void D3DMesh::SetXMesh(ID3DXMesh *a_mesh)
 	m_xMesh = a_mesh;
 }
 
+void D3DMesh::LoadFromC3DEFile(char *meshBuffer)
+{
+	int *pTotalVertices = (int*)malloc(sizeof(int));
+	memcpy(pTotalVertices,meshBuffer,sizeof(int));
+
+	float *t_vertices = (float*)malloc(*pTotalVertices * sizeof(float) * 8);
+	memcpy(t_vertices,&meshBuffer[sizeof(int)],(*pTotalVertices * sizeof(float) * 8));
+
+	int *t_indices = (int*)malloc(*pTotalVertices * sizeof(int));
+	memcpy(t_indices,&meshBuffer[sizeof(int) + (*pTotalVertices * sizeof(float) * 8)],(*pTotalVertices * sizeof(int)));
+
+	if(m_vertices)
+	{
+		m_vertices->clear();
+		delete m_vertices;
+		m_vertices = NULL;
+	}
+
+	if(m_indices)
+	{
+		m_indices->clear();
+		delete m_indices;
+		m_indices = NULL;
+	}
+
+	m_vertices = new vector<VertexPos>;
+	m_indices = new vector<int>;
+
+	for(int i = 0 ; i < *pTotalVertices; i++)
+	{
+		m_vertices->push_back(VertexPos(t_vertices[8*i], t_vertices[(8*i) + 1], t_vertices[(8*i) + 2], t_vertices[(8*i) + 3], t_vertices[(8*i) + 4], t_vertices[(8*i) + 5], t_vertices[(8*i) + 6], t_vertices[(8*i) + 7]));
+		m_indices->push_back(t_indices[i]);
+	}
+
+
+	
+	free(pTotalVertices);
+	pTotalVertices = NULL;
+
+	free(t_vertices);
+	t_vertices = NULL;
+
+	free(t_indices);
+	t_indices = NULL;
+
+
+	
+}
+
 
 void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 {
@@ -87,11 +149,8 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 	int totalIndices = m_indices->size();
 	DWORD indices = totalIndices/3;
 	DWORD vertices = totalVertices;
-	//HRESULT err = D3DXCreateMesh(totalIndices/3, totalVertices, D3DXMESH_SYSTEMMEM|D3DXMESH_32BIT, VertexPosElements, a_device, &m_xMesh);
-	//HRESULT err = D3DXCreateMesh(indices, vertices, D3DXMESH_SYSTEMMEM|D3DXMESH_32BIT, VertexPosElements, a_device, &m_xMesh);
+	
 	HRESULT err = D3DXCreateMesh(indices, vertices, D3DXMESH_MANAGED, VertexPosElements, a_device, &m_xMesh);
-	//HRESULT err = D3DXCreateMesh(totalIndices/3, totalVertices, D3DXMESH_32BIT, VertexPosElements, a_device, &m_xMesh);
-
 	
 	VertexPos *v = NULL;
 	m_xMesh->LockVertexBuffer(0, (void**)&v);

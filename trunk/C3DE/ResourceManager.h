@@ -184,6 +184,38 @@ enum MeshesIDs
 	TOTAL_MESHES
 };
 
+enum MeshBuffersIds
+{
+	MESH_BUFFER_CAFE_TABLE_ID,
+	MESH_BUFFER_GARDEN_BORDER_ID,
+	MESH_BUFFER_MAILBOX01_ID,
+	MESH_BUFFER_MAILBOX02_ID,
+	MESH_BUFFER_MAILBOX03_ID,
+	MESH_BUFFER_PARKING_BARRIER_ID,
+	MESH_BUFFER_PALETTE_ID,
+	MESH_BUFFER_PIPE_CAGE_ID,
+	MESH_BUFFER_SANDWICH_BOARD_ID,
+	MESH_BUFFER_SIDEWALK_BARRIER_ID,
+	MESH_BUFFER_SIGN01_ID,
+	MESH_BUFFER_SIGN02_ID,
+	MESH_BUFFER_SIGN03_ID,
+	MESH_BUFFER_SIGN04_ID,
+	MESH_BUFFER_SIGN05_ID,
+	MESH_BUFFER_SIGN06_ID,
+	MESH_BUFFER_SPRINKLER_ID,
+	MESH_BUFFER_BENCH_ID,
+	MESH_BUFFER_STREET_LIGHT_01_ID,
+	MESH_BUFFER_STREET_LIGHT_02_ID,	
+	MESH_BUFFER_SWITCHBOX_ID,
+	MESH_BUFFER_TRAFFIC_CONE_ID,
+	MESH_BUFFER_HOUSE_ID,
+	MESH_BUFFER_HOUSE_2_ID,
+	MESH_BUFFER_HOUSE_3_ID,
+	MESH_BUFFER_HOUSE_4_ID,
+	MESH_BUFFER_HOUSE_5_ID,
+	TOTAL_MESH_BUFFERS
+};
+
 struct VideoStructure
 {
 	PGETFRAME *m_frames;
@@ -223,11 +255,14 @@ public:
 
 	int * GetFontDescriptor(int a_fontId);
 
+	char * GetMeshBuffer(int meshBufferID);
+
 private:
 	ResourceManager();
 	static ResourceManager *m_instance;	
 	void InitializeResources();
 	void InitializeFonts();
+	void InitializeMeshBuffers();
 	IDirect3DDevice9 *m_device;
 
 	IDirect3DTexture9 * temp;
@@ -240,6 +275,8 @@ private:
 	VideoStructure * m_videos[TOTAL_VIDEOS];
 
 	int * m_fonts[TOTAL_FONTS];
+
+	char *m_meshBuffers[TOTAL_MESH_BUFFERS];
 
 	
 

@@ -71,6 +71,12 @@ ResourceManager::~ResourceManager()
 		m_fonts[i] = NULL;
 	}
 
+	for(int i = 0; i  < TOTAL_MESH_BUFFERS; i++)
+	{
+		free(m_meshBuffers[i]);
+		m_meshBuffers[i] = NULL;
+	}
+
 }
 
 void ResourceManager::SetDevice(IDirect3DDevice9 *device)
@@ -457,6 +463,445 @@ void ResourceManager::InitializeResources()
 	InitializeVideos();
 
 	InitializeFonts();
+
+	InitializeMeshBuffers();
+}
+
+void ResourceManager::InitializeMeshBuffers()
+{	
+	FILE * pFile;
+	long lSize;
+	size_t result;
+	fpos_t position;
+
+	//CAFE TABLE
+	pFile = fopen ( "Meshes/landscape/cafeTable.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferCafeTable = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferCafeTable,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_CAFE_TABLE_ID] = bufferCafeTable;
+
+	
+
+
+	//GARDEN BORDER
+	pFile = fopen ( "Meshes/landscape/gardenBorder.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferGardenBorder = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferGardenBorder,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_GARDEN_BORDER_ID] = bufferGardenBorder;
+
+	//MAILBOX 1
+	pFile = fopen ( "Meshes/landscape/mailbox01.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferMailbox1 = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferMailbox1,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_MAILBOX01_ID] = bufferMailbox1;
+
+	
+	//MAILBOX 2
+	pFile = fopen ( "Meshes/landscape/mailbox02.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferMailbox2 = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferMailbox2,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_MAILBOX02_ID] = bufferMailbox2;
+
+
+	//MAILBOX 3
+	pFile = fopen ( "Meshes/landscape/mailbox03.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferMailbox3 = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferMailbox3,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_MAILBOX03_ID] = bufferMailbox3;
+
+
+	
+	//PARKING BARRIER
+	pFile = fopen ( "Meshes/landscape/parkingBarrier.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferParkingBarrier = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferParkingBarrier,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_PARKING_BARRIER_ID] = bufferParkingBarrier;
+
+	//PALETTE
+	pFile = fopen ( "Meshes/landscape/palette.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferPalette = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferPalette,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_PALETTE_ID] = bufferPalette;
+
+	
+	//PIPECAGE
+	pFile = fopen ( "Meshes/landscape/pipeCage.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferPipeCage = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferPipeCage,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_PIPE_CAGE_ID] = bufferPipeCage;
+
+	//SANDWICH_BOARD
+	pFile = fopen ( "Meshes/landscape/sandwichBoard.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSandwichBoard = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSandwichBoard,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SANDWICH_BOARD_ID] = bufferSandwichBoard;
+
+	//MESH_BUFFER_SIDEWALK_BARRIER_ID
+	pFile = fopen ( "Meshes/landscape/sidewalkBarrier.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSidewalkBarrier = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSidewalkBarrier,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SIDEWALK_BARRIER_ID] = bufferSidewalkBarrier;
+
+	
+	//MESH_BUFFER_SIGN01_ID
+	pFile = fopen ( "Meshes/landscape/sign01.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSign01 = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSign01,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SIGN01_ID] = bufferSign01;
+
+	
+	//MESH_BUFFER_SIGN02_ID
+	pFile = fopen ( "Meshes/landscape/sign02.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSign02 = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSign02,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SIGN02_ID] = bufferSign02;
+
+	//MESH_BUFFER_SIGN03_ID
+	pFile = fopen ( "Meshes/landscape/sign03.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSign03 = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSign03,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SIGN03_ID] = bufferSign03;
+
+	//MESH_BUFFER_SIGN04_ID
+	pFile = fopen ( "Meshes/landscape/sign04.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSign04 = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSign04,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SIGN04_ID] = bufferSign04;
+
+	//MESH_BUFFER_SIGN05_ID
+	pFile = fopen ( "Meshes/landscape/sign05.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSign05 = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSign05,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SIGN05_ID] = bufferSign05;
+
+	//MESH_BUFFER_SIGN06_ID
+	pFile = fopen ( "Meshes/landscape/sign06.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSign06 = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSign06,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SIGN06_ID] = bufferSign06;
+
+	//MESH_BUFFER_SPRINKLER_ID
+	pFile = fopen ( "Meshes/landscape/sprinkler.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSprinkler = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSprinkler,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SPRINKLER_ID] = bufferSprinkler;
+
+	
+	//MESH_BUFFER_BENCH_ID
+	pFile = fopen ( "Meshes/landscape/bench.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferBench = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferBench,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_BENCH_ID] = bufferBench;
+
+	
+	//MESH_BUFFER_STREET_LIGHT_01_ID
+	pFile = fopen ( "Meshes/landscape/streetLight01.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferStreetLight01= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferStreetLight01,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_STREET_LIGHT_01_ID] = bufferStreetLight01;
+
+	//MESH_BUFFER_STREET_LIGHT_02_ID
+	pFile = fopen ( "Meshes/landscape/streetLight02.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferStreetLight02= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferStreetLight02,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_STREET_LIGHT_02_ID] = bufferStreetLight02;
+
+	
+	//MESH_BUFFER_SWITCHBOX_ID
+	pFile = fopen ( "Meshes/landscape/switchBox.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwitchbox= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwitchbox,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWITCHBOX_ID] = bufferSwitchbox;
+
+	
+	//MESH_BUFFER_TRAFFIC_CONE_ID
+	pFile = fopen ( "Meshes/landscape/trafficCone.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferTrafficCone= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferTrafficCone,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_TRAFFIC_CONE_ID] = bufferTrafficCone;
+
+	//MESH_BUFFER_HOUSE_ID
+	pFile = fopen ( "Meshes/landscape/house.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferHouse= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferHouse,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_HOUSE_ID] = bufferHouse;
+
+	
+	//MESH_BUFFER_HOUSE_2_ID
+	pFile = fopen ( "Meshes/landscape/house_2.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferHouse_2= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferHouse_2,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_HOUSE_2_ID] = bufferHouse_2;
+
+	//MESH_BUFFER_HOUSE_3_ID
+	pFile = fopen ( "Meshes/landscape/house_3.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferHouse_3= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferHouse_3,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_HOUSE_3_ID] = bufferHouse_3;
+
+	//MESH_BUFFER_HOUSE_4_ID
+	pFile = fopen ( "Meshes/landscape/house_4.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferHouse_4= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferHouse_4,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_HOUSE_4_ID] = bufferHouse_4;
+
+	//MESH_BUFFER_HOUSE_5_ID
+	pFile = fopen ( "Meshes/landscape/house_5.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferHouse_5= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferHouse_5,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_HOUSE_5_ID] = bufferHouse_5;
+	
+	
+
+	
+}
+
+char * ResourceManager::GetMeshBuffer(int meshBufferID)
+{
+	return m_meshBuffers[meshBufferID];
 }
 
 void ResourceManager::InitializeVideos()

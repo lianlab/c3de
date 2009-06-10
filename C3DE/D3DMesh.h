@@ -57,6 +57,49 @@ struct VertexPos
 
 	static IDirect3DVertexDeclaration9* Decl;
 };
+#if 0
+struct VertexPosSkin
+{
+	VertexPosSkin()
+		:pos(0.0f, 0.0f, 0.0f),
+		normal(0.0f, 0.0f, 0.0f),
+		tex0(0.0f, 0.0f),jiraya(0.0f)
+		//tex0(0.0f, 0.0f)
+	{}
+	VertexPosSkin(float x, float y, float z, 
+		float nx = 0.0f, float ny = 1.0f, float nz = 0.0f,
+		float u = 0.0f, float v=0.0f, float a_jiraya = 1.0f){pos = D3DXVECTOR3(x,y,z); normal = D3DXVECTOR3(nx,ny,nz); tex0 = D3DXVECTOR2(u,v);jiraya = a_jiraya;}
+		//float u = 0.0f, float v=0.0f):pos(x,y,z), normal(nx,ny,nz), tex0(u,v){}
+	VertexPosSkin(const D3DXVECTOR3& v, const D3DXVECTOR3& n, const D3DXVECTOR2& uv)
+	//VertexPosSkin(const D3DXVECTOR3& v, const D3DXVECTOR3& n, const D3DXVECTOR2& uv)
+		:pos(v),normal(n), tex0(uv){jiraya = 0.0f;}
+		//:pos(v),normal(n), tex0(uv){}
+
+	D3DXVECTOR3 pos;
+	D3DXVECTOR3 normal;
+	D3DXVECTOR2 tex0;
+	float jiraya;
+
+	static IDirect3DVertexDeclaration9* Decl;
+};
+#endif
+
+struct VertexPosSkin
+{
+	
+	VertexPosSkin(float x, float y, float z, 
+		float nx = 0.0f, float ny = 1.0f, float nz = 0.0f,
+		float u = 0.0f, float v=0.0f, float a_jiraya = 0.0f ,int index = 0);
+		
+
+	D3DXVECTOR3 pos;
+	D3DXVECTOR3 normal;
+	D3DXVECTOR2 tex0;
+	float jiraya;
+	int index;
+
+	static IDirect3DVertexDeclaration9* Decl;
+};
 
 struct VertexCol
 {
@@ -95,12 +138,14 @@ public:
 
 	
 	vector<VertexPos> * GetVertices(){return m_vertices;}
+	vector<VertexPosSkin> * GetVertices2(){return m_vertices2;}
 	vector<int> * GetIndices(){return m_indices;}
 
 	void SetVertices(vector<VertexPos> * a_vertices);
 	void SetIndices(vector<int> * a_indices);
 
 	int GetVertexSize(){return sizeof(VertexPos);}
+	//int GetVertexSize2(){return sizeof(VertexPosSkin);}
 
 	D3DXMATRIX GetTransformMatrix();
 
@@ -115,6 +160,7 @@ public:
 
 	void LoadFromXFile(	const std::string &filename, IDirect3DDevice9* a_device);
 
+	void LoadFromC3DEFile(char *meshBuffer);
 	int GetNumSubsets(){return m_numSubsets;}
 
 	ID3DXMesh * GetXMesh(){
@@ -166,6 +212,7 @@ protected:
 	IDirect3DVertexDeclaration9 *m_vertexDeclaration;
 
 	vector<VertexPos> *m_vertices;
+	vector<VertexPosSkin> *m_vertices2;
 	vector<int> *m_indices;
 
 	D3DXHANDLE m_shaderObjectAmbientMaterial;//gAmbientMtrl

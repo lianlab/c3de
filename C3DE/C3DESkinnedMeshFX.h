@@ -19,6 +19,9 @@ public:
 
 	void SetBoneMatrix(const D3DXMATRIX *a_bones, UINT a_numBones);
 
+	void SetRootMatrices(const D3DXMATRIX *a_toRoot, UINT totalToRoots);
+	void SetFrameRootMatrices(const D3DXMATRIX * currentFrameToRoots, UINT totalCurrentFrameToRoots);
+
 	void SetAlpha(float alpha);
 
 	void ResetHandlers();
@@ -31,6 +34,9 @@ protected:
 	D3DXHANDLE m_shaderHack;//gSpecPower
 	D3DXHANDLE   m_hTex;
 	D3DXHANDLE   mhFinalXForms;
+
+	D3DXHANDLE   mhToRoot;
+	D3DXHANDLE   mhCurrentFrameToRoot;
 
 	float m_hack;
 	float dir;

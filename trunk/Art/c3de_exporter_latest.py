@@ -838,8 +838,11 @@ template SkinWeights {\n\
 		print "Here we go\n"
 		
 		path = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\out%d.c3d" % objectIndex)
+		path2 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\out.txt")
 		
 		file = open(path, "wb")
+		
+		file2 = open(path2, "wb")
 		
 		
 		
@@ -959,6 +962,7 @@ template SkinWeights {\n\
 				print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
 			else:
 				print("(VertexPos(%ff));"	% (vv[0]))
+				file2.write("m_vertices->push_back(VertexPosBones(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %i, %i));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0, 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]))
 				#print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0))
 				#self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
 			
@@ -993,14 +997,20 @@ template SkinWeights {\n\
 		#self.writeArmFrames(mat, make_legal_name(obj.name))
 		
 		
-		armature_obj = obj.getData
+		armature_obj = obj.getData()
+		
+		bones = armature_obj.bones.values()
+		
+		bones_offset_x = []
+		bones_offset_y = []
+		bones_offset_z = []
+		
+		
 		
 		print "Here we are for amarmature\n"
 		
-		
-		
-		
-		
+		for bone_name in bones_order:
+			print("bones  head:  %s" % armature_obj.bones[bone_name].head["ARMATURESPACE"])						
 			
 		
 		print "here we end for armature\n"

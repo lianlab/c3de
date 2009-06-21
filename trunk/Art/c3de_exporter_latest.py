@@ -71,7 +71,7 @@ global anim,flip_norm,swap_zy,flip_z,speed,ticks,no_light,recalc_norm,Bl_norm
 bone_list =[]
 index_list = []
 mat_dict = {}
-vertex_groups_names = []
+
 bones_order = []
 space = 0;flip_z = 1;anim=0;swap_yz=0;flip_norm=0;speed=0;ticks= 25
 Bl_norm = 1;recalc_norm = 0;no_light = 0
@@ -520,10 +520,13 @@ class xExport:
 				#	self.file.write("AnimationSet AnimationSet0 {\n")
 				#	self.writeAnimationObj(obj)
 				#	self.file.write("}\n")
+			#if obj.type == 'Armature':
+			#	self.writeMeshcoordArm2(obj, arm_ob = None)
+			#else :
+			#	print "The selected object is not a mesh"
+		for obj in objs:
 			if obj.type == 'Armature':
 				self.writeMeshcoordArm2(obj, arm_ob = None)
-			else :
-				print "The selected object is not a mesh"
 		print "...finished"
 	#***********************************************
 	#Export Mesh with Armature
@@ -988,91 +991,15 @@ template SkinWeights {\n\
 		#TransformMatrix
 		mat = self.getLocMat(obj)
 		#self.writeArmFrames(mat, make_legal_name(obj.name))
-		mesh = NMesh.GetRawFromObject(obj.name)
 		
+		
+		armature_obj = obj.getData
 		
 		print "Here we are for amarmature\n"
 		
 		
 		
-		me = Mesh.New()              # Create a new mesh
 		
-		me.getFromObject(obj.name)    # Get the object's mesh data
-		
-		print "has " , me.faceUV
-		
-		vert_coords =[]
-		vert_normals =[]
-		vert_uvsU =[]
-		vert_uvsV =[]
-		vert_indices = []
-		
-		verts = me.verts[:]          # Save a copy of the vertices
-		
-		iterator = 0
-		
-		for v in me.verts:
-		
-			vert_coords.append(v.co)
-			vert_normals.append(v.no)
-			vert_uvsU.append(0)
-			vert_uvsV.append(0)
-			
-			
-			iterator += 1
-			
-			
-			
-		me.verts = verts             # Restore the original verts
-		
-		
-		indices = []
-		new_vert = []
-		new_vert_normals = []
-		new_vert_uvs = []
-		
-		indice_it = 0;
-
-		for f in me.faces:
-			for vertice in f.v:		
-				#print ("face: %d;, vertice: %d;" % (f.index, vertice.index))
-				vert_indices.append(vertice.index)
-				new_vert.append(vertice.co)
-				new_vert_normals.append(vertice.no)
-				indices.append(indice_it)
-				indice_it += 1
-			iterator2 = 0
-			for tt in f.uv:
-				#print "tt: " , tt	
-				vert_uvsU[f.v[iterator2].index] = round(tt[0],2)
-				vert_uvsV[f.v[iterator2].index] = (1.0 - round(tt[1],2))
-				iterator2 += 1
-				new_vert_uvs.append(tt)
-					
-		#data=struct.pack(indice_it)
-		format = "i"                   # one integer
-		data = struct.pack(format, indice_it) # pack integer in a binary string
-		self.file.write(data)
-					
-		vert_iterator = 0;
-		for vv in new_vert:
-			print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
-			#self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
-			
-			
-			format = "ffffffff"                   # one integer
-			data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], (1.0 - new_vert_uvs[vert_iterator][1])) # pack integer in a binary string
-			#self.file.write(data)
-			vert_iterator += 1
-			
-		for ii in indices:
-			print("m_indices->push_back(%d);" % (ii))
-			#self.file.write("m_indices->push_back(%d);\n" % (ii))
-			format = "i"                   # one integer
-			data = struct.pack(format, ii) # pack integer in a binary string
-			#self.file.write(data)
-			
-			
 		
 			
 		

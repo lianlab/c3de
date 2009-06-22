@@ -962,7 +962,7 @@ template SkinWeights {\n\
 				print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
 			else:
 				print("(VertexPos(%ff));"	% (vv[0]))
-				file2.write("m_vertices->push_back(VertexPosBones(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %i, %i));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0, 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]))
+				file2.write("m_vertices3->push_back(VertexPosBones(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %i, %i));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0, 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]))
 				#print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0))
 				#self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
 			
@@ -976,8 +976,12 @@ template SkinWeights {\n\
 			file.write(data)
 			vert_iterator += 1
 			
+		
+		file2.write("\n\n")
+		
 		for ii in indices:
 			#print("m_indices->push_back(%d);" % (ii))
+			file2.write("m_indices->push_back(%d);\n" % (ii))
 			#self.file.write("m_indices->push_back(%d);\n" % (ii))
 			format = "i"                   # one integer
 			data = struct.pack(format, ii) # pack integer in a binary string
@@ -997,6 +1001,13 @@ template SkinWeights {\n\
 		#self.writeArmFrames(mat, make_legal_name(obj.name))
 		
 		
+		path3 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\outBones.txt")
+		
+		
+		
+		file3 = open(path3, "wb")
+		
+		
 		armature_obj = obj.getData()
 		
 		bones = armature_obj.bones.values()
@@ -1005,13 +1016,30 @@ template SkinWeights {\n\
 		bones_offset_y = []
 		bones_offset_z = []
 		
+		total = len(bones_order)
+		
+		print("TOTAL: %i" % total)
+		
+		file3.write("int totalBones = %i;\n" % total)
+		file3.write("m_roots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * totalBones);\n")
+		file3.write("m_currentFrameToRoots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * totalBones);\n\n")
+		
+		
+		
 		
 		
 		print "Here we are for amarmature\n"
 		
+		iterator = 0
+		
 		for bone_name in bones_order:
-			print("bones  head:  %s" % armature_obj.bones[bone_name].head["ARMATURESPACE"])						
-			
+			print("bones  head:  %s \n" % armature_obj.bones[bone_name].head["ARMATURESPACE"])		
+			file3.write("D3DXMATRIX t_toRoot%i;\n" % iterator)
+			file3.write("D3DXMatrixIdentity(&t_toRoot%i);\n" % iterator)
+			file3.write("D3DXMatrixTranslation(&t_toRoot%i, %ff, %ff, %ff);\n" % (iterator, armature_obj.bones[bone_name].head["ARMATURESPACE"][0], armature_obj.bones[bone_name].head["ARMATURESPACE"][1], armature_obj.bones[bone_name].head["ARMATURESPACE"][2]))
+			file3.write("m_roots[%i] = t_toRoot%i;\n" % (iterator, iterator))
+			file3.write("m_currentFrameToRoots[%i] = t_toRoot%i;//for now\n\n" % (iterator, iterator))
+			iterator += 1
 		
 		print "here we end for armature\n"
 		

@@ -6,15 +6,60 @@ IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
 
 IDirect3DVertexDeclaration9* VertexPosSkin::Decl = 0;
 
+IDirect3DVertexDeclaration9* VertexPosBones::Decl = 0;
+
 
 VertexPosSkin::VertexPosSkin(float x, float y, float z, 
 		float nx, float ny, float nz,
-		float u, float v, float a_jiraya)
+		float u, float v, float a_jiraya, int a_index)
 {
+	float roundedX = x + 0.5f;
+	int tt = (int)roundedX;
+
 	pos = D3DXVECTOR3(x,y,z); 
 	normal = D3DXVECTOR3(nx,ny,nz); 
 	tex0 = D3DXVECTOR2(u,v);
 	jiraya = a_jiraya;
+	index = a_index;
+
+	//if(tt == 5 || tt == 2)
+	//if(tt == 0)
+	if(tt == 2 || tt == 5)
+	{
+		index = 1;
+	}
+	else 
+	{
+		index = 0;
+	}
+}
+
+VertexPosBones::VertexPosBones(float x, float y, float z, 
+		float nx, float ny, float nz,
+		float u, float v, float a_boneWeight0, int a_boneIndex0, int a_boneIndex1)
+{
+	float roundedX = x + 0.5f;
+	int tt = (int)roundedX;
+
+	pos = D3DXVECTOR3(x,y,z); 
+	normal = D3DXVECTOR3(nx,ny,nz); 
+	tex0 = D3DXVECTOR2(u,v);
+	boneWeight0 = a_boneWeight0;
+	boneIndex0 = a_boneIndex0;
+	boneIndex1 = a_boneIndex1;
+
+#if 0
+	//if(tt == 5 || tt == 2)
+	//if(tt == 0)
+	if(tt == 2 || tt == 5)
+	{
+		index = 1;
+	}
+	else 
+	{
+		index = 0;
+	}
+#endif
 }
 
 D3DMesh::D3DMesh():Mesh()

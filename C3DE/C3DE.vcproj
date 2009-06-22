@@ -387,6 +387,10 @@
 								>
 							</File>
 							<File
+								RelativePath=".\C3DESkinnedMesh.cpp"
+								>
+							</File>
+							<File
 								RelativePath=".\D3DSkinnedMesh.cpp"
 								>
 							</File>
@@ -462,6 +466,10 @@
 						<Filter
 							Name="Landscape"
 							>
+							<File
+								RelativePath=".\GameMesh.cpp"
+								>
+							</File>
 							<File
 								RelativePath=".\LandscapeMesh.cpp"
 								>
@@ -661,6 +669,10 @@
 						</File>
 						<File
 							RelativePath=".\BookLights.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\C3DESkinnedMeshFX.cpp"
 							>
 						</File>
 						<File
@@ -989,6 +1001,10 @@
 								>
 							</File>
 							<File
+								RelativePath=".\C3DESkinnedMesh.h"
+								>
+							</File>
+							<File
 								RelativePath=".\D3DSkinnedMesh.h"
 								>
 							</File>
@@ -1056,6 +1072,10 @@
 						<Filter
 							Name="Landscape"
 							>
+							<File
+								RelativePath=".\GameMesh.h"
+								>
+							</File>
 							<File
 								RelativePath=".\LandscapeMesh.h"
 								>
@@ -1255,6 +1275,10 @@
 						</File>
 						<File
 							RelativePath=".\BookLights.h"
+							>
+						</File>
+						<File
+							RelativePath=".\C3DESkinnedMeshFX.h"
 							>
 						</File>
 						<File

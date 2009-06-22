@@ -101,6 +101,24 @@ struct VertexPosSkin
 	static IDirect3DVertexDeclaration9* Decl;
 };
 
+struct VertexPosBones
+{
+	
+	VertexPosBones(float x, float y, float z, 
+		float nx = 0.0f, float ny = 1.0f, float nz = 0.0f,
+		float u = 0.0f, float v=0.0f, float a_boneWeight0 = 0.0f ,int a_boneIndex0 = -1, int a_boneIndex1 = -1);
+		
+
+	D3DXVECTOR3 pos;
+	D3DXVECTOR3 normal;
+	D3DXVECTOR2 tex0;
+	float boneWeight0;
+	int boneIndex0;
+	int boneIndex1;
+
+	static IDirect3DVertexDeclaration9* Decl;
+};
+
 struct VertexCol
 {
 	VertexCol()
@@ -213,6 +231,7 @@ protected:
 
 	vector<VertexPos> *m_vertices;
 	vector<VertexPosSkin> *m_vertices2;
+	vector<VertexPosBones> *m_vertices3;
 	vector<int> *m_indices;
 
 	D3DXHANDLE m_shaderObjectAmbientMaterial;//gAmbientMtrl

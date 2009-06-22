@@ -18,10 +18,10 @@ protected:
 	//D//3DXHANDLE  m_hTex;
 	//D3DXHANDLE	m_shaderAlpha;//galpha
 
-	D3DXMATRIX m_matrices[2];
+	//D3DXMATRIX m_matrices[2];
 
-	D3DXMATRIX m_roots[2];
-	D3DXMATRIX m_currentFrameToRoots[2];
+	D3DXMATRIX *m_roots;
+	D3DXMATRIX *m_currentFrameToRoots;
 	
 	
 };

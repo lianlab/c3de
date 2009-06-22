@@ -14,6 +14,9 @@ FX(effect)
 	m_shaderAlpha = m_effect->GetParameterByName(0, "gAlpha");
 	mhFinalXForms = m_effect->GetParameterByName(0, "gFinalXForms");
 
+	mhToRoot = m_effect->GetParameterByName(0, "gToRoot");
+	mhCurrentFrameToRoot = m_effect->GetParameterByName(0, "gCurrentFrameToRoot");
+
 	m_shaderHack = m_effect->GetParameterByName(0, "gHack");
 	
 	m_hTex = m_effect->GetParameterByName(0, "gTex");
@@ -62,6 +65,19 @@ void C3DESkinnedMeshFX::SetBoneMatrix(const D3DXMATRIX *a_bones, UINT a_numBones
 {
 
 	HR(m_effect->SetMatrixArray(mhFinalXForms, a_bones, a_numBones));
+}
+
+
+void C3DESkinnedMeshFX::SetRootMatrices(const D3DXMATRIX *a_toRoot, UINT totalToRoots)
+{
+	HR(m_effect->SetMatrixArray(mhToRoot, a_toRoot, totalToRoots));
+	//HR(m_effect->SetMatrixArray(mhCurrentFrameToRoot, currentFrameToRoots, totalCurrentFrameToRoots));
+}
+
+void C3DESkinnedMeshFX::SetFrameRootMatrices(const D3DXMATRIX * currentFrameToRoots, UINT totalCurrentFrameToRoots)
+{
+	//HR(m_effect->SetMatrixArray(mhToRoot, a_toRoot, totalToRoots));
+	HR(m_effect->SetMatrixArray(mhCurrentFrameToRoot, currentFrameToRoots, totalCurrentFrameToRoots));
 }
 
 void C3DESkinnedMeshFX::SetWorldHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldViewProjection)

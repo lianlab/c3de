@@ -17,13 +17,12 @@ FX(effect)
 	mhToRoot = m_effect->GetParameterByName(0, "gToRoot");
 	mhCurrentFrameToRoot = m_effect->GetParameterByName(0, "gCurrentFrameToRoot");
 
-	m_shaderHack = m_effect->GetParameterByName(0, "gHack");
+	m_shaderSelectedBone = m_effect->GetParameterByName(0, "gSelectedBoneIndex");
+
+	
 	
 	m_hTex = m_effect->GetParameterByName(0, "gTex");
 
-	m_hack  = 0.0f;
-
-	dir = 1.0f;
 	
 }
 
@@ -71,23 +70,24 @@ void C3DESkinnedMeshFX::SetBoneMatrix(const D3DXMATRIX *a_bones, UINT a_numBones
 void C3DESkinnedMeshFX::SetRootMatrices(const D3DXMATRIX *a_toRoot, UINT totalToRoots)
 {
 	HR(m_effect->SetMatrixArray(mhToRoot, a_toRoot, totalToRoots));
-	//HR(m_effect->SetMatrixArray(mhCurrentFrameToRoot, currentFrameToRoots, totalCurrentFrameToRoots));
+	
+}
+
+void C3DESkinnedMeshFX::SetSelectedBoneIndex(int index)
+{
+	HR(m_effect->SetInt(m_shaderSelectedBone, index));
+	
 }
 
 void C3DESkinnedMeshFX::SetFrameRootMatrices(const D3DXMATRIX * currentFrameToRoots, UINT totalCurrentFrameToRoots)
 {
-	//HR(m_effect->SetMatrixArray(mhToRoot, a_toRoot, totalToRoots));
-	HR(m_effect->SetMatrixArray(mhCurrentFrameToRoot, currentFrameToRoots, totalCurrentFrameToRoots));
+	
+	//HR(m_effect->SetMatrixArray(mhCurrentFrameToRoot, currentFrameToRoots, totalCurrentFrameToRoots));
 }
 
 void C3DESkinnedMeshFX::SetWorldHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldViewProjection)
 {
-	if(m_hack > 1.0f || m_hack < 0.0f)
-	{
-		dir = 0 - dir;
-	}
-
-	m_hack += 0.01f * dir;
+	
 	D3DXMATRIX W;		
 	D3DXMatrixIdentity(&W);			
 
@@ -100,6 +100,5 @@ void C3DESkinnedMeshFX::SetWorldHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX 
 	HR(m_effect->SetMatrix(m_shaderViewMatrix, &worldViewProjection));	
 	HR(m_effect->SetMatrix(m_shaderWorldInverseTransposeMatrix, &WIT));												
 	HR(m_effect->SetValue(m_shaderEyePosition, cameraPosition, sizeof(D3DXVECTOR3)));
-	//HR(m_effect->SetFloat(m_shaderHack, m_hack));
-	//HR(m_effect->SetFloat(m_shaderAlpha, m_hack));
+	
 }

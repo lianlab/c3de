@@ -12,8 +12,12 @@ public:
 	~C3DESkinnedMesh();	
 	void SetShaderHandlers();
 
+	void SetSelectedBoneIndex(int index);
+	int GetSelectedBoneIndex();
+
 protected:
 
+	int m_selectedBoneIndex;
 	
 	//D//3DXHANDLE  m_hTex;
 	//D3DXHANDLE	m_shaderAlpha;//galpha
@@ -22,6 +26,8 @@ protected:
 
 	D3DXMATRIX *m_roots;
 	D3DXMATRIX *m_currentFrameToRoots;
+
+	int m_totalBones;
 	
 	
 };

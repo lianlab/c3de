@@ -923,6 +923,7 @@ template SkinWeights {\n\
 				bone_indices.append(-1)
 				bone_indices.append(-1)
 				bone_indices.append(-1)
+				bone_indices.append(-1)
 				
 				valid_entry_iterator = 0
 				
@@ -1021,9 +1022,9 @@ template SkinWeights {\n\
 		
 		print("TOTAL: %i" % total)
 		
-		file3.write("int totalBones = %i;\n" % total)
-		file3.write("m_roots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * totalBones);\n")
-		file3.write("m_currentFrameToRoots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * totalBones);\n\n")
+		file3.write("m_totalBones = %i;\n" % total)
+		file3.write("m_roots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n")
+		file3.write("m_currentFrameToRoots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n\n")
 		
 		
 		
@@ -1035,6 +1036,7 @@ template SkinWeights {\n\
 		
 		for bone_name in bones_order:
 			print("bones  head:  %s \n" % armature_obj.bones[bone_name].head["ARMATURESPACE"])		
+			file3.write("//%s\n" % bone_name)
 			file3.write("D3DXMATRIX t_toRoot%i;\n" % iterator)
 			file3.write("D3DXMatrixIdentity(&t_toRoot%i);\n" % iterator)
 			file3.write("D3DXMatrixTranslation(&t_toRoot%i, %ff, %ff, %ff);\n" % (iterator, armature_obj.bones[bone_name].head["ARMATURESPACE"][0], armature_obj.bones[bone_name].head["ARMATURESPACE"][1], armature_obj.bones[bone_name].head["ARMATURESPACE"][2]))

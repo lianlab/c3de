@@ -21,6 +21,7 @@ public:
 
 	void SetRootMatrices(const D3DXMATRIX *a_toRoot, UINT totalToRoots);
 	void SetFrameRootMatrices(const D3DXMATRIX * currentFrameToRoots, UINT totalCurrentFrameToRoots);
+	void SetSelectedBoneIndex(int index);
 
 	void SetAlpha(float alpha);
 
@@ -31,14 +32,15 @@ protected:
 	D3DXHANDLE m_shaderObjectSpecularMaterial;//gSpecMtrl
 	D3DXHANDLE m_shaderSpecularLightPower;//gSpecPower
 	D3DXHANDLE m_shaderAlpha;//gSpecPower
-	D3DXHANDLE m_shaderHack;//gSpecPower
+	
 	D3DXHANDLE   m_hTex;
 	D3DXHANDLE   mhFinalXForms;
 
 	D3DXHANDLE   mhToRoot;
 	D3DXHANDLE   mhCurrentFrameToRoot;
 
-	float m_hack;
-	float dir;
+	D3DXHANDLE m_shaderSelectedBone;//gSpecPower
+
+	
 };
 #endif

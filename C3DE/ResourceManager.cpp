@@ -193,6 +193,9 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_HOUSE_4;
 	IDirect3DTexture9 * TEX_HOUSE_5;
 
+	IDirect3DTexture9 * TEX_FEMALE_SKIN;
+	IDirect3DTexture9 * TEX_MALE_SKIN;
+
 	IDirect3DTexture9 * TEX_FONT_VERDANA_36;
 	
 	
@@ -332,6 +335,11 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/house/house4.png", &TEX_HOUSE_4));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/house/house5.png", &TEX_HOUSE_5));
 
+	HR(D3DXCreateTextureFromFile(m_device, "Images/house/house5.png", &TEX_HOUSE_5));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/female/femaleSkin.png", &TEX_FEMALE_SKIN));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/male/maleSkin.png", &TEX_MALE_SKIN));
+
+
 
 	//HR(D3DXCreateTextureFromFile(m_device, "Fonts/verdana36.bmp", &TEX_FONT_VERDANA_36));
 
@@ -458,6 +466,9 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_HOUSE_4_ID] = TEX_HOUSE_4;
 	m_imageResources[IMAGE_HOUSE_5_ID] = TEX_HOUSE_5;
 
+	m_imageResources[IMAGE_FEMALE_SKIN_ID] = TEX_FEMALE_SKIN;
+	m_imageResources[IMAGE_MALE_SKIN_ID] = TEX_MALE_SKIN;
+
 	m_imageResources[IMAGE_FONT_VERDANA_36_ID] = TEX_FONT_VERDANA_36;
 
 	InitializeVideos();
@@ -475,7 +486,7 @@ void ResourceManager::InitializeMeshBuffers()
 	fpos_t position;
 
 	//CAFE TABLE
-	pFile = fopen ( "Meshes/landscape/cafeTable.c3d" , "rb" );
+	pFile = fopen ( "Meshes/landscape/out0.c3d" , "rb" );
 	
 	// obtain file size:
 	fseek (pFile , 0 , SEEK_END);

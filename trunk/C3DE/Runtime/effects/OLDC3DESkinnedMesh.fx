@@ -21,15 +21,13 @@ uniform extern texture gTex;
 uniform extern float4x4 gTransformMatrix;
 uniform extern float gAlpha;
 
-uniform extern int gSelectedBoneIndex;
+uniform extern float gHack;
 
-
-
-uniform extern float4x4 gFinalXForms[35];
-
-uniform extern float4x4 gToRoot[50];
+uniform extern float4x4 gFinalXForms[2];
+//to be set only once
+uniform extern float4x4 gToRoot[2];
 //updated every frame
-uniform extern float4x4 gCurrentFrameToRoot[50];
+uniform extern float4x4 gCurrentFrameToRoot[2];
 
 sampler TexS = sampler_state
 {
@@ -50,18 +48,25 @@ struct OutputVS
     float2 tex0    : TEXCOORD0;
 };
 
+//OutputVS SkinnedMeshVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0: TEXCOORD0, float jiraya: TEXCOORD1)
+OutputVS SkinnedMeshVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0: TEXCOORD0, float jiraya: TEXCOORD1, int boneIndex : BLENDINDICES0)
+
 //OutputVS SkinnedMeshVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0: TEXCOORD0)
-OutputVS SkinnedMeshVS(float3 posL    : POSITION0, 
-                   float3 normalL : NORMAL0, 
-                   float2 tex0    : TEXCOORD0,
-                   float weight0  : BLENDWEIGHT0, 
-                   int boneIndex0 : BLENDINDICES0,
-                   int boneIndex1 : BLENDINDICES1)
 {
+	//posL = mul(float4(posL, 1.0f), gFinalXForms[boneIndex]).xyz;
+	//posL.x += blendIndices* 5.0f;
+	
+	float3 offsetPosL = float3(posL.x - gToRoot[boneIndex][3][0],posL.y - gToRoot[boneIndex][3][1], posL.z - gToRoot[boneIndex][3][2]);
+	
+	
+	//posL = mul(float4(posL, 1.0f), gToRoot[boneIndex]).xyz;
+	//posL = mul(float4(posL, 1.0f), gCurrentFrameToRoot[boneIndex]).xyz;
+	posL = mul(float4(offsetPosL, 1.0f), gCurrentFrameToRoot[boneIndex]).xyz;
+	posL.x += gToRoot[boneIndex][3][0];
+	posL.y += gToRoot[boneIndex][3][1];
+	posL.z += gToRoot[boneIndex][3][2];
     // Zero out our output.
 	OutputVS outVS = (OutputVS)0;
-	
-	
 	
 	// Transform normal to world space.
 	float3 normalW = mul(float4(normalL, 0.0f), gWorldInvTrans).xyz;
@@ -96,48 +101,6 @@ OutputVS SkinnedMeshVS(float3 posL    : POSITION0,
 	outVS.spec = float4(spec, 0.0f);
 	//=======================================================
 	
-	
-	float4 t_colors[24] = {	float4(0.0f, 0.0f, 0.0f, 1.0f),
-							float4(0.0f, 0.0f, 1.0f, 1.0f),
-							float4(0.0f, 1.0f, 0.0f, 1.0f),
-							float4(0.0f, 1.0f, 1.0f, 1.0f),
-							float4(1.0f, 0.0f, 0.0f, 1.0f),
-							float4(1.0f, 0.0f, 1.0f, 1.0f),
-							float4(1.0f, 1.0f, 0.0f, 1.0f),
-							float4(1.0f, 1.0f, 1.0f, 1.0f),
-							float4(0.0f, 0.0f, 0.5f, 1.0f),
-							float4(0.0f, 0.5f, 0.0f, 1.0f),
-							float4(0.0f, 0.5f, 0.5f, 1.0f),
-							float4(0.5f, 0.0f, 0.0f, 1.0f),
-							float4(0.5f, 0.0f, 5.0f, 1.0f),
-							float4(0.5f, 5.0f, 0.0f, 1.0f),
-							float4(0.5f, 5.0f, 5.0f, 1.0f),
-							float4(0.0f, 0.0f, 0.75f, 1.0f),
-							float4(0.0f, 0.75f, 0.0f, 1.0f),
-							float4(0.0f, 0.75f, 0.75f, 1.0f),
-							float4(0.75f, 0.0f, 0.0f, 1.0f),
-							float4(0.75f, 0.0f, 0.75f, 1.0f),
-							float4(0.75f, 0.75f, 0.0f, 1.0f),
-							float4(0.75f, 0.75f, 0.75f, 1.0f),
-							float4(0.0f, 0.0f, 0.2f, 1.0f),
-							float4(0.0f, 0.2f, 0.0f, 1.0f)
-							};
-	if(boneIndex0 == gSelectedBoneIndex && gSelectedBoneIndex > -1)
-	{
-		outVS.diffuse = float4(1.0f, 0.0f, 0.0f, 1.0f);
-		//posL.x += 5;
-		//posL.y += 5;
-		//posL.z += 5;
-	}	
-	if(boneIndex1 == gSelectedBoneIndex  && gSelectedBoneIndex > -1)
-	{
-		outVS.diffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
-		//posL.x += 5;
-		//posL.y += 5;
-		//posL.z += 5;
-	}			
-	
-	
 	// Transform to homogeneous clip space.
 	float4 newPos = mul(float4(posL, 1.0f), gTransformMatrix);
 	//outVS.posH = mul(float4(posL, 1.0f), gWVP);
@@ -156,10 +119,20 @@ float4 SkinnedMeshPS(float4 c : COLOR0, float4 spec : COLOR1, float2 tex0 : TEXC
 	
 	float3 texColor = tex2D(TexS, tex0).rgb;
 	float3 diffuse = c.rgb * texColor;
+    //return float4(diffuse + spec.rgb, c.a); 
+    //return float4(diffuse + spec.rgb, gAlpha); 
     float4 realColor = float4(diffuse + spec.rgb, gAlpha); ;
+    float rDiff = 1.0f - realColor.r;
+    float gDiff = 1.0f - realColor.g;
+    float bDiff = 1.0f - realColor.b;
+    
+    float rNew = gHack*rDiff;
+    float gNew = gHack*gDiff;
+    float bNew = gHack*bDiff;
     
     
-    return float4(realColor.r,realColor.g, realColor.b, 1.0f);
+    //return float4(realColor.r + rNew,realColor.g + gNew, realColor.b + bNew, 1.0f);
+    return float4(0.0f, 0.0f, 0.0f, 1.0f);
     
 }
 

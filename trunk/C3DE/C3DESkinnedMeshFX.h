@@ -23,6 +23,8 @@ public:
 	void SetFrameRootMatrices(const D3DXMATRIX * currentFrameToRoots, UINT totalCurrentFrameToRoots);
 	void SetSelectedBoneIndex(int index);
 
+	void C3DESkinnedMeshFX::SetOffset(float offset);
+
 	void SetAlpha(float alpha);
 
 	void ResetHandlers();
@@ -39,7 +41,8 @@ protected:
 	D3DXHANDLE   mhToRoot;
 	D3DXHANDLE   mhCurrentFrameToRoot;
 
-	D3DXHANDLE m_shaderSelectedBone;//gSpecPower
+	D3DXHANDLE m_shaderSelectedBone;
+	D3DXHANDLE m_shaderOffset;
 
 	
 };

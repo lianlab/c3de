@@ -18,6 +18,7 @@ FX(effect)
 	mhCurrentFrameToRoot = m_effect->GetParameterByName(0, "gCurrentFrameToRoot");
 
 	m_shaderSelectedBone = m_effect->GetParameterByName(0, "gSelectedBoneIndex");
+	m_shaderOffset = m_effect->GetParameterByName(0, "gOffset");
 
 	
 	
@@ -79,9 +80,15 @@ void C3DESkinnedMeshFX::SetSelectedBoneIndex(int index)
 	
 }
 
+void C3DESkinnedMeshFX::SetOffset(float offset)
+{
+	HR(m_effect->SetFloat(m_shaderOffset,offset));
+	
+}
+
 void C3DESkinnedMeshFX::SetFrameRootMatrices(const D3DXMATRIX * currentFrameToRoots, UINT totalCurrentFrameToRoots)
 {
-	
+	HR(m_effect->SetMatrixArray(mhCurrentFrameToRoot, currentFrameToRoots, totalCurrentFrameToRoots));
 	//HR(m_effect->SetMatrixArray(mhCurrentFrameToRoot, currentFrameToRoots, totalCurrentFrameToRoots));
 }
 

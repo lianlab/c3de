@@ -19,11 +19,12 @@ uniform extern float3 gEyePosW;
 uniform extern texture gTex;
 uniform extern float4x4 gTransformMatrix;
 uniform extern float gAlpha;
+uniform extern float gOffset;
 uniform extern int gSelectedBoneIndex;
 uniform extern float4x4 gFinalXForms[35];
-uniform extern float4x4 gToRoot[50];
+uniform extern float4x4 gToRoot[24];
 //updated every frame
-uniform extern float4x4 gCurrentFrameToRoot[50];
+uniform extern float4x4 gCurrentFrameToRoot[24];
 
 sampler TexS = sampler_state
 {
@@ -55,7 +56,7 @@ OutputVS SkinnedMeshVS(float3 posL    : POSITION0,
     // Zero out our output.
 	OutputVS outVS = (OutputVS)0;
 	
-	float3 offsetPosL = float3(posL.x - gToRoot[boneIndex0][3][0],posL.y - gToRoot[boneIndex0][3][1], posL.z - gToRoot[boneIndex0][3][2]);
+	//float3 offsetPosL = float3(posL.x - gToRoot[boneIndex0][3][0],posL.y - gToRoot[boneIndex0][3][1], posL.z - gToRoot[boneIndex0][3][2]);
 	
 	
 	//posL = mul(float4(posL, 1.0f), gToRoot[boneIndex]).xyz;
@@ -82,26 +83,33 @@ OutputVS SkinnedMeshVS(float3 posL    : POSITION0,
 	float3 toEye = normalize(gEyePosW - posW);
 	
 	
+	
 							
 							
-	outVS.color = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	if(boneIndex0 == gSelectedBoneIndex && gSelectedBoneIndex > -1)
+	//outVS.color = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	//if(boneIndex0 == gSelectedBoneIndex && gSelectedBoneIndex > -1 && gSelectedBoneIndex == 0)
+	if(boneIndex0 == 0 && gSelectedBoneIndex == 0)
 	{
 		//outVS.diffuse = float4(1.0f, 0.0f, 0.0f, 1.0f);
-		//float value = float((gToRoot[gSelectedBoneIndex][3][0] * 5.0f));
-		//float value = (-0.57f * 5.0f);
-		//posL.x += (gToRoot[gSelectedBoneIndex][3][0] * 5.0f);
+		
+		float3 localToBone = float3(posL.x - gToRoot[boneIndex0][3][0], 
+									posL.y - gToRoot[boneIndex0][3][1],
+									posL.z - gToRoot[boneIndex0][3][2]);		
+		
+		float3 modifiedLocalToBone = mul(float4(localToBone, 1.0f), gCurrentFrameToRoot[boneIndex0]).xyz;
+		
+		posL.x =  gToRoot[boneIndex0][3][0] + modifiedLocalToBone.x;
+		posL.y =  gToRoot[boneIndex0][3][1] + modifiedLocalToBone.y;
+		posL.z =  gToRoot[boneIndex0][3][2] + modifiedLocalToBone.z;
+		
+		posW  = mul(float4(posL, 1.0f), gWorld).xyz;
+		posW = mul(posW,gTransformMatrix);
+		
+		toEye = normalize(gEyePosW - posW);				
 		outVS.color = float4(1.0f, 0.0f, 0.0f, 0.5f);
 		
 	}	
-	if(boneIndex1 == gSelectedBoneIndex  && gSelectedBoneIndex > -1)
-	{
-		//outVS.diffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
-		//posL.x += 5;
-		//posL.y += 5;
-		//posL.z += 5;
-		outVS.color = float4(0.0f, 1.0f, 0.0f, 0.5f);
-	}			
+	
 	
 	
 	// Transform to homogeneous clip space.

@@ -87,26 +87,7 @@ toggle6_val = 0
 toggle7_val = 0
 anim_tick = Draw.Create(25)
 
-#***********************************************
-# DirectX file spec only allows letters, digits, and 
-# underscore in Names.
-#***********************************************
-def make_legal_name(starting_name):
-    new_name = starting_name.replace('.','_')
-    new_name = new_name.replace(' ','_')
-    if new_name[0].isdigit():
-        new_name = '_' + new_name
-    return new_name
 
-#***********************************************
-# MAIN
-#***********************************************
-
-def my_callback(filename):
-	if filename.find('.x', -2) <= 0: filename += '.x' 
-	print "filename: ", filename
-	xexport = xExport(filename)
-	xexport.SelectObjs()
 
 def my_callback_sel(filename):
 	#if filename.find('.x', -2) <= 0: filename += '.x' 
@@ -428,50 +409,7 @@ class xExport:
 		self.writeArmFrames(mat_flip, "RootFrame")		
 			
 	##################################################################	
-	def SelectObjs(self):
-		global space,chld_obj,ch_list,flip_z,swap_yz,speed
-		print "exporting..."
-		self.writeHeader()
-		self.writeRootFrame()
-		obj_list = self.analyzeScene()
-		space += 1
-		ch_list = []
-		for obj in obj_list:
-			self.writeObjFrames(obj)
-			ch_l = self.getChildren(obj)
-			for ch in ch_l:
-			
-			
-				if ch and ch.type == "Armature":
-					ch_list.append(ch)
-					self.writeObjFrames(ch)
-				else :	
-					self.writeChildObj(ch_l)
-			if obj.type != "Armature":
-				self.file.write("  }  // SI End of the Object %s \n" % (obj.name))	
-				
-				
-				
-		self.file.write("}  // End of the Root Frame\n")		
-		if anim :
-			self.file.write("AnimationSet AnimationSet0 {\n")
-			for obj in Blender.Scene.GetCurrent().objects:
-				if obj.type in ('Mesh', 'Empty'):
-					ip_list = obj.ipo
-					if ip_list != None :
-						self.writeAnimationObj(obj)
-				elif obj.type == 'Armature':
-					act_list = obj.getAction()
-					if act_list != None :
-						self.writeAnimation(obj)
-					#ip_list = obj.ipo
-					#if ip_list != None :
-					#	self.writeAnimationObj(obj)
-
-			self.file.write("} // End of Animation Set\n")
-		self.writeEnd()
-		#######################################################
-		
+	
 				
 	def writeAnimTicks(self):
 		global ticks

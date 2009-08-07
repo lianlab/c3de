@@ -73,6 +73,7 @@ index_list = []
 mat_dict = {}
 
 bones_order = []
+bones_matrix_combinations = []
 space = 0;flip_z = 1;anim=0;swap_yz=0;flip_norm=0;speed=0;ticks= 25
 Bl_norm = 1;recalc_norm = 0;no_light = 0
 
@@ -351,9 +352,12 @@ class xExport:
 	def analyzeScene(self):
 			parent_list = []
 			for obj in Blender.Scene.GetCurrent().objects:
-				if obj.type in ('Mesh', 'Armature', 'Empty'):
-					if obj.parent == None :
-						parent_list.append(obj)
+				#if obj.type in ('Mesh', 'Armature', 'Empty'):
+				#print("here is a object %s" % obj.type)
+				if obj.type in ('Mesh', 'Armature'):
+					#if obj.parent == None :
+					#	print("adding %s" % obj)
+					parent_list.append(obj)
 						
 			return parent_list
 		
@@ -498,14 +502,21 @@ class xExport:
 		#self.writeHeader()
 		#self.writeRootFrame()
 		tex = []
-		objs = Object.GetSelected()
+		#objs = Object.GetSelected()
+		objs = self.analyzeScene()
+		
+		#print("objs %s" & (objs[0]))
 		iterator = 0
 		for obj in objs:
+			print("pass")
 			if obj.type == 'Mesh':
+				print("found a mesh")
 				mesh = obj.data
 				#self.writeTextures(obj, tex)		
 				self.writeMeshcoordArm(obj, mesh, iterator)
 				iterator += 1
+			else:
+				print("not a mesh %s" % obj.type)
 				#self.writeMeshMaterialList(obj, mesh, tex)
 				#self.writeMeshNormals(obj, mesh)
 				#self.writeMeshTextureCoords(obj, mesh)
@@ -524,9 +535,10 @@ class xExport:
 			#	self.writeMeshcoordArm2(obj, arm_ob = None)
 			#else :
 			#	print "The selected object is not a mesh"
-		for obj in objs:
-			if obj.type == 'Armature':
-				self.writeMeshcoordArm2(obj, arm_ob = None)
+		for obj2 in objs:
+			if obj2.type == 'Armature':
+				print("found an armature")
+				self.writeMeshcoordArm2(obj2, arm_ob = None)
 		print "...finished"
 	#***********************************************
 	#Export Mesh with Armature
@@ -862,16 +874,16 @@ template SkinWeights {\n\
 		
 		vertex_groups_names = arm_ob.getVertGroupNames()
 		
-		print("groups: %s" % vertex_groups_names)
+		#print("groups: %s" % vertex_groups_names)
 		
 		vertices_groups = []
 		
 		vertice_group_iterator = 0
 		for vertex_group_name in vertex_groups_names:
 			bones_order.append(vertex_group_name)
-			print("name %s" % vertex_group_name)
+			#print("name %s" % vertex_group_name)
 			vertice_group_indices = arm_ob.getVertsFromGroup(vertex_group_name)
-			print("auei %s" % vertice_group_indices)
+			#print("auei %s" % vertice_group_indices)
 			vertices_groups.append(vertice_group_indices)
 		
 		verts = me.verts[:]          # Save a copy of the vertices
@@ -911,6 +923,7 @@ template SkinWeights {\n\
 			for vertice in f.v:		
 				#print ("face: %d;, vertice: %d;" % (f.index, vertice.index))
 				vert_indices.append(vertice.index)
+				#print("vertice %s" % vertice.co)
 				new_vert.append(vertice.co)
 				new_vert_normals.append(vertice.no)
 				indices.append(indice_it)
@@ -947,8 +960,8 @@ template SkinWeights {\n\
 					
 					
 				
-		for picles in 	g_bone_indices:
-			print("picles %s" %  picles)
+		#for picles in 	g_bone_indices:
+		#	print("picles %s" %  picles)
 			
 		#data=struct.pack(indice_it)
 		format = "i"                   # one integer
@@ -960,10 +973,10 @@ template SkinWeights {\n\
 		for vv in new_vert:
 			
 			if hasTexture:
-				print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
+				#print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
 				file2.write("m_vertices3->push_back(VertexPosBones(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %i, %i));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1], 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]))
 			else:
-				print("(VertexPos(%ff));"	% (vv[0]))
+				#print("(VertexPos(%ff));"	% (vv[0]))
 				file2.write("m_vertices3->push_back(VertexPosBones(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %i, %i));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0, 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]))
 				#print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0))
 				#self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
@@ -1005,9 +1018,12 @@ template SkinWeights {\n\
 		
 		path3 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\outBones.txt")
 		
+		path4 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\picles.txt")
+		
 		
 		
 		file3 = open(path3, "wb")
+		file4 = open(path4, "wb")
 		
 		
 		armature_obj = obj.getData()
@@ -1020,28 +1036,78 @@ template SkinWeights {\n\
 		
 		total = len(bones_order)
 		
-		print("TOTAL: %i" % total)
+		#print("TOTAL: %i" % total)
 		
 		file3.write("m_totalBones = %i;\n" % total)
 		file3.write("m_roots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n")
-		file3.write("m_currentFrameToRoots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n\n")
-		
-		
-		
+		file3.write("m_currentFrameToRoots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n")
+		file3.write("m_bonesBegin = (D3DXVECTOR3*)malloc(sizeof(D3DXVECTOR3) * m_totalBones);\n")
+		file3.write("m_bonesEnd = (D3DXVECTOR3*)malloc(sizeof(D3DXVECTOR3) * m_totalBones);\n\n")
 		
 		
 		print "Here we are for amarmature\n"
 		
 		iterator = 0
 		
+		poseObject = obj.getPose()
+		
+		print("poseBones: %s" % poseObject.bones)
+		
+		poseObjects = poseObject.bones
+		
 		for bone_name in bones_order:
-			print("bones  head:  %s \n" % armature_obj.bones[bone_name].head["ARMATURESPACE"])		
+			#print("bones  head:  %s \n" % armature_obj.bones[bone_name].head["ARMATURESPACE"])		
+			#print("....bone name: %s" % armature_obj.bones[bone_name])
+			#file4.write("....bone name: %s\n" % armature_obj.bones[bone_name])
+			
+			ancestors = []
+			
+			parent = armature_obj.bones[bone_name].parent
+			
+			localPose = poseObjects[bone_name]
+			
+			finalMatrix = localPose.localMatrix
+			file4.write("//%s\n" % bone_name)
+			file4.write("....... %s pose matrix %s\n" % (bone_name,finalMatrix))
+			file4.write("t_currentFrameMatrix%i._11 = %ff;\n" % (iterator, finalMatrix[0][0]))
+			file4.write("t_currentFrameMatrix%i._12 = %ff;\n" % (iterator, finalMatrix[0][1]))
+			file4.write("t_currentFrameMatrix%i._13 = %ff;\n" % (iterator, finalMatrix[0][2]))
+			file4.write("t_currentFrameMatrix%i._14 = %ff;\n" % (iterator, finalMatrix[0][3]))
+			file4.write("t_currentFrameMatrix%i._21 = %ff;\n" % (iterator, finalMatrix[1][0]))
+			file4.write("t_currentFrameMatrix%i._22 = %ff;\n" % (iterator, finalMatrix[1][1]))
+			file4.write("t_currentFrameMatrix%i._23 = %ff;\n" % (iterator, finalMatrix[1][2]))
+			file4.write("t_currentFrameMatrix%i._24 = %ff;\n" % (iterator, finalMatrix[1][3]))
+			file4.write("t_currentFrameMatrix%i._31 = %ff;\n" % (iterator, finalMatrix[2][0]))
+			file4.write("t_currentFrameMatrix%i._32 = %ff;\n" % (iterator, finalMatrix[2][1]))
+			file4.write("t_currentFrameMatrix%i._33 = %ff;\n" % (iterator, finalMatrix[2][2]))
+			file4.write("t_currentFrameMatrix%i._34 = %ff;\n" % (iterator, finalMatrix[2][3]))
+			file4.write("t_currentFrameMatrix%i._41 = %ff;\n" % (iterator, 0.0))
+			file4.write("t_currentFrameMatrix%i._42 = %ff;\n" % (iterator, 0.0))
+			file4.write("t_currentFrameMatrix%i._43 = %ff;\n" % (iterator, 0.0))
+			file4.write("t_currentFrameMatrix%i._44 = %ff;\n\n" % (iterator, finalMatrix[3][3]))
+			#file4.write("....... %s pose loc %s\n" % (bone_name,localPose.quat))
+			
+			
+			while parent != None:
+				#print("ancestor : %s %s " % (parent, parent.matrix["BONESPACE"]))
+				#file4.write("ancestor : %s %s \n" % (parent, parent.matrix["BONESPACE"]))
+				parentPose = poseObjects[parent.name]
+				#file4.write("parent pose %s\n" % parentPose.localMatrix)
+				ancestors.append(parent)
+				parent = parent.parent
+				
+				
+			
 			file3.write("//%s\n" % bone_name)
 			file3.write("D3DXMATRIX t_toRoot%i;\n" % iterator)
-			file3.write("D3DXMatrixIdentity(&t_toRoot%i);\n" % iterator)
+			file3.write("D3DXMatrixIdentity(&t_toRoot%i);\n" % iterator)			
 			file3.write("D3DXMatrixTranslation(&t_toRoot%i, %ff, %ff, %ff);\n" % (iterator, armature_obj.bones[bone_name].head["ARMATURESPACE"][0], armature_obj.bones[bone_name].head["ARMATURESPACE"][1], armature_obj.bones[bone_name].head["ARMATURESPACE"][2]))
-			file3.write("m_roots[%i] = t_toRoot%i;\n" % (iterator, iterator))
-			file3.write("m_currentFrameToRoots[%i] = t_toRoot%i;//for now\n\n" % (iterator, iterator))
+			file3.write("m_roots[%i] = t_toRoot%i;\n" % (iterator, iterator))			
+			file3.write("D3DXMATRIX t_currentFrameMatrix%i;\n" % iterator)
+			file3.write("D3DXMatrixIdentity(&t_currentFrameMatrix%i);\n" % iterator)
+			file3.write("m_currentFrameToRoots[%i] = t_currentFrameMatrix%i;//for now\n" % (iterator, iterator))
+			file3.write("m_bonesBegin[%i] = D3DXVECTOR3(%ff, %ff, %ff);\n" % (iterator, armature_obj.bones[bone_name].head["ARMATURESPACE"][0], armature_obj.bones[bone_name].head["ARMATURESPACE"][1], armature_obj.bones[bone_name].head["ARMATURESPACE"][2]))
+			file3.write("m_bonesEnd[%i] = D3DXVECTOR3(%ff, %ff, %ff);\n\n" % (iterator, armature_obj.bones[bone_name].tail["ARMATURESPACE"][0], armature_obj.bones[bone_name].tail["ARMATURESPACE"][1], armature_obj.bones[bone_name].tail["ARMATURESPACE"][2]))
 			iterator += 1
 		
 		print "here we end for armature\n"

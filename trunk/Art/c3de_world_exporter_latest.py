@@ -87,13 +87,6 @@ toggle6_val = 0
 toggle7_val = 0
 anim_tick = Draw.Create(25)
 
-
-
-def my_callback_sel(filename):
-	#if filename.find('.x', -2) <= 0: filename += '.x' 
-	filename = "C:\outputMesh.x"
-	xexport = xExport(filename)
-	xexport.exportSelMesh()
 def event(evt, val):	
 		if evt == Draw.ESCKEY:
 			Draw.Exit()                
@@ -103,67 +96,7 @@ def button_event(evt):
 	global toggle_val,toggle1_val,toggle2_val,toggle3_val,toggle4_val,toggle5_val,toggle6_val,toggle7_val
 	global flip_z,swap_yz,flip_norm,anim,ticks,speed,no_light,Bl_norm,recalc_norm
 	arg = __script__['arg']
-	if evt == 1:
-		toggle_val = 1 - toggle_val
-		anim = toggle_val
-		Draw.Redraw(1)
-	if evt == 2:
-		toggle1_val = 1 - toggle1_val
-		flip_norm = toggle1_val
-		Draw.Redraw(1)
-	if evt == 3:
-		toggle2_val = 1 - toggle2_val
-		swap_yz = toggle2_val
-		Draw.Redraw(1)
-	if evt == 4:
-		toggle3_val = 1 - toggle3_val
-		flip_z = toggle3_val
-		Draw.Redraw(1)
-	if evt == 5:
-		toggle4_val = 1 - toggle4_val
-		speed = toggle4_val
-		Draw.Redraw(1)
-	if evt == 10:
-		toggle5_val = 1 - toggle5_val
-		if toggle5_val==1:
-			toggle6_val = 0
-			toggle7_val = 0
-		else :
-			toggle6_val = 1
-			toggle7_val = 1
-		no_light = toggle7_val
-		recalc_norm = toggle6_val
-		Bl_norm = toggle5_val
-		Draw.Redraw(1)
-	if evt == 11:
-		toggle6_val = 1 - toggle6_val
-		if toggle6_val==1:
-			toggle5_val = 0
-			toggle7_val = 0
-		else :
-			toggle5_val = 1
-			toggle7_val = 1
-		no_light = toggle7_val
-		recalc_norm = toggle6_val
-		Bl_norm = toggle5_val
-		Draw.Redraw(1)
-	if evt == 12:
-		toggle7_val = 1 - toggle7_val
-		if toggle7_val==1:
-			toggle6_val = 0
-			toggle5_val = 0
-		else :
-			toggle6_val = 1
-			toggle5_val = 1
-		no_light = toggle7_val
-		recalc_norm = toggle6_val
-		Bl_norm = toggle5_val
-		Draw.Redraw(1)
-	if evt == 6:
-		ticks = anim_tick.val
-	if evt == 7:
-		fname = Blender.sys.makename(ext = ".x")
-		Blender.Window.FileSelector(my_callback, "Export DirectX", fname)
+	
 	if evt == 8:
 		#fname = Blender.sys.makename(ext = ".x")
 		#Blender.Window.FileSelector(my_callback_sel, "Export DirectX", fname)
@@ -203,81 +136,29 @@ def draw():
 		
 		glColor3f(0.8,.8,0.6)
 		glRasterPos2i(20, 380)
-		Draw.Text("DirectX Exporter ",'large')
-		Draw.Text("(for Blender 2.41)", 'small')
+		Draw.Text("C3DE Exporter ",'large')
+		#Draw.Text("(for Blender 2.41)", 'small')
 		#-------Aniamtion toggle---------------------------------------------
-		Draw.Toggle("Anim", 1, 20, 330, 55, 20, toggle_val,"export animations")
-		if toggle_val :
-			anim = 1
-			animsg = "animation will be exported"
-		else:
-			anim = 0
-			animsg = "animation will be not exported"
-		glRasterPos2i(100,335)
-		Draw.Text(animsg)
+		
 		#---Flip normals toggle-----------------------------------------------
-		Draw.Toggle("Flip norm", 2, 20, 300, 55, 20, toggle1_val,"invert normals")
-		if toggle1_val :
-			flip_norm = 1
-			flipmsg = "flipped normals"
-		else:
-			flip_norm = 0
-			flipmsg = "not flipped normals"
-		glRasterPos2i(100,305)
-		Draw.Text(flipmsg)
+		
 		#------Swap yz toggle----------------------------------------------------------------
-		Draw.Toggle("Swap zy", 3, 20, 270, 55, 20, toggle2_val,"swap z,y axis(y up)")
-		if toggle2_val :
-			swap_yz = 1
-			swapmsg = "Y-axis up"
-		else:
-			swap_yz = 0
-			swapmsg = "Z-axis up"
-		glRasterPos2i(100,275)
-		Draw.Text(swapmsg)
+		
 		#------Flip z toggle----------------------------------------------------------------
-		Draw.Toggle("Flip z", 4, 20, 240, 55, 20, toggle3_val,"flip z axis")
-		if toggle3_val :
-			flip_z = 1
-			zmsg = "left handed system"
-		else:
-			flip_z = 0
-			zmsg = "right handed system"
-		glRasterPos2i(100,245)
-		Draw.Text(zmsg)
+		
 		#------Speed toggle----------------------------------------------------------------
-		Draw.Toggle("Speed", 5, 20, 210, 55, 20, toggle4_val,"Animation speed")
-		if toggle4_val :
-			speed = 1
-			spedmsg = "set speed"
-			anim_tick = Draw.Number("", 6,200, 210, 85, 20, anim_tick.val,1,100000,"ticks per second")
-		else:
-			speed = 0
-			spedmsg = ""
-		glRasterPos2i(100,215)
-		Draw.Text(spedmsg)
+		
 		#------Blender Normals toggle----------------------------------------------------------------
-		Draw.Toggle("Bl.normals", 10, 20, 105, 75, 25, toggle5_val,"export normals as in Blender")
-		if toggle5_val :
-			Bl_norm = 1
+		
 		#------Recalculute Normals toggle----------------------------------------------------------------
-		Draw.Toggle("recalc.no", 11, 120, 105, 75, 25, toggle6_val,"export recalculated normals")
-		if toggle6_val :
-			recalc_norm = 1
+		
 		#------Recalculute Normals toggle----------------------------------------------------------------
-		Draw.Toggle("no smooth", 12, 220, 105, 75, 25, toggle7_val,"every vertex has the face normal,no smoothing")
-		if toggle7_val :
-			no_light = 1
+		
 		#------Draw Button export----------------------------------------------------------------
-		exp_butt = Draw.Button("Export All",7,20, 155, 75, 30, "export all the scene objects")
-		sel_butt = Draw.Button("Export Sel",8,120, 155, 75, 30, "export the selected object")
+		
+		sel_butt = Draw.Button("Start",8,120, 155, 75, 30, "Start")
 		exit_butt = Draw.Button("Exit",9,220, 155, 75, 30, "exit")
-		glRasterPos2i(20,75)
-		Draw.Text("(C) 2006  Arben OMARI ")
-		glRasterPos2i(20,55)
-		Draw.Text("http://www.omariben.too.it")
-		glRasterPos2i(20,35)
-		Draw.Text("aromar@tin.it")
+		
 		
 def rect(x,y,width,height):
 		glBegin(GL_LINE_LOOP)
@@ -342,94 +223,7 @@ class xExport:
 						
 			return parent_list
 		
-	def getChildren(self,obj):	
-		obs = Blender.Scene.GetCurrent().objects
-		return [ ob for ob in obs if ob.parent == obj ]
 	
-	def getArmChildren(self,obj):		
-		for ob in Blender.Scene.GetCurrent().objects: #Object.Get():
-			if ob.parent == obj :
-				return ob
-	
-	def getLocMat(self, obj):
-		pare = obj.parent
-		mat = obj.matrixWorld
-		mat_id = Matrix([1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1])
-		if pare:
-			mat_p = pare.matrixWorld
-			mat_c = Matrix(mat_p)
-			mat_c.invert()
-			mat_f = mat * mat_c
-		else :
-			mat_id.invert()
-			mat_f = mat * mat_id
-		return mat_f
-	
-	def writeObjFrames(self,obj):
-		global space,chld_obj,ch_list
-		mesh = obj.getData()
-		if obj.type == "Empty" :
-			mat = self.getLocMat(obj)
-			mat_c = Matrix(mat)
-			self.writeArmFrames(mat_c, make_legal_name(obj.name))
-		if type(mesh) == Types.ArmatureType :
-			Child_obj = self.getArmChildren(obj)
-			chld_obj = obj
-			ch_list.append(Child_obj)
-			self.writeRootBone(obj, Child_obj)	
-		if obj.type == 'Mesh' and obj not in ch_list:
-			self.exportMesh(obj)
-			
-			
-	def writeChildObj(self,obj):
-		global space,ch_list
-		space += 1
-		if obj :
-			for ob in obj:
-				if ob not in ch_list:
-					self.writeObjFrames(ob)
-					ch_list.append(ob)
-					ch_ob = self.getChildren(ob)
-					self.writeChildObj(ch_ob)
-					self.closeBrackets()
-					self.file.write(" // End of the Object %s \n" % (ob.name))
-					
-					
-	def writeRootFrame(self):
-		global flip_z,swap_yz,speed
-		if speed:
-			self.writeAnimTicks()
-		if flip_z:
-			mat_flip = Matrix([1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1])
-		else :
-			mat_flip = Matrix([1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1])
-		if swap_yz :
-			mat_rot = RotationMatrix(-90, 4, 'x')
-			mat_flip = mat_rot * mat_flip
-		self.writeArmFrames(mat_flip, "RootFrame")		
-			
-	##################################################################	
-	
-				
-	def writeAnimTicks(self):
-		global ticks
-		self.file.write("AnimTicksPerSecond {\n")
-		self.file.write("%d; \n" % (ticks))
-		self.file.write("}\n")
-	
-	#***********************************************
-	#Export Mesh without Armature
-	#***********************************************
-	def exportMesh(self, obj):
-		tex = []
-		mesh = obj.getData()
-		self.writeTextures(obj, tex)		
-		self.writeMeshcoordArm(obj, None, 0)
-		self.writeMeshMaterialList(obj, mesh, tex)
-		self.writeMeshNormals(obj, mesh)
-		self.writeMeshTextureCoords(obj, mesh)
-		self.writeMeshVertexColors(obj, mesh)
-		self.file.write("  }  // End of the Mesh %s \n" % (obj.name))
 		
 					
 	#***********************************************
@@ -472,12 +266,12 @@ class xExport:
 	def writeMeshcoordArm(self, obj ,arm_ob, objectIndex, file):
 		global index_list,flip_z
 		#TransformMatrix
-		mat = self.getLocMat(obj)
+		#mat = self.getLocMat(obj)
 		#self.writeArmFrames(mat, make_legal_name(obj.name))
 		mesh = NMesh.GetRawFromObject(obj.name)
 		
 		
-		print "Here we go\n"
+		#print "Here we go\n"
 		
 		
 		
@@ -503,13 +297,13 @@ class xExport:
 		
 		mesh_str = obj.name.split(".")[0]
 		
-		print("mesh main: %s" % mesh_str)
+		#print("mesh main: %s" % mesh_str)
 		
 		
 		final_mesh_str = meshes_real_ids[meshes_ids.index(mesh_str)]
 		
 		
-		print("mesh is %s" % final_mesh_str)
+		#print("mesh is %s" % final_mesh_str)
 		
 		if final_mesh_str != "NULL":
 			file.write("t_mesh = new LandscapeMesh(%s,GetCorrespondingTextID(%s));\n" % (final_mesh_str, final_mesh_str))		
@@ -546,6 +340,6 @@ class xExport:
 		
 			
 		
-		print "here we end\n"
+		#print "here we end\n"
 		
 	

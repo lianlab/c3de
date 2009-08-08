@@ -62,6 +62,8 @@ from Blender import Types, Object, NMesh, Material,Armature,Mesh
 from Blender.Mathutils import *
 from Blender import Draw, BGL
 from Blender.BGL import *
+from Blender import Window
+
 import math
 import struct, string
 from types import *
@@ -494,6 +496,67 @@ class xExport:
 		self.file.write("  }  // End of the Mesh %s \n" % (obj.name))
 		
 					
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	#***********************************************
 	#Export the Selected Mesh
 	#***********************************************
@@ -504,6 +567,8 @@ class xExport:
 		tex = []
 		#objs = Object.GetSelected()
 		objs = self.analyzeScene()
+		
+		Window.EditMode(0)
 		
 		#print("objs %s" & (objs[0]))
 		iterator = 0
@@ -540,6 +605,64 @@ class xExport:
 				print("found an armature")
 				self.writeMeshcoordArm2(obj2, arm_ob = None)
 		print "...finished"
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	#***********************************************
 	#Export Mesh with Armature
 	#***********************************************
@@ -835,6 +958,67 @@ template SkinWeights {\n\
 				tex.append(face.image.name)
 				
 
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 
 	#***********************************************
 	#EXPORT MESH DATA with Armature
@@ -919,11 +1103,14 @@ template SkinWeights {\n\
 		
 		g_bone_indices = []
 
+		vert_objs = []
+		
 		for f in me.faces:
 			for vertice in f.v:		
 				#print ("face: %d;, vertice: %d;" % (f.index, vertice.index))
 				vert_indices.append(vertice.index)
 				#print("vertice %s" % vertice.co)
+				vert_objs.append(vertice)
 				new_vert.append(vertice.co)
 				new_vert_normals.append(vertice.no)
 				indices.append(indice_it)
@@ -974,6 +1161,8 @@ template SkinWeights {\n\
 			
 			if hasTexture:
 				#print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
+				if(vert_objs[vert_iterator].sel == 1):
+					file2.write("\n//is selected below belngs to bone %i %i %ff %ff %ff:\n" % (g_bone_indices[vert_iterator][0], vert_objs[vert_iterator].sel, vert_objs[vert_iterator].co[0], vert_objs[vert_iterator].co[1], vert_objs[vert_iterator].co[2]))	
 				file2.write("m_vertices3->push_back(VertexPosBones(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %i, %i));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1], 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]))
 			else:
 				#print("(VertexPos(%ff));"	% (vv[0]))
@@ -1009,6 +1198,9 @@ template SkinWeights {\n\
 		
 		print "here we end\n"
 		
+		
+		
+		
 	def writeMeshcoordArm2(self, obj ,arm_ob):
 		global index_list,flip_z
 		#TransformMatrix
@@ -1019,11 +1211,13 @@ template SkinWeights {\n\
 		path3 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\outBones.txt")
 		
 		path4 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\picles.txt")
+		path5 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\outBones3.txt")
 		
 		
 		
 		file3 = open(path3, "wb")
 		file4 = open(path4, "wb")
+		file5 = open(path5, "wb")
 		
 		
 		armature_obj = obj.getData()
@@ -1043,6 +1237,12 @@ template SkinWeights {\n\
 		file3.write("m_currentFrameToRoots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n")
 		file3.write("m_bonesBegin = (D3DXVECTOR3*)malloc(sizeof(D3DXVECTOR3) * m_totalBones);\n")
 		file3.write("m_bonesEnd = (D3DXVECTOR3*)malloc(sizeof(D3DXVECTOR3) * m_totalBones);\n\n")
+		
+		file5.write("m_totalBones = %i;\n" % total)
+		file5.write("m_roots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n")
+		file5.write("m_currentFrameToRoots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n")
+		file5.write("m_bonesBegin = (D3DXVECTOR3*)malloc(sizeof(D3DXVECTOR3) * m_totalBones);\n")
+		file5.write("m_bonesEnd = (D3DXVECTOR3*)malloc(sizeof(D3DXVECTOR3) * m_totalBones);\n\n")
 		
 		
 		print "Here we are for amarmature\n"
@@ -1081,9 +1281,14 @@ template SkinWeights {\n\
 			file4.write("t_currentFrameMatrix%i._32 = %ff;\n" % (iterator, finalMatrix[2][1]))
 			file4.write("t_currentFrameMatrix%i._33 = %ff;\n" % (iterator, finalMatrix[2][2]))
 			file4.write("t_currentFrameMatrix%i._34 = %ff;\n" % (iterator, finalMatrix[2][3]))
+			"""
 			file4.write("t_currentFrameMatrix%i._41 = %ff;\n" % (iterator, 0.0))
 			file4.write("t_currentFrameMatrix%i._42 = %ff;\n" % (iterator, 0.0))
 			file4.write("t_currentFrameMatrix%i._43 = %ff;\n" % (iterator, 0.0))
+			"""
+			file4.write("t_currentFrameMatrix%i._41 = %ff;\n" % (iterator, finalMatrix[3][0]))
+			file4.write("t_currentFrameMatrix%i._42 = %ff;\n" % (iterator, finalMatrix[3][1]))
+			file4.write("t_currentFrameMatrix%i._43 = %ff;\n" % (iterator, finalMatrix[3][2]))
 			file4.write("t_currentFrameMatrix%i._44 = %ff;\n\n" % (iterator, finalMatrix[3][3]))
 			#file4.write("....... %s pose loc %s\n" % (bone_name,localPose.quat))
 			
@@ -1108,6 +1313,37 @@ template SkinWeights {\n\
 			file3.write("m_currentFrameToRoots[%i] = t_currentFrameMatrix%i;//for now\n" % (iterator, iterator))
 			file3.write("m_bonesBegin[%i] = D3DXVECTOR3(%ff, %ff, %ff);\n" % (iterator, armature_obj.bones[bone_name].head["ARMATURESPACE"][0], armature_obj.bones[bone_name].head["ARMATURESPACE"][1], armature_obj.bones[bone_name].head["ARMATURESPACE"][2]))
 			file3.write("m_bonesEnd[%i] = D3DXVECTOR3(%ff, %ff, %ff);\n\n" % (iterator, armature_obj.bones[bone_name].tail["ARMATURESPACE"][0], armature_obj.bones[bone_name].tail["ARMATURESPACE"][1], armature_obj.bones[bone_name].tail["ARMATURESPACE"][2]))
+			
+			file5.write("//%s\n" % bone_name)
+			file5.write("D3DXMATRIX t_toRoot%i;\n" % iterator)
+			file5.write("D3DXMatrixIdentity(&t_toRoot%i);\n" % iterator)			
+			file5.write("D3DXMatrixTranslation(&t_toRoot%i, %ff, %ff, %ff);\n" % (iterator, armature_obj.bones[bone_name].head["ARMATURESPACE"][0], armature_obj.bones[bone_name].head["ARMATURESPACE"][1], armature_obj.bones[bone_name].head["ARMATURESPACE"][2]))
+			file5.write("m_roots[%i] = t_toRoot%i;\n" % (iterator, iterator))			
+			file5.write("D3DXMATRIX t_currentFrameMatrix%i;\n" % iterator)
+			file5.write("D3DXMatrixIdentity(&t_currentFrameMatrix%i);\n" % iterator)
+			
+			file5.write("t_currentFrameMatrix%i._11 = %ff;\n" % (iterator, finalMatrix[0][0]))
+			file5.write("t_currentFrameMatrix%i._12 = %ff;\n" % (iterator, finalMatrix[0][1]))
+			file5.write("t_currentFrameMatrix%i._13 = %ff;\n" % (iterator, finalMatrix[0][2]))
+			file5.write("t_currentFrameMatrix%i._14 = %ff;\n" % (iterator, finalMatrix[0][3]))
+			file5.write("t_currentFrameMatrix%i._21 = %ff;\n" % (iterator, finalMatrix[1][0]))
+			file5.write("t_currentFrameMatrix%i._22 = %ff;\n" % (iterator, finalMatrix[1][1]))
+			file5.write("t_currentFrameMatrix%i._23 = %ff;\n" % (iterator, finalMatrix[1][2]))
+			file5.write("t_currentFrameMatrix%i._24 = %ff;\n" % (iterator, finalMatrix[1][3]))
+			file5.write("t_currentFrameMatrix%i._31 = %ff;\n" % (iterator, finalMatrix[2][0]))
+			file5.write("t_currentFrameMatrix%i._32 = %ff;\n" % (iterator, finalMatrix[2][1]))
+			file5.write("t_currentFrameMatrix%i._33 = %ff;\n" % (iterator, finalMatrix[2][2]))
+			file5.write("t_currentFrameMatrix%i._34 = %ff;\n" % (iterator, finalMatrix[2][3]))
+			file5.write("t_currentFrameMatrix%i._41 = %ff;\n" % (iterator, finalMatrix[3][0]))
+			file5.write("t_currentFrameMatrix%i._42 = %ff;\n" % (iterator, finalMatrix[3][1]))
+			file5.write("t_currentFrameMatrix%i._43 = %ff;\n" % (iterator, finalMatrix[3][2]))
+			file5.write("t_currentFrameMatrix%i._44 = %ff;\n\n" % (iterator, finalMatrix[3][3]))
+			
+			file5.write("m_currentFrameToRoots[%i] = t_currentFrameMatrix%i;//for now\n" % (iterator, iterator))
+			file5.write("m_bonesBegin[%i] = D3DXVECTOR3(%ff, %ff, %ff);\n" % (iterator, armature_obj.bones[bone_name].head["ARMATURESPACE"][0], armature_obj.bones[bone_name].head["ARMATURESPACE"][1], armature_obj.bones[bone_name].head["ARMATURESPACE"][2]))
+			file5.write("m_bonesEnd[%i] = D3DXVECTOR3(%ff, %ff, %ff);\n\n" % (iterator, armature_obj.bones[bone_name].tail["ARMATURESPACE"][0], armature_obj.bones[bone_name].tail["ARMATURESPACE"][1], armature_obj.bones[bone_name].tail["ARMATURESPACE"][2]))
+			
+			
 			iterator += 1
 		
 		print "here we end for armature\n"
@@ -1115,6 +1351,63 @@ template SkinWeights {\n\
 		
 		
 	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	#***********************************************
 	#MESH MATERIAL LIST
 	#***********************************************

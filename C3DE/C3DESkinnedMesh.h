@@ -23,7 +23,11 @@ public:
 	D3DXVECTOR3 * GetBonesBegins();
 	D3DXVECTOR3 * GetBonesEnd();
 
+	void Update(int deltaTime);
+
 	IDirect3DVertexBuffer9 * GetBonesVertexBuffer();
+
+	void SetCurrentAnimation(int animationIdx);
 
 protected:
 
@@ -39,10 +43,25 @@ protected:
 	D3DXMATRIX *m_roots;
 	D3DXMATRIX *m_currentFrameToRoots;
 
+	
+
+	vector<D3DXMATRIX *> * m_poseMatrices;
+
 	D3DXVECTOR3 *m_bonesBegin;
 	D3DXVECTOR3 *m_bonesEnd;
 
 	int m_totalBones;
+
+	int m_totalFrames;
+
+	int m_elapsedTime;
+
+	vector<int> *m_animationFramesDuration;
+	vector<int> *m_animationsTotalFrames;
+	int m_currentAnimation;
+	int m_currentAnimationStartFrame;
+	int m_currentAnimationTotalTime;
+	D3DXMATRIX *m_poseMatrix;
 	
 	
 };

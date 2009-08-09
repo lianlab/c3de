@@ -9,95 +9,37 @@
 
 C3DESkinnedMesh::C3DESkinnedMesh()
 {
+	m_currentAnimationStartFrame = 0;
+	m_currentAnimationTotalTime = 0;
+	m_currentAnimation = 0;
+	m_elapsedTime = 0;
+	m_animationFramesDuration = new vector<int>;
+	m_animationsTotalFrames = new vector<int>;
+
+	
+	
+	
+
 	m_selectedBoneIndex = -1;
 	m_offset = 0.0f;
 	m_vertices3 = new vector<VertexPosBones>;
 	m_indices = new vector<int>;
 
+	m_poseMatrices = new vector<D3DXMATRIX *>;
+
 
 	//GENERATED CODE
+	
 	#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\outBones.txt"
 	#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\out.txt"
-
-#if 0
-	//vertices
-
-	m_vertices3->push_back(VertexPosBones(-1.0f, -1.0f, -1.0f,	0.0f, 0.0f, -1.0f,	0.0f, 1.0f));
-	m_vertices3->push_back(VertexPosBones(-1.0f,  1.0f, -1.0f,	0.0f, 0.0f, -1.0f,	0.0f, 0.0f));
-	m_vertices3->push_back(VertexPosBones( 1.0f,  1.0f, -1.0f,	0.0f, 0.0f, -1.0f,	1.0f, 0.0f));
-	m_vertices3->push_back(VertexPosBones( 1.0f, -1.0f, -1.0f,	0.0f, 0.0f, -1.0f,	1.0f, 1.0f));
-
-	// Fill in the back face vertex data.
-	m_vertices3->push_back(VertexPosBones(-1.0f, -1.0f, 1.0f,		0.0f, 0.0f, 1.0f,	1.0f, 1.0f));
-	m_vertices3->push_back(VertexPosBones( 1.0f, -1.0f, 1.0f,		0.0f, 0.0f, 1.0f,	0.0f, 1.0f));
-	m_vertices3->push_back(VertexPosBones( 1.0f,  1.0f, 1.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f));
-	m_vertices3->push_back(VertexPosBones(-1.0f,  1.0f, 1.0f,		0.0f, 0.0f, 1.0f,	1.0f, 0.0f));
-
-	// Fill in the top face vertex data.
-	m_vertices3->push_back(VertexPosBones(-1.0f, 1.0f, -1.0f,		0.0f, 1.0f, 0.0f,	0.0f, 1.0f));
-	m_vertices3->push_back(VertexPosBones(-1.0f, 1.0f,  1.0f,		0.0f, 1.0f, 0.0f,	0.0f, 0.0f));
-	m_vertices3->push_back(VertexPosBones( 1.0f, 1.0f,  1.0f,		0.0f, 1.0f, 0.0f,	1.0f, 0.0f));
-	m_vertices3->push_back(VertexPosBones( 1.0f, 1.0f, -1.0f,		0.0f, 1.0f, 0.0f,	1.0f, 1.0f));
-
-	// Fill in the bottom face vertex data.
-	m_vertices3->push_back(VertexPosBones(-1.0f, -1.0f, -1.0f,	0.0f, -1.0f, 0.0f,	1.0f, 1.0f));
-	m_vertices3->push_back(VertexPosBones( 1.0f, -1.0f, -1.0f,	0.0f, -1.0f, 0.0f,	0.0f, 1.0f));
-	m_vertices3->push_back(VertexPosBones( 1.0f, -1.0f,  1.0f,	0.0f, -1.0f, 0.0f,	0.0f, 0.0f));
-	m_vertices3->push_back(VertexPosBones(-1.0f, -1.0f,  1.0f,	0.0f, -1.0f, 0.0f,	1.0f, 0.0f));
-
-	// Fill in the left face vertex data.
-	m_vertices3->push_back(VertexPosBones(-1.0f, -1.0f,  1.0f,	-1.0f, 0.0f, 0.0f,	0.0f, 1.0f));
-	m_vertices3->push_back(VertexPosBones(-1.0f,  1.0f,  1.0f,	-1.0f, 0.0f, 0.0f,	0.0f, 0.0f));
-	m_vertices3->push_back(VertexPosBones(-1.0f,  1.0f, -1.0f,	-1.0f, 0.0f, 0.0f,	1.0f, 0.0f));
-	m_vertices3->push_back(VertexPosBones(-1.0f, -1.0f, -1.0f,	-1.0f, 0.0f, 0.0f,	1.0f, 1.0f));
-
-	// Fill in the right face vertex data.
-	m_vertices3->push_back(VertexPosBones( 1.0f, -1.0f, -1.0f,	1.0f, 0.0f, 0.0f,	0.0f, 1.0f));
-	m_vertices3->push_back(VertexPosBones( 1.0f,  1.0f, -1.0f,	1.0f, 0.0f, 0.0f,	0.0f, 0.0f));
-	m_vertices3->push_back(VertexPosBones( 1.0f,  1.0f,  1.0f,	1.0f, 0.0f, 0.0f,	1.0f, 0.0f));
-	m_vertices3->push_back(VertexPosBones( 1.0f, -1.0f,  1.0f,	1.0f, 0.0f, 0.0f,	1.0f, 1.0f));
 	
-	m_indices->push_back(0);
-	m_indices->push_back(1);
-	m_indices->push_back(2);
-	m_indices->push_back(0);
-	m_indices->push_back(2);
-	m_indices->push_back(3);
+
+	m_animationsTotalFrames->push_back(8);
 	
-	m_indices->push_back(4);
-	m_indices->push_back(5);
-	m_indices->push_back(6);
-	m_indices->push_back(4);
-	m_indices->push_back(6);
-	m_indices->push_back(7);
 
-	m_indices->push_back(8);
-	m_indices->push_back(9);
-	m_indices->push_back(10);
-	m_indices->push_back(8);
-	m_indices->push_back(10);
-	m_indices->push_back(11);
-
-	m_indices->push_back(12);
-	m_indices->push_back(13);
-	m_indices->push_back(14);
-	m_indices->push_back(12);
-	m_indices->push_back(14);
-	m_indices->push_back(15);
-	m_indices->push_back(16);
-	m_indices->push_back(17);
-	m_indices->push_back(18);
-	m_indices->push_back(16);
-	m_indices->push_back(18);
-	m_indices->push_back(19);
-	m_indices->push_back(20);
-	m_indices->push_back(21);
-	m_indices->push_back(22);
-	m_indices->push_back(20);
-	m_indices->push_back(22);
-	m_indices->push_back(23);	
-#endif
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_FEMALE_SKIN_ID));	
+	SetCurrentAnimation(0);
+	
+	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_MALE_SKIN_ID));	
 	AddTexture((Image *) d3dImage);
 
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
@@ -136,6 +78,8 @@ C3DESkinnedMesh::C3DESkinnedMesh()
 	
 	VertexPosBones *v = NULL;
 	m_xMesh->LockVertexBuffer(0, (void**)&v);
+
+	
 
 	for(int i = 0; i < totalVertices; i++)
 	{
@@ -221,8 +165,11 @@ void C3DESkinnedMesh::SetShaderHandlers()
 
 	t_effect->SetSelectedBoneIndex(m_selectedBoneIndex);
 
-	t_effect->SetFrameRootMatrices(m_currentFrameToRoots, m_totalBones);
+	//t_effect->SetFrameRootMatrices(m_currentFrameToRoots, m_totalBones);
 
+	D3DXMATRIX *t_poseMatrix = (*m_poseMatrices)[0];
+	t_effect->SetFrameRootMatrices(m_poseMatrix, m_totalBones);
+	
 	
 
 	t_effect->SetOffset(m_offset);
@@ -267,4 +214,67 @@ D3DXVECTOR3 * C3DESkinnedMesh::GetBonesEnd()
 IDirect3DVertexBuffer9 * C3DESkinnedMesh::GetBonesVertexBuffer()
 {
 	return m_bonesVertexBuffer;
+}
+
+void C3DESkinnedMesh::SetCurrentAnimation(int animationIdx)
+{
+	m_currentAnimation = animationIdx;
+	m_currentAnimationStartFrame = 0;
+	
+	int totalAnimations = m_animationsTotalFrames->size();
+
+	for(int i = 0; i < totalAnimations; i++)
+	{
+		if(animationIdx - 1 < i)
+		{
+			break;
+		}
+		else
+		{
+			
+			m_currentAnimationStartFrame += (*m_animationsTotalFrames)[i];
+		}
+		
+	}
+
+	m_currentAnimationTotalTime = 0;
+	int animationLastFrame = m_currentAnimationStartFrame + (*m_animationsTotalFrames)[animationIdx];
+
+	for(int i = m_currentAnimationStartFrame; i < animationLastFrame; i++)
+	{
+		m_currentAnimationTotalTime += (*m_animationFramesDuration)[i];
+	}
+}
+
+void C3DESkinnedMesh::Update(int deltaTime)
+{
+	m_elapsedTime += deltaTime;
+
+	m_elapsedTime = m_elapsedTime % m_currentAnimationTotalTime;
+
+	
+	int animationLastFrame = m_currentAnimationStartFrame + (*m_animationsTotalFrames)[m_currentAnimation];
+
+	int t_time = (*m_animationFramesDuration)[m_currentAnimationStartFrame];
+	int t_currentFrame = 0;
+	
+	for(int i = m_currentAnimationStartFrame; i < animationLastFrame; i++)
+	{
+		if(m_elapsedTime >  t_time - 1)
+		{
+			t_time += (*m_animationFramesDuration)[i];
+		}
+		else
+		{
+			t_currentFrame = i;
+			break;
+		}
+
+	}
+
+	int nextFrame = t_currentFrame + 1;
+
+	
+
+	m_poseMatrix = (*m_poseMatrices)[t_currentFrame];
 }

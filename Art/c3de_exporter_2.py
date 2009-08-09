@@ -448,7 +448,7 @@ class xExport:
 		
 		armature_obj = obj.getData()
 		
-		armature_obj.restPosition = True
+		
 		
 		bones = armature_obj.bones.values()
 		
@@ -458,76 +458,97 @@ class xExport:
 		
 		total = len(bones_order)
 		
+		totalFrames = 8
 		
-		
+		file5.write("m_totalFrames = %i;\n" % totalFrames)
 		file5.write("m_totalBones = %i;\n" % total)
 		file5.write("m_roots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n")
 		file5.write("m_currentFrameToRoots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n")
 		file5.write("m_bonesBegin = (D3DXVECTOR3*)malloc(sizeof(D3DXVECTOR3) * m_totalBones);\n")
-		file5.write("m_bonesEnd = (D3DXVECTOR3*)malloc(sizeof(D3DXVECTOR3) * m_totalBones);\n\n")
-		
+		file5.write("m_bonesEnd = (D3DXVECTOR3*)malloc(sizeof(D3DXVECTOR3) * m_totalBones);\n")		
+		file5.write("D3DXMATRIX *t_frameMatrices;\n")
+		file5.write("D3DXMATRIX t_toRoot;\n")
+		file5.write("D3DXMATRIX t_currentFrameMatrix;\n\n")
 		
 		print "Here we are for amarmature\n"
 		
 		iterator = 0
 		
-		poseObject = obj.getPose()
 		
-		print("poseBones: %s" % poseObject.bones)
 		
-		poseObjects = poseObject.bones
 		
-		for bone_name in bones_order:
-			
 		
-			ancestors = []
+		
+		
+		framesIteration = range(1,totalFrames + 1)
+		
+		Blender.Set('curframe', 1)
+		for count in framesIteration:
+		#	file5.write("t_frameMatrices = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n")
+			file5.write("t_frameMatrices = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);\n")
+			Blender.Set('curframe', count)
+			poseObject = obj.getPose()
+			poseObjects = poseObject.bones
 			
-			parent = armature_obj.bones[bone_name].parent
+			iterator = 0
 			
-			localPose = poseObjects[bone_name]
-			
-			finalMatrix = localPose.localMatrix
-			
-			
-			
-			while parent != None:							
-				parentPose = poseObjects[parent.name]								
-				ancestors.append(parent)
-				parent = parent.parent
-				
+			for bone_name in bones_order:
 				
 			
-			file5.write("//%s\n" % bone_name)
-			file5.write("D3DXMATRIX t_toRoot%i;\n" % iterator)
-			file5.write("D3DXMatrixIdentity(&t_toRoot%i);\n" % iterator)			
-			file5.write("D3DXMatrixTranslation(&t_toRoot%i, %ff, %ff, %ff);\n" % (iterator, armature_obj.bones[bone_name].head["ARMATURESPACE"][0], armature_obj.bones[bone_name].head["ARMATURESPACE"][1], armature_obj.bones[bone_name].head["ARMATURESPACE"][2]))
-			file5.write("m_roots[%i] = t_toRoot%i;\n" % (iterator, iterator))			
-			file5.write("D3DXMATRIX t_currentFrameMatrix%i;\n" % iterator)
-			file5.write("D3DXMatrixIdentity(&t_currentFrameMatrix%i);\n" % iterator)
+				ancestors = []
+				
+				parent = armature_obj.bones[bone_name].parent
+				
+				localPose = poseObjects[bone_name]
+				
+				finalMatrix = localPose.localMatrix
+				
+				
+				
+				while parent != None:							
+					parentPose = poseObjects[parent.name]								
+					ancestors.append(parent)
+					parent = parent.parent
+					
+					
+				
+				file5.write("//%s\n" % bone_name)
+				file5.write("D3DXMatrixIdentity(&t_toRoot);\n")			
+				file5.write("D3DXMatrixTranslation(&t_toRoot, %ff, %ff, %ff);\n" % (armature_obj.bones[bone_name].head["ARMATURESPACE"][0], armature_obj.bones[bone_name].head["ARMATURESPACE"][1], armature_obj.bones[bone_name].head["ARMATURESPACE"][2]))
+				file5.write("m_roots[%i] = t_toRoot;\n" % (iterator))	
+				file5.write("D3DXMatrixIdentity(&t_currentFrameMatrix);\n\n")
+				
+				file5.write("t_currentFrameMatrix._11 = %ff;\n" % ( finalMatrix[0][0]))
+				file5.write("t_currentFrameMatrix._12 = %ff;\n" % ( finalMatrix[0][1]))
+				file5.write("t_currentFrameMatrix._13 = %ff;\n" % ( finalMatrix[0][2]))
+				file5.write("t_currentFrameMatrix._14 = %ff;\n" % ( finalMatrix[0][3]))
+				file5.write("t_currentFrameMatrix._21 = %ff;\n" % ( finalMatrix[1][0]))
+				file5.write("t_currentFrameMatrix._22 = %ff;\n" % ( finalMatrix[1][1]))
+				file5.write("t_currentFrameMatrix._23 = %ff;\n" % ( finalMatrix[1][2]))
+				file5.write("t_currentFrameMatrix._24 = %ff;\n" % ( finalMatrix[1][3]))
+				file5.write("t_currentFrameMatrix._31 = %ff;\n" % ( finalMatrix[2][0]))
+				file5.write("t_currentFrameMatrix._32 = %ff;\n" % ( finalMatrix[2][1]))
+				file5.write("t_currentFrameMatrix._33 = %ff;\n" % ( finalMatrix[2][2]))
+				file5.write("t_currentFrameMatrix._34 = %ff;\n" % ( finalMatrix[2][3]))
+				file5.write("t_currentFrameMatrix._41 = %ff;\n" % ( finalMatrix[3][0]))
+				file5.write("t_currentFrameMatrix._42 = %ff;\n" % ( finalMatrix[3][1]))
+				file5.write("t_currentFrameMatrix._43 = %ff;\n" % ( finalMatrix[3][2]))
+				file5.write("t_currentFrameMatrix._44 = %ff;\n\n" % ( finalMatrix[3][3]))
+				
+				file5.write("m_currentFrameToRoots[%i] = t_currentFrameMatrix;//for now\n" % (iterator))
+				file5.write("t_frameMatrices[%i] = t_currentFrameMatrix;//for now\n" % ( iterator))
+				file5.write("m_bonesBegin[%i] = D3DXVECTOR3(%ff, %ff, %ff);\n" % (iterator, armature_obj.bones[bone_name].head["ARMATURESPACE"][0], armature_obj.bones[bone_name].head["ARMATURESPACE"][1], armature_obj.bones[bone_name].head["ARMATURESPACE"][2]))
+				file5.write("m_bonesEnd[%i] = D3DXVECTOR3(%ff, %ff, %ff);\n\n" % (iterator, armature_obj.bones[bone_name].tail["ARMATURESPACE"][0], armature_obj.bones[bone_name].tail["ARMATURESPACE"][1], armature_obj.bones[bone_name].tail["ARMATURESPACE"][2]))
+				
+				
+				iterator += 1
+				
+			file5.write("m_poseMatrices->push_back(t_frameMatrices);\n")
+			file5.write("m_animationFramesDuration->push_back(100);\n\n")
 			
-			file5.write("t_currentFrameMatrix%i._11 = %ff;\n" % (iterator, finalMatrix[0][0]))
-			file5.write("t_currentFrameMatrix%i._12 = %ff;\n" % (iterator, finalMatrix[0][1]))
-			file5.write("t_currentFrameMatrix%i._13 = %ff;\n" % (iterator, finalMatrix[0][2]))
-			file5.write("t_currentFrameMatrix%i._14 = %ff;\n" % (iterator, finalMatrix[0][3]))
-			file5.write("t_currentFrameMatrix%i._21 = %ff;\n" % (iterator, finalMatrix[1][0]))
-			file5.write("t_currentFrameMatrix%i._22 = %ff;\n" % (iterator, finalMatrix[1][1]))
-			file5.write("t_currentFrameMatrix%i._23 = %ff;\n" % (iterator, finalMatrix[1][2]))
-			file5.write("t_currentFrameMatrix%i._24 = %ff;\n" % (iterator, finalMatrix[1][3]))
-			file5.write("t_currentFrameMatrix%i._31 = %ff;\n" % (iterator, finalMatrix[2][0]))
-			file5.write("t_currentFrameMatrix%i._32 = %ff;\n" % (iterator, finalMatrix[2][1]))
-			file5.write("t_currentFrameMatrix%i._33 = %ff;\n" % (iterator, finalMatrix[2][2]))
-			file5.write("t_currentFrameMatrix%i._34 = %ff;\n" % (iterator, finalMatrix[2][3]))
-			file5.write("t_currentFrameMatrix%i._41 = %ff;\n" % (iterator, finalMatrix[3][0]))
-			file5.write("t_currentFrameMatrix%i._42 = %ff;\n" % (iterator, finalMatrix[3][1]))
-			file5.write("t_currentFrameMatrix%i._43 = %ff;\n" % (iterator, finalMatrix[3][2]))
-			file5.write("t_currentFrameMatrix%i._44 = %ff;\n\n" % (iterator, finalMatrix[3][3]))
+			#file5.write("free(t_frameMatrices);\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 			
-			file5.write("m_currentFrameToRoots[%i] = t_currentFrameMatrix%i;//for now\n" % (iterator, iterator))
-			file5.write("m_bonesBegin[%i] = D3DXVECTOR3(%ff, %ff, %ff);\n" % (iterator, armature_obj.bones[bone_name].head["ARMATURESPACE"][0], armature_obj.bones[bone_name].head["ARMATURESPACE"][1], armature_obj.bones[bone_name].head["ARMATURESPACE"][2]))
-			file5.write("m_bonesEnd[%i] = D3DXVECTOR3(%ff, %ff, %ff);\n\n" % (iterator, armature_obj.bones[bone_name].tail["ARMATURESPACE"][0], armature_obj.bones[bone_name].tail["ARMATURESPACE"][1], armature_obj.bones[bone_name].tail["ARMATURESPACE"][2]))
-			
-			
-			iterator += 1
+		
 		
 		print "here we end for armature\n"
 		Draw.Exit()

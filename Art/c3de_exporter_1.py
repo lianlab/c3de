@@ -219,10 +219,7 @@ class xExport:
 		
 		#print("objs %s" & (objs[0]))
 		iterator = 0
-		for obj3 in objs:
-			if obj3.type == 'Armature':
-				armature_obj = obj3.getData()
-				armature_obj.restPosition = True
+		
 				
 		for obj in objs:
 			print("pass")

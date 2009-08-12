@@ -55,6 +55,7 @@ protected:
 	int m_totalFrames;
 
 	int m_elapsedTime;
+	
 
 	vector<int> *m_animationFramesDuration;
 	vector<int> *m_animationsTotalFrames;

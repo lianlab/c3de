@@ -88,7 +88,9 @@ OutputVS SkinnedMeshVS(float3 posL    : POSITION0,
 							
 	//outVS.color = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	//if(boneIndex0 == gSelectedBoneIndex && gSelectedBoneIndex > -1 && gSelectedBoneIndex == 0)
-	if(boneIndex0 == 0 && gSelectedBoneIndex == 0)
+	//if(boneIndex0 == 0 && gSelectedBoneIndex == 0)
+	//if(boneIndex0 == gSelectedBoneIndex)
+	if(true)
 	{
 		//outVS.diffuse = float4(1.0f, 0.0f, 0.0f, 1.0f);
 		
@@ -97,16 +99,38 @@ OutputVS SkinnedMeshVS(float3 posL    : POSITION0,
 									posL.z - gToRoot[boneIndex0][3][2]);		
 		
 		float3 modifiedLocalToBone = mul(float4(localToBone, 1.0f), gCurrentFrameToRoot[boneIndex0]).xyz;
-		
+		/*
 		posL.x =  gToRoot[boneIndex0][3][0] + modifiedLocalToBone.x;
 		posL.y =  gToRoot[boneIndex0][3][1] + modifiedLocalToBone.y;
 		posL.z =  gToRoot[boneIndex0][3][2] + modifiedLocalToBone.z;
+		*/
+		//float weight1 = 1.0f;
+		//float3 posCopy = posL;
+		if(boneIndex1 > -1 && false)
+		{
+			//weight1 = 0.5f;
+			posL = (0.5f * mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex0]).xyz) + (0.5f * mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex1]).xyz);
+		}
+		else
+		{
+			posL = mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex0]).xyz;
+			/*
+			if(boneIndex0 == gSelectedBoneIndex)
+			{
+				//posL.x += 1.0f;
+				posL = mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex0]).xyz;
+			}
+			*/
+			
+		}
+		
+		
 		
 		posW  = mul(float4(posL, 1.0f), gWorld).xyz;
 		posW = mul(posW,gTransformMatrix);
 		
 		toEye = normalize(gEyePosW - posW);				
-		outVS.color = float4(1.0f, 0.0f, 0.0f, 0.5f);
+		//outVS.color = float4(1.0f, 0.0f, 0.0f, 0.5f);
 		
 	}	
 	

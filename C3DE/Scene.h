@@ -13,6 +13,7 @@
 #include "ShadowSurface.h"
 #include "Terrain.h"
 #include "ParticleSystem.h"
+#include "SceneNode.h"
 
 using namespace std;
 
@@ -24,6 +25,11 @@ public:
 	void SetUpFromXMLFile(char *xmlPath){};
 	void AddMesh(Mesh*mesh);
 	void RemoveMesh(Mesh*mesh);
+
+	void AddNode(SceneNode *a_node);
+	void RemoveNode(SceneNode *a_node);
+	void ClearAllNodes();
+
 	void AddTerrain(Terrain *a_terrain);
 	void RemoveTerrain(Terrain *a_terrain);
 	void AddParticleSystem(ParticleSystem *a_particleSystem);
@@ -60,6 +66,8 @@ public:
 
 	void FreeTerrains();
 
+	vector<SceneNode*> *GetSceneNodes();
+
 	virtual void Update(int deltaTime);
 
 protected:
@@ -69,6 +77,7 @@ protected:
 	vector<Terrain*> * m_terrains;
 	vector<ParticleSystem*> * m_particleSystems;
 	
+	vector<SceneNode *> *m_sceneNodes;
 	
 	AmbientLight * m_ambientLight;
 	DiffuseLight * m_diffuseLight;

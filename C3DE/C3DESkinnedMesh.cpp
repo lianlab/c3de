@@ -36,11 +36,13 @@ C3DESkinnedMesh::C3DESkinnedMesh()
 	
 
 	m_animationsTotalFrames->push_back(8);
-	//m_animationsTotalFrames->push_back(3);
+	//m_animationsTotalFrames->push_back(1);
 	
 
 	SetCurrentAnimation(0);
 	
+	Update(0);
+
 	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_MALE_SKIN_ID));	
 	AddTexture((Image *) d3dImage);
 
@@ -253,6 +255,17 @@ void C3DESkinnedMesh::SetCurrentAnimation(int animationIdx)
 	{
 		m_currentAnimationTotalTime += (*m_animationFramesDuration)[i];
 	}
+}
+
+int C3DESkinnedMesh::GetTotalAnimationTime()
+{
+	return m_currentAnimationTotalTime;
+}
+
+void C3DESkinnedMesh::SetAnimationTime(int time)
+{
+	m_elapsedTime = 0;
+	Update(time);
 }
 
 void C3DESkinnedMesh::Update(int deltaTime)

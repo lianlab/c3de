@@ -22,6 +22,8 @@
 #include "Skybox.h"
 #include "Font.h"
 #include "Text.h"
+#include "FXManager.h"
+#include "C3DETransform.h"
 
 
 #include <iostream>
@@ -224,6 +226,14 @@ Game::~Game()
 	//delete m_shadowSurface;
 #endif
 
+	int totalMeshes = m_meshes->size();
+	for(int i = 0; i< totalMeshes; i++)
+	{
+		Mesh *t_mesh = (*m_meshes)[i];
+		delete t_mesh;
+		t_mesh = NULL;
+	}
+
 	if(m_font)
 	{
 		delete m_font;
@@ -263,6 +273,14 @@ void Game::Update(int deltaTime)
 {		
 	//deltaTime = 1000;
 
+	m_character0UpdateTime += deltaTime;
+	m_character1UpdateTime += deltaTime;
+
+	m_character0UpdateTime = m_character0UpdateTime % m_characterMesh->GetTotalAnimationTime();
+	m_character1UpdateTime = m_character1UpdateTime % m_characterMesh->GetTotalAnimationTime();
+
+	m_character1UpdateTime = 0;
+	m_characterMesh->SetAnimationTime(m_character0UpdateTime);
 	int totalObjects = m_testScene->GetMeshesVector()->size();
 
 	for(int i = 0 ; i< totalObjects; i++)
@@ -537,7 +555,8 @@ void Game::UpdateInput(int deltaTime)
 void Game::UpdateInput(int deltaTime)
 {
 	
-	Mesh * t_target = (Mesh*)m_woman;
+	//Mesh * t_target = (Mesh*)m_woman;
+	Mesh * t_target = (Mesh*)m_characterMesh;
 
 
 #define USE_RELATIVE_SPEED 1
@@ -630,9 +649,10 @@ void Game::UpdateInput(int deltaTime)
 
 	
 
-	if(!upDown && !downDown && !leftDown && !rightDown && m_woman->GetAnimation() != WomanMesh::ANIMATION_IDLE)
+	//if(!upDown && !downDown && !leftDown && !rightDown && m_woman->GetAnimation() != WomanMesh::ANIMATION_IDLE)
+	if(false)
 	{
-		m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
+		//m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
 	}
 	else
 	{
@@ -640,11 +660,11 @@ void Game::UpdateInput(int deltaTime)
 		{
 			if(isRunning)
 			{
-				m_woman->SetAnimation(WomanMesh::ANIMATION_JOGGING);
+				//m_woman->SetAnimation(WomanMesh::ANIMATION_JOGGING);
 			}
 			else
 			{
-				m_woman->SetAnimation(WomanMesh::ANIMATION_WALKING);
+				//m_woman->SetAnimation(WomanMesh::ANIMATION_WALKING);
 			}
 		}
 	}
@@ -915,9 +935,38 @@ void Game::Render(Renderer *renderer)
 	cam->SetUp(m_camUpX, m_camUpY, m_camUpZ);	
 	cam->SetTarget(m_camTargetX, m_camTargetY, m_camTargetZ);
 	
-	renderer->DrawScene(m_testScene);
+	m_testScene->ClearAllNodes();
+	
+
+	C3DETransform *t0 = new C3DETransform();	
+
+	SceneNode *t_node0 = new SceneNode(m_ground, t0->GetMatrix());
+	m_testScene->AddNode(t_node0);
+
+	C3DETransform *t1 = new C3DETransform();
+	t1->Rotate(0.25f, &D3DXVECTOR3(1.0f, 0.0f, 0.0f));
+	
+	t1->Translate(0.0f, 0.0f, 5.0f);
+	t1->Translate(5.0f, 0.0f, 0.0f);
+
+	SceneNode *t_node1 = new SceneNode(m_characterMesh, t1->GetMatrix());
+	m_testScene->AddNode(t_node1);
+
+	C3DETransform *t2 = new C3DETransform();		
+	t2->Translate(5.0f, 2.0f, 0.0f);
+
+	SceneNode *t_node2 = new SceneNode(m_characterMesh, t2->GetMatrix());
+	m_testScene->AddNode(t_node2);
+
+	
+
+
+	renderer->DrawScene2(m_testScene);
+	//renderer->DrawScene(m_testScene);
 	//renderer->DrawSprite(m_button);
 	renderer->DrawSprite((Sprite *)m_sprite);
+
+
 
 	//static_cast<D3DRenderer *>(renderer)->DrawText(m_text);
 	//static_cast<D3DRenderer *>(renderer)->DrawAxis();
@@ -1817,13 +1866,12 @@ float GetRelativeScale(float a_mapScale);
 void Game::InitializeMeshes()
 {	
 
-	m_totalObjects = 145;
+	m_totalObjects = 28;
 	m_loadedObjects = 0;
 
 	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_FONT_VERDANA_36_ID);
 	D3DImage *image = new D3DImage(t);		
 	m_font = new Font(	image,ResourceManager::GetInstance()->GetFontDescriptor(FONT_VERDANA_36_ID));
-
 
 	m_text = new Text("Loading Meshes...", m_font);
 	m_text->SetX(200);
@@ -1836,55 +1884,155 @@ void Game::InitializeMeshes()
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	
 
-	//m_auei = (Terrain*)TerrainFactory::GetInstance()->GetTerrainMesh(TERRAIN_NOISE_ID);
-	//m_testScene->AddTerrain(m_auei);
-
-
-
-	m_woman = new WomanMesh();
-	m_woman->SetPosition(0.0f, 0.0f, 0.0f);
-	m_woman->Scale(0.01f, 0.01f, 0.01f);
-	m_woman->Rotate(-90.0f, 0.0f, 0.0f);
-	m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
-	m_woman->SetBoundingBox(D3DXVECTOR3(-126.0f, 80.0f, 0.0f), D3DXVECTOR3(101.0f, -88.0f, 520.0f));
-	m_woman->SetTopCollisionArea(D3DXVECTOR3(-126.0f, -88.0f, 520.0f), D3DXVECTOR3(101.0f, -88.0f, 520.0f), D3DXVECTOR3(-126.0f, 80.0f, 520.0f), D3DXVECTOR3(101.0f, 80.0f, 520.0f));
-	m_loadedObjects++;
-	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
-	
-
 	m_ground = new Ground();
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
 	
+	m_characterMesh = new C3DESkinnedMesh();
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 	
 
-
-#if 1
-	//GENERATED CODE		
-	#include "Tools/Map/mapPositions.h"
-
-	
-	
-	//t_house = new LandscapeMesh(MESH_HOUSE_2_ID, IMAGE_HOUSE_2_ID);
-
-	//m_testScene->AddMesh(t_house);
-	
-	
-	m_testScene->AddMesh(m_ground);
-
-	m_testScene->AddMesh(m_woman);	
-	
-
-	m_skyBox = new Skybox(1000);
-	m_skyBox->SetPosition(0.0f, 200, 0.0f);
-
-	m_testScene->AddMesh(m_skyBox);	
+	Tree0 *m_tree0 = new Tree0();
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-#endif
+	Tree1 *m_tree1 = new Tree1();
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	Tree2 *m_tree2 = new Tree2();
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	Tree3 *m_tree3 = new Tree3();
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeWall1 *m_wall1 = new LandscapeWall1();
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeWall2 *m_wall2 = new LandscapeWall2();
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeWall3 *m_wall3 = new LandscapeWall3();
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_streetLight02 = new LandscapeMesh(MESH_STREET_LIGHT_02_ID,GetCorrespondingTextID(MESH_STREET_LIGHT_02_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+	
+	LandscapeMesh *m_streetLight01 = new LandscapeMesh(MESH_STREET_LIGHT_01_ID,GetCorrespondingTextID(MESH_STREET_LIGHT_01_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_house5 = new LandscapeMesh(MESH_HOUSE_5_ID,GetCorrespondingTextID(MESH_HOUSE_5_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_house4 = new LandscapeMesh(MESH_HOUSE_4_ID,GetCorrespondingTextID(MESH_HOUSE_4_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_house3 = new LandscapeMesh(MESH_HOUSE_3_ID,GetCorrespondingTextID(MESH_HOUSE_3_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_house2 = new LandscapeMesh(MESH_HOUSE_2_ID,GetCorrespondingTextID(MESH_HOUSE_2_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_house = new LandscapeMesh(MESH_HOUSE_ID,GetCorrespondingTextID(MESH_HOUSE_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_bench = new LandscapeMesh(MESH_BENCH_ID,GetCorrespondingTextID(MESH_BENCH_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_sign3 = new LandscapeMesh(MESH_SIGN03_ID,GetCorrespondingTextID(MESH_SIGN03_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_sign2 = new LandscapeMesh(MESH_SIGN02_ID,GetCorrespondingTextID(MESH_SIGN02_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_sign = new LandscapeMesh(MESH_SIGN01_ID,GetCorrespondingTextID(MESH_SIGN01_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_sidewalkBarrier = new LandscapeMesh(MESH_SIDEWALK_BARRIER_ID,GetCorrespondingTextID(MESH_SIDEWALK_BARRIER_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_mailbox = new LandscapeMesh(MESH_MAILBOX01_ID,GetCorrespondingTextID(MESH_MAILBOX01_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_mailbox2 = new LandscapeMesh(MESH_MAILBOX02_ID,GetCorrespondingTextID(MESH_MAILBOX02_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_gardenBorder = new LandscapeMesh(MESH_GARDEN_BORDER_ID,GetCorrespondingTextID(MESH_GARDEN_BORDER_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_cafeTable = new LandscapeMesh(MESH_CAFE_TABLE_ID,GetCorrespondingTextID(MESH_CAFE_TABLE_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_parkingBarrier = new LandscapeMesh(MESH_PARKING_BARRIER_ID,GetCorrespondingTextID(MESH_PARKING_BARRIER_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	LandscapeMesh *m_trafficCone = new LandscapeMesh(MESH_TRAFFIC_CONE_ID,GetCorrespondingTextID(MESH_TRAFFIC_CONE_ID));
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+	
+	m_skyBox = new Skybox(1000);	
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+	
 	m_testScene->Initialize();
+
+	m_meshes = new vector<Mesh*>;
+	m_meshes->push_back(m_characterMesh);
+	m_meshes->push_back(m_ground);
+	m_meshes->push_back(m_skyBox);
+	m_meshes->push_back(m_tree0);
+	m_meshes->push_back(m_tree1);
+	m_meshes->push_back(m_tree2);
+	m_meshes->push_back(m_tree3);
+	m_meshes->push_back(m_wall1);
+	m_meshes->push_back(m_wall2);
+	m_meshes->push_back(m_wall3);
+	m_meshes->push_back(m_streetLight01);
+	m_meshes->push_back(m_streetLight02);
+	m_meshes->push_back(m_house);
+	m_meshes->push_back(m_house2);
+	m_meshes->push_back(m_house3);
+	m_meshes->push_back(m_house4);
+	m_meshes->push_back(m_house5);
+	m_meshes->push_back(m_bench);
+	m_meshes->push_back(m_sign);
+	m_meshes->push_back(m_sign2);
+	m_meshes->push_back(m_sign3);
+	m_meshes->push_back(m_sidewalkBarrier);
+	m_meshes->push_back(m_mailbox);
+	m_meshes->push_back(m_mailbox2);
+	m_meshes->push_back(m_gardenBorder);
+	m_meshes->push_back(m_cafeTable);
+	m_meshes->push_back(m_parkingBarrier);
+	m_meshes->push_back(m_trafficCone);											
+	
+	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
+
+	
 	
 }
 

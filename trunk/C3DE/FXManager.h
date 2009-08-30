@@ -21,6 +21,7 @@ public:
 
 	//updates a list of all used effects in the scene
 	void SetSceneEffects(Scene *scene);
+	void AddMeshesEffects(Scene *a_scene, vector<Mesh *> *meshes);
 
 	//updates the parameters that needs to be updated on every render, like the camera position
 	void SetUpdateHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldViewProjection);

@@ -29,6 +29,10 @@ public:
 
 	void SetCurrentAnimation(int animationIdx);
 
+	int GetTotalAnimationTime();
+
+	void SetAnimationTime(int time);
+
 protected:
 
 	float m_offset;

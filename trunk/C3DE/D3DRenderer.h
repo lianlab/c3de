@@ -59,6 +59,7 @@ public:
 	//void DrawMesh(Mesh *mesh, ID3DXEffect * effect);
 
 	void DrawScene(Scene *scene);
+	void DrawScene2(Scene *scene);
 
 	void SetScreenMode(int newScreenMode);
 
@@ -111,6 +112,7 @@ private:
 	ShadowFX *m_shadowEffect;
 
 	void DrawXMesh(D3DMesh * a_xMesh);
+	void DrawXMesh2(D3DMesh * a_xMesh, D3DXMATRIX *a_matrix);
 
 	void CreateAxis();
 

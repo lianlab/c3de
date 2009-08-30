@@ -708,7 +708,106 @@ void D3DRenderer::DrawScene(Scene *scene)
 
 #endif
 
+void D3DRenderer::DrawScene2(Scene *scene)
+{	
+	this->hidden = 0;
+	this->shown = 0;
+	int totalNodes = scene->GetSceneNodes()->size();
+	
+	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	D3DXMATRIX t_view = cam->GetMatrix();	
+	
+	D3DXMATRIX t_projView = t_view*m_proj;	
 
+	CalculateFrustumPlanes();
+	
+
+	FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
+
+
+	UINT num = 0;						
+	
+
+	for(int i = 0; i < totalNodes; i++)
+	{				
+		
+		Mesh *mesh = (*scene->GetSceneNodes())[i]->GetMesh();
+		D3DXMATRIX *t_matrix = (*scene->GetSceneNodes())[i]->GetTransform();
+		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
+		
+		if(d3dmesh->GetXMesh())
+		{
+
+			AABB *t_boundingBox = d3dmesh->GetBoundingBox();
+			if(!t_boundingBox)
+			{
+				this->shown++;
+				
+				DrawXMesh2(d3dmesh, t_matrix);
+				continue;
+			}
+			
+			if(IsMeshWithinView(d3dmesh))
+			//if(true)
+			{
+				this->shown++;
+				#if DRAW_BOUNDING_BOXES
+				DrawOBB(d3dmesh);
+				#endif
+				DrawXMesh2(d3dmesh, t_matrix);
+			}
+			else
+			{
+				this->hidden++;
+			}
+		}
+			
+
+	}	
+
+}
+
+void D3DRenderer::DrawXMesh2(D3DMesh * a_mesh, D3DXMATRIX *a_transform)
+{	
+
+	//PerVertexLighting * t_auei = static_cast<PerVertexLighting *>(a_mesh->GetEffect());			
+	FXManager::GetInstance()->Begin(a_mesh->GetEffect());				
+
+	//int t_totalMaterials = a_mesh->GetMaterials()->size();
+	int t_totalMaterials = a_mesh->GetMaterials()->size();
+	ID3DXMesh *t_xMesh = a_mesh->GetXMesh();		
+	
+
+	for(int j = 0; j < t_totalMaterials; j++)
+	{				
+		
+		//a_mesh->SetCurrentMaterial(a_mesh->GetMaterials()->at(j));
+		a_mesh->SetCurrentMaterial((*a_mesh->GetMaterials())[j]);
+
+		
+		int t_totalTextures = a_mesh->GetTextures()->size();
+		
+		if(j < t_totalTextures)
+		{			
+			//Image *t_image = a_mesh->GetTextures()->at(j);			
+			Image *t_image = (*a_mesh->GetTextures())[j];			
+			a_mesh->SetCurrentTexture(t_image);
+		}
+		
+		a_mesh->SetShaderHandlers();
+		FX * t_effect = a_mesh->GetEffect();
+		t_effect->SetTransformMatrix(*a_transform);
+		FXManager::GetInstance()->PreRender();	
+		a_mesh->PreRender((Renderer*)this);
+		HR(t_xMesh->DrawSubset(j));
+		a_mesh->PosRender((Renderer*)this);
+		FXManager::GetInstance()->PosRender();
+	}		
+	
+	FXManager::GetInstance()->End();
+
+}
 
 
 

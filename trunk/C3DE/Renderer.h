@@ -39,6 +39,7 @@ public:
 	virtual void DrawSprite(Sprite *sprite) = 0;
 	virtual void DrawMesh(Mesh *mesh) = 0;
 	virtual void DrawScene(Scene *scene) = 0;
+	virtual void DrawScene2(Scene *scene) = 0;
 	Camera * GetCamera(){return m_camera;}
 
 	virtual void EnableAlphaBlending(){}

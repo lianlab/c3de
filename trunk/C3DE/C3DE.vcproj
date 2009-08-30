@@ -190,10 +190,6 @@
 				RelativePath=".\Main.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\Math.cpp"
-				>
-			</File>
 			<Filter
 				Name="Debug"
 				>
@@ -322,6 +318,10 @@
 					</File>
 					<File
 						RelativePath=".\Scene.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\SceneNode.cpp"
 						>
 					</File>
 					<Filter
@@ -676,6 +676,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\C3DESkinnedMeshClean.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\C3DESkinnedMeshFX.cpp"
 							>
 						</File>
@@ -762,6 +766,22 @@
 					>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="Math"
+				>
+				<File
+					RelativePath=".\C3DETransform.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Math.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\OBB.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -770,10 +790,6 @@
 			>
 			<File
 				RelativePath=".\Game.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Math.h"
 				>
 			</File>
 			<Filter
@@ -934,13 +950,13 @@
 						RelativePath=".\Scene.h"
 						>
 					</File>
+					<File
+						RelativePath=".\SceneNode.h"
+						>
+					</File>
 					<Filter
 						Name="Mesh"
 						>
-						<File
-							RelativePath=".\AABB.h"
-							>
-						</File>
 						<File
 							RelativePath=".\Castle.h"
 							>
@@ -1282,6 +1298,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\C3DESkinnedMeshClean.h"
+							>
+						</File>
+						<File
 							RelativePath=".\C3DESkinnedMeshFX.h"
 							>
 						</File>
@@ -1379,6 +1399,26 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="Math"
+				>
+				<File
+					RelativePath=".\AABB.h"
+					>
+				</File>
+				<File
+					RelativePath=".\C3DETransform.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Math.h"
+					>
+				</File>
+				<File
+					RelativePath=".\OBB.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

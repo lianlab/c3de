@@ -5,6 +5,7 @@ Scene::Scene()
 {
 
 	m_meshes = new vector<Mesh *>;
+	m_sceneNodes = new vector<SceneNode *>;
 	m_mirrors = new vector<Mirror *>;
 	m_terrains = new vector<Terrain *>;
 	m_shadowSurfaces = new vector<ShadowSurface *>;
@@ -142,6 +143,40 @@ void Scene::RemoveMesh(Mesh *mesh)
 			return;
 		}
 	}
+}
+
+vector<SceneNode*> *Scene::GetSceneNodes()
+{
+	return m_sceneNodes;
+}
+
+void Scene::AddNode(SceneNode *a_node)
+{
+	m_sceneNodes->push_back(a_node);
+}
+	
+void Scene::RemoveNode(SceneNode *a_node)
+{
+	int totalNodes = m_sceneNodes->size();
+
+	for(int i = 0; i < totalNodes; i++)
+	{
+		SceneNode *t_node = (*m_sceneNodes)[i];
+		//p[vbIndex] = *mAliveParticles->at(i);			
+			//p[vbIndex] = *(*mAliveParticles)[i];		
+		if(t_node == a_node)
+		{
+			m_sceneNodes->erase(m_sceneNodes->begin() + i);
+			return;
+		}
+	}
+}
+	
+
+void Scene::ClearAllNodes()
+{
+	m_sceneNodes->clear();
+	
 }
 
 void Scene::FreeMeshes()

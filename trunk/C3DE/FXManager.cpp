@@ -83,7 +83,6 @@ void FXManager::AddEffect(FX * effect)
 }
 
 
-
 void FXManager::SetSceneEffects(Scene *scene)
 {		
 	vector<Mesh *> *t_meshes = new vector<Mesh *>;
@@ -152,6 +151,36 @@ void FXManager::SetSceneEffects(Scene *scene)
 		delete t_meshes;
 		t_meshes = NULL;
 	}
+	
+}
+
+void FXManager::AddMeshesEffects(Scene *a_scene, vector<Mesh *> *meshes)
+{		
+	int totalMeshes = meshes->size();
+
+	for(int i = 0; i < totalMeshes; i++)
+	{
+		D3DMesh *t_mesh = static_cast<D3DMesh *>((*meshes)[i]);
+		AddEffect(t_mesh->GetEffect());		
+	}	
+
+	D3DXCOLOR ambient = a_scene->GetAmbientLight()->GetColor();
+	D3DXCOLOR diffuse = a_scene->GetDiffuseLight()->GetColor();
+	D3DXCOLOR specular = a_scene->GetSpecularLight()->GetColor();
+	D3DXVECTOR3 lightPosition = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+	
+	int totalEffecs = m_effects->size();
+
+	for(int i = 0; i < totalEffecs; i++)
+	{
+		FX *t_effect = m_effects->at(i);
+		t_effect->SetLightHandlers(ambient, diffuse, specular, lightPosition);		
+	}
+
+	//AddEffect(ShaderManager::GetInstance()->GetDefaultShadowFX());
+
+
+	
 	
 }
 

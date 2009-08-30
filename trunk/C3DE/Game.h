@@ -39,6 +39,7 @@
 #include "Grid.h"
 #include "Ground.h"
 #include "Skybox.h"
+#include "C3DESkinnedMesh.h"
 
 
 class Game : public KeyboardListener, MouseListener, ButtonListener
@@ -126,6 +127,8 @@ private:
 
 	WomanMesh *m_skinMesh;
 
+	C3DESkinnedMesh *m_characterMesh;
+
 #if 1
 
 	Text * m_text;
@@ -181,6 +184,10 @@ private:
 
 	Renderer *m_renderer;
 
+	vector<Mesh *> *m_meshes;
+
+	int m_character0UpdateTime;
+	int m_character1UpdateTime;
 
 
 	int hack;

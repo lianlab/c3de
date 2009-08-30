@@ -32,4 +32,7 @@ void D3DScene::SetLightAttenuation(D3DXVECTOR3 *attenuation)
 void D3DScene::Initialize()
 {
 	FXManager::GetInstance()->SetSceneEffects(this);
+	
 }
+
+

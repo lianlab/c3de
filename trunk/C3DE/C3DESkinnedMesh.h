@@ -10,63 +10,38 @@ class C3DESkinnedMesh : public D3DMesh
 public:
 	C3DESkinnedMesh();
 	~C3DESkinnedMesh();	
-	void SetShaderHandlers();
+	
+	void SetShaderHandlers();	
 
-	void SetSelectedBoneIndex(int index);
-	int GetSelectedBoneIndex();
-
-	void SetOffset(float offset);
-	float GetOffset();
-
+	D3DXMATRIX * GetMatrices();
 	int GetTotalBones();
+	int GetTotalFrames();
 
-	D3DXVECTOR3 * GetBonesBegins();
-	D3DXVECTOR3 * GetBonesEnd();
+	vector<int> * GetAnimationFramesDuration();
+	vector<int> * GetAnimationTotalFrames();	
 
-	void Update(int deltaTime);
 
-	IDirect3DVertexBuffer9 * GetBonesVertexBuffer();
+	vector<D3DXMATRIX *> *GetPoseMatrices();
 
-	void SetCurrentAnimation(int animationIdx);
+protected:	
 
-	int GetTotalAnimationTime();
-
-	void SetAnimationTime(int time);
-
-protected:
-
-	float m_offset;
-	IDirect3DVertexBuffer9 * m_bonesVertexBuffer;
-	int m_selectedBoneIndex;
-	
-	//D//3DXHANDLE  m_hTex;
-	//D3DXHANDLE	m_shaderAlpha;//galpha
-
-	//D3DXMATRIX m_matrices[2];
-
-	D3DXMATRIX *m_roots;
-	D3DXMATRIX *m_currentFrameToRoots;
-
-	
-
-	vector<D3DXMATRIX *> * m_poseMatrices;
-
-	D3DXVECTOR3 *m_bonesBegin;
-	D3DXVECTOR3 *m_bonesEnd;
+	D3DXMATRIX *m_roots;	
 
 	int m_totalBones;
 
-	int m_totalFrames;
-
-	int m_elapsedTime;
-	
+	int m_totalFrames;		
 
 	vector<int> *m_animationFramesDuration;
 	vector<int> *m_animationsTotalFrames;
-	int m_currentAnimation;
-	int m_currentAnimationStartFrame;
-	int m_currentAnimationTotalTime;
-	D3DXMATRIX *m_poseMatrix;
+
+	D3DXMATRIX *m_currentFrameToRoots; //disposable
+
+	D3DXVECTOR3 *m_bonesBegin; //disposable
+	D3DXVECTOR3 *m_bonesEnd; //disposable
+
+	vector<D3DXMATRIX *> * m_poseMatrices;
+	
+	
 	
 	
 };

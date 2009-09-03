@@ -175,6 +175,16 @@ void Scene::RemoveNode(SceneNode *a_node)
 
 void Scene::ClearAllNodes()
 {
+	int totalNodes = m_sceneNodes->size();
+
+	for(int i = 0; i < totalNodes; i++)
+	{
+		SceneNode *t_node = (*m_sceneNodes)[i];
+		//m_sceneNodes->erase(m_sceneNodes->begin());			
+		delete t_node;
+		t_node = NULL;
+		
+	}
 	m_sceneNodes->clear();
 	
 }

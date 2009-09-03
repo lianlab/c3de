@@ -40,6 +40,7 @@
 #include "Ground.h"
 #include "Skybox.h"
 #include "C3DESkinnedMesh.h"
+#include "C3DESkinnedMeshContainer.h"
 
 
 class Game : public KeyboardListener, MouseListener, ButtonListener
@@ -127,7 +128,7 @@ private:
 
 	WomanMesh *m_skinMesh;
 
-	C3DESkinnedMesh *m_characterMesh;
+	
 
 #if 1
 
@@ -188,6 +189,10 @@ private:
 
 	int m_character0UpdateTime;
 	int m_character1UpdateTime;
+
+	C3DESkinnedMesh *m_characterMesh;
+	C3DESkinnedMeshContainer *m_characterContainer0;
+	C3DESkinnedMeshContainer *m_characterContainer1;
 
 
 	int hack;

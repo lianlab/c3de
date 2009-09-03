@@ -395,6 +395,10 @@
 								>
 							</File>
 							<File
+								RelativePath=".\C3DESkinnedMeshContainer.cpp"
+								>
+							</File>
+							<File
 								RelativePath=".\D3DSkinnedMesh.cpp"
 								>
 							</File>
@@ -1022,6 +1026,10 @@
 							</File>
 							<File
 								RelativePath=".\C3DESkinnedMesh.h"
+								>
+							</File>
+							<File
+								RelativePath=".\C3DESkinnedMeshContainer.h"
 								>
 							</File>
 							<File

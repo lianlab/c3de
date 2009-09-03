@@ -271,16 +271,20 @@ void Game::UpdateLoadingBar(int loadedObjects, int totalobjects)
 int eita = 0;
 void Game::Update(int deltaTime)
 {		
-	//deltaTime = 1000;
+
 
 	m_character0UpdateTime += deltaTime;
-	m_character1UpdateTime += deltaTime;
+	m_character1UpdateTime += (deltaTime / 2);
 
-	m_character0UpdateTime = m_character0UpdateTime % m_characterMesh->GetTotalAnimationTime();
-	m_character1UpdateTime = m_character1UpdateTime % m_characterMesh->GetTotalAnimationTime();
+	
 
-	m_character1UpdateTime = 0;
-	m_characterMesh->SetAnimationTime(m_character0UpdateTime);
+	m_character0UpdateTime = m_character0UpdateTime % m_characterContainer0->GetTotalAnimationTime();
+	m_character1UpdateTime = m_character1UpdateTime % m_characterContainer1->GetTotalAnimationTime();
+
+
+	m_characterContainer0->SetAnimationTime(m_character0UpdateTime);
+	m_characterContainer1->SetAnimationTime(m_character1UpdateTime);
+
 	int totalObjects = m_testScene->GetMeshesVector()->size();
 
 	for(int i = 0 ; i< totalObjects; i++)
@@ -920,7 +924,7 @@ void Game::UpdateInput()
 int clickedX = 999999;
 int clickedY = 999999;
 
-
+bool hack = false;
 void Game::Render(Renderer *renderer)
 {
 	//
@@ -936,11 +940,15 @@ void Game::Render(Renderer *renderer)
 	cam->SetTarget(m_camTargetX, m_camTargetY, m_camTargetZ);
 	
 	m_testScene->ClearAllNodes();
-	
 
+	D3DXMATRIX *ttt = new D3DXMATRIX();
+	delete ttt;
+	ttt = NULL;
+	
+#if 1
 	C3DETransform *t0 = new C3DETransform();	
 
-	SceneNode *t_node0 = new SceneNode(m_ground, t0->GetMatrix());
+	SceneNode *t_node0 = new SceneNode(m_ground, t0);
 	m_testScene->AddNode(t_node0);
 
 	C3DETransform *t1 = new C3DETransform();
@@ -948,20 +956,27 @@ void Game::Render(Renderer *renderer)
 	
 	t1->Translate(0.0f, 0.0f, 5.0f);
 	t1->Translate(5.0f, 0.0f, 0.0f);
-
-	SceneNode *t_node1 = new SceneNode(m_characterMesh, t1->GetMatrix());
+	
+	SceneNode *t_node1 = new SceneNode(m_characterContainer0, t1);
 	m_testScene->AddNode(t_node1);
 
 	C3DETransform *t2 = new C3DETransform();		
 	t2->Translate(5.0f, 2.0f, 0.0f);
 
-	SceneNode *t_node2 = new SceneNode(m_characterMesh, t2->GetMatrix());
+	SceneNode *t_node2 = new SceneNode(m_characterContainer1, t2);
 	m_testScene->AddNode(t_node2);
-
-	
-
+#endif
 
 	renderer->DrawScene2(m_testScene);
+
+	/*
+	delete t0;
+	t0 = NULL;
+	delete t1;
+	t1 =NULL;
+	delete t2;
+	t2 = NULL;
+*/
 	//renderer->DrawScene(m_testScene);
 	//renderer->DrawSprite(m_button);
 	renderer->DrawSprite((Sprite *)m_sprite);
@@ -2032,6 +2047,8 @@ void Game::InitializeMeshes()
 	
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
 
+	m_characterContainer0 = new C3DESkinnedMeshContainer(m_characterMesh);
+	m_characterContainer1 = new C3DESkinnedMeshContainer(m_characterMesh);
 	
 	
 }

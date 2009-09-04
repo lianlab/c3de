@@ -128,6 +128,14 @@ private:
 
 	WomanMesh *m_skinMesh;
 
+	int GetMeshIndex(Mesh*);
+
+	
+	//Mesh * m_sceneStaticObjectsMeshes;
+
+	int *m_sceneStaticObjectsList;
+	C3DETransform **m_sceneStaticObjectsTransforms;
+	int m_sceneTotalObjects;
 	
 
 #if 1

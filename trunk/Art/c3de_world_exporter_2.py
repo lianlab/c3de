@@ -247,7 +247,13 @@ class xExport:
 		
 		
 	
-	
+		path2 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\outScene.c3d")	
+		file2 = open(path2, "wb")
+		
+		format = "i"                   # one integer
+		data = struct.pack(format, (len(objs) - 2)) # pack integer in a binary string		
+		file2.write(data)
+		
 	
 	
 		#print("objs %s" & (objs[0]))
@@ -255,7 +261,7 @@ class xExport:
 		for obj in objs:			
 			mesh = obj.data
 			#self.writeTextures(obj, tex)		
-			self.writeMeshcoordArm(obj, mesh, iterator, file)
+			self.writeMeshcoordArm(obj, mesh, iterator, file, file2)
 			iterator += 1
 			
 		Draw.Exit()
@@ -272,7 +278,7 @@ class xExport:
 	#***********************************************
 	#EXPORT MESH DATA with Armature
 	#***********************************************
-	def writeMeshcoordArm(self, obj ,arm_ob, objectIndex, file):
+	def writeMeshcoordArm(self, obj ,arm_ob, objectIndex, file, file2):
 		global index_list,flip_z
 		#TransformMatrix
 		#mat = self.getLocMat(obj)
@@ -293,9 +299,9 @@ class xExport:
 		me.getFromObject(obj.name)    # Get the object's mesh data
 		
 		meshes_ids = []
-		meshes_ids.append("ground")
 		meshes_ids.append("character")
-		meshes_ids.append("cafeTable")
+		meshes_ids.append("ground")
+		meshes_ids.append("skybox")		
 		meshes_ids.append("tree0")
 		meshes_ids.append("tree1")
 		meshes_ids.append("tree2")
@@ -318,13 +324,17 @@ class xExport:
 		meshes_ids.append("mailbox1")
 		meshes_ids.append("mailbox2")
 		meshes_ids.append("gardenBorder")
+		meshes_ids.append("cafeTable")
 		meshes_ids.append("parkingBarrier")
 		meshes_ids.append("trafficCone")
+	
+		
 		
 		meshes_real_ids = []
 		meshes_real_ids.append("NULL")
 		meshes_real_ids.append("NULL")
-		meshes_real_ids.append("m_cafeTable")
+		meshes_real_ids.append("NULL")
+		
 		meshes_real_ids.append("m_tree0")
 		meshes_real_ids.append("m_tree1")
 		meshes_real_ids.append("m_tree2")
@@ -347,9 +357,9 @@ class xExport:
 		meshes_real_ids.append("m_mailbox")
 		meshes_real_ids.append("m_mailbox2")
 		meshes_real_ids.append("m_gardenBorder")
+		meshes_real_ids.append("m_cafeTable")
 		meshes_real_ids.append("m_parkingBarrier")
 		meshes_real_ids.append("m_trafficCone")
-		
 		
 		
 		
@@ -361,6 +371,8 @@ class xExport:
 		
 		
 		final_mesh_str = meshes_real_ids[meshes_ids.index(mesh_str)]
+		
+		
 		
 		
 		#print("mesh is %s" % final_mesh_str)
@@ -391,9 +403,13 @@ class xExport:
 			#file.write("m_sceneStaticObjectsTransforms[iterator]->Translate(%ff, %ff, %ff);\n" % (-obj.matrixWorld[3][0], obj.matrixWorld[3][1], obj.matrixWorld[3][2]))
 			file.write("iterator++;\n\n")
 			
+			format = "i"                   # one integer
+			data = struct.pack(format, meshes_ids.index(mesh_str)) # pack integer in a binary string		
+			file2.write(data)						
 			
-			
-
+			format = "ffffffffffffffff"                   # one integer
+			data = struct.pack(format, obj.matrixWorld[0][0],obj.matrixWorld[0][1],obj.matrixWorld[0][2], obj.matrixWorld[0][3],obj.matrixWorld[1][0],obj.matrixWorld[1][1],obj.matrixWorld[1][2],obj.matrixWorld[1][3],obj.matrixWorld[2][0],obj.matrixWorld[2][1],obj.matrixWorld[2][2],obj.matrixWorld[2][3],-obj.matrixWorld[3][0],obj.matrixWorld[3][1],obj.matrixWorld[3][2],obj.matrixWorld[3][3]) # pack integer in a binary string		
+			file2.write(data) 
 		
 		
 		

@@ -43,6 +43,7 @@
 #include "C3DESkinnedMeshContainer.h"
 
 
+
 class Game : public KeyboardListener, MouseListener, ButtonListener
 {
 public:
@@ -202,6 +203,7 @@ private:
 	C3DESkinnedMeshContainer *m_characterContainer0;
 	C3DESkinnedMeshContainer *m_characterContainer1;
 
+	
 
 	int hack;
 #endif	

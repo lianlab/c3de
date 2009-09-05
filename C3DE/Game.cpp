@@ -24,6 +24,7 @@
 #include "FXManager.h"
 #include "C3DETransform.h"
 #include "BufferReader.h"
+#include "GameMesh.h"
 #include <iostream>
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -477,19 +478,10 @@ void Game::Render(Renderer *renderer)
 	C3DETransform *t0 = new C3DETransform();	
 
 	SceneNode *t_node0 = new SceneNode(m_ground, t0);
-	m_testScene->AddNode(t_node0);
-
-	C3DETransform *t1 = new C3DETransform();
-	t1->Rotate(0.25f, &D3DXVECTOR3(1.0f, 0.0f, 0.0f));
-	
-	t1->Translate(0.0f, 0.0f, 5.0f);
-	t1->Translate(5.0f, 0.0f, 0.0f);
-	
-	SceneNode *t_node1 = new SceneNode(m_characterContainer0, t1);
-	m_testScene->AddNode(t_node1);
+	m_testScene->AddNode(t_node0);	
 
 	C3DETransform *t2 = new C3DETransform();		
-	t2->Translate(5.0f, 2.0f, 0.0f);
+	//t2->Translate(5.0f, 2.0f, 0.0f);
 
 	SceneNode *t_node2 = new SceneNode(m_characterContainer1, t2);
 	m_testScene->AddNode(t_node2);
@@ -501,8 +493,7 @@ void Game::Render(Renderer *renderer)
 		t_transform->Set(m_sceneStaticObjectsTransforms[i]->GetMatrix());
 		SceneNode *t_node = new SceneNode(t_mesh, t_transform);
 		m_testScene->AddNode(t_node);
-	}
-
+	}	
 
 	renderer->DrawScene2(m_testScene);
 
@@ -742,6 +733,8 @@ void Game::OnKeyDown(int key)
 
 }
 
+#define USE_X_MODELS 1
+
 void Game::InitializeMeshes()
 {	
 
@@ -801,6 +794,7 @@ void Game::InitializeMeshes()
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
+#if USE_X_MODELS
 	LandscapeMesh *m_streetLight02 = new LandscapeMesh(MESH_STREET_LIGHT_02_ID,IMAGE_STREET_LIGHT_02_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
@@ -872,7 +866,79 @@ void Game::InitializeMeshes()
 	LandscapeMesh *m_trafficCone = new LandscapeMesh(MESH_TRAFFIC_CONE_ID,IMAGE_TRAFFIC_CONE_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+#else
+	GameMesh *m_streetLight02 = new GameMesh(MESH_BUFFER_STREET_LIGHT_02_ID,IMAGE_STREET_LIGHT_02_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 	
+	GameMesh *m_streetLight01 = new GameMesh(MESH_BUFFER_STREET_LIGHT_01_ID,IMAGE_STREET_LIGHT_01_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_house5 = new GameMesh(MESH_BUFFER_HOUSE_5_ID,IMAGE_HOUSE_5_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_house4 = new GameMesh(MESH_BUFFER_HOUSE_4_ID,IMAGE_HOUSE_4_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_house3 = new GameMesh(MESH_BUFFER_HOUSE_3_ID,IMAGE_HOUSE_3_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_house2 = new GameMesh(MESH_BUFFER_HOUSE_2_ID,IMAGE_HOUSE_2_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_house = new GameMesh(MESH_BUFFER_HOUSE_ID,IMAGE_HOUSE_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_bench = new GameMesh(MESH_BUFFER_BENCH_ID,IMAGE_BENCH_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_sign3 = new GameMesh(MESH_BUFFER_SIGN03_ID,IMAGE_SIGN03_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_sign2 = new GameMesh(MESH_BUFFER_SIGN02_ID,IMAGE_SIGN02_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_sign = new GameMesh(MESH_BUFFER_SIGN01_ID,IMAGE_SIGN01_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_sidewalkBarrier = new GameMesh(MESH_BUFFER_SIDEWALK_BARRIER_ID,IMAGE_SIDEWALK_BARRIER_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_mailbox = new GameMesh(MESH_BUFFER_MAILBOX01_ID,IMAGE_MAILBOX01_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_mailbox2 = new GameMesh(MESH_BUFFER_MAILBOX02_ID,IMAGE_MAILBOX02_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_gardenBorder = new GameMesh(MESH_BUFFER_GARDEN_BORDER_ID,IMAGE_GARDEN_BORDER_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_cafeTable = new GameMesh(MESH_BUFFER_CAFE_TABLE_ID,IMAGE_CAFE_TABLE_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_parkingBarrier = new GameMesh(MESH_BUFFER_PARKING_BARRIER_ID,IMAGE_PARKING_BARRIER_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_trafficCone = new GameMesh(MESH_BUFFER_TRAFFIC_CONE_ID,IMAGE_TRAFFIC_CONE_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+#endif
 	m_skyBox = new Skybox(1000);	
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
@@ -940,6 +1006,7 @@ void Game::InitializeMeshes()
 		t_matrix->_44 = t_scene->ReadNextFloat();
 		m_sceneStaticObjectsTransforms[i]->Set(t_matrix);
 	}		
+
 	
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
 

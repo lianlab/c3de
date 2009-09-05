@@ -906,6 +906,36 @@ void ResourceManager::InitializeMeshBuffers()
 	result = fread (bufferHouse_5,lSize,1,pFile);
 
 	m_meshBuffers[MESH_BUFFER_HOUSE_5_ID] = bufferHouse_5;
+
+	//MESH_CHARACTER_MALE
+	pFile = fopen ( "Meshes/skinned/characterMale.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferCharacterMale= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferCharacterMale,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_CHARACTER_MALE_ID] = bufferCharacterMale;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/characterMaleBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferCharacterMaleBones= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferCharacterMaleBones,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_CHARACTER_MALE_BONES_ID] = bufferCharacterMaleBones;
 	
 	
 

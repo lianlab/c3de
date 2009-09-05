@@ -3,7 +3,7 @@
 #include "C3DESkinnedMesh.h"
 #include "ResourceManager.h"
 #include "C3DESkinnedMeshFX.h"
-
+#include "BufferReader.h"
 #include "DebugMemory.h"
 
 
@@ -30,11 +30,86 @@ C3DESkinnedMesh::C3DESkinnedMesh()
 
 	//GENERATED CODE
 	
-	#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\outBones.txt"
-	#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\out.txt"
+	//#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\outBones.txt"
+	//#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\out.txt"
+
+	BufferReader *t_reader = new BufferReader(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CHARACTER_MALE_BONES_ID));
+	m_totalFrames = t_reader->ReadNextInt();
+	m_totalBones = t_reader->ReadNextInt();
+	m_roots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);
+	m_currentFrameToRoots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);
+	m_bonesBegin = (D3DXVECTOR3*)malloc(sizeof(D3DXVECTOR3) * m_totalBones);
+	m_bonesEnd = (D3DXVECTOR3*)malloc(sizeof(D3DXVECTOR3) * m_totalBones);
+	D3DXMATRIX *t_frameMatrices;
+	D3DXMATRIX t_toRoot;
+	D3DXMATRIX t_currentFrameMatrix;
+
 	
 
-	m_animationsTotalFrames->push_back(8);
+	for(int i = 0; i < m_totalFrames; i++)
+	{
+		t_frameMatrices = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);
+		for(int j = 0; j < m_totalBones; j++)
+		{			
+			//UpperArm_L
+			D3DXMatrixIdentity(&t_toRoot);
+			D3DXMatrixTranslation(&t_toRoot, 0.578768f, 5.570874f, -0.234539f);
+			m_roots[j] = t_toRoot;
+			D3DXMatrixIdentity(&t_currentFrameMatrix);
+
+			t_currentFrameMatrix._11 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._12 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._13 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._14 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._21 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._22 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._23 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._24 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._31 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._32 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._33 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._34 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._41 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._42 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._43 = t_reader->ReadNextFloat();
+			t_currentFrameMatrix._44 = t_reader->ReadNextFloat();
+
+			m_currentFrameToRoots[j] = t_currentFrameMatrix;//for now
+			t_frameMatrices[j] = t_currentFrameMatrix;//for now
+			m_bonesBegin[j] = D3DXVECTOR3(0.578768f, 5.570874f, -0.234539f);
+			m_bonesEnd[j] = D3DXVECTOR3(1.038907f, 4.669971f, -0.390199f);
+
+			
+		}
+		m_poseMatrices->push_back(t_frameMatrices);
+		m_animationFramesDuration->push_back(100);
+	}
+
+	delete t_reader;
+	t_reader = NULL;
+	t_reader = new BufferReader(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CHARACTER_MALE_ID));
+
+	int totalVertices = t_reader->ReadNextInt();
+	int totalIndices = t_reader->ReadNextInt();
+	for(int i = 0; i < totalVertices; i++)
+	{
+		float posx = t_reader->ReadNextFloat();
+		float posy = t_reader->ReadNextFloat();
+		float posz = t_reader->ReadNextFloat();
+		float nx = t_reader->ReadNextFloat();
+		float ny = t_reader->ReadNextFloat();
+		float nz = t_reader->ReadNextFloat();
+		float u = t_reader->ReadNextFloat();
+		float v = t_reader->ReadNextFloat();
+		float b0Weight = t_reader->ReadNextFloat();
+		int b0 = t_reader->ReadNextInt();
+		int b1 = t_reader->ReadNextInt();
+		m_vertices3->push_back(VertexPosBones(	posx,posy, posz, nx, ny, nz, u, v, b0Weight, b0, b1));
+		m_indices->push_back(i);
+	}
+	
+
+	m_animationsTotalFrames->push_back(m_totalFrames);
 	//m_animationsTotalFrames->push_back(1);
 	
 
@@ -75,8 +150,8 @@ C3DESkinnedMesh::C3DESkinnedMesh()
 
 	D3DVERTEXELEMENT9 elems[MAX_FVF_DECL_SIZE];
 
-	int totalVertices = m_vertices3->size();
-	int totalIndices = m_indices->size();
+	totalVertices = m_vertices3->size();
+	totalIndices = m_indices->size();
 	DWORD indices = totalIndices/3;
 	DWORD vertices = totalVertices;
 	

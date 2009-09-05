@@ -271,7 +271,8 @@ class xExport:
 		
 		print "Here we go\n"
 		
-		path = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\out%d.c3d" % objectIndex)
+		
+		path = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\SkinnedMeshOut%d.c3d" % objectIndex)
 		path2 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\out.txt")
 		
 		file = open(path, "wb")
@@ -391,11 +392,13 @@ class xExport:
 		#for picles in 	g_bone_indices:
 		#	print("picles %s" %  picles)
 			
+		print("total vertices %i" % indice_it)
 		#data=struct.pack(indice_it)
 		format = "i"                   # one integer
 		data = struct.pack(format, indice_it) # pack integer in a binary string
 		#self.file.write(data)
-		file.write(data)
+		file.write(data) 	#total vertices
+		file.write(data)	#total indices
 					
 		vert_iterator = 0;
 		for vv in new_vert:
@@ -415,9 +418,9 @@ class xExport:
 				#self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
 			
 			
-			format = "ffffffff"                   # one integer
+			format = "fffffffffii"                   # one integer
 			if hasTexture:
-				data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], (1.0 - new_vert_uvs[vert_iterator][1])) # pack integer in a binary string
+				data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], (1.0 - new_vert_uvs[vert_iterator][1]), 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]) # pack integer in a binary string
 			else:
 				data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0) # pack integer in a binary string
 			#self.file.write(data)
@@ -431,10 +434,10 @@ class xExport:
 			#print("m_indices->push_back(%d);" % (ii))
 			file2.write("m_indices->push_back(%d);\n" % (ii))
 			#self.file.write("m_indices->push_back(%d);\n" % (ii))
-			format = "i"                   # one integer
-			data = struct.pack(format, ii) # pack integer in a binary string
+			#format = "i"                   # one integer
+			#data = struct.pack(format, ii) # pack integer in a binary string
 			#self.file.write(data)
-			file.write(data)
+			#file.write(data)
 			
 			
 		

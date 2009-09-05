@@ -742,11 +742,6 @@ void Game::OnKeyDown(int key)
 
 }
 
-int GetCorrespondingTextID(int meshID);
-float GetCorrespondingScale(int meshID);
-D3DXVECTOR2 GetPlanePositions(float x, float y);
-float GetRelativeScale(float a_mapScale);
-
 void Game::InitializeMeshes()
 {	
 

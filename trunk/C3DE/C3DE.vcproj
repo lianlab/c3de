@@ -202,6 +202,10 @@
 				Name="Util"
 				>
 				<File
+					RelativePath=".\BufferReader.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\DebugMemory.cpp"
 					>
 				</File>
@@ -807,6 +811,10 @@
 			<Filter
 				Name="Util"
 				>
+				<File
+					RelativePath=".\BufferReader.h"
+					>
+				</File>
 				<File
 					RelativePath=".\CommonDefs.h"
 					>

@@ -17,7 +17,6 @@
 #include "FireRingFx.h"
 #include "PerVertexLightingNoFog.h"
 #include "C3DESkinnedMeshFX.h"
-#include "C3DESkinnedMeshClean.h"
 #include "DebugMemory.h"
 
 
@@ -168,12 +167,7 @@ void ShaderManager::InitializeResources()
 	errors = 0;	
 	D3DXCreateEffectFromFile(m_device, "effects/C3DESkinnedMeshNoLights.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_C3DE_SKINNED_MESH_FX, &errors);	
 	m_effectResources[SHADER_C3DE_SKINNED_MESH_FX_ID] = SHADER_C3DE_SKINNED_MESH_FX;
-
-	ID3DXEffect * SHADER_C3DE_SKINNED_MESH_CLEAN_FX;
-	errors = 0;	
-	D3DXCreateEffectFromFile(m_device, "effects/C3DESkinnedMeshClean.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_C3DE_SKINNED_MESH_CLEAN_FX, &errors);	
-	m_effectResources[SHADER_C3DE_SKINNED_MESH_CLEAN_FX_ID] = SHADER_C3DE_SKINNED_MESH_CLEAN_FX;
-
+	
 
 	if(errors)
 		MessageBox(0, (char*) errors->GetBufferPointer(), 0, 0);
@@ -194,7 +188,7 @@ void ShaderManager::InitializeResources()
 	m_effects[SHADER_SUPERNOVA_FX_ID] = new FireRingFX(SHADER_SUPERNOVA_FX);
 	m_effects[SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID] = new PerVertexLightingNoFog(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG);
 	m_effects[SHADER_C3DE_SKINNED_MESH_FX_ID] = new C3DESkinnedMeshFX(SHADER_C3DE_SKINNED_MESH_FX);
-	m_effects[SHADER_C3DE_SKINNED_MESH_CLEAN_FX_ID] = new C3DESkinnedMeshClean(SHADER_C3DE_SKINNED_MESH_CLEAN_FX);
+	
 }
 
 ShadowFX * ShaderManager::GetDefaultShadowFX()

@@ -488,7 +488,7 @@ void ResourceManager::InitializeMeshBuffers()
 	fpos_t position;
 
 	//CAFE TABLE
-	pFile = fopen ( "Meshes/landscape/out0.c3d" , "rb" );	
+	pFile = fopen ( "Meshes/landscape/cafeTable.c3d" , "rb" );	
 	
 	// obtain file size:
 	fseek (pFile , 0 , SEEK_END);

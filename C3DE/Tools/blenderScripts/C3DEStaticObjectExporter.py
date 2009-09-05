@@ -225,7 +225,8 @@ class xExport:
 	def exportSelMesh(self):
 		print "exporting ..."
 		tex = []
-		objs = Object.GetSelected()
+		#objs = Object.GetSelected()
+		objs = self.analyzeScene()
 		iterator = 0
 		for obj in objs:
 			if obj.type == 'Mesh':
@@ -239,6 +240,7 @@ class xExport:
 			else :
 				print "The selected object is not a mesh"
 		print "...finished"
+		Draw.Exit()
 	
 
 
@@ -275,22 +277,13 @@ class xExport:
 		iterator = 0
 		#me.transform(obj.matrix)      # Convert verts to world space
 		for v in me.verts:
-			#vert_coords[iterator] =  v.co
-			#vert_normals[iterator] = v.no
-			#vert_uvs[iterator] = 0
 			vert_coords.append(v.co)
 			vert_normals.append(v.no)
 			vert_uvsU.append(0)
 			vert_uvsV.append(0)
 			
-			#print("porra %f" % (v.uvco[0]))
-			
 			iterator += 1
 			
-			
-			#print ("vertice coord: %f; %f; %f; normal: %f;%f;%f; uv: %f;%f" % (v.co[0], v.co[1], v.co[2], v.no[0], v.no[1], v.no[2], v.uvco[0], v.uvco[1]))
-			#print ("vertice coord: %f; %f; %f; normal: %f;%f;%f; " % (v.co[0], v.co[1], v.co[2], v.no[0], v.no[1], v.no[2], ))
-			#print "\nindex " , v.index
 		me.verts = verts             # Restore the original verts
 		
 		

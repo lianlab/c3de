@@ -23,6 +23,7 @@
 #include "Text.h"
 #include "FXManager.h"
 #include "C3DETransform.h"
+#include "BufferReader.h"
 #include <iostream>
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -500,12 +501,6 @@ void Game::Render(Renderer *renderer)
 		t_transform->Set(m_sceneStaticObjectsTransforms[i]->GetMatrix());
 		SceneNode *t_node = new SceneNode(t_mesh, t_transform);
 		m_testScene->AddNode(t_node);
-
-		
-		C3DETransform *t_transform2 = new C3DETransform();
-		t_transform2->Translate(t_transform->GetMatrix()->_41, t_transform->GetMatrix()->_42, t_transform->GetMatrix()->_43);
-		SceneNode *tt_node = new SceneNode(m_characterContainer1, t_transform2);
-		m_testScene->AddNode(tt_node);
 	}
 
 
@@ -811,75 +806,75 @@ void Game::InitializeMeshes()
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_streetLight02 = new LandscapeMesh(MESH_STREET_LIGHT_02_ID,GetCorrespondingTextID(MESH_STREET_LIGHT_02_ID));
+	LandscapeMesh *m_streetLight02 = new LandscapeMesh(MESH_STREET_LIGHT_02_ID,IMAGE_STREET_LIGHT_02_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 	
-	LandscapeMesh *m_streetLight01 = new LandscapeMesh(MESH_STREET_LIGHT_01_ID,GetCorrespondingTextID(MESH_STREET_LIGHT_01_ID));
+	LandscapeMesh *m_streetLight01 = new LandscapeMesh(MESH_STREET_LIGHT_01_ID,IMAGE_STREET_LIGHT_01_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_house5 = new LandscapeMesh(MESH_HOUSE_5_ID,GetCorrespondingTextID(MESH_HOUSE_5_ID));
+	LandscapeMesh *m_house5 = new LandscapeMesh(MESH_HOUSE_5_ID,IMAGE_HOUSE_5_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_house4 = new LandscapeMesh(MESH_HOUSE_4_ID,GetCorrespondingTextID(MESH_HOUSE_4_ID));
+	LandscapeMesh *m_house4 = new LandscapeMesh(MESH_HOUSE_4_ID,IMAGE_HOUSE_4_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_house3 = new LandscapeMesh(MESH_HOUSE_3_ID,GetCorrespondingTextID(MESH_HOUSE_3_ID));
+	LandscapeMesh *m_house3 = new LandscapeMesh(MESH_HOUSE_3_ID,IMAGE_HOUSE_3_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_house2 = new LandscapeMesh(MESH_HOUSE_2_ID,GetCorrespondingTextID(MESH_HOUSE_2_ID));
+	LandscapeMesh *m_house2 = new LandscapeMesh(MESH_HOUSE_2_ID,IMAGE_HOUSE_2_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_house = new LandscapeMesh(MESH_HOUSE_ID,GetCorrespondingTextID(MESH_HOUSE_ID));
+	LandscapeMesh *m_house = new LandscapeMesh(MESH_HOUSE_ID,IMAGE_HOUSE_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_bench = new LandscapeMesh(MESH_BENCH_ID,GetCorrespondingTextID(MESH_BENCH_ID));
+	LandscapeMesh *m_bench = new LandscapeMesh(MESH_BENCH_ID,IMAGE_BENCH_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_sign3 = new LandscapeMesh(MESH_SIGN03_ID,GetCorrespondingTextID(MESH_SIGN03_ID));
+	LandscapeMesh *m_sign3 = new LandscapeMesh(MESH_SIGN03_ID,IMAGE_SIGN03_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_sign2 = new LandscapeMesh(MESH_SIGN02_ID,GetCorrespondingTextID(MESH_SIGN02_ID));
+	LandscapeMesh *m_sign2 = new LandscapeMesh(MESH_SIGN02_ID,IMAGE_SIGN02_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_sign = new LandscapeMesh(MESH_SIGN01_ID,GetCorrespondingTextID(MESH_SIGN01_ID));
+	LandscapeMesh *m_sign = new LandscapeMesh(MESH_SIGN01_ID,IMAGE_SIGN01_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_sidewalkBarrier = new LandscapeMesh(MESH_SIDEWALK_BARRIER_ID,GetCorrespondingTextID(MESH_SIDEWALK_BARRIER_ID));
+	LandscapeMesh *m_sidewalkBarrier = new LandscapeMesh(MESH_SIDEWALK_BARRIER_ID,IMAGE_SIDEWALK_BARRIER_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_mailbox = new LandscapeMesh(MESH_MAILBOX01_ID,GetCorrespondingTextID(MESH_MAILBOX01_ID));
+	LandscapeMesh *m_mailbox = new LandscapeMesh(MESH_MAILBOX01_ID,IMAGE_MAILBOX01_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_mailbox2 = new LandscapeMesh(MESH_MAILBOX02_ID,GetCorrespondingTextID(MESH_MAILBOX02_ID));
+	LandscapeMesh *m_mailbox2 = new LandscapeMesh(MESH_MAILBOX02_ID,IMAGE_MAILBOX02_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_gardenBorder = new LandscapeMesh(MESH_GARDEN_BORDER_ID,GetCorrespondingTextID(MESH_GARDEN_BORDER_ID));
+	LandscapeMesh *m_gardenBorder = new LandscapeMesh(MESH_GARDEN_BORDER_ID,IMAGE_GARDEN_BORDER_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_cafeTable = new LandscapeMesh(MESH_CAFE_TABLE_ID,GetCorrespondingTextID(MESH_CAFE_TABLE_ID));
+	LandscapeMesh *m_cafeTable = new LandscapeMesh(MESH_CAFE_TABLE_ID,IMAGE_CAFE_TABLE_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_parkingBarrier = new LandscapeMesh(MESH_PARKING_BARRIER_ID,GetCorrespondingTextID(MESH_PARKING_BARRIER_ID));
+	LandscapeMesh *m_parkingBarrier = new LandscapeMesh(MESH_PARKING_BARRIER_ID,IMAGE_PARKING_BARRIER_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeMesh *m_trafficCone = new LandscapeMesh(MESH_TRAFFIC_CONE_ID,GetCorrespondingTextID(MESH_TRAFFIC_CONE_ID));
+	LandscapeMesh *m_trafficCone = new LandscapeMesh(MESH_TRAFFIC_CONE_ID,IMAGE_TRAFFIC_CONE_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 	
@@ -919,8 +914,37 @@ void Game::InitializeMeshes()
 	m_meshes->push_back(m_parkingBarrier);
 	m_meshes->push_back(m_trafficCone);	
 
-	#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\outWorld.c3d"
+	//#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\outWorld.c3d"
+	BufferReader *t_scene = new BufferReader(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CAFE_TABLE_ID));
 
+	m_sceneTotalObjects = t_scene->ReadNextInt();	
+	m_sceneStaticObjectsList = (int*)malloc(sizeof(int) * m_sceneTotalObjects);
+	m_sceneStaticObjectsTransforms = (C3DETransform**)malloc(sizeof(C3DETransform) * m_sceneTotalObjects);
+	D3DXMATRIX *t_matrix = new D3DXMATRIX();
+
+	for(int i = 0; i < m_sceneTotalObjects; i++)
+	{
+		m_sceneStaticObjectsList[i] = t_scene->ReadNextInt();
+		m_sceneStaticObjectsTransforms[i] = new C3DETransform();
+				
+		t_matrix->_11 = t_scene->ReadNextFloat();
+		t_matrix->_12 = t_scene->ReadNextFloat();
+		t_matrix->_13 = t_scene->ReadNextFloat();
+		t_matrix->_14 = t_scene->ReadNextFloat();
+		t_matrix->_21 = t_scene->ReadNextFloat();
+		t_matrix->_22 = t_scene->ReadNextFloat();
+		t_matrix->_23 = t_scene->ReadNextFloat();
+		t_matrix->_24 = t_scene->ReadNextFloat();
+		t_matrix->_31 = t_scene->ReadNextFloat();
+		t_matrix->_32 = t_scene->ReadNextFloat();
+		t_matrix->_33 = t_scene->ReadNextFloat();
+		t_matrix->_34 = t_scene->ReadNextFloat();
+		t_matrix->_41 = t_scene->ReadNextFloat();
+		t_matrix->_42 = t_scene->ReadNextFloat();
+		t_matrix->_43 = t_scene->ReadNextFloat();
+		t_matrix->_44 = t_scene->ReadNextFloat();
+		m_sceneStaticObjectsTransforms[i]->Set(t_matrix);
+	}		
 	
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
 
@@ -942,103 +966,6 @@ int Game::GetMeshIndex(Mesh*a_mesh)
 
 	return -1;
 }
-
-int GetCorrespondingTextID(int meshID)
-{
-	int t[27];
-	t[MESH_CAFE_TABLE_ID - MESH_CAFE_TABLE_ID] = IMAGE_CAFE_TABLE_ID;
-	t[MESH_GARDEN_BORDER_ID - MESH_CAFE_TABLE_ID] = IMAGE_GARDEN_BORDER_ID;
-	t[MESH_MAILBOX01_ID - MESH_CAFE_TABLE_ID] = IMAGE_MAILBOX01_ID;
-	t[MESH_MAILBOX02_ID - MESH_CAFE_TABLE_ID] = IMAGE_MAILBOX02_ID;
-	t[MESH_MAILBOX03_ID - MESH_CAFE_TABLE_ID] = IMAGE_MAILBOX03_ID;
-	t[MESH_PARKING_BARRIER_ID - MESH_CAFE_TABLE_ID] = IMAGE_PARKING_BARRIER_ID;
-	t[MESH_PALETTE_ID - MESH_CAFE_TABLE_ID] = IMAGE_PALETTE_ID;
-	t[MESH_PIPE_CAGE_ID - MESH_CAFE_TABLE_ID] = IMAGE_PIPE_CAGE_ID;
-	t[MESH_SANDWICH_BOARD_ID - MESH_CAFE_TABLE_ID] = IMAGE_SANDWICH_BOARD_ID;
-	t[MESH_SIDEWALK_BARRIER_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIDEWALK_BARRIER_ID;
-	t[MESH_SIGN01_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN01_ID;
-	t[MESH_SIGN02_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN02_ID;
-	t[MESH_SIGN03_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN03_ID;
-	t[MESH_SIGN04_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN04_ID;
-	t[MESH_SIGN05_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN05_ID;
-	t[MESH_SIGN06_ID - MESH_CAFE_TABLE_ID] = IMAGE_SIGN06_ID;
-	t[MESH_SPRINKLER_ID - MESH_CAFE_TABLE_ID] = IMAGE_SPRINKLER_ID;
-	t[MESH_BENCH_ID - MESH_CAFE_TABLE_ID] = IMAGE_BENCH_ID;
-	t[MESH_STREET_LIGHT_01_ID - MESH_CAFE_TABLE_ID] = 	IMAGE_STREET_LIGHT_01_ID;
-	t[MESH_STREET_LIGHT_02_ID - MESH_CAFE_TABLE_ID] = 	IMAGE_STREET_LIGHT_02_ID;
-	t[MESH_SWITCHBOX_ID - MESH_CAFE_TABLE_ID] = IMAGE_SWITCHBOX_ID;
-	t[MESH_TRAFFIC_CONE_ID - MESH_CAFE_TABLE_ID] = IMAGE_TRAFFIC_CONE_ID;
-	t[MESH_HOUSE_ID - MESH_CAFE_TABLE_ID] = IMAGE_HOUSE_ID;
-	t[MESH_HOUSE_2_ID - MESH_CAFE_TABLE_ID] = IMAGE_HOUSE_2_ID;
-	t[MESH_HOUSE_3_ID - MESH_CAFE_TABLE_ID] = IMAGE_HOUSE_3_ID;
-	t[MESH_HOUSE_4_ID - MESH_CAFE_TABLE_ID] = IMAGE_HOUSE_4_ID;
-	t[MESH_HOUSE_5_ID - MESH_CAFE_TABLE_ID] = IMAGE_HOUSE_5_ID;
-
-	return t[meshID - MESH_CAFE_TABLE_ID];		
-}
-
-float GetRelativeScale(float a_mapScale)
-{
-	float mapSize = 512.0f;
-	float planeSize = 500.0f;
-
-	return a_mapScale * (planeSize/mapSize);
-}
-
-float GetCorrespondingScale(int meshID)
-{
-	
-	float t_scales[27];
-	t_scales[MESH_CAFE_TABLE_ID - MESH_CAFE_TABLE_ID]				= 2.2f;
-	t_scales[MESH_GARDEN_BORDER_ID - MESH_CAFE_TABLE_ID]			= 4.49f;
-	t_scales[MESH_MAILBOX01_ID - MESH_CAFE_TABLE_ID]				= 2.29f;
-	t_scales[MESH_MAILBOX02_ID - MESH_CAFE_TABLE_ID]				= 2.24f;
-	t_scales[MESH_MAILBOX03_ID - MESH_CAFE_TABLE_ID]				= 1.99f;
-	t_scales[MESH_PARKING_BARRIER_ID - MESH_CAFE_TABLE_ID]			= 2.9f;
-	t_scales[MESH_PALETTE_ID - MESH_CAFE_TABLE_ID]					= 2.5f;
-	t_scales[MESH_PIPE_CAGE_ID - MESH_CAFE_TABLE_ID]				= 3.47f;
-	t_scales[MESH_SANDWICH_BOARD_ID - MESH_CAFE_TABLE_ID]			= 3.19f;
-	t_scales[MESH_SIDEWALK_BARRIER_ID - MESH_CAFE_TABLE_ID]			= 1.57f;
-	t_scales[MESH_SIGN01_ID - MESH_CAFE_TABLE_ID]					= 2.68f;
-	t_scales[MESH_SIGN02_ID - MESH_CAFE_TABLE_ID]					= 2.23f;
-	t_scales[MESH_SIGN03_ID - MESH_CAFE_TABLE_ID]					= 2.68f;
-	t_scales[MESH_SIGN04_ID - MESH_CAFE_TABLE_ID]					= 2.42f;
-	t_scales[MESH_SIGN05_ID - MESH_CAFE_TABLE_ID]					= 3.25f;
-	t_scales[MESH_SIGN06_ID - MESH_CAFE_TABLE_ID]					= 3.31f;
-	t_scales[MESH_SPRINKLER_ID - MESH_CAFE_TABLE_ID]				= 6.83f;
-	t_scales[MESH_BENCH_ID - MESH_CAFE_TABLE_ID]					= 1.94f;
-	t_scales[MESH_STREET_LIGHT_01_ID - MESH_CAFE_TABLE_ID]			= 0.51f;
-	t_scales[MESH_STREET_LIGHT_02_ID - MESH_CAFE_TABLE_ID]			= 2.97f;
-	t_scales[MESH_SWITCHBOX_ID - MESH_CAFE_TABLE_ID]				= 1.66f;
-	t_scales[MESH_TRAFFIC_CONE_ID - MESH_CAFE_TABLE_ID]				= 2.04f;
-	t_scales[MESH_HOUSE_ID - MESH_CAFE_TABLE_ID]					= 4.39f;
-	t_scales[MESH_HOUSE_2_ID - MESH_CAFE_TABLE_ID]					= 6.99f;
-	t_scales[MESH_HOUSE_3_ID - MESH_CAFE_TABLE_ID]					= 4.39f;
-	t_scales[MESH_HOUSE_4_ID - MESH_CAFE_TABLE_ID]					= 4.39f;
-	t_scales[MESH_HOUSE_5_ID - MESH_CAFE_TABLE_ID]					= 4.39f;
-
-	if(meshID == MESH_TREE_0_ID || meshID == MESH_TREE_1_ID || meshID == MESH_TREE_2_ID || meshID == MESH_TREE_3_ID)
-	{
-		return 0.2f;
-	}
-
-
-	return t_scales[meshID - MESH_CAFE_TABLE_ID];
-}
-
-D3DXVECTOR2 GetPlanePositions(float x, float y)
-{
-	float tx = x;
-	float ty = y;
-	float t_normalizedX = tx / 512.0f;
-	float t_normalizedZ = ty / 512.0f;
-	float t_groundSize = 500.0f;
-
-	D3DXVECTOR2 t_returned = D3DXVECTOR2(t_normalizedX * t_groundSize - (t_groundSize/2.0f),250.0f - t_normalizedZ * t_groundSize);
-	return t_returned;
-}
-
-
 
 void Game::OnKeyUp(int key)
 {

@@ -22,8 +22,6 @@ VertexPosSkin::VertexPosSkin(float x, float y, float z,
 	jiraya = a_jiraya;
 	index = a_index;
 
-	//if(tt == 5 || tt == 2)
-	//if(tt == 0)
 	if(tt == 2 || tt == 5)
 	{
 		index = 1;
@@ -48,18 +46,6 @@ VertexPosBones::VertexPosBones(float x, float y, float z,
 	boneIndex0 = a_boneIndex0;
 	boneIndex1 = a_boneIndex1;
 
-#if 0
-	//if(tt == 5 || tt == 2)
-	//if(tt == 0)
-	if(tt == 2 || tt == 5)
-	{
-		index = 1;
-	}
-	else 
-	{
-		index = 0;
-	}
-#endif
 }
 
 D3DMesh::D3DMesh():Mesh()

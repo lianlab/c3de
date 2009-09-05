@@ -733,7 +733,7 @@ void Game::OnKeyDown(int key)
 
 }
 
-#define USE_X_MODELS 1
+#define USE_X_MODELS 0
 
 void Game::InitializeMeshes()
 {	

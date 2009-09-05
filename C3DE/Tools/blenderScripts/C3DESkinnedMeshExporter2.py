@@ -439,11 +439,14 @@ class xExport:
 		#path4 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\picles.txt")
 		path5 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\outBones.txt")
 		
+		path6 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\SkinnedMeshOutBones.c3d")
+		
 		
 		
 		#file3 = open(path3, "wb")
 		#file4 = open(path4, "wb")
 		file5 = open(path5, "wb")
+		file6 = open(path6, "wb")
 		
 		
 		armature_obj = obj.getData()
@@ -459,6 +462,13 @@ class xExport:
 		total = len(bones_order)
 		
 		totalFrames = 8
+		
+		format = "ii"
+		data = struct.pack(format, totalFrames, total) # pack integer in a binary string
+		file6.write(data)
+		
+		print("total frames %i total bones %i" % (totalFrames, total))
+		
 		
 		file5.write("m_totalFrames = %i;\n" % totalFrames)
 		file5.write("m_totalBones = %i;\n" % total)
@@ -534,6 +544,10 @@ class xExport:
 				file5.write("t_currentFrameMatrix._42 = %ff;\n" % ( finalMatrix[3][1]))
 				file5.write("t_currentFrameMatrix._43 = %ff;\n" % ( finalMatrix[3][2]))
 				file5.write("t_currentFrameMatrix._44 = %ff;\n\n" % ( finalMatrix[3][3]))
+				
+				format = "ffffffffffffffff"
+				data = struct.pack(format, finalMatrix[0][0], finalMatrix[0][1], finalMatrix[0][2], finalMatrix[0][3], finalMatrix[1][0], finalMatrix[1][1], finalMatrix[1][2], finalMatrix[1][3], finalMatrix[2][0], finalMatrix[2][1], finalMatrix[2][2], finalMatrix[2][3], finalMatrix[3][0], finalMatrix[3][1], finalMatrix[3][2], finalMatrix[3][3]) # pack integer in a binary string
+				file6.write(data)
 				
 				file5.write("m_currentFrameToRoots[%i] = t_currentFrameMatrix;//for now\n" % (iterator))
 				file5.write("t_frameMatrices[%i] = t_currentFrameMatrix;//for now\n" % ( iterator))

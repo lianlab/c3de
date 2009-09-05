@@ -262,19 +262,7 @@ class xExport:
 				
 	
 	
-	#***********************************************
-	#Export Mesh without Armature
-	#***********************************************
-	def exportMesh(self, obj):
-		tex = []
-		mesh = obj.getData()
-		self.writeTextures(obj, tex)		
-		self.writeMeshcoordArm(obj, None, 0)
-		self.writeMeshMaterialList(obj, mesh, tex)
-		self.writeMeshNormals(obj, mesh)
-		self.writeMeshTextureCoords(obj, mesh)
-		self.writeMeshVertexColors(obj, mesh)
-		self.file.write("  }  // End of the Mesh %s \n" % (obj.name))
+	
 		
 					
 	#***********************************************
@@ -282,8 +270,6 @@ class xExport:
 	#***********************************************
 	def exportSelMesh(self):
 		print "exporting ..."
-		#self.writeHeader()
-		#self.writeRootFrame()
 		tex = []
 		objs = Object.GetSelected()
 		iterator = 0
@@ -293,20 +279,7 @@ class xExport:
 				#self.writeTextures(obj, tex)		
 				self.writeMeshcoordArm(obj, None, iterator)
 				iterator += 1
-				#self.writeMeshMaterialList(obj, mesh, tex)
-				#self.writeMeshNormals(obj, mesh)
-				#self.writeMeshTextureCoords(obj, mesh)
-				#self.writeMeshVertexColors(obj, mesh)
-				#self.file.write(" }\n")
-				#self.file.write("}\n")
-				#ind = objs.index(obj)
-				#if ind == len(objs)-1:
-					#self.file.write("}\n")
-				#ip_list = obj.ipo
-				#if ip_list != None :
-				#	self.file.write("AnimationSet AnimationSet0 {\n")
-				#	self.writeAnimationObj(obj)
-				#	self.file.write("}\n")
+				
 			if obj.type == 'Armature':
 				self.writeMeshcoordArm2(obj, arm_ob = None)
 			else :
@@ -319,10 +292,7 @@ class xExport:
 	#EXPORT MESH DATA with Armature
 	#***********************************************
 	def writeMeshcoordArm(self, obj ,arm_ob, objectIndex):
-		global index_list,flip_z
-		#TransformMatrix
-		#mat = self.getLocMat(obj)
-		#self.writeArmFrames(mat, make_legal_name(obj.name))
+		global index_list,flip_z		
 		mesh = NMesh.GetRawFromObject(obj.name)
 		
 		

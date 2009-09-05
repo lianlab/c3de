@@ -684,10 +684,6 @@
 							>
 						</File>
 						<File
-							RelativePath=".\C3DESkinnedMeshClean.cpp"
-							>
-						</File>
-						<File
 							RelativePath=".\C3DESkinnedMeshFX.cpp"
 							>
 						</File>
@@ -1311,10 +1307,6 @@
 						</File>
 						<File
 							RelativePath=".\BookLights.h"
-							>
-						</File>
-						<File
-							RelativePath=".\C3DESkinnedMeshClean.h"
 							>
 						</File>
 						<File

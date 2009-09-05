@@ -476,6 +476,8 @@ void ResourceManager::InitializeResources()
 	InitializeFonts();
 
 	InitializeMeshBuffers();
+
+	InitializeSceneBuffers();
 }
 
 void ResourceManager::InitializeMeshBuffers()
@@ -486,7 +488,7 @@ void ResourceManager::InitializeMeshBuffers()
 	fpos_t position;
 
 	//CAFE TABLE
-	pFile = fopen ( "Meshes/landscape/out0.c3d" , "rb" );
+	pFile = fopen ( "Meshes/landscape/out0.c3d" , "rb" );	
 	
 	// obtain file size:
 	fseek (pFile , 0 , SEEK_END);
@@ -910,9 +912,38 @@ void ResourceManager::InitializeMeshBuffers()
 	
 }
 
+void ResourceManager::InitializeSceneBuffers()
+{	
+	FILE * pFile;
+	long lSize;
+	size_t result;
+	fpos_t position;
+
+	//Scene0
+	pFile = fopen ( "Meshes/scenes/scene0.c3d" , "rb" );	
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferScene0 = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferScene0,lSize,1,pFile);
+
+	m_sceneBuffers[SCENE_BUFFER_SCENE_0_ID] = bufferScene0;	
+	
+}
+
 char * ResourceManager::GetMeshBuffer(int meshBufferID)
 {
 	return m_meshBuffers[meshBufferID];
+}
+
+char * ResourceManager::GetSceneBuffer(int sceneBufferID)
+{
+	return m_sceneBuffers[sceneBufferID];
 }
 
 void ResourceManager::InitializeVideos()

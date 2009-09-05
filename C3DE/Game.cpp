@@ -915,7 +915,7 @@ void Game::InitializeMeshes()
 	m_meshes->push_back(m_trafficCone);	
 
 	//#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\outWorld.c3d"
-	BufferReader *t_scene = new BufferReader(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CAFE_TABLE_ID));
+	BufferReader *t_scene = new BufferReader(ResourceManager::GetInstance()->GetSceneBuffer(SCENE_BUFFER_SCENE_0_ID));
 
 	m_sceneTotalObjects = t_scene->ReadNextInt();	
 	m_sceneStaticObjectsList = (int*)malloc(sizeof(int) * m_sceneTotalObjects);

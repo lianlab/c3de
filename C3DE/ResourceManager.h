@@ -219,6 +219,12 @@ enum MeshBuffersIds
 	TOTAL_MESH_BUFFERS
 };
 
+enum SceneBuffersIds
+{
+	SCENE_BUFFER_SCENE_0_ID,	
+	TOTAL_SCENES
+};
+
 struct VideoStructure
 {
 	PGETFRAME *m_frames;
@@ -240,17 +246,8 @@ public:
 	static ResourceManager * GetInstance();
 	
 	~ResourceManager();
-
-	//C3DESprite * GetSpriteByID(int id);
 	IDirect3DTexture9 * GetTextureByID(int id);
-
-
-	
-	
-	//inline static void* m_resources[] = {1,2};
-
-	void SetDevice(IDirect3DDevice9 *device);
-	
+	void SetDevice(IDirect3DDevice9 *device);	
 	std::string GetMeshFilenameByID(int a_ID);
 	IDirect3DTexture9 * ResourceManager::GetTextureByFilename(std::string a_filename);
 
@@ -259,6 +256,7 @@ public:
 	int * GetFontDescriptor(int a_fontId);
 
 	char * GetMeshBuffer(int meshBufferID);
+	char * GetSceneBuffer(int sceneBufferID);
 
 private:
 	ResourceManager();
@@ -266,6 +264,7 @@ private:
 	void InitializeResources();
 	void InitializeFonts();
 	void InitializeMeshBuffers();
+	void InitializeSceneBuffers();
 	IDirect3DDevice9 *m_device;
 
 	IDirect3DTexture9 * temp;
@@ -280,6 +279,7 @@ private:
 	int * m_fonts[TOTAL_FONTS];
 
 	char *m_meshBuffers[TOTAL_MESH_BUFFERS];
+	char *m_sceneBuffers[TOTAL_SCENES];
 
 	
 

@@ -22,9 +22,9 @@ uniform extern float gAlpha;
 uniform extern float gOffset;
 uniform extern int gSelectedBoneIndex;
 uniform extern float4x4 gFinalXForms[35];
-uniform extern float4x4 gToRoot[24];
+uniform extern float4x4 gToRoot[29];
 //updated every frame
-uniform extern float4x4 gCurrentFrameToRoot[24];
+uniform extern float4x4 gCurrentFrameToRoot[29];
 
 sampler TexS = sampler_state
 {

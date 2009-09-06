@@ -41,6 +41,7 @@
 #include "Skybox.h"
 #include "C3DESkinnedMesh.h"
 #include "C3DESkinnedMeshContainer.h"
+#include "GameMesh.h"
 
 
 
@@ -197,11 +198,13 @@ private:
 	vector<Mesh *> *m_meshes;
 
 	int m_character0UpdateTime;
-	int m_character1UpdateTime;
+	int m_spiderUpdateTime;
 
-	C3DESkinnedMesh *m_characterMesh;
+	C3DESkinnedMesh *m_characterMesh;	
 	C3DESkinnedMeshContainer *m_characterContainer0;
-	C3DESkinnedMeshContainer *m_characterContainer1;
+	
+	C3DESkinnedMesh *m_spiderMesh;
+	C3DESkinnedMeshContainer *m_spiderContainer;
 
 	
 

@@ -235,8 +235,8 @@ class xExport:
 				self.writeMeshcoordArm(obj, None, iterator)
 				iterator += 1
 				
-			if obj.type == 'Armature':
-				self.writeMeshcoordArm2(obj, arm_ob = None)
+			#if obj.type == 'Armature':
+			#	self.writeMeshcoordArm2(obj, arm_ob = None)
 			else :
 				print "The selected object is not a mesh"
 		print "...finished"

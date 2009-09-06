@@ -24,7 +24,6 @@
 #include "FXManager.h"
 #include "C3DETransform.h"
 #include "BufferReader.h"
-#include "GameMesh.h"
 #include <iostream>
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
@@ -37,6 +36,8 @@ using namespace std;
 Game::Game(Application * app)
 {
 
+	m_character0UpdateTime = 0;
+	m_spiderUpdateTime = 0;
 	int m_loadedObjects = 0;
 	int m_totalObjects = 145;
 
@@ -210,16 +211,16 @@ void Game::Update(int deltaTime)
 
 
 	m_character0UpdateTime += deltaTime;
-	m_character1UpdateTime += (deltaTime / 2);
+	m_spiderUpdateTime += (deltaTime / 2);
 
 	
 
 	m_character0UpdateTime = m_character0UpdateTime % m_characterContainer0->GetTotalAnimationTime();
-	m_character1UpdateTime = m_character1UpdateTime % m_characterContainer1->GetTotalAnimationTime();
+	m_spiderUpdateTime = m_spiderUpdateTime % m_spiderContainer->GetTotalAnimationTime();
 
 
 	m_characterContainer0->SetAnimationTime(m_character0UpdateTime);
-	m_characterContainer1->SetAnimationTime(m_character1UpdateTime);
+	m_spiderContainer->SetAnimationTime(m_spiderUpdateTime);
 
 	int totalObjects = m_testScene->GetMeshesVector()->size();
 
@@ -483,8 +484,16 @@ void Game::Render(Renderer *renderer)
 	C3DETransform *t2 = new C3DETransform();		
 	//t2->Translate(5.0f, 2.0f, 0.0f);
 
-	SceneNode *t_node2 = new SceneNode(m_characterContainer1, t2);
+	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2);
 	m_testScene->AddNode(t_node2);
+
+	C3DETransform *t3 = new C3DETransform();		
+	//t2->Translate(5.0f, 2.0f, 0.0f);
+
+	t3->Translate(0.0f, 0.0f, 25.0f);
+	SceneNode *t_node3 = new SceneNode(m_spiderContainer, t3);
+	
+	m_testScene->AddNode(t_node3);
 
 	for(int i = 0; i< m_sceneTotalObjects; i++)
 	{
@@ -494,6 +503,8 @@ void Game::Render(Renderer *renderer)
 		SceneNode *t_node = new SceneNode(t_mesh, t_transform);
 		m_testScene->AddNode(t_node);
 	}	
+
+	
 
 	renderer->DrawScene2(m_testScene);
 
@@ -738,7 +749,7 @@ void Game::OnKeyDown(int key)
 void Game::InitializeMeshes()
 {	
 
-	m_totalObjects = 28;
+	m_totalObjects = 29;
 	m_loadedObjects = 0;
 
 	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_FONT_VERDANA_36_ID);
@@ -761,7 +772,18 @@ void Game::InitializeMeshes()
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
 	
-	m_characterMesh = new C3DESkinnedMesh();
+	D3DImage * characterTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_MALE_SKIN_ID));	
+	
+	m_characterMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CHARACTER_MALE_ID),
+											ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CHARACTER_MALE_BONES_ID),
+											characterTexture);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	D3DImage * spiderTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SPIDER_ID));	
+	m_spiderMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SPIDER_ID),
+										ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SPIDER_BONES_ID),
+										spiderTexture);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 	
@@ -938,6 +960,8 @@ void Game::InitializeMeshes()
 	GameMesh *m_trafficCone = new GameMesh(MESH_BUFFER_TRAFFIC_CONE_ID,IMAGE_TRAFFIC_CONE_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	
 #endif
 	m_skyBox = new Skybox(1000);	
 	m_loadedObjects++;
@@ -974,13 +998,14 @@ void Game::InitializeMeshes()
 	m_meshes->push_back(m_cafeTable);
 	m_meshes->push_back(m_parkingBarrier);
 	m_meshes->push_back(m_trafficCone);	
+	
 
 	//#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\outWorld.c3d"
 	BufferReader *t_scene = new BufferReader(ResourceManager::GetInstance()->GetSceneBuffer(SCENE_BUFFER_SCENE_0_ID));
 
 	m_sceneTotalObjects = t_scene->ReadNextInt();	
-	m_sceneStaticObjectsList = (int*)malloc(sizeof(int) * m_sceneTotalObjects);
-	m_sceneStaticObjectsTransforms = (C3DETransform**)malloc(sizeof(C3DETransform) * m_sceneTotalObjects);
+	m_sceneStaticObjectsList = (int*)malloc(sizeof(int) * (m_sceneTotalObjects));
+	m_sceneStaticObjectsTransforms = (C3DETransform**)malloc(sizeof(C3DETransform) * (m_sceneTotalObjects));
 	D3DXMATRIX *t_matrix = new D3DXMATRIX();
 
 	for(int i = 0; i < m_sceneTotalObjects; i++)
@@ -1008,10 +1033,11 @@ void Game::InitializeMeshes()
 	}		
 
 	
+	
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
 
 	m_characterContainer0 = new C3DESkinnedMeshContainer(m_characterMesh);
-	m_characterContainer1 = new C3DESkinnedMeshContainer(m_characterMesh);
+	m_spiderContainer = new C3DESkinnedMeshContainer(m_spiderMesh);
 	
 }
 

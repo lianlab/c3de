@@ -16,6 +16,8 @@ C3DESkinnedMeshContainer::C3DESkinnedMeshContainer(C3DESkinnedMesh *a_mesh)
 	m_textures = a_mesh->GetTextures();
 
 	m_poseMatrix = NULL;
+
+	m_elapsedTime = 0;
 }
 
 C3DESkinnedMeshContainer::~C3DESkinnedMeshContainer()
@@ -87,6 +89,7 @@ void C3DESkinnedMeshContainer::SetAnimationTime(int time)
 
 void C3DESkinnedMeshContainer::Update(int deltaTime)
 {
+	//deltaTime *= 3;
 	
 	m_elapsedTime += deltaTime;
 

@@ -7,7 +7,7 @@
 #include "DebugMemory.h"
 
 
-C3DESkinnedMesh::C3DESkinnedMesh()
+C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, char *a_bonesBuffer, Image *a_texture)
 {
 	//m_currentAnimationStartFrame = 0;
 	//m_currentAnimationTotalTime = 0;
@@ -33,7 +33,7 @@ C3DESkinnedMesh::C3DESkinnedMesh()
 	//#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\outBones.txt"
 	//#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\out.txt"
 
-	BufferReader *t_reader = new BufferReader(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CHARACTER_MALE_BONES_ID));
+	BufferReader *t_reader = new BufferReader(a_bonesBuffer);
 	m_totalFrames = t_reader->ReadNextInt();
 	m_totalBones = t_reader->ReadNextInt();
 	m_roots = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);
@@ -82,12 +82,12 @@ C3DESkinnedMesh::C3DESkinnedMesh()
 			
 		}
 		m_poseMatrices->push_back(t_frameMatrices);
-		m_animationFramesDuration->push_back(100);
+		m_animationFramesDuration->push_back(33);
 	}
 
 	delete t_reader;
 	t_reader = NULL;
-	t_reader = new BufferReader(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CHARACTER_MALE_ID));
+	t_reader = new BufferReader(a_meshBuffer);
 
 	int totalVertices = t_reader->ReadNextInt();
 	int totalIndices = t_reader->ReadNextInt();
@@ -110,6 +110,15 @@ C3DESkinnedMesh::C3DESkinnedMesh()
 	
 
 	m_animationsTotalFrames->push_back(m_totalFrames);
+	/*
+	m_animationsTotalFrames->push_back(114);
+	m_animationsTotalFrames->push_back(167);
+	m_animationsTotalFrames->push_back(79);
+	m_animationsTotalFrames->push_back(39);
+	m_animationsTotalFrames->push_back(49);
+	m_animationsTotalFrames->push_back(204);
+	m_animationsTotalFrames->push_back(46);
+	*/
 	//m_animationsTotalFrames->push_back(1);
 	
 
@@ -117,8 +126,10 @@ C3DESkinnedMesh::C3DESkinnedMesh()
 	
 	Update(0);
 
-	D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_MALE_SKIN_ID));	
-	AddTexture((Image *) d3dImage);
+	//D3DImage * d3dImage = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SPIDER_ID));	
+	
+	//AddTexture((Image *) d3dImage);
+	AddTexture((Image *) a_texture);
 
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);	

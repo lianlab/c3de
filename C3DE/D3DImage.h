@@ -4,7 +4,7 @@
 #include <d3dx9.h>
 #include "Image.h"
 
-class D3DImage : Image
+class D3DImage : public Image
 {
 public:
 	D3DImage(IDirect3DTexture9 * tex){m_tex = tex;}

@@ -192,6 +192,9 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_HOUSE_3;
 	IDirect3DTexture9 * TEX_HOUSE_4;
 	IDirect3DTexture9 * TEX_HOUSE_5;
+	IDirect3DTexture9 * TEX_SPIDER;
+	IDirect3DTexture9 * TEX_DOG;
+	IDirect3DTexture9 * TEX_NINJA;
 
 	IDirect3DTexture9 * TEX_FEMALE_SKIN;
 	IDirect3DTexture9 * TEX_MALE_SKIN;
@@ -336,6 +339,9 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/house/house5.png", &TEX_HOUSE_5));
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/house/house5.png", &TEX_HOUSE_5));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/spider.jpg", &TEX_SPIDER));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/dog.jpg", &TEX_DOG));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/ninja.jpg", &TEX_NINJA));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/female/femaleSkin.png", &TEX_FEMALE_SKIN));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/male/maleSkin.png", &TEX_MALE_SKIN));
 
@@ -465,6 +471,9 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_HOUSE_3_ID] = TEX_HOUSE_3;
 	m_imageResources[IMAGE_HOUSE_4_ID] = TEX_HOUSE_4;
 	m_imageResources[IMAGE_HOUSE_5_ID] = TEX_HOUSE_5;
+	m_imageResources[IMAGE_SPIDER_ID] = TEX_SPIDER;
+	m_imageResources[IMAGE_DOG_ID] = TEX_DOG;
+	m_imageResources[IMAGE_NINJA_ID] = TEX_NINJA;
 
 	m_imageResources[IMAGE_FEMALE_SKIN_ID] = TEX_FEMALE_SKIN;
 	m_imageResources[IMAGE_MALE_SKIN_ID] = TEX_MALE_SKIN;
@@ -906,6 +915,96 @@ void ResourceManager::InitializeMeshBuffers()
 	result = fread (bufferHouse_5,lSize,1,pFile);
 
 	m_meshBuffers[MESH_BUFFER_HOUSE_5_ID] = bufferHouse_5;
+
+	//MESH_BUFFER_SPIDER
+	pFile = fopen ( "Meshes/skinned/spider.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSpider= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSpider,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SPIDER_ID] = bufferSpider;
+
+	//MESH_BUFFER_SPIDER_BONES
+	pFile = fopen ( "Meshes/skinned/spiderBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSpiderBones= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSpiderBones,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SPIDER_BONES_ID] = bufferSpiderBones;
+
+	//MESH_BUFFER_DOG
+	pFile = fopen ( "Meshes/skinned/dog.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferDog= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferDog,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_DOG_ID] = bufferDog;
+
+	//MESH_BUFFER_DOG_BONES
+	pFile = fopen ( "Meshes/skinned/dogBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferDogBones= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferDogBones,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_DOG_BONES_ID] = bufferDogBones;
+
+	//MESH_BUFFER_NINJA
+	pFile = fopen ( "Meshes/skinned/ninja.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferNinja= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferNinja,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_NINJA_ID] = bufferNinja;
+
+	//MESH_BUFFER_NINJA_BONES
+	pFile = fopen ( "Meshes/skinned/ninjaBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferNinjaBones= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferNinjaBones,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_NINJA_BONES_ID] = bufferNinjaBones;
 
 	//MESH_CHARACTER_MALE
 	pFile = fopen ( "Meshes/skinned/characterMale.c3d" , "rb" );

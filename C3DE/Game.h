@@ -199,12 +199,20 @@ private:
 
 	int m_character0UpdateTime;
 	int m_spiderUpdateTime;
+	int m_dogUpdateTime;
+	int m_ninjaUpdateTime;
 
 	C3DESkinnedMesh *m_characterMesh;	
 	C3DESkinnedMeshContainer *m_characterContainer0;
 	
 	C3DESkinnedMesh *m_spiderMesh;
 	C3DESkinnedMeshContainer *m_spiderContainer;
+
+	C3DESkinnedMesh *m_dogMesh;
+	C3DESkinnedMeshContainer *m_dogContainer;
+
+	C3DESkinnedMesh *m_ninjaMesh;
+	C3DESkinnedMeshContainer *m_ninjaContainer;
 
 	
 

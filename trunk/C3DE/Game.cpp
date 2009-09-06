@@ -38,6 +38,8 @@ Game::Game(Application * app)
 
 	m_character0UpdateTime = 0;
 	m_spiderUpdateTime = 0;
+	m_dogUpdateTime = 0;
+	m_ninjaUpdateTime = 0;
 	int m_loadedObjects = 0;
 	int m_totalObjects = 145;
 
@@ -211,16 +213,22 @@ void Game::Update(int deltaTime)
 
 
 	m_character0UpdateTime += deltaTime;
-	m_spiderUpdateTime += (deltaTime / 2);
+	m_spiderUpdateTime += (deltaTime);
+	m_dogUpdateTime += (deltaTime);
+	m_ninjaUpdateTime += (deltaTime);
 
 	
 
 	m_character0UpdateTime = m_character0UpdateTime % m_characterContainer0->GetTotalAnimationTime();
 	m_spiderUpdateTime = m_spiderUpdateTime % m_spiderContainer->GetTotalAnimationTime();
+	m_dogUpdateTime = m_dogUpdateTime % m_dogContainer->GetTotalAnimationTime();
+	m_ninjaUpdateTime = m_ninjaUpdateTime % m_ninjaContainer->GetTotalAnimationTime();
 
 
 	m_characterContainer0->SetAnimationTime(m_character0UpdateTime);
 	m_spiderContainer->SetAnimationTime(m_spiderUpdateTime);
+	m_dogContainer->SetAnimationTime(m_dogUpdateTime);
+	m_ninjaContainer->SetAnimationTime(m_ninjaUpdateTime);
 
 	int totalObjects = m_testScene->GetMeshesVector()->size();
 
@@ -487,13 +495,20 @@ void Game::Render(Renderer *renderer)
 	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2);
 	m_testScene->AddNode(t_node2);
 
-	C3DETransform *t3 = new C3DETransform();		
-	//t2->Translate(5.0f, 2.0f, 0.0f);
-
+	C3DETransform *t3 = new C3DETransform();
 	t3->Translate(0.0f, 0.0f, 25.0f);
-	SceneNode *t_node3 = new SceneNode(m_spiderContainer, t3);
-	
+	SceneNode *t_node3 = new SceneNode(m_spiderContainer, t3);	
 	m_testScene->AddNode(t_node3);
+
+	C3DETransform *t4 = new C3DETransform();
+	t4->Translate(25.0f, 0.0f, 25.0f);
+	SceneNode *t_node4 = new SceneNode(m_dogContainer, t4);	
+	m_testScene->AddNode(t_node4);
+
+	C3DETransform *t5 = new C3DETransform();
+	t5->Translate(50.0f, 0.0f, 25.0f);
+	SceneNode *t_node5 = new SceneNode(m_ninjaContainer, t5);	
+	m_testScene->AddNode(t_node5);
 
 	for(int i = 0; i< m_sceneTotalObjects; i++)
 	{
@@ -749,7 +764,7 @@ void Game::OnKeyDown(int key)
 void Game::InitializeMeshes()
 {	
 
-	m_totalObjects = 29;
+	m_totalObjects = 31;
 	m_loadedObjects = 0;
 
 	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_FONT_VERDANA_36_ID);
@@ -784,6 +799,20 @@ void Game::InitializeMeshes()
 	m_spiderMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SPIDER_ID),
 										ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SPIDER_BONES_ID),
 										spiderTexture);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	D3DImage * ninjaTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_NINJA_ID));	
+	m_ninjaMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_NINJA_ID),
+										ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_NINJA_BONES_ID),
+										ninjaTexture);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	D3DImage * dogTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_DOG_ID));	
+	m_dogMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_DOG_ID),
+										ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_DOG_BONES_ID),
+										dogTexture);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 	
@@ -1038,6 +1067,8 @@ void Game::InitializeMeshes()
 
 	m_characterContainer0 = new C3DESkinnedMeshContainer(m_characterMesh);
 	m_spiderContainer = new C3DESkinnedMeshContainer(m_spiderMesh);
+	m_dogContainer = new C3DESkinnedMeshContainer(m_dogMesh);
+	m_ninjaContainer = new C3DESkinnedMeshContainer(m_ninjaMesh);
 	
 }
 

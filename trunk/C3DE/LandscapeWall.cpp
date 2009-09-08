@@ -26,19 +26,8 @@ LandscapeWall::LandscapeWall(int texID)
 	m_vertices->push_back(VertexPos( 0.5f,  5.8f, 0.25f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 	m_vertices->push_back(VertexPos(-0.5f,  5.8f, 0.25f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f));
 
-	// Fill in the top face vertex data.
-#if 0
-	m_vertices->push_back(VertexPos(-0.5f, 5.8f, -0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos(-0.5f, 5.8f,  0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos( 0.5f, 5.8f,  0.25f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f));
-	m_vertices->push_back(VertexPos( 0.5f, 5.8f, -0.25f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f));
+	
 
-	// Fill in the bottom face vertex data.
-	m_vertices->push_back(VertexPos(-0.5f, 0.0f, -0.25f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f));
-	m_vertices->push_back(VertexPos( 0.5f, 0.0f, -0.25f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos( 0.5f, 0.0f,  0.25f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos(-0.5f, 0.0f,  0.25f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f));
-#endif
 	// Fill in the left face vertex data.
 	m_vertices->push_back(VertexPos(-0.5f, 0.0f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f));
 	m_vertices->push_back(VertexPos(-0.5f,  5.8f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
@@ -86,21 +75,8 @@ LandscapeWall::LandscapeWall(int texID)
 	m_indices->push_back(12);
 	m_indices->push_back(14);
 	m_indices->push_back(15);
-#if 0
-	m_indices->push_back(16);
-	m_indices->push_back(17);
-	m_indices->push_back(18);
-	m_indices->push_back(16);
-	m_indices->push_back(18);
-	m_indices->push_back(19);
 
-	m_indices->push_back(20);
-	m_indices->push_back(21);
-	m_indices->push_back(22);
-	m_indices->push_back(20);
-	m_indices->push_back(22);
-	m_indices->push_back(23);
-	#endif
+
 
 
 	
@@ -143,19 +119,8 @@ void LandscapeWall::Scale(float x, float y, float z)
 	m_vertices->push_back(VertexPos( t_halfX,  5.8f, 0.25f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 	m_vertices->push_back(VertexPos(-t_halfX,  5.8f, 0.25f, 0.0f, 0.0f, 1.0f, x, 0.0f));
 
-#if 0
-	// Fill in the top face vertex data.
-	m_vertices->push_back(VertexPos(-t_halfX, 5.8f, -0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos(-t_halfX, 5.8f,  0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos( t_halfX, 5.8f,  0.25f, 0.0f, 1.0f, 0.0f, x, 0.0f));
-	m_vertices->push_back(VertexPos( t_halfX, 5.8f, -0.25f, 0.0f, 1.0f, 0.0f, x, 1.0f));
 
-	// Fill in the bottom face vertex data.
-	m_vertices->push_back(VertexPos(-t_halfX, 0.0f, -0.25f, 0.0f, -1.0f, 0.0f, x, 1.0f));
-	m_vertices->push_back(VertexPos( t_halfX, 0.0f, -0.25f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos( t_halfX, 0.0f,  0.25f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos(-t_halfX, 0.0f,  0.25f, 0.0f, -1.0f, 0.0f, x, 0.0f));
-#endif
+
 	// Fill in the left face vertex data.
 	m_vertices->push_back(VertexPos(-t_halfX, 0.0f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f));
 	m_vertices->push_back(VertexPos(-t_halfX,  5.8f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f));

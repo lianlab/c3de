@@ -836,15 +836,15 @@ void Game::InitializeMeshes()
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeWall1 *m_wall1 = new LandscapeWall1();
+	LandscapeWall *m_wall1 = new LandscapeWall(IMAGE_BRICKS_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeWall2 *m_wall2 = new LandscapeWall2();
+	LandscapeWall *m_wall2 = new LandscapeWall(IMAGE_WALL_GRASS_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeWall3 *m_wall3 = new LandscapeWall3();
+	LandscapeWall *m_wall3 = new LandscapeWall(IMAGE_WALL_WOOD_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
@@ -1035,12 +1035,12 @@ void Game::InitializeMeshes()
 	//#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\outWorld.c3d"
 	BufferReader *t_scene = new BufferReader(ResourceManager::GetInstance()->GetSceneBuffer(SCENE_BUFFER_SCENE_0_ID));
 
-	m_sceneTotalObjects = t_scene->ReadNextInt();	
+	m_sceneTotalObjects = t_scene->ReadNextInt() + 1;	
 	m_sceneStaticObjectsList = (int*)malloc(sizeof(int) * (m_sceneTotalObjects));
 	m_sceneStaticObjectsTransforms = (C3DETransform**)malloc(sizeof(C3DETransform) * (m_sceneTotalObjects));
 	D3DXMATRIX *t_matrix = new D3DXMATRIX();
 
-	for(int i = 0; i < m_sceneTotalObjects; i++)
+	for(int i = 0; i < m_sceneTotalObjects - 1; i++)
 	{
 		m_sceneStaticObjectsList[i] = t_scene->ReadNextInt();
 		m_sceneStaticObjectsTransforms[i] = new C3DETransform();
@@ -1062,8 +1062,10 @@ void Game::InitializeMeshes()
 		t_matrix->_43 = t_scene->ReadNextFloat();
 		t_matrix->_44 = t_scene->ReadNextFloat();
 		m_sceneStaticObjectsTransforms[i]->Set(t_matrix);
-	}		
+	}	
 
+	m_sceneStaticObjectsList[m_sceneTotalObjects-1] = GetMeshIndex(m_wall1);
+	m_sceneStaticObjectsTransforms[m_sceneTotalObjects-1] = new C3DETransform();	
 	
 	
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);

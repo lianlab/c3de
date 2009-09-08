@@ -493,18 +493,6 @@
 									RelativePath=".\LandscapeWall.cpp"
 									>
 								</File>
-								<File
-									RelativePath=".\LandscapeWall1.cpp"
-									>
-								</File>
-								<File
-									RelativePath=".\LandscapeWall2.cpp"
-									>
-								</File>
-								<File
-									RelativePath=".\LandscapeWall3.cpp"
-									>
-								</File>
 							</Filter>
 						</Filter>
 						<Filter
@@ -1117,18 +1105,6 @@
 								>
 								<File
 									RelativePath=".\LandscapeWall.h"
-									>
-								</File>
-								<File
-									RelativePath=".\LandscapeWall1.h"
-									>
-								</File>
-								<File
-									RelativePath=".\LandscapeWall2.h"
-									>
-								</File>
-								<File
-									RelativePath=".\LandscapeWall3.h"
 									>
 								</File>
 							</Filter>

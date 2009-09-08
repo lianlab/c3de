@@ -501,6 +501,7 @@ void Game::Render(Renderer *renderer)
 	m_testScene->AddNode(t_node3);
 
 	C3DETransform *t4 = new C3DETransform();
+	t4->Rotate(3.1415 / 2.0f, &D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 	t4->Translate(25.0f, 0.0f, 25.0f);
 	SceneNode *t_node4 = new SceneNode(m_dogContainer, t4);	
 	m_testScene->AddNode(t_node4);
@@ -510,6 +511,7 @@ void Game::Render(Renderer *renderer)
 	SceneNode *t_node5 = new SceneNode(m_ninjaContainer, t5);	
 	m_testScene->AddNode(t_node5);
 
+	
 	for(int i = 0; i< m_sceneTotalObjects; i++)
 	{
 		Mesh * t_mesh = (*m_meshes)[m_sceneStaticObjectsList[i]];
@@ -518,6 +520,7 @@ void Game::Render(Renderer *renderer)
 		SceneNode *t_node = new SceneNode(t_mesh, t_transform);
 		m_testScene->AddNode(t_node);
 	}	
+	
 
 	
 

@@ -197,11 +197,14 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 	HR(D3DXComputeBoundingBox((D3DXVECTOR3*)v, m_xMesh->GetNumVertices(), 
 		sizeof(VertexPos), &t_min, &t_max));
 
+
 	
 
 	m_boundingBox = new AABB(t_min, t_max);
 	//SetCollisionPoints(t_min, t_max);
 	CalculateTopCollisionArea();
+
+	CalculateOBB(t_min, t_max);
 	
 	
 	m_xMesh->UnlockVertexBuffer();
@@ -598,6 +601,11 @@ void D3DMesh::CalculateCollisionRadius()
 	{
 		radius = candidate;
 	}
+}
+
+void D3DMesh::CalculateOBB(D3DXVECTOR3 &meshMin, D3DXVECTOR3 &meshMax)
+{
+	m_obb = new OBB(D3DXVECTOR3(0.0f, 0.0f, 0.0f), meshMax - meshMin);
 }
 
 void D3DMesh::CalculateTopCollisionArea()

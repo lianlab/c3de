@@ -18,7 +18,7 @@
 #include "FireRingFX.h"
 
 #define REAL_HACK 0
-#define DRAW_BOUNDING_BOXES 0
+#define DRAW_BOUNDING_BOXES 1
 
 #define MAX_NUM_PARTICLES 50
 
@@ -337,6 +337,77 @@ bool D3DRenderer::IsAABBWithinView(D3DXMATRIX a_transform,AABB *a_box)
 	
 }
 
+bool D3DRenderer::IsMeshWithinView(D3DMesh *a_mesh, D3DXMATRIX a_matrix)
+{
+	
+	D3DXVECTOR3 P;
+	D3DXVECTOR3 Q;
+
+	D3DXPLANE t_planes[6];
+	D3DXPLANE t_plane1;
+	D3DXPLANE t_plane2;
+	D3DXPLANE t_plane3;
+	D3DXPLANE t_plane4;
+	D3DXPLANE t_plane5;
+	D3DXPLANE t_plane6;
+
+	AABB *t_box = a_mesh->GetBoundingBox();
+
+
+	D3DXVECTOR3 t_min = t_box->minPoint;
+	D3DXVECTOR3 t_max = t_box->maxPoint;	
+
+	D3DXMATRIX t_matrix = a_matrix;
+
+	D3DXMatrixTranspose(&t_matrix, &t_matrix);
+
+	D3DXPlaneTransform(&t_plane1, &m_frustumPlane[0], &t_matrix);
+	D3DXPlaneTransform(&t_plane2, &m_frustumPlane[1], &t_matrix);
+	D3DXPlaneTransform(&t_plane3, &m_frustumPlane[2], &t_matrix);
+	D3DXPlaneTransform(&t_plane4, &m_frustumPlane[3], &t_matrix);
+	D3DXPlaneTransform(&t_plane5, &m_frustumPlane[4], &t_matrix);
+	D3DXPlaneTransform(&t_plane6, &m_frustumPlane[5], &t_matrix);
+
+	D3DXPlaneNormalize(&t_plane1, &t_plane1);
+	D3DXPlaneNormalize(&t_plane2, &t_plane2);
+	D3DXPlaneNormalize(&t_plane3, &t_plane3);
+	D3DXPlaneNormalize(&t_plane4, &t_plane4);
+	D3DXPlaneNormalize(&t_plane5, &t_plane5);
+	D3DXPlaneNormalize(&t_plane6, &t_plane6);
+
+	t_planes[0] = t_plane1;
+	t_planes[1] = t_plane2;
+	t_planes[2] = t_plane3;
+	t_planes[3] = t_plane4;
+	t_planes[4] = t_plane5;
+	t_planes[5] = t_plane6;
+	
+
+	for(int i = 0; i < 6; ++i)
+	{
+		for(int j = 0; j < 3; ++j)
+		{
+			if(t_planes[i][j] >= 0.0f)
+			{
+				P[j] = t_min[j];
+				Q[j] = t_max[j];
+			}
+			else
+			{
+				P[j] = t_max[j];
+				Q[j] = t_min[j];
+			}
+		}
+		if(D3DXPlaneDotCoord(&t_planes[i], &Q) < 0.0f)
+
+		return false;
+	}
+
+	return true;
+
+	
+}
+
 bool D3DRenderer::IsMeshWithinView(D3DMesh *a_mesh)
 {
 	
@@ -426,6 +497,8 @@ bool D3DRenderer::IsMeshWithinView(D3DMesh *a_mesh)
 	// Set the matrix
 
 	D3DXMATRIX t_matrix = matTranslation;
+	
+
 
 	D3DXMatrixTranspose(&t_matrix, &t_matrix);
 
@@ -672,12 +745,12 @@ void D3DRenderer::DrawScene(Scene *scene)
 				continue;
 			}
 			//if(IsAABBWithinView(d3dmesh->GetTransformMatrix(),t_boundingBox))
-			if(IsMeshWithinView(d3dmesh))
-			//if(true)
+			//if(IsMeshWithinView(d3dmesh))
+			if(true)
 			{
 				this->shown++;
 				#if DRAW_BOUNDING_BOXES
-				DrawOBB(d3dmesh);
+				//DrawOBB(d3dmesh);
 				#endif
 				DrawXMesh(d3dmesh);
 			}
@@ -738,29 +811,29 @@ void D3DRenderer::DrawScene2(Scene *scene)
 		
 		if(d3dmesh->GetXMesh())
 		{
-
 			AABB *t_boundingBox = d3dmesh->GetBoundingBox();
-			if(!t_boundingBox)
+			if(t_boundingBox != NULL)
 			{
-				this->shown++;
-				
-				DrawXMesh2(d3dmesh, t_matrix);
-				continue;
-			}
-			
-			if(IsMeshWithinView(d3dmesh))
-			//if(true)
-			{
-				this->shown++;
-				#if DRAW_BOUNDING_BOXES
-				DrawOBB(d3dmesh);
-				#endif
-				DrawXMesh2(d3dmesh, t_matrix);
+				if(IsMeshWithinView(d3dmesh, *t_matrix))
+				//if(true)
+				{
+					this->shown++;
+					#if DRAW_BOUNDING_BOXES
+					DrawOBB(d3dmesh, *t_matrix);
+					#endif
+					DrawXMesh2(d3dmesh, t_matrix);
+				}
+				else
+				{
+					this->hidden++;
+				}
 			}
 			else
 			{
-				this->hidden++;
+				DrawXMesh2(d3dmesh, t_matrix);
 			}
+
+
 		}
 			
 
@@ -1673,7 +1746,7 @@ void D3DRenderer::DrawAABB(D3DMesh * a_mesh)
 }
 
 
-void D3DRenderer::DrawOBB(D3DMesh * a_mesh)
+void D3DRenderer::DrawOBB(D3DMesh * a_mesh, D3DXMATRIX a_matrix)
 {
 	VertexCol *v = 0;
 	HR(m_aabbBuffer->Lock(0,0,(void**)&v,0));
@@ -1700,7 +1773,8 @@ void D3DRenderer::DrawOBB(D3DMesh * a_mesh)
 	D3DXVECTOR4 t_quat5;
 	D3DXVECTOR4 t_quat6;
 	D3DXVECTOR4 t_quat7;
-	D3DXMATRIX t_matrix = a_mesh->GetTransformMatrix();
+	//D3DXMATRIX t_matrix = a_mesh->GetTransformMatrix();
+	D3DXMATRIX t_matrix = a_matrix;
 	D3DXVec3Transform(&t_quat0, &t_0, &t_matrix);
 	D3DXVec3Transform(&t_quat1, &t_1, &t_matrix);
 	D3DXVec3Transform(&t_quat2, &t_2, &t_matrix);

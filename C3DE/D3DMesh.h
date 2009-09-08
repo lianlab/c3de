@@ -9,6 +9,7 @@
 #include "ShaderManager.h"
 #include "FX.h"
 #include "AABB.h"
+#include "OBB.h"
 #include "TopCollisionArea.h"
 
 
@@ -210,6 +211,7 @@ protected:
 	void CalculateTopCollisionArea();
 	void CalculateCollisionRadius();
 
+	void CalculateOBB(D3DXVECTOR3 &meshMin, D3DXVECTOR3 &meshMax);
 	float m_collisionRadius;
 
 	D3DXVECTOR3 m_fleps;
@@ -240,6 +242,7 @@ protected:
 	D3DXHANDLE m_shaderSpecularLightPower;//gSpecPower
 
 	
+	OBB *m_obb;
 	FX * m_effect;
 
 	ID3DXMesh *m_xMesh;

@@ -100,7 +100,7 @@ private:
 	HWND m_mainWindow;
 
 	void DrawAABB(D3DMesh * a_mesh);
-	void DrawOBB(D3DMesh * a_mesh);
+	void DrawOBB(D3DMesh * a_mesh, D3DXMATRIX a_matrix);
 	
 	ID3DXFont *m_font;
 	ID3DXSprite *m_sprite;
@@ -127,6 +127,7 @@ private:
 	void CalculateFrustumPlanes();
 
 	bool IsAABBWithinView(D3DXMATRIX a_matrix,AABB *a_box);
+	bool IsMeshWithinView(D3DMesh *a_mesh, D3DXMATRIX a_matrix);
 	bool IsMeshWithinView(D3DMesh *a_mesh);
 
 	

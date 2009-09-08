@@ -186,6 +186,8 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, char *a_bonesBuffer, Image 
 
 	m_boundingBox = new AABB(t_min, t_max);
 	CalculateTopCollisionArea();
+	CalculateOBB(t_min, t_max);
+
 	
 	
 	m_xMesh->UnlockVertexBuffer();

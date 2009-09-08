@@ -15,6 +15,8 @@ C3DESkinnedMeshContainer::C3DESkinnedMeshContainer(C3DESkinnedMesh *a_mesh)
 
 	m_textures = a_mesh->GetTextures();
 
+	m_boundingBox = a_mesh->GetBoundingBox();
+
 	m_poseMatrix = NULL;
 
 	m_elapsedTime = 0;

@@ -274,10 +274,12 @@ class xExport:
 		
 		path = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\SkinnedMeshOut%d.c3d" % objectIndex)
 		path2 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\out.txt")
+		path20 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\out2.txt")
 		
 		file = open(path, "wb")
 		
 		file2 = open(path2, "wb")
+		file20 = open(path20, "wb")
 		
 		
 		
@@ -301,13 +303,18 @@ class xExport:
 		
 		vertices_groups = []
 		
+		
+		
 		vertice_group_iterator = 0
+		auei = 0
 		for vertex_group_name in vertex_groups_names:
 			bones_order.append(vertex_group_name)
 			#print("name %s" % vertex_group_name)
 			vertice_group_indices = arm_ob.getVertsFromGroup(vertex_group_name)
 			#print("auei %s" % vertice_group_indices)
 			vertices_groups.append(vertice_group_indices)
+			file20.write(" vertex group %i name %s\n" % (auei,vertex_group_name)) 
+			auei += 1
 		
 		verts = me.verts[:]          # Save a copy of the vertices
 		
@@ -344,6 +351,7 @@ class xExport:
 		indice_it = 0;
 		
 		g_bone_indices = []
+		g_bone_weights = []
 
 		vert_objs = []
 		
@@ -367,16 +375,38 @@ class xExport:
 				bone_indices.append(-1)
 				bone_indices.append(-1)
 				
+				bone_weight_indices = []
+				bone_weight_indices_iterator = 0
+				
+				bone_weight_indices.append(-1)
+				bone_weight_indices.append(-1)
+				bone_weight_indices.append(-1)
+				bone_weight_indices.append(-1)
+				bone_weight_indices.append(-1)
+				
 				valid_entry_iterator = 0
+				
+				influenceList = arm_ob.getVertexInfluences(vertice.index)
 				
 				for vertex_group in vertices_groups:
 					for vertex_group_entry in vertex_group:
 						if(vertice.index == vertex_group_entry) :
 							bone_indices[valid_entry_iterator] = bone_indices_iterator
+							bone_weight_indices[valid_entry_iterator] = influenceList[valid_entry_iterator][1]
 							valid_entry_iterator += 1
 					bone_indices_iterator += 1
 					
+				
+				#print("bone indices for vertex %i iteration %i %s" % (vertice.index, indice_it, bone_indices)) 
+				#file20.write("bone indices for vertex %i iteration %i %s\n" % (vertice.index, indice_it, bone_indices)) 
+				
+				print("!!!!!!!!! INFLUENCE LIST name %s, value %f " % (influenceList[0][0], influenceList[0][1])) 
+				print("bone influences for vertex %i iteration %i %s\n" % (vertice.index, indice_it, influenceList)) 
+				file20.write("!!!!!!!!! INFLUENCE LIST name %s, value %f \n" % (bone_weight_indices[0], influenceList[0][1])) 
+				file20.write("bone influences for vertex %i iteration %i %s\n" % (vertice.index, indice_it, influenceList)) 
+				
 				g_bone_indices.append(bone_indices)
+				g_bone_weights.append(bone_weight_indices)
 				
 			iterator2 = 0
 			if hasTexture:
@@ -407,7 +437,7 @@ class xExport:
 				#print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
 				if(vert_objs[vert_iterator].sel == 1):
 					file2.write("\n//is selected below belngs to bone %i %i %ff %ff %ff:\n" % (g_bone_indices[vert_iterator][0], vert_objs[vert_iterator].sel, vert_objs[vert_iterator].co[0], vert_objs[vert_iterator].co[1], vert_objs[vert_iterator].co[2]))	
-				file2.write("m_vertices3->push_back(VertexPosBones(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %i, %i));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1], 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]))
+				file2.write("m_vertices3->push_back(VertexPosBones(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %i, %i));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1], g_bone_weights[vert_iterator][0], g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]))
 				#file2.write("\nin = D3DXVECTOR3(%ff, %ff, %ff) * 1;\n"	% (vv[0], vv[1], vv[2]))
 				#file2.write("D3DXVec3Transform(&out, &in, &m_currentFrameToRoots[%i]);\n"	% g_bone_indices[vert_iterator][0])
 				#file2.write("m_vertices3->push_back(VertexPosBones(out.x, out.y, out.z, %ff, %ff, %ff, %ff, %ff, %ff, %i, %i));\n"	% (new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1], 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]))

@@ -2,7 +2,7 @@
 #include "D3DRenderer.h"
 #include "LandscapeWall.h"
 #include "ResourceManager.h"
-#include "PerVertexLightingNoFog.h"
+#include "PerVertexLightingWallNoFog.h"
 
 #include "DebugMemory.h"
 
@@ -15,30 +15,30 @@ LandscapeWall::LandscapeWall(int texID)
 	//vertices
 
 
-	m_vertices->push_back(VertexPos(-0.5f, 0.0f, -0.25, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos(-0.5f,  5.8f, -0.25, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos( 0.5f,  5.8f, -0.25, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f));
-	m_vertices->push_back(VertexPos( 0.5f, 0.0f, -0.25, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f));
+	m_vertices->push_back(VertexPos(-0.5f, 0.0f, -0.25, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f)); // 0
+	m_vertices->push_back(VertexPos(-0.5f,  5.8f, -0.25, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f)); // 1
+	m_vertices->push_back(VertexPos( 0.5f,  5.8f, -0.25, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f));//2
+	m_vertices->push_back(VertexPos( 0.5f, 0.0f, -0.25, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f));//3
 
 	// Fill in the back face vertex data.
-	m_vertices->push_back(VertexPos(-0.5f, 0.0f, 0.25f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f));
-	m_vertices->push_back(VertexPos( 0.5f, 0.0f, 0.25f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos( 0.5f,  5.8f, 0.25f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos(-0.5f,  5.8f, 0.25f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f));
+	m_vertices->push_back(VertexPos(-0.5f, 0.0f, 0.25f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f));//4
+	m_vertices->push_back(VertexPos( 0.5f, 0.0f, 0.25f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f));//5
+	m_vertices->push_back(VertexPos( 0.5f,  5.8f, 0.25f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));//6
+	m_vertices->push_back(VertexPos(-0.5f,  5.8f, 0.25f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f));//7
 
 	
 
 	// Fill in the left face vertex data.
-	m_vertices->push_back(VertexPos(-0.5f, 0.0f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos(-0.5f,  5.8f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos(-0.5f,  5.8f, -0.25f, -1.0f, 0.0f, 0.0f, 0.12f, 0.0f));
-	m_vertices->push_back(VertexPos(-0.5f, 0.0f, -0.25f, -1.0f, 0.0f, 0.0f, 0.12f, 1.0f));
+	m_vertices->push_back(VertexPos(-0.5f, 0.0f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f));//8
+	m_vertices->push_back(VertexPos(-0.5f,  5.8f,  0.25f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f));//9
+	m_vertices->push_back(VertexPos(-0.5f,  5.8f, -0.25f, -1.0f, 0.0f, 0.0f, 0.12f, 0.0f));//10
+	m_vertices->push_back(VertexPos(-0.5f, 0.0f, -0.25f, -1.0f, 0.0f, 0.0f, 0.12f, 1.0f));//11
 
 	// Fill in the right face vertex data.
-	m_vertices->push_back(VertexPos( 0.5f, 0.0f, -0.25f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f));
-	m_vertices->push_back(VertexPos( 0.5f,  5.8f, -0.25f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
-	m_vertices->push_back(VertexPos( 0.5f,  5.8f,  0.25f, 1.0f, 0.0f, 0.0f, 0.12f, 0.0f));
-	m_vertices->push_back(VertexPos( 0.5f, 0.0f,  0.25f, 1.0f, 0.0f, 0.0f, 0.12f, 1.0f));
+	m_vertices->push_back(VertexPos( 0.5f, 0.0f, -0.25f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f));//12
+	m_vertices->push_back(VertexPos( 0.5f,  5.8f, -0.25f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f));//13
+	m_vertices->push_back(VertexPos( 0.5f,  5.8f,  0.25f, 1.0f, 0.0f, 0.0f, 0.12f, 0.0f));//14
+	m_vertices->push_back(VertexPos( 0.5f, 0.0f,  0.25f, 1.0f, 0.0f, 0.0f, 0.12f, 1.0f));//15
 
 	
 	//indices
@@ -91,7 +91,7 @@ LandscapeWall::LandscapeWall(int texID)
 
 	CreateXMesh(D3DRenderer::GetDevice());
 
-	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID);
+	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG_ID);
 
 	
 	
@@ -142,7 +142,7 @@ void LandscapeWall::SetShaderHandlers()
 {
 	
 	
-	PerVertexLightingNoFog *t_effect = (PerVertexLightingNoFog *) m_effect;
+	PerVertexLightingWallNoFog *t_effect = (PerVertexLightingWallNoFog *) m_effect;
 	
 	t_effect->SetObjectMaterials(	m_currentMaterial->GetAmbient(), m_currentMaterial->GetDiffuse(),
 									m_currentMaterial->GetSpecular(), m_currentMaterial->GetSpecularPower());

@@ -15,9 +15,9 @@
 #include "SupernovaParticleSystem.h"
 #include "FireRingParticleSystem.h"
 #include "Ground.h"
-#include "LandscapeWall1.h"
-#include "LandscapeWall2.h"
-#include "LandscapeWall3.h"
+#include "LandscapeWall.h"
+
+
 #include "Skybox.h"
 #include "Font.h"
 #include "Text.h"
@@ -496,7 +496,9 @@ void Game::Render(Renderer *renderer)
 	m_testScene->AddNode(t_node2);
 
 	C3DETransform *t3 = new C3DETransform();
+	t3->Rotate(D3DX_PI / 4.0f, &D3DXVECTOR3(1.0f, 0.0f, 0.0f));
 	t3->Translate(0.0f, 0.0f, 25.0f);
+	
 	SceneNode *t_node3 = new SceneNode(m_spiderContainer, t3);	
 	m_testScene->AddNode(t_node3);
 
@@ -1066,6 +1068,7 @@ void Game::InitializeMeshes()
 
 	m_sceneStaticObjectsList[m_sceneTotalObjects-1] = GetMeshIndex(m_wall1);
 	m_sceneStaticObjectsTransforms[m_sceneTotalObjects-1] = new C3DETransform();	
+	m_sceneStaticObjectsTransforms[m_sceneTotalObjects-1]->Scale(50.0f, 1.0f, 1.0f);
 	
 	
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);

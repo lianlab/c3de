@@ -16,6 +16,7 @@
 #include "GrassFX.h"
 #include "FireRingFx.h"
 #include "PerVertexLightingNoFog.h"
+#include "PerVertexLightingWallNoFog.h"
 #include "C3DESkinnedMeshFX.h"
 #include "DebugMemory.h"
 
@@ -163,6 +164,14 @@ void ShaderManager::InitializeResources()
 		MessageBox(0, (char*) errors->GetBufferPointer(), 0, 0);
 	m_effectResources[SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID] = SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG;
 
+	ID3DXEffect * SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG;
+	errors = 0;	
+	D3DXCreateEffectFromFile(m_device, "effects/PerVertexLightingWallNoFog.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG, &errors);	
+	if(errors)
+		MessageBox(0, (char*) errors->GetBufferPointer(), 0, 0);
+	m_effectResources[SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG_ID] = SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG;
+
+
 	ID3DXEffect * SHADER_C3DE_SKINNED_MESH_FX;
 	errors = 0;	
 	D3DXCreateEffectFromFile(m_device, "effects/C3DESkinnedMeshNoLights.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_C3DE_SKINNED_MESH_FX, &errors);	
@@ -187,6 +196,7 @@ void ShaderManager::InitializeResources()
 	m_effects[SHADER_FIRE_RING_FX_ID] = new FireRingFX(SHADER_FIRE_RING_FX);
 	m_effects[SHADER_SUPERNOVA_FX_ID] = new FireRingFX(SHADER_SUPERNOVA_FX);
 	m_effects[SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID] = new PerVertexLightingNoFog(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG);
+	m_effects[SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG_ID] = new PerVertexLightingWallNoFog(SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG);
 	m_effects[SHADER_C3DE_SKINNED_MESH_FX_ID] = new C3DESkinnedMeshFX(SHADER_C3DE_SKINNED_MESH_FX);
 	
 }

@@ -716,6 +716,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\PerVertexLightingWallNoFog.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\ShadowFX.cpp"
 							>
 						</File>
@@ -1327,6 +1331,10 @@
 						</File>
 						<File
 							RelativePath=".\PerVertexLightingNoFog.h"
+							>
+						</File>
+						<File
+							RelativePath=".\PerVertexLightingWallNoFog.h"
 							>
 						</File>
 						<File

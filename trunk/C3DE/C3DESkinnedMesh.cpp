@@ -85,6 +85,13 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, char *a_bonesBuffer, Image 
 		m_animationFramesDuration->push_back(33);
 	}
 
+	int totalAnimations = t_reader->ReadNextInt();
+	for(int i = 0; i < totalAnimations; i++)
+	{
+		m_animationsTotalFrames->push_back(t_reader->ReadNextInt());
+	}
+		
+
 	delete t_reader;
 	t_reader = NULL;
 	t_reader = new BufferReader(a_meshBuffer);
@@ -110,15 +117,7 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, char *a_bonesBuffer, Image 
 	
 
 	m_animationsTotalFrames->push_back(m_totalFrames);
-	/*
-	m_animationsTotalFrames->push_back(114);
-	m_animationsTotalFrames->push_back(167);
-	m_animationsTotalFrames->push_back(79);
-	m_animationsTotalFrames->push_back(39);
-	m_animationsTotalFrames->push_back(49);
-	m_animationsTotalFrames->push_back(204);
-	m_animationsTotalFrames->push_back(46);
-	*/
+	
 	//m_animationsTotalFrames->push_back(1);
 	
 

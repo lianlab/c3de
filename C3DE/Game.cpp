@@ -496,7 +496,7 @@ void Game::Render(Renderer *renderer)
 	m_testScene->AddNode(t_node2);
 
 	C3DETransform *t3 = new C3DETransform();
-	t3->Rotate(D3DX_PI / 4.0f, &D3DXVECTOR3(1.0f, 0.0f, 0.0f));
+	//t3->Rotate(D3DX_PI / 4.0f, &D3DXVECTOR3(1.0f, 0.0f, 0.0f));
 	t3->Translate(0.0f, 0.0f, 25.0f);
 	
 	SceneNode *t_node3 = new SceneNode(m_spiderContainer, t3);	
@@ -509,11 +509,13 @@ void Game::Render(Renderer *renderer)
 	m_testScene->AddNode(t_node4);
 
 	C3DETransform *t5 = new C3DETransform();
-	t5->Translate(50.0f, 0.0f, 25.0f);
+	//
+	t5->Scale(0.4f, 0.4f, 0.4f);
+	t5->Rotate(0.75f, &D3DXVECTOR3(1.0f, 0.0f, 0.0f));
+	t5->Translate(0.0f, 4.0f, 5.0f);
 	SceneNode *t_node5 = new SceneNode(m_ninjaContainer, t5);	
 	m_testScene->AddNode(t_node5);
 
-	
 	for(int i = 0; i< m_sceneTotalObjects; i++)
 	{
 		Mesh * t_mesh = (*m_meshes)[m_sceneStaticObjectsList[i]];
@@ -523,9 +525,6 @@ void Game::Render(Renderer *renderer)
 		m_testScene->AddNode(t_node);
 	}	
 	
-
-	
-
 	renderer->DrawScene2(m_testScene);
 
 
@@ -796,28 +795,28 @@ void Game::InitializeMeshes()
 	
 	m_characterMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CHARACTER_MALE_ID),
 											ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CHARACTER_MALE_BONES_ID),
-											characterTexture);
+											characterTexture, 66);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
 	D3DImage * spiderTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SPIDER_ID));	
 	m_spiderMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SPIDER_ID),
 										ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SPIDER_BONES_ID),
-										spiderTexture);
+										spiderTexture, 33);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
 	D3DImage * ninjaTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_NINJA_ID));	
 	m_ninjaMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_NINJA_ID),
 										ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_NINJA_BONES_ID),
-										ninjaTexture);
+										ninjaTexture, 66);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
 	D3DImage * dogTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_DOG_ID));	
 	m_dogMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_DOG_ID),
 										ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_DOG_BONES_ID),
-										dogTexture);
+										dogTexture, 33);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 	
@@ -1037,12 +1036,12 @@ void Game::InitializeMeshes()
 	//#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\outWorld.c3d"
 	BufferReader *t_scene = new BufferReader(ResourceManager::GetInstance()->GetSceneBuffer(SCENE_BUFFER_SCENE_0_ID));
 
-	m_sceneTotalObjects = t_scene->ReadNextInt() + 1;	
+	m_sceneTotalObjects = t_scene->ReadNextInt() ;	
 	m_sceneStaticObjectsList = (int*)malloc(sizeof(int) * (m_sceneTotalObjects));
 	m_sceneStaticObjectsTransforms = (C3DETransform**)malloc(sizeof(C3DETransform) * (m_sceneTotalObjects));
 	D3DXMATRIX *t_matrix = new D3DXMATRIX();
 
-	for(int i = 0; i < m_sceneTotalObjects - 1; i++)
+	for(int i = 0; i < m_sceneTotalObjects; i++)
 	{
 		m_sceneStaticObjectsList[i] = t_scene->ReadNextInt();
 		m_sceneStaticObjectsTransforms[i] = new C3DETransform();
@@ -1065,11 +1064,11 @@ void Game::InitializeMeshes()
 		t_matrix->_44 = t_scene->ReadNextFloat();
 		m_sceneStaticObjectsTransforms[i]->Set(t_matrix);
 	}	
-
+/*
 	m_sceneStaticObjectsList[m_sceneTotalObjects-1] = GetMeshIndex(m_wall1);
 	m_sceneStaticObjectsTransforms[m_sceneTotalObjects-1] = new C3DETransform();	
 	m_sceneStaticObjectsTransforms[m_sceneTotalObjects-1]->Scale(50.0f, 1.0f, 1.0f);
-	
+	*/
 	
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
 
@@ -1077,6 +1076,8 @@ void Game::InitializeMeshes()
 	m_spiderContainer = new C3DESkinnedMeshContainer(m_spiderMesh);
 	m_dogContainer = new C3DESkinnedMeshContainer(m_dogMesh);
 	m_ninjaContainer = new C3DESkinnedMeshContainer(m_ninjaMesh);
+
+	m_ninjaContainer->SetCurrentAnimation(1);
 	
 }
 

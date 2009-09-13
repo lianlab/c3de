@@ -7,7 +7,7 @@
 #include "DebugMemory.h"
 
 
-C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, char *a_bonesBuffer, Image *a_texture)
+C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, char *a_bonesBuffer, Image *a_texture, int frameDuration)
 {
 	//m_currentAnimationStartFrame = 0;
 	//m_currentAnimationTotalTime = 0;
@@ -82,7 +82,7 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, char *a_bonesBuffer, Image 
 			
 		}
 		m_poseMatrices->push_back(t_frameMatrices);
-		m_animationFramesDuration->push_back(33);
+		m_animationFramesDuration->push_back(frameDuration);
 	}
 
 	int totalAnimations = t_reader->ReadNextInt();

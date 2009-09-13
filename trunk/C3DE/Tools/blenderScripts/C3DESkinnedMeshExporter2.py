@@ -564,6 +564,11 @@ class xExport:
 			
 		
 		
+		#MOdify this for the animations
+		format = "ii"
+		data = struct.pack(format, 1, totalFrames) # pack integer in a binary string
+		file6.write(data)
+				
 		print "here we end for armature\n"
 		Draw.Exit()
 		

@@ -450,7 +450,7 @@ class xExport:
 			
 			format = "fffffffffii"                   # one integer
 			if hasTexture:
-				data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], (1.0 - new_vert_uvs[vert_iterator][1]), 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]) # pack integer in a binary string
+				data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], (1.0 - new_vert_uvs[vert_iterator][1]), g_bone_weights[vert_iterator][0], g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]) # pack integer in a binary string
 			else:
 				data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0) # pack integer in a binary string
 			#self.file.write(data)

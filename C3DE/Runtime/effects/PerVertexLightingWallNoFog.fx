@@ -97,7 +97,13 @@ OutputVS DirLightTexVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2
 		(posL.x == -0.5f && posL.y == 0.0f && posL.z == 0.25f && tex0.x == 1.0f && tex0.y == 1.0f) ||
 		(posL.x == -0.5f && posL.y == 5.8f && posL.z == 0.25f && tex0.x == 1.0f && tex0.y == 0.0f))
 	{
-		float ratio = (newPos.x / 0.5f) / 5.8f;
+		float3 reference = float3(0.5f, 0.0f, 0.0f);
+		float4 newReference = mul(float4(reference, 1.0f), gTransformMatrix);
+		
+		//float size = (newPos.x - gTransformMatrix[3][0]) * 2.0f;
+		float size = distance(newReference.xyz, float3(gTransformMatrix[3][0], gTransformMatrix[3][1],gTransformMatrix[3][2])) * 2;
+		float ratio = (size) / 5.8f;
+		//float ratio = (newPos.x / 0.5f) / 5.8f;
 		//tex0.x = gTransformMatrix[0][0];
 		tex0.x = ratio;
 	}

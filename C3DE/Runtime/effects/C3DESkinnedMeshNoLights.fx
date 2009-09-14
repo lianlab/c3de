@@ -54,20 +54,7 @@ OutputVS SkinnedMeshVS(float3 posL    : POSITION0,
                    int boneIndex1 : BLENDINDICES1)
 {
     // Zero out our output.
-	OutputVS outVS = (OutputVS)0;
-	
-	//float3 offsetPosL = float3(posL.x - gToRoot[boneIndex0][3][0],posL.y - gToRoot[boneIndex0][3][1], posL.z - gToRoot[boneIndex0][3][2]);
-	
-	
-	//posL = mul(float4(posL, 1.0f), gToRoot[boneIndex]).xyz;
-	//posL = mul(float4(posL, 1.0f), gCurrentFrameToRoot[boneIndex]).xyz;
-	//posL = mul(float4(offsetPosL, 1.0f), gCurrentFrameToRoot[boneIndex0]).xyz;
-	//posL.x += 5;
-	//posL.x += gToRoot[boneIndex][3][0];
-	//posL.y += gToRoot[boneIndex][3][1];
-	//posL.z += gToRoot[boneIndex][3][2];
-	
-	
+	OutputVS outVS = (OutputVS)0;				
 	
 	// Transform normal to world space.
 	//float3 normalW = mul(float4(normalL, 0.0f), gWorldInvTrans).xyz;
@@ -80,66 +67,25 @@ OutputVS SkinnedMeshVS(float3 posL    : POSITION0,
 	// Compute the color: Equation 10.3.
 	
 	// Compute the vector from the vertex to the eye position.
-	float3 toEye = normalize(gEyePosW - posW);
-	
-	
-	
+	float3 toEye = normalize(gEyePosW - posW);			
 							
 							
-	//outVS.color = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	//if(boneIndex0 == gSelectedBoneIndex && gSelectedBoneIndex > -1 && gSelectedBoneIndex == 0)
-	//if(boneIndex0 == 0 && gSelectedBoneIndex == 0)
-	//if(boneIndex0 == gSelectedBoneIndex)
-	if(true)
-	{
-		//outVS.diffuse = float4(1.0f, 0.0f, 0.0f, 1.0f);
-		
-		float3 localToBone = float3(posL.x - gToRoot[boneIndex0][3][0], 
-									posL.y - gToRoot[boneIndex0][3][1],
-									posL.z - gToRoot[boneIndex0][3][2]);		
-		
-		float3 modifiedLocalToBone = mul(float4(localToBone, 1.0f), gCurrentFrameToRoot[boneIndex0]).xyz;
-		/*
-		posL.x =  gToRoot[boneIndex0][3][0] + modifiedLocalToBone.x;
-		posL.y =  gToRoot[boneIndex0][3][1] + modifiedLocalToBone.y;
-		posL.z =  gToRoot[boneIndex0][3][2] + modifiedLocalToBone.z;
-		*/
-		//float weight1 = 1.0f;
-		//float3 posCopy = posL;
-		if(boneIndex1 > -1 && false)
-		{
-			//weight1 = 0.5f;
-			posL = (0.5f * mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex0]).xyz) + (0.5f * mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex1]).xyz);
-		}
-		else
-		{
-			posL = mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex0]).xyz;
-			/*
-			if(boneIndex0 == gSelectedBoneIndex)
-			{
-				//posL.x += 1.0f;
-				posL = mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex0]).xyz;
-			}
-			*/
-			
-		}
-		
-		
-		
-		posW  = mul(float4(posL, 1.0f), gWorld).xyz;
-		posW = mul(posW,gTransformMatrix);
-		
-		toEye = normalize(gEyePosW - posW);				
-		//outVS.color = float4(1.0f, 0.0f, 0.0f, 0.5f);
-		
-	}	
 	
+	//outVS.diffuse = float4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	float weight1 = 1.0f - weight0;
+	posL = (weight0 * mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex0]).xyz) + (weight1 * mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex1]).xyz);
+										
+	posW  = mul(float4(posL, 1.0f), gWorld).xyz;
+	posW = mul(posW,gTransformMatrix);
 	
+	toEye = normalize(gEyePosW - posW);				
+	//outVS.color = float4(1.0f, 0.0f, 0.0f, 0.5f);					
 	
 	// Transform to homogeneous clip space.
 	float4 newPos = mul(float4(posL, 1.0f), gTransformMatrix);
 	//outVS.posH = mul(float4(posL, 1.0f), gWVP);
-	//newPos += gHack;
+	
 	outVS.posH = mul(newPos, gWVP);
 	
 	// Pass on texture coordinates to be interpolated in rasterization.

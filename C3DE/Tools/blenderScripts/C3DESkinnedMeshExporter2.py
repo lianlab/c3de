@@ -269,12 +269,7 @@ class xExport:
 		
 		print "Here we go\n"
 		
-		#path = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\out%d.c3d" % objectIndex)
-		#path2 = ("C:\documents and Settings\csabino\Desktop\exportedMeshes\out.txt")
 		
-		#file = open(path, "wb")
-		
-		#file2 = open(path2, "wb")
 		
 		
 		
@@ -308,121 +303,6 @@ class xExport:
 		
 		verts = me.verts[:]          # Save a copy of the vertices
 		
-		iterator = 0
-		
-		for v in me.verts:
-			
-			vert_coords.append(v.co)
-			vert_normals.append(v.no)
-			vert_uvsU.append(0)
-			vert_uvsV.append(0)
-			
-			
-			
-			iterator += 1
-			
-			
-		me.verts = verts             # Restore the original verts
-		
-		
-		indices = []
-		new_vert = []
-		new_vert_normals = []
-		new_vert_uvs = []
-		
-		indice_it = 0;
-		
-		g_bone_indices = []
-
-		vert_objs = []
-		
-		for f in me.faces:
-			for vertice in f.v:		
-				
-				vert_indices.append(vertice.index)
-				
-				vert_objs.append(vertice)
-				new_vert.append(vertice.co)
-				new_vert_normals.append(vertice.no)
-				indices.append(indice_it)
-				indice_it += 1
-				
-				bone_indices = []
-				bone_indices_iterator = 0
-				
-				bone_indices.append(-1)
-				bone_indices.append(-1)
-				bone_indices.append(-1)
-				bone_indices.append(-1)
-				bone_indices.append(-1)
-				
-				valid_entry_iterator = 0
-				
-				for vertex_group in vertices_groups:
-					for vertex_group_entry in vertex_group:
-						if(vertice.index == vertex_group_entry) :
-							bone_indices[valid_entry_iterator] = bone_indices_iterator
-							valid_entry_iterator += 1
-					bone_indices_iterator += 1
-					
-				g_bone_indices.append(bone_indices)
-				
-			iterator2 = 0
-			if hasTexture:
-				for tt in f.uv:
-					#print "tt: " , tt	
-					vert_uvsU[f.v[iterator2].index] = round(tt[0],2)
-					vert_uvsV[f.v[iterator2].index] = (1.0 - round(tt[1],2))
-					iterator2 += 1
-					new_vert_uvs.append(tt)
-					
-					
-				
-		
-		format = "i"                   # one integer
-		data = struct.pack(format, indice_it) # pack integer in a binary string
-		
-		#file.write(data)
-					
-		vert_iterator = 0;
-		"""
-		for vv in new_vert:
-			
-			if hasTexture:
-				
-				if(vert_objs[vert_iterator].sel == 1):
-					file2.write("\n//is selected below belngs to bone %i %i %ff %ff %ff:\n" % (g_bone_indices[vert_iterator][0], vert_objs[vert_iterator].sel, vert_objs[vert_iterator].co[0], vert_objs[vert_iterator].co[1], vert_objs[vert_iterator].co[2]))	
-				file2.write("m_vertices3->push_back(VertexPosBones(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %i, %i));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1], 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]))
-			else:
-				
-				file2.write("m_vertices3->push_back(VertexPosBones(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff, %i, %i));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0, 1.0, g_bone_indices[vert_iterator][0], g_bone_indices[vert_iterator][1]))
-				
-			
-			format = "ffffffff"                   # one integer
-			if hasTexture:
-				data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], (1.0 - new_vert_uvs[vert_iterator][1])) # pack integer in a binary string
-			else:
-				data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0) # pack integer in a binary string
-			
-				
-			file.write(data)
-			vert_iterator += 1
-			
-		
-		file2.write("\n\n")
-		
-		for ii in indices:
-			
-			file2.write("m_indices->push_back(%d);\n" % (ii))
-			
-			format = "i"                   # one integer
-			data = struct.pack(format, ii) # pack integer in a binary string
-			
-			file.write(data)
-			
-		"""
-		
-			
 		
 		print "here we end\n"
 		

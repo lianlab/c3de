@@ -75,6 +75,7 @@ OutputVS SkinnedMeshVS(float3 posL    : POSITION0,
 
 	float weight1 = 1.0f - weight0;
 	posL = (weight0 * mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex0]).xyz) + (weight1 * mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex1]).xyz);
+	//posL = (mul(float4(posL, 1.0f),gCurrentFrameToRoot[boneIndex0]).xyz);
 										
 	posW  = mul(float4(posL, 1.0f), gWorld).xyz;
 	posW = mul(posW,gTransformMatrix);

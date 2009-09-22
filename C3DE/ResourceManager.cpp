@@ -195,6 +195,7 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_SPIDER;
 	IDirect3DTexture9 * TEX_DOG;
 	IDirect3DTexture9 * TEX_NINJA;
+	IDirect3DTexture9 * TEX_BLACK_NINJA;
 
 	IDirect3DTexture9 * TEX_FEMALE_SKIN;
 	IDirect3DTexture9 * TEX_MALE_SKIN;
@@ -342,6 +343,7 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/spider.jpg", &TEX_SPIDER));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/dog.jpg", &TEX_DOG));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/ninja.jpg", &TEX_NINJA));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/blackNinja.jpg", &TEX_BLACK_NINJA));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/female/femaleSkin.png", &TEX_FEMALE_SKIN));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/male/maleSkin.png", &TEX_MALE_SKIN));
 
@@ -474,6 +476,7 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_SPIDER_ID] = TEX_SPIDER;
 	m_imageResources[IMAGE_DOG_ID] = TEX_DOG;
 	m_imageResources[IMAGE_NINJA_ID] = TEX_NINJA;
+	m_imageResources[IMAGE_BLACK_NINJA_ID] = TEX_BLACK_NINJA;
 
 	m_imageResources[IMAGE_FEMALE_SKIN_ID] = TEX_FEMALE_SKIN;
 	m_imageResources[IMAGE_MALE_SKIN_ID] = TEX_MALE_SKIN;
@@ -978,6 +981,8 @@ void ResourceManager::InitializeMeshBuffers()
 
 	//MESH_BUFFER_NINJA
 	pFile = fopen ( "Meshes/skinned/ninja.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOut0.c3d" , "rb" );
+	
 	
 	// obtain file size:
 	fseek (pFile , 0 , SEEK_END);
@@ -993,6 +998,7 @@ void ResourceManager::InitializeMeshBuffers()
 
 	//MESH_BUFFER_NINJA_BONES
 	pFile = fopen ( "Meshes/skinned/ninjaBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
 	
 	// obtain file size:
 	fseek (pFile , 0 , SEEK_END);
@@ -1007,6 +1013,7 @@ void ResourceManager::InitializeMeshBuffers()
 	m_meshBuffers[MESH_BUFFER_NINJA_BONES_ID] = bufferNinjaBones;
 
 	//MESH_CHARACTER_MALE
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOut0.c3d" , "rb" );
 	pFile = fopen ( "Meshes/skinned/characterMale.c3d" , "rb" );
 	
 	// obtain file size:
@@ -1023,6 +1030,8 @@ void ResourceManager::InitializeMeshBuffers()
 
 	//MESH_CHARACTER_MALE_BONES
 	pFile = fopen ( "Meshes/skinned/characterMaleBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
 	
 	// obtain file size:
 	fseek (pFile , 0 , SEEK_END);
@@ -1035,10 +1044,59 @@ void ResourceManager::InitializeMeshBuffers()
 	result = fread (bufferCharacterMaleBones,lSize,1,pFile);
 
 	m_meshBuffers[MESH_BUFFER_CHARACTER_MALE_BONES_ID] = bufferCharacterMaleBones;
+
+	//MESH_CHARACTER_SWIMMER
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOut0.c3d" , "rb" );
+	pFile = fopen ( "Meshes/skinned/Swimmer.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmer= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmer,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_ID] = bufferSwimmer;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/SwimmerBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmerBones= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmerBones,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_ID] = bufferSwimmerBones;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/SwimmerBonesJumpKick.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmerBonesJumpKick= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmerBonesJumpKick,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_JUMP_KICK_ID] = bufferSwimmerBonesJumpKick;
 	
 	
 
-	
 }
 
 void ResourceManager::InitializeSceneBuffers()

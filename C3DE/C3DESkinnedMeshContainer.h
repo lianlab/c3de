@@ -20,6 +20,8 @@ public:
 
 	void Update(int deltaTime);
 
+	int GetCurrentAnimation();
+
 protected:
 
 	

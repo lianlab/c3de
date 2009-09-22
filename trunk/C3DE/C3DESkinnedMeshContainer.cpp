@@ -43,6 +43,11 @@ void C3DESkinnedMeshContainer::SetShaderHandlers()
 	t_effect->SetFrameRootMatrices(m_poseMatrix, m_mesh->GetTotalBones());
 }
 
+int C3DESkinnedMeshContainer::GetCurrentAnimation()
+{
+	return m_currentAnimation;
+}
+
 void C3DESkinnedMeshContainer::SetCurrentAnimation(int animationIdx)
 {	
 	
@@ -92,6 +97,7 @@ void C3DESkinnedMeshContainer::SetAnimationTime(int time)
 void C3DESkinnedMeshContainer::Update(int deltaTime)
 {
 	//deltaTime *= 3;
+	//deltaTime = 0;
 	
 	m_elapsedTime += deltaTime;
 

@@ -490,7 +490,9 @@ void Game::Render(Renderer *renderer)
 	m_testScene->AddNode(t_node0);	
 
 	C3DETransform *t2 = new C3DETransform();		
-	//t2->Translate(5.0f, 2.0f, 0.0f);
+	t2->Translate(0.0f, 0.0f, 0.0f);
+	float tt = 1.0f;
+	t2->Scale(tt, tt, tt);
 
 	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2);
 	m_testScene->AddNode(t_node2);
@@ -512,10 +514,11 @@ void Game::Render(Renderer *renderer)
 	//
 	t5->Scale(0.4f, 0.4f, 0.4f);
 	t5->Rotate(0.75f, &D3DXVECTOR3(1.0f, 0.0f, 0.0f));
-	t5->Translate(0.0f, 4.0f, 5.0f);
+	t5->Translate(0.0f, 0.0f, 0.0f);
 	SceneNode *t_node5 = new SceneNode(m_ninjaContainer, t5);	
-	m_testScene->AddNode(t_node5);
+	//m_testScene->AddNode(t_node5);
 
+	/*
 	for(int i = 0; i< m_sceneTotalObjects; i++)
 	{
 		Mesh * t_mesh = (*m_meshes)[m_sceneStaticObjectsList[i]];
@@ -524,7 +527,7 @@ void Game::Render(Renderer *renderer)
 		SceneNode *t_node = new SceneNode(t_mesh, t_transform);
 		m_testScene->AddNode(t_node);
 	}	
-	
+	*/
 	renderer->DrawScene2(m_testScene);
 
 
@@ -791,10 +794,13 @@ void Game::InitializeMeshes()
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
 	
-	D3DImage * characterTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_MALE_SKIN_ID));	
+	D3DImage * characterTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SWIMMER_SKIN_ID));	
 	
-	m_characterMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CHARACTER_MALE_ID),
-											ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_CHARACTER_MALE_BONES_ID),
+	vector<char*> *animations = new vector<char*>;
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_ID));
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_JUMP_KICK_ID));
+	m_characterMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_ID),
+											animations,
 											characterTexture, 66);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
@@ -1073,11 +1079,12 @@ void Game::InitializeMeshes()
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
 
 	m_characterContainer0 = new C3DESkinnedMeshContainer(m_characterMesh);
+	m_characterContainer0->SetCurrentAnimation(1);
 	m_spiderContainer = new C3DESkinnedMeshContainer(m_spiderMesh);
 	m_dogContainer = new C3DESkinnedMeshContainer(m_dogMesh);
 	m_ninjaContainer = new C3DESkinnedMeshContainer(m_ninjaMesh);
 
-	m_ninjaContainer->SetCurrentAnimation(1);
+	m_ninjaContainer->SetCurrentAnimation(0);
 	
 }
 

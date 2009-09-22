@@ -9,6 +9,8 @@ public:
 	C3DETransform();
 	~C3DETransform();
 
+	
+
 	void Translate(float x, float y, float z);
 	void Scale(float x, float y, float z);
 	void Rotate(float angle, D3DXVECTOR3 * t_axis);

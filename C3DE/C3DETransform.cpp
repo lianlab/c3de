@@ -12,6 +12,8 @@ C3DETransform::~C3DETransform()
 	m_matrix = NULL;
 }
 
+
+
 void C3DETransform::Set(D3DXMATRIX *a_matrix)
 {
 	if(m_matrix != NULL)

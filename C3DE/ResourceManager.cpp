@@ -200,6 +200,8 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_FEMALE_SKIN;
 	IDirect3DTexture9 * TEX_MALE_SKIN;
 
+	IDirect3DTexture9 * TEX_HOUSE_0;
+
 	IDirect3DTexture9 * TEX_FONT_VERDANA_36;
 	
 	
@@ -346,6 +348,7 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/blackNinja.jpg", &TEX_BLACK_NINJA));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/female/femaleSkin.png", &TEX_FEMALE_SKIN));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/male/maleSkin.png", &TEX_MALE_SKIN));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/house0.png", &TEX_HOUSE_0));
 
 
 
@@ -480,6 +483,8 @@ void ResourceManager::InitializeResources()
 
 	m_imageResources[IMAGE_FEMALE_SKIN_ID] = TEX_FEMALE_SKIN;
 	m_imageResources[IMAGE_MALE_SKIN_ID] = TEX_MALE_SKIN;
+
+	m_imageResources[IMAGE_HOUSE_0_ID] = TEX_HOUSE_0;
 
 	m_imageResources[IMAGE_FONT_VERDANA_36_ID] = TEX_FONT_VERDANA_36;
 

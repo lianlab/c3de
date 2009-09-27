@@ -98,10 +98,13 @@ void C3DESkinnedMeshContainer::Update(int deltaTime)
 {
 	//deltaTime *= 3;
 	//deltaTime = 0;
+
 	
 	m_elapsedTime += deltaTime;
 
 	m_elapsedTime = m_elapsedTime % m_currentAnimationTotalTime;
+
+	
 	
 	int t_totalAnimationFrames = (*m_mesh->GetAnimationTotalFrames())[m_currentAnimation];
 
@@ -146,7 +149,10 @@ void C3DESkinnedMeshContainer::Update(int deltaTime)
 
 	float frameTimeRatio = (float)remainingTime / (float)(*m_mesh->GetAnimationFramesDuration())[t_currentFrame];
 
-
+	if(t_currentFrame == 286)
+	{
+		int gkfd = 876;
+	}
 	D3DXMATRIX *t_currentFrameMatrices = (*m_mesh->GetPoseMatrices())[t_currentFrame];
 	D3DXMATRIX *t_nextFrameMatrices = (*m_mesh->GetPoseMatrices())[nextFrame];
 	
@@ -159,6 +165,8 @@ void C3DESkinnedMeshContainer::Update(int deltaTime)
 	
 	int totalBones = m_mesh->GetTotalBones();
 	m_poseMatrix = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * totalBones);
+
+	
 
 	for(int i = 0 ; i < totalBones; i++)
 	{

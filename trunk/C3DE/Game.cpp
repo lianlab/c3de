@@ -968,7 +968,7 @@ void Game::InitializeMeshes()
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	GameMesh *m_house0 = new GameMesh(MESH_BUFFER_HOUSE_0_ID,IMAGE_HOUSE_ID);
+	GameMesh *m_house0 = new GameMesh(MESH_BUFFER_HOUSE_0_ID,IMAGE_HOUSE_0_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 

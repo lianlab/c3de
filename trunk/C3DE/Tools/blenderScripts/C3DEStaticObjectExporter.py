@@ -264,6 +264,7 @@ class xExport:
 		
 		me.getFromObject(obj.name)    # Get the object's mesh data
 		
+		hasUV = me.faceUV
 		print "has " , me.faceUV
 		
 		vert_coords =[]
@@ -303,12 +304,16 @@ class xExport:
 				indices.append(indice_it)
 				indice_it += 1
 			iterator2 = 0
-			for tt in f.uv:
-				#print "tt: " , tt	
-				vert_uvsU[f.v[iterator2].index] = round(tt[0],2)
-				vert_uvsV[f.v[iterator2].index] = (1.0 - round(tt[1],2))
-				iterator2 += 1
-				new_vert_uvs.append(tt)
+			if hasUV == 1:
+				for tt in f.uv:
+					#print "tt: " , tt	
+					vert_uvsU[f.v[iterator2].index] = round(tt[0],2)
+					vert_uvsV[f.v[iterator2].index] = (1.0 - round(tt[1],2))
+					iterator2 += 1
+					new_vert_uvs.append(tt)
+			
+					
+				
 					
 		#data=struct.pack(indice_it)
 		format = "i"                   # one integer
@@ -318,13 +323,22 @@ class xExport:
 					
 		vert_iterator = 0;
 		for vv in new_vert:
-			print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
-			#self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
-			
-			
-			format = "ffffffff"                   # one integer
-			data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], (1.0 - new_vert_uvs[vert_iterator][1])) # pack integer in a binary string
-			#self.file.write(data)
+		
+			if hasUV == 1:			
+				print("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
+				#self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
+				
+				
+				format = "ffffffff"                   # one integer
+				data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], (1.0 - new_vert_uvs[vert_iterator][1])) # pack integer in a binary string
+				#self.file.write(data)
+			else:
+				#self.file.write("m_vertices->push_back(VertexPos(%ff, %ff, %ff, %ff, %ff, %ff, %ff, %ff));\n"	% (vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], new_vert_uvs[vert_iterator][0], 1.0 - new_vert_uvs[vert_iterator][1]))
+				
+				
+				format = "ffffffff"                   # one integer
+				data = struct.pack(format, vv[0], vv[1], vv[2], new_vert_normals[vert_iterator][0], new_vert_normals[vert_iterator][1], new_vert_normals[vert_iterator][2], 0.0, 0.0) # pack integer in a binary string
+				#self.file.write(data)
 			file.write(data)
 			vert_iterator += 1
 			

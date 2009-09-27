@@ -1293,8 +1293,8 @@ void ResourceManager::InitializeSceneBuffers()
 	fpos_t position;
 
 	//Scene0
-	//pFile = fopen ( "Meshes/scenes/scene0.c3d" , "rb" );	
-	pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/outScene.c3d" , "rb" );
+	pFile = fopen ( "Meshes/scenes/scene0.c3d" , "rb" );	
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/outScene.c3d" , "rb" );
 	
 	// obtain file size:
 	fseek (pFile , 0 , SEEK_END);

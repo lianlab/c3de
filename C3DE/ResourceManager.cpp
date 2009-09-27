@@ -501,6 +501,7 @@ void ResourceManager::InitializeMeshBuffers()
 
 	//CAFE TABLE
 	pFile = fopen ( "Meshes/landscape/cafeTable.c3d" , "rb" );	
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/out0.c3d" , "rb" );	
 	
 	// obtain file size:
 	fseek (pFile , 0 , SEEK_END);
@@ -843,6 +844,36 @@ void ResourceManager::InitializeMeshBuffers()
 
 	m_meshBuffers[MESH_BUFFER_TRAFFIC_CONE_ID] = bufferTrafficCone;
 
+	//MESH_BUFFER_HOUSE_0_ID
+	pFile = fopen ( "Meshes/landscape/house0.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferHouse0= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferHouse0,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_HOUSE_0_ID] = bufferHouse0;
+
+	//MESH_BUFFER_HOUSE_0_ID
+	pFile = fopen ( "Meshes/landscape/house1.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferHouse1= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferHouse1,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_HOUSE_1_ID] = bufferHouse1;
+
 	//MESH_BUFFER_HOUSE_ID
 	pFile = fopen ( "Meshes/landscape/house.c3d" , "rb" );
 	
@@ -1062,7 +1093,7 @@ void ResourceManager::InitializeMeshBuffers()
 	m_meshBuffers[MESH_BUFFER_SWIMMER_ID] = bufferSwimmer;
 
 	//MESH_CHARACTER_MALE_BONES
-	pFile = fopen ( "Meshes/skinned/SwimmerBones.c3d" , "rb" );
+	pFile = fopen ( "Meshes/skinned/SwimmerWalk.c3d" , "rb" );
 	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
 	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
 	
@@ -1072,11 +1103,11 @@ void ResourceManager::InitializeMeshBuffers()
 	rewind (pFile);
 	fgetpos(pFile, &position);
 
-	char *bufferSwimmerBones= (char*)malloc(lSize);
+	char *bufferSwimmerWalk= (char*)malloc(lSize);
 	fsetpos(pFile, &position);
-	result = fread (bufferSwimmerBones,lSize,1,pFile);
+	result = fread (bufferSwimmerWalk,lSize,1,pFile);
 
-	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_ID] = bufferSwimmerBones;
+	m_meshBuffers[MESH_BUFFER_SWIMMER_WALK_ID] = bufferSwimmerWalk;
 
 	//MESH_CHARACTER_MALE_BONES
 	pFile = fopen ( "Meshes/skinned/SwimmerBonesJumpKick.c3d" , "rb" );
@@ -1094,7 +1125,162 @@ void ResourceManager::InitializeMeshBuffers()
 	result = fread (bufferSwimmerBonesJumpKick,lSize,1,pFile);
 
 	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_JUMP_KICK_ID] = bufferSwimmerBonesJumpKick;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/SwimmerCarry.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
 	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmerCarry= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmerCarry,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_CARRY_ID] = bufferSwimmerCarry;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/SwimmerCarry2.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmerCarry2= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmerCarry2,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_CARRY_2_ID] = bufferSwimmerCarry2;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/SwimmerCool.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmerCool= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmerCool,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_COOL_ID] = bufferSwimmerCool;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/SwimmerFastWalk.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmerFastWalk= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmerFastWalk,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_FAST_WALK_ID] = bufferSwimmerFastWalk;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/SwimmerKneeKick.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmerKneeKick = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmerKneeKick,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_KNEE_KICK_ID] = bufferSwimmerKneeKick;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/SwimmerMoonwalk.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmerMoonwalk= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmerMoonwalk,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_MOONWALK_ID] = bufferSwimmerMoonwalk;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/SwimmerRunLoop.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmerRunLoop= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmerRunLoop,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_RUN_LOOP_ID] = bufferSwimmerRunLoop;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/SwimmerWalkBackwards.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmerWalkBackwards= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmerWalkBackwards,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_WALK_BACKWARD_ID] = bufferSwimmerWalkBackwards;
+
+	//MESH_CHARACTER_MALE_BONES
+	pFile = fopen ( "Meshes/skinned/SwimmerIdle.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/SkinnedMeshOutBones.c3d" , "rb" );
+	//pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/IdentityBones.c3d" , "rb" );
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferSwimmerIdle = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferSwimmerIdle,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_IDLE_ID] = bufferSwimmerIdle;
+
+	
+
 	
 
 }
@@ -1107,7 +1293,8 @@ void ResourceManager::InitializeSceneBuffers()
 	fpos_t position;
 
 	//Scene0
-	pFile = fopen ( "Meshes/scenes/scene0.c3d" , "rb" );	
+	//pFile = fopen ( "Meshes/scenes/scene0.c3d" , "rb" );	
+	pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/outScene.c3d" , "rb" );
 	
 	// obtain file size:
 	fseek (pFile , 0 , SEEK_END);

@@ -233,11 +233,7 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, vector<char *> *a_bonesBuff
 		{
 			t_frameMatrices = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);
 			for(int j = 0; j < m_totalBones; j++)
-			{			
-				
-				//D3DXMatrixIdentity(&t_toRoot);
-				//D3DXMatrixTranslation(&t_toRoot, 0.578768f, 5.570874f, -0.234539f);
-				//m_roots[j] = t_toRoot;
+			{											
 				D3DXMatrixIdentity(&t_currentFrameMatrix);
 
 				t_currentFrameMatrix._11 = t_reader->ReadNextFloat();
@@ -268,8 +264,14 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, vector<char *> *a_bonesBuff
 			m_animationFramesDuration->push_back(frameDuration);
 		}
 
+		//delete t_frameMatrices;
+		//t_frameMatrices = NULL;
+
 		int totalAnimations = t_reader->ReadNextInt();
 		m_animationsTotalFrames->push_back(t_reader->ReadNextInt());
+
+		delete t_reader;
+		t_reader = NULL;
 		
 	}							
 
@@ -298,7 +300,9 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, vector<char *> *a_bonesBuff
 	}
 	
 
-	m_animationsTotalFrames->push_back(m_totalFrames);
+	delete t_reader;
+	t_reader = NULL;
+	//m_animationsTotalFrames->push_back(m_totalFrames);
 	
 	
 	

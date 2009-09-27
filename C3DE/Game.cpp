@@ -218,8 +218,9 @@ void Game::Update(int deltaTime)
 	m_ninjaUpdateTime += (deltaTime);
 
 	
+	int animationTime = m_characterContainer0->GetTotalAnimationTime();
+	m_character0UpdateTime = m_character0UpdateTime % animationTime;
 
-	m_character0UpdateTime = m_character0UpdateTime % m_characterContainer0->GetTotalAnimationTime();
 	m_spiderUpdateTime = m_spiderUpdateTime % m_spiderContainer->GetTotalAnimationTime();
 	m_dogUpdateTime = m_dogUpdateTime % m_dogContainer->GetTotalAnimationTime();
 	m_ninjaUpdateTime = m_ninjaUpdateTime % m_ninjaContainer->GetTotalAnimationTime();
@@ -485,24 +486,18 @@ void Game::Render(Renderer *renderer)
 
 
 	C3DETransform *t0 = new C3DETransform();	
-
 	SceneNode *t_node0 = new SceneNode(m_ground, t0);
 	m_testScene->AddNode(t_node0);	
 
 	C3DETransform *t2 = new C3DETransform();		
-	t2->Translate(0.0f, 0.0f, 0.0f);
+	t2->Translate(0.0f, 0.0f, 10.0f);
 	float tt = 1.0f;
 	t2->Scale(tt, tt, tt);
 
 	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2);
 	m_testScene->AddNode(t_node2);
 
-	C3DETransform *t3 = new C3DETransform();
-	//t3->Rotate(D3DX_PI / 4.0f, &D3DXVECTOR3(1.0f, 0.0f, 0.0f));
-	t3->Translate(0.0f, 0.0f, 25.0f);
 	
-	SceneNode *t_node3 = new SceneNode(m_spiderContainer, t3);	
-	m_testScene->AddNode(t_node3);
 
 	C3DETransform *t4 = new C3DETransform();
 	t4->Rotate(3.1415 / 2.0f, &D3DXVECTOR3(0.0f, 1.0f, 0.0f));
@@ -510,6 +505,12 @@ void Game::Render(Renderer *renderer)
 	SceneNode *t_node4 = new SceneNode(m_dogContainer, t4);	
 	m_testScene->AddNode(t_node4);
 
+	C3DETransform *t5 = new C3DETransform();	
+	t5->Translate(m_camX, m_camY, m_camZ);
+	SceneNode *t_node5 = new SceneNode(m_skyBox, t5);	
+	m_testScene->AddNode(t_node5);
+
+#if 0
 	C3DETransform *t5 = new C3DETransform();
 	//
 	t5->Scale(0.4f, 0.4f, 0.4f);
@@ -517,8 +518,8 @@ void Game::Render(Renderer *renderer)
 	t5->Translate(0.0f, 0.0f, 0.0f);
 	SceneNode *t_node5 = new SceneNode(m_ninjaContainer, t5);	
 	//m_testScene->AddNode(t_node5);
-
-	/*
+#endif
+	
 	for(int i = 0; i< m_sceneTotalObjects; i++)
 	{
 		Mesh * t_mesh = (*m_meshes)[m_sceneStaticObjectsList[i]];
@@ -527,7 +528,7 @@ void Game::Render(Renderer *renderer)
 		SceneNode *t_node = new SceneNode(t_mesh, t_transform);
 		m_testScene->AddNode(t_node);
 	}	
-	*/
+	
 	renderer->DrawScene2(m_testScene);
 
 
@@ -771,7 +772,7 @@ void Game::OnKeyDown(int key)
 void Game::InitializeMeshes()
 {	
 
-	m_totalObjects = 31;
+	m_totalObjects = 33;
 	m_loadedObjects = 0;
 
 	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_FONT_VERDANA_36_ID);
@@ -797,11 +798,22 @@ void Game::InitializeMeshes()
 	D3DImage * characterTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SWIMMER_SKIN_ID));	
 	
 	vector<char*> *animations = new vector<char*>;
-	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_ID));
+
+
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_CARRY_2_ID));
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_CARRY_ID));
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_COOL_ID));
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_FAST_WALK_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_JUMP_KICK_ID));
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_KNEE_KICK_ID));
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_MOONWALK_ID));
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_RUN_LOOP_ID));
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_WALK_BACKWARD_ID));
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_IDLE_ID));
+
 	m_characterMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_ID),
 											animations,
-											characterTexture, 66);
+											characterTexture, 33);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
@@ -956,6 +968,14 @@ void Game::InitializeMeshes()
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
+	GameMesh *m_house0 = new GameMesh(MESH_BUFFER_HOUSE_0_ID,IMAGE_HOUSE_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_house1 = new GameMesh(MESH_BUFFER_HOUSE_1_ID,IMAGE_HOUSE_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
 	GameMesh *m_bench = new GameMesh(MESH_BUFFER_BENCH_ID,IMAGE_BENCH_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
@@ -1026,6 +1046,8 @@ void Game::InitializeMeshes()
 	m_meshes->push_back(m_house3);
 	m_meshes->push_back(m_house4);
 	m_meshes->push_back(m_house5);
+	m_meshes->push_back(m_house0);
+	m_meshes->push_back(m_house1);
 	m_meshes->push_back(m_bench);
 	m_meshes->push_back(m_sign);
 	m_meshes->push_back(m_sign2);
@@ -1070,16 +1092,12 @@ void Game::InitializeMeshes()
 		t_matrix->_44 = t_scene->ReadNextFloat();
 		m_sceneStaticObjectsTransforms[i]->Set(t_matrix);
 	}	
-/*
-	m_sceneStaticObjectsList[m_sceneTotalObjects-1] = GetMeshIndex(m_wall1);
-	m_sceneStaticObjectsTransforms[m_sceneTotalObjects-1] = new C3DETransform();	
-	m_sceneStaticObjectsTransforms[m_sceneTotalObjects-1]->Scale(50.0f, 1.0f, 1.0f);
-	*/
+
 	
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
 
 	m_characterContainer0 = new C3DESkinnedMeshContainer(m_characterMesh);
-	m_characterContainer0->SetCurrentAnimation(1);
+	m_characterContainer0->SetCurrentAnimation(9);
 	m_spiderContainer = new C3DESkinnedMeshContainer(m_spiderMesh);
 	m_dogContainer = new C3DESkinnedMeshContainer(m_dogMesh);
 	m_ninjaContainer = new C3DESkinnedMeshContainer(m_ninjaMesh);

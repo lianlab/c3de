@@ -202,6 +202,8 @@ void ResourceManager::InitializeResources()
 
 	IDirect3DTexture9 * TEX_HOUSE_0;
 
+	IDirect3DTexture9 * TEX_LOW_HOUSE_0;
+
 	IDirect3DTexture9 * TEX_FONT_VERDANA_36;
 	
 	
@@ -350,6 +352,7 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/male/maleSkin.png", &TEX_MALE_SKIN));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/house0.png", &TEX_HOUSE_0));
 
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/lowHouse0.png", &TEX_LOW_HOUSE_0));
 
 
 	//HR(D3DXCreateTextureFromFile(m_device, "Fonts/verdana36.bmp", &TEX_FONT_VERDANA_36));
@@ -485,6 +488,8 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_MALE_SKIN_ID] = TEX_MALE_SKIN;
 
 	m_imageResources[IMAGE_HOUSE_0_ID] = TEX_HOUSE_0;
+
+	m_imageResources[IMAGE_LOW_HOUSE_0_ID] = TEX_LOW_HOUSE_0;
 
 	m_imageResources[IMAGE_FONT_VERDANA_36_ID] = TEX_FONT_VERDANA_36;
 
@@ -850,7 +855,7 @@ void ResourceManager::InitializeMeshBuffers()
 	m_meshBuffers[MESH_BUFFER_TRAFFIC_CONE_ID] = bufferTrafficCone;
 
 	//MESH_BUFFER_HOUSE_0_ID
-	pFile = fopen ( "Meshes/landscape/house0.c3d" , "rb" );
+	pFile = fopen ( "Meshes/landscape/house0.c3d" , "rb" );	
 	
 	// obtain file size:
 	fseek (pFile , 0 , SEEK_END);
@@ -878,6 +883,8 @@ void ResourceManager::InitializeMeshBuffers()
 	result = fread (bufferHouse1,lSize,1,pFile);
 
 	m_meshBuffers[MESH_BUFFER_HOUSE_1_ID] = bufferHouse1;
+
+
 
 	//MESH_BUFFER_HOUSE_ID
 	pFile = fopen ( "Meshes/landscape/house.c3d" , "rb" );
@@ -954,6 +961,21 @@ void ResourceManager::InitializeMeshBuffers()
 	result = fread (bufferHouse_5,lSize,1,pFile);
 
 	m_meshBuffers[MESH_BUFFER_HOUSE_5_ID] = bufferHouse_5;
+
+	//MESH_BUFFER_LOW_HOUSE_0_ID
+	pFile = fopen ( "Meshes/landscape/lowHouse0.c3d" , "rb" );	
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferLowHouse0= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferLowHouse0,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_LOW_HOUSE_0_ID] = bufferLowHouse0;
 
 	//MESH_BUFFER_SPIDER
 	pFile = fopen ( "Meshes/skinned/spider.c3d" , "rb" );

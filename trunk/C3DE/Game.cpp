@@ -31,6 +31,7 @@
 
 #define CONST_RATIO 8
 
+
 using namespace std;
 
 Game::Game(Application * app)
@@ -520,14 +521,19 @@ void Game::Render(Renderer *renderer)
 	//m_testScene->AddNode(t_node5);
 #endif
 	
-	for(int i = 0; i< m_sceneTotalObjects; i++)
+	
+	for(int i = 0; i< m_sceneTotalObjects; i++)	
 	{
 		Mesh * t_mesh = (*m_meshes)[m_sceneStaticObjectsList[i]];
 		C3DETransform *t_transform = new C3DETransform();
+		t_transform->Translate(25.0f, 0.0f, 25.0f);
 		t_transform->Set(m_sceneStaticObjectsTransforms[i]->GetMatrix());
 		SceneNode *t_node = new SceneNode(t_mesh, t_transform);
 		m_testScene->AddNode(t_node);
 	}	
+	
+	
+
 	
 	renderer->DrawScene2(m_testScene);
 
@@ -768,11 +774,12 @@ void Game::OnKeyDown(int key)
 }
 
 #define USE_X_MODELS 0
+#define ADD_TEST_MESH 0
 
 void Game::InitializeMeshes()
 {	
 
-	m_totalObjects = 33;
+	m_totalObjects = 37;
 	m_loadedObjects = 0;
 
 	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_FONT_VERDANA_36_ID);
@@ -790,6 +797,7 @@ void Game::InitializeMeshes()
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
 	
 
+	
 	m_ground = new Ground();
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
@@ -1020,6 +1028,23 @@ void Game::InitializeMeshes()
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
+	GameMesh *m_lowHouse1Main = new GameMesh(MESH_BUFFER_LOW_HOUSE_1_MAIN_ID,IMAGE_LOW_HOUSE_1_MAIN_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_lowHouse1Roof = new GameMesh(MESH_BUFFER_LOW_HOUSE_1_ROOF_ID,IMAGE_LOW_HOUSE_1_ROOF_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_lowHouse1Garage = new GameMesh(MESH_BUFFER_LOW_HOUSE_1_GARAGE_ID,IMAGE_LOW_HOUSE_1_GARAGE_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+	GameMesh *m_test = new GameMesh(MESH_BUFFER_TEST_ID,IMAGE_TEST_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
+
 	
 #endif
 	m_skyBox = new Skybox(1000);	
@@ -1059,17 +1084,30 @@ void Game::InitializeMeshes()
 	m_meshes->push_back(m_cafeTable);
 	m_meshes->push_back(m_parkingBarrier);
 	m_meshes->push_back(m_trafficCone);	
+	m_meshes->push_back(m_lowHouse1Main);	
+	m_meshes->push_back(m_lowHouse1Roof);	
+	m_meshes->push_back(m_lowHouse1Garage);	
+	m_meshes->push_back(m_test);	
 	
 
 	//#include "C:\documents and Settings\csabino\Desktop\exportedMeshes\outWorld.c3d"
 	BufferReader *t_scene = new BufferReader(ResourceManager::GetInstance()->GetSceneBuffer(SCENE_BUFFER_SCENE_0_ID));
 
-	m_sceneTotalObjects = t_scene->ReadNextInt() ;	
+#if ADD_TEST_MESH
+	m_sceneTotalObjects = t_scene->ReadNextInt() + 1;	
+#else
+	m_sceneTotalObjects = t_scene->ReadNextInt();	
+#endif
+	
 	m_sceneStaticObjectsList = (int*)malloc(sizeof(int) * (m_sceneTotalObjects));
 	m_sceneStaticObjectsTransforms = (C3DETransform**)malloc(sizeof(C3DETransform) * (m_sceneTotalObjects));
 	D3DXMATRIX *t_matrix = new D3DXMATRIX();
 
+#if ADD_TEST_MESH
+	for(int i = 0; i < m_sceneTotalObjects - 1; i++)
+#else
 	for(int i = 0; i < m_sceneTotalObjects; i++)
+#endif	
 	{
 		m_sceneStaticObjectsList[i] = t_scene->ReadNextInt();
 		m_sceneStaticObjectsTransforms[i] = new C3DETransform();
@@ -1092,6 +1130,13 @@ void Game::InitializeMeshes()
 		t_matrix->_44 = t_scene->ReadNextFloat();
 		m_sceneStaticObjectsTransforms[i]->Set(t_matrix);
 	}	
+
+#if ADD_TEST_MESH
+	m_sceneStaticObjectsList[m_sceneTotalObjects-1] = GetMeshIndex(m_test);
+	m_sceneStaticObjectsTransforms[m_sceneTotalObjects-1] = new C3DETransform();
+#endif
+	
+	
 
 	
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);

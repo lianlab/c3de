@@ -203,8 +203,13 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_HOUSE_0;
 
 	IDirect3DTexture9 * TEX_LOW_HOUSE_0;
+	IDirect3DTexture9 * TEX_LOW_HOUSE_1_MAIN;
+	IDirect3DTexture9 * TEX_LOW_HOUSE_1_ROOF;
+	IDirect3DTexture9 * TEX_LOW_HOUSE_1_GARAGE;
 
 	IDirect3DTexture9 * TEX_FONT_VERDANA_36;
+
+	IDirect3DTexture9 * TEX_TEST;
 	
 	
 	
@@ -354,12 +359,18 @@ void ResourceManager::InitializeResources()
 
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/lowHouse0.png", &TEX_LOW_HOUSE_0));
 
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/lowHouse1Main.png", &TEX_LOW_HOUSE_1_MAIN));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/lowHouse1Roof.png", &TEX_LOW_HOUSE_1_ROOF));
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/lowHouse1Garage.png", &TEX_LOW_HOUSE_1_GARAGE));
+
 
 	//HR(D3DXCreateTextureFromFile(m_device, "Fonts/verdana36.bmp", &TEX_FONT_VERDANA_36));
 
 	D3DXCreateTextureFromFileEx(m_device, "Fonts/verdana36.png", 2048, 64, 1, D3DUSAGE_DYNAMIC, 
 											  D3DFMT_FROM_FILE, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 
 											  0xFF000000, NULL, NULL, &TEX_FONT_VERDANA_36);
+
+	HR(D3DXCreateTextureFromFile(m_device, "C:/Documents and Settings/csabino/Desktop/exportedMeshes/test.png", &TEX_TEST));
 
 
 
@@ -490,8 +501,13 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_HOUSE_0_ID] = TEX_HOUSE_0;
 
 	m_imageResources[IMAGE_LOW_HOUSE_0_ID] = TEX_LOW_HOUSE_0;
+	m_imageResources[IMAGE_LOW_HOUSE_1_MAIN_ID] = TEX_LOW_HOUSE_1_MAIN;
+	m_imageResources[IMAGE_LOW_HOUSE_1_ROOF_ID] = TEX_LOW_HOUSE_1_ROOF;
+	m_imageResources[IMAGE_LOW_HOUSE_1_GARAGE_ID] = TEX_LOW_HOUSE_1_GARAGE;
 
 	m_imageResources[IMAGE_FONT_VERDANA_36_ID] = TEX_FONT_VERDANA_36;
+
+	m_imageResources[IMAGE_TEST_ID] = TEX_TEST;
 
 	InitializeVideos();
 
@@ -977,6 +993,54 @@ void ResourceManager::InitializeMeshBuffers()
 
 	m_meshBuffers[MESH_BUFFER_LOW_HOUSE_0_ID] = bufferLowHouse0;
 
+	//MESH_BUFFER_LOW_HOUSE_1_MAIN_ID
+	pFile = fopen ( "Meshes/landscape/lowHouse1Main.c3d" , "rb" );	
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferLowHouse1Main= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferLowHouse1Main,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_LOW_HOUSE_1_MAIN_ID] = bufferLowHouse1Main;
+
+	//MESH_BUFFER_LOW_HOUSE_1_ROOF_ID
+	pFile = fopen ( "Meshes/landscape/lowHouse1Roof.c3d" , "rb" );	
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferLowHouse1Roof= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferLowHouse1Roof,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_LOW_HOUSE_1_ROOF_ID] = bufferLowHouse1Roof;
+
+	//MESH_BUFFER_LOW_HOUSE_1_GARAGE_ID
+	pFile = fopen ( "Meshes/landscape/lowHouse1Garage.c3d" , "rb" );	
+	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
+
+	char *bufferLowHouse1Garage= (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferLowHouse1Garage,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_LOW_HOUSE_1_GARAGE_ID] = bufferLowHouse1Garage;
+
+
+
+
 	//MESH_BUFFER_SPIDER
 	pFile = fopen ( "Meshes/skinned/spider.c3d" , "rb" );
 	
@@ -1306,9 +1370,20 @@ void ResourceManager::InitializeMeshBuffers()
 
 	m_meshBuffers[MESH_BUFFER_SWIMMER_BONES_IDLE_ID] = bufferSwimmerIdle;
 
+	//MESH_TEST_ID
+	pFile = fopen ( "C:/Documents and Settings/csabino/Desktop/exportedMeshes/out0.c3d" , "rb" );	
 	
+	// obtain file size:
+	fseek (pFile , 0 , SEEK_END);
+	lSize = ftell (pFile);
+	rewind (pFile);
+	fgetpos(pFile, &position);
 
-	
+	char *bufferTest = (char*)malloc(lSize);
+	fsetpos(pFile, &position);
+	result = fread (bufferTest,lSize,1,pFile);
+
+	m_meshBuffers[MESH_BUFFER_TEST_ID] = bufferTest;		
 
 }
 

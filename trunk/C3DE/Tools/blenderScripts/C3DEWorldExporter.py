@@ -329,6 +329,9 @@ class xExport:
 		meshes_ids.append("cafeTable")
 		meshes_ids.append("parkingBarrier")
 		meshes_ids.append("trafficCone")
+		meshes_ids.append("lowHouse1Main")
+		meshes_ids.append("lowHouse1Roof")
+		meshes_ids.append("lowHouse1Garage")
 	
 		
 		
@@ -364,6 +367,9 @@ class xExport:
 		meshes_real_ids.append("m_cafeTable")
 		meshes_real_ids.append("m_parkingBarrier")
 		meshes_real_ids.append("m_trafficCone")
+		meshes_real_ids.append("m_lowHouse1Main")
+		meshes_real_ids.append("m_lowHouse1Roof")
+		meshes_real_ids.append("m_lowHouse1Garage")
 		
 		
 		

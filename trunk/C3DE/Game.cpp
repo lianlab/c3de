@@ -779,7 +779,7 @@ void Game::OnKeyDown(int key)
 void Game::InitializeMeshes()
 {	
 
-	m_totalObjects = 37;
+	m_totalObjects = 38;
 	m_loadedObjects = 0;
 
 	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_FONT_VERDANA_36_ID);
@@ -980,7 +980,7 @@ void Game::InitializeMeshes()
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	GameMesh *m_house1 = new GameMesh(MESH_BUFFER_HOUSE_1_ID,IMAGE_HOUSE_ID);
+	GameMesh *m_house1 = new GameMesh(MESH_BUFFER_HOUSE_1_ID,IMAGE_STORAGE_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
@@ -1040,6 +1040,10 @@ void Game::InitializeMeshes()
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
+	GameMesh *m_lowHouse0 = new GameMesh(MESH_BUFFER_LOW_HOUSE_0_ID,IMAGE_LOW_HOUSE_0_ID);
+	m_loadedObjects++;
+	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
+
 	GameMesh *m_test = new GameMesh(MESH_BUFFER_TEST_ID,IMAGE_TEST_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
@@ -1087,6 +1091,7 @@ void Game::InitializeMeshes()
 	m_meshes->push_back(m_lowHouse1Main);	
 	m_meshes->push_back(m_lowHouse1Roof);	
 	m_meshes->push_back(m_lowHouse1Garage);	
+	m_meshes->push_back(m_lowHouse0);	
 	m_meshes->push_back(m_test);	
 	
 

@@ -206,6 +206,8 @@ void ResourceManager::InitializeResources()
 	IDirect3DTexture9 * TEX_LOW_HOUSE_1_MAIN;
 	IDirect3DTexture9 * TEX_LOW_HOUSE_1_ROOF;
 	IDirect3DTexture9 * TEX_LOW_HOUSE_1_GARAGE;
+	IDirect3DTexture9 * TEX_STORAGE;
+	
 
 	IDirect3DTexture9 * TEX_FONT_VERDANA_36;
 
@@ -363,6 +365,8 @@ void ResourceManager::InitializeResources()
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/lowHouse1Roof.png", &TEX_LOW_HOUSE_1_ROOF));
 	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/lowHouse1Garage.png", &TEX_LOW_HOUSE_1_GARAGE));
 
+	HR(D3DXCreateTextureFromFile(m_device, "Images/landscape/storage.png", &TEX_STORAGE));
+
 
 	//HR(D3DXCreateTextureFromFile(m_device, "Fonts/verdana36.bmp", &TEX_FONT_VERDANA_36));
 
@@ -504,6 +508,7 @@ void ResourceManager::InitializeResources()
 	m_imageResources[IMAGE_LOW_HOUSE_1_MAIN_ID] = TEX_LOW_HOUSE_1_MAIN;
 	m_imageResources[IMAGE_LOW_HOUSE_1_ROOF_ID] = TEX_LOW_HOUSE_1_ROOF;
 	m_imageResources[IMAGE_LOW_HOUSE_1_GARAGE_ID] = TEX_LOW_HOUSE_1_GARAGE;
+	m_imageResources[IMAGE_STORAGE_ID] = TEX_STORAGE;
 
 	m_imageResources[IMAGE_FONT_VERDANA_36_ID] = TEX_FONT_VERDANA_36;
 

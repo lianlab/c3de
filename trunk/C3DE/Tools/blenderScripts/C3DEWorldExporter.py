@@ -332,6 +332,7 @@ class xExport:
 		meshes_ids.append("lowHouse1Main")
 		meshes_ids.append("lowHouse1Roof")
 		meshes_ids.append("lowHouse1Garage")
+		meshes_ids.append("lowHouse0")
 	
 		
 		
@@ -370,6 +371,7 @@ class xExport:
 		meshes_real_ids.append("m_lowHouse1Main")
 		meshes_real_ids.append("m_lowHouse1Roof")
 		meshes_real_ids.append("m_lowHouse1Garage")
+		meshes_real_ids.append("m_lowHouse0")
 		
 		
 		

@@ -138,7 +138,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3dx9.lib dxguid.lib dsound.lib strmiids.lib dinput8.lib winmm.lib vfw32.lib d3d9.lib libbulletdynamics.lib libbulletcollision.lib libbulletmath.lib"
+				AdditionalDependencies="d3dx9.lib dxguid.lib dsound.lib strmiids.lib dinput8.lib winmm.lib vfw32.lib d3d9.lib dxerr9.lib user32.lib libbulletdynamics.lib libbulletcollision.lib libbulletmath.lib"
 				OutputFile="./Runtime/Some3d_Release.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\BulletPhysics\libs\release"
@@ -1409,6 +1409,10 @@
 				</File>
 				<File
 					RelativePath=".\OBB.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Physics.h"
 					>
 				</File>
 			</Filter>

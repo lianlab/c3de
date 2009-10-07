@@ -42,6 +42,7 @@
 #include "C3DESkinnedMesh.h"
 #include "C3DESkinnedMeshContainer.h"
 #include "GameMesh.h"
+#include "btBulletDynamicsCommon.h"
 
 
 
@@ -71,6 +72,10 @@ public:
 
 	
 private:
+
+	btDynamicsWorld *m_physicsWorld;
+
+	vector<btRigidBody*> *m_rigidBodies;
 
 	//for loading
 	int m_loadedObjects;

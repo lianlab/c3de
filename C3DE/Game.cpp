@@ -25,6 +25,7 @@
 #include "C3DETransform.h"
 #include "BufferReader.h"
 #include <iostream>
+#include "Physics.h"
 
 //THIS CLASS CAN'T OVERRIDE THE NEW OPERATOR OR IT WILL SCREW UP ALL DIRECTX DRAWING
 //#include "DebugMemory.h"
@@ -212,6 +213,7 @@ int eita = 0;
 void Game::Update(int deltaTime)
 {		
 
+	m_physicsWorld->stepSimulation(deltaTime);
 
 	m_character0UpdateTime += deltaTime;
 	m_spiderUpdateTime += (deltaTime);
@@ -526,12 +528,21 @@ void Game::Render(Renderer *renderer)
 	{
 		Mesh * t_mesh = (*m_meshes)[m_sceneStaticObjectsList[i]];
 		C3DETransform *t_transform = new C3DETransform();
-		t_transform->Translate(25.0f, 0.0f, 25.0f);
+		
 		t_transform->Set(m_sceneStaticObjectsTransforms[i]->GetMatrix());
 		SceneNode *t_node = new SceneNode(t_mesh, t_transform);
 		m_testScene->AddNode(t_node);
 	}	
 	
+	
+	Mesh * t_mesh = (*m_meshes)[3];
+	C3DETransform *t_transform = new C3DETransform();
+	btRigidBody *t_body = (*m_rigidBodies)[0];
+	btMotionState *t_motionState = t_body->getMotionState();
+	D3DXMATRIX t_matrix = BT2DX_MATRIX(*t_motionState);
+	t_transform->Set(&t_matrix);
+	SceneNode *t_node = new SceneNode(t_mesh, t_transform);
+	m_testScene->AddNode(t_node);
 	
 
 	
@@ -778,6 +789,48 @@ void Game::OnKeyDown(int key)
 
 void Game::InitializeMeshes()
 {	
+
+
+
+	btDefaultCollisionConfiguration *cc;
+	cc = new btDefaultCollisionConfiguration();
+	btConstraintSolver *sl;
+	sl = new btSequentialImpulseConstraintSolver();
+
+	btVector3 worldAabbMin(-1000, -1000, -1000);
+	btVector3 worldAabbMax(1000, 1000, 1000);
+	const int maxProxies = 32766;
+	btBroadphaseInterface *bp;
+
+	bp = new btAxisSweep3(worldAabbMin, worldAabbMax, maxProxies);
+
+	btCollisionDispatcher *dp;
+	dp = new btCollisionDispatcher(cc);
+
+	m_physicsWorld = new btDiscreteDynamicsWorld(dp, bp, sl, cc);
+
+	btQuaternion q(00.0f, 0.0f, 0.0f);
+	btVector3 p(0.0f, 30.0f, 10.0f);
+	btTransform startTrans(q,p);
+	btMotionState * ms = new btDefaultMotionState(startTrans);
+
+	btVector3 size(1.5f, 2.5f, 0.75f);
+	btCollisionShape *cs = new btBoxShape(size);
+
+	float mass = 35.0f;
+	btVector3 localInertia;
+	cs->calculateLocalInertia(mass, localInertia);
+	btRigidBody *body  = new btRigidBody(mass, ms,cs, localInertia);
+	m_physicsWorld->addRigidBody(body);
+
+	m_rigidBodies = new vector<btRigidBody*>;
+	m_rigidBodies->push_back(body);
+
+	btRigidBody *floor = new btRigidBody(0.0f, new btDefaultMotionState(), new btStaticPlaneShape(btVector3(0,1,0),-0.5));
+	m_physicsWorld->addRigidBody(floor);
+	m_rigidBodies->push_back(floor);
+	
+
 
 	m_totalObjects = 38;
 	m_loadedObjects = 0;

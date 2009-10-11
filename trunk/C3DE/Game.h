@@ -76,6 +76,8 @@ private:
 	btDynamicsWorld *m_physicsWorld;
 
 	vector<btRigidBody*> *m_rigidBodies;
+	vector<btVector3*> *m_rigidBodiesSizes;
+
 
 	//for loading
 	int m_loadedObjects;
@@ -144,6 +146,7 @@ private:
 	C3DETransform **m_sceneStaticObjectsTransforms;
 	int m_sceneTotalObjects;
 	
+	float hackRotation;
 
 #if 1
 

@@ -35,6 +35,13 @@
 
 using namespace std;
 
+
+
+const float Game::m_camDistanceToCharacter = 19.699961f;
+const float Game::m_camAngle = 0.18500003f;
+const float Game::m_camYOffsetToCharacter = 5.5700326f;
+const float Game::m_camZOffsetToCharacter = 0.0f;
+
 Game::Game(Application * app)
 {
 
@@ -45,13 +52,8 @@ Game::Game(Application * app)
 	int m_loadedObjects = 0;
 	int m_totalObjects = 145;
 
-	m_physPosX = 200;
-	m_physPosY = 0;
-	m_physSpeedX = 0;
-	m_physSpeedY  = 0;
-	m_gAcc = 10;
+	
 
-	hack = 0;
 
 	m_application = app;
 
@@ -65,8 +67,8 @@ Game::Game(Application * app)
 	m_sprite->SetX(50);
 	m_sprite->SetY(50);
 
-	m_speed = 1;
-	m_yspeed = 1;
+	
+
 
 	m_cameraRadius = 10.0f;
 	m_cameraRotation = 1.2 * D3DX_PI;
@@ -101,41 +103,67 @@ Game::Game(Application * app)
 	r.bottom = 85;
 
 	
-	m_button = new Button(image2, frames, r);
-	m_button->SetX(50);
-	m_button->SetY(340);
-
-	m_button->AddListener(this);
-
-	
-	hx = 0;
-	hy = 0;
-
-
-	m_camRadius = 1.0f;
-
-	m_cubeX = 0.0f;
-	m_cubeY = -2.0f;
-	m_cubeZ = 0.0f;
-
-	m_camX = m_cubeX;
-	m_camY = m_cubeY + 2.0f;
-	m_camZ = m_cubeZ - 5.0f;
 	
 
-	m_camTargetX = m_cubeX;
-	m_camTargetY = m_cubeY + 2.0f;
-	m_camTargetZ = m_cubeZ - 4.0f;
+
+	
+#if 0
+	m_camX = 0.0f;
+	m_camY = 2.0f;
+	m_camZ = 5.0f;
+	
+
+	m_camTargetX = 0.0f;
+	m_camTargetY = 2.0f;
+	m_camTargetZ = 4.0f;
 	
 
 	m_camUpX = 0.0f;
 	m_camUpY = 1.0f;
 	m_camUpZ = 0.0f;
 
-	m_camYRotation = 0.0f;
-	m_camZRotation = 0.0f;
+#endif
+	m_camX = 0.0f;
+	m_camY = 10.0f;
+	m_camZ = -15.0f;
+	
 
-	m_carDirection = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+	m_camTargetX = 0.0f;
+	m_camTargetY = 0.0f;
+	m_camTargetZ = 0.0f;
+	
+
+	m_camUpX = 0.0f;
+	m_camUpY = 1.0f;
+	m_camUpZ = 0.0f;
+
+	//m_camYOffsetToCharacter = 0.0f;
+	//m_camZOffsetToCharacter = 0.0f;
+
+
+	m_characterX = 0.0f;
+	m_characterY = 0.0f;
+	m_characterZ = 0.0f;
+
+	m_characterRotation = 0.0f;
+
+	//m_camDistanceToCharacter = 30.0f;
+
+	//m_camAngle = 0.125f;
+
+	
+
+	
+	m_camAngleSin = sinf( m_camAngle  * (D3DX_PI * 2.0f));
+	m_camAngleCos = cosf( m_camAngle  * (D3DX_PI * 2.0f));
+	
+	m_camTargetX = m_characterX;
+	m_camTargetY = m_characterX;
+	m_camTargetZ = m_characterX;
+
+	m_camX = m_characterX;
+	m_camY = m_characterY + m_camAngleCos * m_camDistanceToCharacter;
+	m_camZ = m_characterZ + m_camAngleSin * m_camDistanceToCharacter;
 
 
 	InitializeMeshes();
@@ -160,7 +188,7 @@ void Game::OnButtonOver(Button *button)
 void Game::SetInputer(DirectInput *inputer)
 {
 	m_inputer = inputer;
-	m_inputer->AddMouseListener((MouseListener*)m_button);
+	//m_inputer->AddMouseListener((MouseListener*)m_button);
 }
 
 Game::~Game()
@@ -215,8 +243,6 @@ void Game::Update(int deltaTime)
 
 	m_physicsWorld->stepSimulation(deltaTime);
 
-
-
 	m_character0UpdateTime += deltaTime;
 	m_spiderUpdateTime += (deltaTime);
 	m_dogUpdateTime += (deltaTime);
@@ -238,81 +264,9 @@ void Game::Update(int deltaTime)
 
 
 	int totalObjects = m_testScene->GetMeshesVector()->size();
-
-	for(int i = 0 ; i< totalObjects; i++)
-	{
-		Mesh * t_target = (*m_testScene->GetMeshesVector())[i];
-		D3DMesh *t_targetMesh = (D3DMesh *)t_target;
-
-		if(t_targetMesh == m_woman || t_targetMesh == m_ground || t_target == m_skyBox)
-		{
-			continue;
-		}
 		
-		bool ret = m_woman->Collides(t_targetMesh);
-		if(ret)
-		{
-			printf("Collision%d\n", timeGetTime());
-		}
-	}
-	
 	UpdateInput(deltaTime);
-
-	eita++;
-
-	m_gAcc = 10;	
-	//deltaTime = 1000;
-
-	int t_timeRatio = 1;
-	int t_spaceRatio = 50;
-	
-	int formula = (m_physSpeedY*deltaTime/t_timeRatio) + ((m_gAcc*deltaTime*deltaTime)/(2 * t_timeRatio));
-	
-	int maxInt = 2147483647;
-
-
-	if(maxInt - formula < m_physPosY || maxInt - formula == m_physPosY)
-	{
-		int jhgfgf = 987;
-	}
-
-	int t_transformedFormula = formula / 10000;
-	
-	//m_physPosY = m_physPosY + formula;
-	m_physPosY = m_physPosY + t_transformedFormula;
-
-	int t_forReal = m_physPosY / 10000;
-
-	m_sprite->SetY(t_forReal);
-
-	m_physSpeedY = m_physSpeedY + ((deltaTime * m_gAcc));
-	
-
-	int fleps = 0;
-	int t_accumulating = 0;
-	int t_transformed = 0;
-	while(false)
-	{
-		fleps++;
-		if(fleps == maxInt)
-		{	
-			t_accumulating++;
-			fleps= 0;
-		}
-		t_transformed = ((maxInt >> 8 )*t_accumulating) + (fleps >> 8 );
-	}
-	
-	
-	
-	m_sprite->SetX(200);
-	
-	if(m_physPosY < 0)
-	{
-		int fkjdfds = 876;
-	}
-
-
-	
+		
 	m_sprite->Update(deltaTime);
 
 	m_deltaTime = deltaTime;
@@ -321,6 +275,7 @@ void Game::Update(int deltaTime)
 
 }
 
+#if 0
 
 void Game::UpdateInput(int deltaTime)
 {
@@ -373,7 +328,7 @@ void Game::UpdateInput(int deltaTime)
 	//UP
 	{		
 		//m_cubeZ += step;
-		newPos = step*m_carDirection;
+		//newPos = step*m_carDirection;
 		upDown = true;
 
 		
@@ -383,7 +338,7 @@ void Game::UpdateInput(int deltaTime)
 	//DOWN	
 		
 		//m_cubeZ -= step;
-		newPos = -step*m_carDirection;
+		//newPos = -step*m_carDirection;
 		downDown = true;
 
 		
@@ -476,14 +431,136 @@ void Game::UpdateInput(int deltaTime)
 
 
 }
+#else
+
+void Game::UpdateInput(int deltaTime)
+{
+
+	float t_time = deltaTime / 1000.0f;
+
+	float posMultiplier = 0.5f;
+	float fastPosMultiplier = 5.0f;
+
+
+	float rotMultiplier = 0.5f;
+	float fastRotMultiplier = 2.0f;
+
+	float rotationRadians = m_characterRotation * (D3DX_PI * 2.0f);
+
+	float directionZ = cosf(rotationRadians);
+	float directionX = sinf(rotationRadians);
+
+	if(DirectInput::GetInstance()->IsKeyDown(1))
+	{
+		m_application->Quit();
+		return;
+		
+	}
+
+	if(DirectInput::GetInstance()->IsKeyDown(42))
+	{
+		//SHIFT
+		posMultiplier *= fastPosMultiplier;
+		rotMultiplier *= fastRotMultiplier;
+	}
+	
+
+
+	if(DirectInput::GetInstance()->IsKeyDown(200))
+	//UP
+	{		
+		//m_characterZ += (deltaTime * posMultiplier);
+		m_characterZ += (directionZ) * posMultiplier;
+		m_characterX += (directionX) * posMultiplier;
+
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(208))
+	{	
+	//DOWN	
+		//m_characterZ -= (deltaTime * posMultiplier);
+		m_characterZ -= (directionZ) * posMultiplier;
+		m_characterX -= (directionX) * posMultiplier;
+
+	}	
+	if(DirectInput::GetInstance()->IsKeyDown(205))
+	{
+		//RIGHT		
+		m_characterRotation += (rotMultiplier * t_time);
+		
+	}
+	if(DirectInput::GetInstance()->IsKeyDown(203))
+	{
+		//LEFT	
+		m_characterRotation -= (rotMultiplier * t_time);
+		
+	}
+
+#define ADJUST_CAMERA 0
+#if ADJUST_CAMERA
+	//A
+	if(DirectInput::GetInstance()->IsKeyDown(30))
+	{
+		m_camAngle += 0.01f;
+		m_camAngleSin = sinf( m_camAngle  * (D3DX_PI * 2.0f));
+		m_camAngleCos = cosf( m_camAngle  * (D3DX_PI * 2.0f));
+	}
+
+	//Z
+	if(DirectInput::GetInstance()->IsKeyDown(44))
+	{
+		m_camAngle -= 0.01f;
+		m_camAngleSin = sinf( m_camAngle  * (D3DX_PI * 2.0f));
+		m_camAngleCos = cosf( m_camAngle  * (D3DX_PI * 2.0f));
+	}
+
+	//s
+	if(DirectInput::GetInstance()->IsKeyDown(31))
+	{
+		m_camDistanceToCharacter += 0.1f;
+	}
+
+	//x
+	if(DirectInput::GetInstance()->IsKeyDown(45))
+	{
+		m_camDistanceToCharacter -= 0.1f;
+	}
+
+	//d
+	if(DirectInput::GetInstance()->IsKeyDown(32))
+	{
+		m_camYOffsetToCharacter += 0.01f;
+	}
+
+	//c
+	if(DirectInput::GetInstance()->IsKeyDown(46))
+	{
+		m_camYOffsetToCharacter -= 0.01f;
+	}
+#endif
+	
+
+	m_camTargetX = m_characterX;
+	m_camTargetY = m_characterY + m_camYOffsetToCharacter;
+	m_camTargetZ = m_characterZ + m_camZOffsetToCharacter;
+
+	//m_camX = m_characterX;
+	m_camY = (m_characterY + m_camYOffsetToCharacter) + m_camAngleCos * m_camDistanceToCharacter;
+	//m_camZ = (m_characterZ + m_camZOffsetToCharacter) - m_camAngleSin * m_camDistanceToCharacter;
+
+	float zLength = m_camZOffsetToCharacter + m_camAngleSin * m_camDistanceToCharacter;
+
+	m_camX = m_characterX - sinf(rotationRadians) * zLength;
+	m_camZ = m_characterZ - cosf(rotationRadians) * zLength;
+}
+#endif
 
 
 void Game::Render(Renderer *renderer)
 {
 	
 	D3DCamera * cam = (D3DCamera *)renderer->GetCamera();
-	float x = m_cameraRadius * cosf(m_cameraRotation);
-	float z =  m_cameraRadius * sinf(m_cameraRotation);
+	//float x = m_cameraRadius * cosf(m_cameraRotation);
+	//float z =  m_cameraRadius * sinf(m_cameraRotation);
 
 	cam->SetPosition(m_camX, m_camY, m_camZ);
 	cam->SetUp(m_camUpX, m_camUpY, m_camUpZ);	
@@ -492,15 +569,15 @@ void Game::Render(Renderer *renderer)
 	m_testScene->ClearAllNodes();
 
 	C3DETransform *t0 = new C3DETransform();	
-	SceneNode *t_node0 = new SceneNode(m_ground, t0);
-	
+	SceneNode *t_node0 = new SceneNode(m_ground, t0);	
 	m_testScene->AddNode(t_node0);			
 
-	C3DETransform *t2 = new C3DETransform();		
-	t2->Translate(0.0f, 0.0f, 10.0f);
+	C3DETransform *t2 = new C3DETransform();	
+	D3DXVECTOR3 yAxis = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	t2->Rotate(m_characterRotation, &yAxis);
+	t2->Translate(m_characterX, m_characterY, m_characterZ);
 	float tt = 1.0f;
 	t2->Scale(tt, tt, tt);
-
 	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2);
 	m_testScene->AddNode(t_node2);	
 
@@ -510,8 +587,7 @@ void Game::Render(Renderer *renderer)
 	SceneNode *t_node4 = new SceneNode(m_dogContainer, t4);	
 	m_testScene->AddNode(t_node4);
 
-	C3DETransform *t5 = new C3DETransform();
-	
+	C3DETransform *t5 = new C3DETransform();	
 	t5->Translate(m_camX, m_camY, m_camZ);
 	SceneNode *t_node5 = new SceneNode(m_skyBox, t5);	
 	m_testScene->AddNode(t_node5);
@@ -520,7 +596,6 @@ void Game::Render(Renderer *renderer)
 	{
 		Mesh * t_mesh = (*m_meshes)[m_sceneStaticObjectsList[i]];
 		C3DETransform *t_transform = new C3DETransform();	
-
 		D3DXMATRIX *t_matrix = m_sceneStaticObjectsTransforms[i]->GetMatrix();		
 		t_transform->Set(t_matrix);
 		SceneNode *t_node = new SceneNode(t_mesh, t_transform);
@@ -621,7 +696,7 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 
 }
 
-
+#if 0
 void Game::OnKeyDown(int key)
 {
 	//float step = 0.1f;
@@ -782,6 +857,12 @@ void Game::OnKeyDown(int key)
 	}
 
 }
+#else
+void Game::OnKeyDown(int key)
+{	
+	
+}
+#endif
 
 #define USE_X_MODELS 0
 #define ADD_TEST_MESH 0
@@ -838,7 +919,6 @@ void Game::InitializeMeshes()
 	btVector3 *t_size2 = new btVector3(1.0f, 1.0f, 1.0f);
 	//m_rigidBodiesSizes->push_back(t_size2);
 
-	m_cube = new Cube();
 	
 
 

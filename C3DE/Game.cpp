@@ -215,10 +215,7 @@ void Game::Update(int deltaTime)
 
 	m_physicsWorld->stepSimulation(deltaTime);
 
-#define IGNORE_ANIMATIONS 0
-#if IGNORE_ANIMATIONS
 
-#else
 
 	m_character0UpdateTime += deltaTime;
 	m_spiderUpdateTime += (deltaTime);
@@ -238,7 +235,8 @@ void Game::Update(int deltaTime)
 	m_spiderContainer->SetAnimationTime(m_spiderUpdateTime);
 	m_dogContainer->SetAnimationTime(m_dogUpdateTime);
 	m_ninjaContainer->SetAnimationTime(m_ninjaUpdateTime);
-#endif
+
+
 	int totalObjects = m_testScene->GetMeshesVector()->size();
 
 	for(int i = 0 ; i< totalObjects; i++)
@@ -479,110 +477,7 @@ void Game::UpdateInput(int deltaTime)
 
 }
 
-#define TESTING_STUFF 0
-#if TESTING_STUFF
-void Game::Render(Renderer *renderer)
-{
-	
-	D3DCamera * cam = (D3DCamera *)renderer->GetCamera();
-	float x = m_cameraRadius * cosf(m_cameraRotation);
-	float z =  m_cameraRadius * sinf(m_cameraRotation);
 
-	cam->SetPosition(m_camX, m_camY, m_camZ);
-	cam->SetUp(m_camUpX, m_camUpY, m_camUpZ);	
-	cam->SetTarget(m_camTargetX, m_camTargetY, m_camTargetZ);
-	
-	m_testScene->ClearAllNodes();
-
-	C3DETransform *t0 = new C3DETransform();	
-	SceneNode *t_node0 = new SceneNode(m_ground, t0);
-	
-	m_testScene->AddNode(t_node0);	
-
-
-	C3DETransform *t5 = new C3DETransform();
-	
-	t5->Translate(m_camX, m_camY, m_camZ);
-	SceneNode *t_node5 = new SceneNode(m_skyBox, t5);	
-	m_testScene->AddNode(t_node5);
-
-	hackRotation += 0.0001f;
-	
-	if(hackRotation > 1.0f)
-	{
-		hackRotation -= 1.0f;
-	}
-	
-	for(int i = 0; i< m_sceneTotalObjects; i++)	
-	{
-		Mesh * t_mesh = (*m_meshes)[m_sceneStaticObjectsList[i]];
-		C3DETransform *t_transform = new C3DETransform();	
-
-		D3DXMATRIX *t_matrix = m_sceneStaticObjectsTransforms[i]->GetMatrix();
-		float posX = t_matrix->_41;
-		float posY = t_matrix->_42;
-		float posZ = t_matrix->_43;
-
-		float scaleX = t_matrix->_11;
-		float scaleY = t_matrix->_22;
-		float scaleZ = t_matrix->_33;
-
-		
-
-		t_transform->Scale(scaleX, scaleY, scaleZ);
-		t_transform->Rotate(hackRotation, new D3DXVECTOR3(0.0f, 1.0f, 0.0f));
-		t_transform->Translate(posX, posY, posZ);
-		
-		SceneNode *t_node = new SceneNode(t_mesh, t_transform);
-		m_testScene->AddNode(t_node);
-	}			
-	
-	int totalBodies = m_rigidBodies->size();
-	for(int i = 0; i < totalBodies; i++)
-	{
-		Mesh * t_mesh = m_cube;
-		C3DETransform *t_transform = new C3DETransform();
-		btRigidBody *t_body = (*m_rigidBodies)[i];
-		btMotionState *t_motionState = t_body->getMotionState();		
-
-		D3DXMATRIX t_matrix = BT2DX_MATRIX(*t_motionState);
-		float posX = t_matrix._41;
-		float posY = t_matrix._42;
-		float posZ = t_matrix._43;		
-
-		t_transform->Rotate(hackRotation, new D3DXVECTOR3(0.0f, 1.0f, 0.0f));
-		t_transform->Translate(posX, posY, posZ);
-		
-
-		t_matrix = *t_transform->GetMatrix();
-
-		btVector3 t_min;
-		btVector3 t_max;
-		t_body->getAabb(t_min, t_max);
-
-		btVector3 *t_size = (*m_rigidBodiesSizes)[i];
-		
-
-		//renderer->DrawBox(t_min.getX(), t_min.getY(), t_min.getZ(), t_max.getX(), t_max.getY(), t_max.getZ(), t_matrix);
-		renderer->DrawBox(-t_size->getX(), -t_size->getY(), -t_size->getZ(), t_size->getX(), t_size->getY(), t_size->getZ(), t_matrix);
-	}
-	
-
-	renderer->DrawScene2(m_testScene);
-
-
-	//renderer->DrawScene(m_testScene);
-	//renderer->DrawSprite(m_button);
-	renderer->DrawSprite((Sprite *)m_sprite);
-
-
-
-	//static_cast<D3DRenderer *>(renderer)->DrawText(m_text);
-	//static_cast<D3DRenderer *>(renderer)->DrawAxis();
-	
-	
-}
-#else
 void Game::Render(Renderer *renderer)
 {
 	
@@ -607,9 +502,7 @@ void Game::Render(Renderer *renderer)
 	t2->Scale(tt, tt, tt);
 
 	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2);
-	m_testScene->AddNode(t_node2);
-
-	
+	m_testScene->AddNode(t_node2);	
 
 	C3DETransform *t4 = new C3DETransform();
 	t4->Rotate(3.1415 / 2.0f, &D3DXVECTOR3(0.0f, 1.0f, 0.0f));
@@ -617,21 +510,14 @@ void Game::Render(Renderer *renderer)
 	SceneNode *t_node4 = new SceneNode(m_dogContainer, t4);	
 	m_testScene->AddNode(t_node4);
 
-
 	C3DETransform *t5 = new C3DETransform();
 	
 	t5->Translate(m_camX, m_camY, m_camZ);
 	SceneNode *t_node5 = new SceneNode(m_skyBox, t5);	
 	m_testScene->AddNode(t_node5);
 
-	
-
-	
 	for(int i = 0; i< m_sceneTotalObjects; i++)	
 	{
-		
-
-		
 		Mesh * t_mesh = (*m_meshes)[m_sceneStaticObjectsList[i]];
 		C3DETransform *t_transform = new C3DETransform();	
 
@@ -644,11 +530,9 @@ void Game::Render(Renderer *renderer)
 
 	int totalBodies = m_rigidBodies->size();
 	
+#if 0
 	for(int i = 0; i < totalBodies; i++)
 	{
-		
-		
-
 		Mesh *t_mesh = m_cube;
 		C3DETransform *t_transform = new C3DETransform();
 		btRigidBody *t_body = (*m_rigidBodies)[i];
@@ -665,8 +549,7 @@ void Game::Render(Renderer *renderer)
 		
 		renderer->DrawBox(-t_size->getX(), -t_size->getY(), -t_size->getZ(), t_size->getX(), t_size->getY(), t_size->getZ(), t_matrix);
 	}
-	
-
+#endif
 	renderer->DrawScene2(m_testScene);
 
 
@@ -681,7 +564,6 @@ void Game::Render(Renderer *renderer)
 	
 	
 }
-#endif
 
 void Game::OnMouseDown(int button, int x , int y)
 {
@@ -756,13 +638,8 @@ void Game::OnKeyDown(int key)
 
 	if(DirectInput::GetInstance()->IsKeyDown(42))
 	{
-		step = 0.01f;
-		
-		
-	}
-
-	
-
+		step = 0.01f;				
+	}	
 	
 	if(DirectInput::GetInstance()->IsKeyDown(200))
 	//UP
@@ -771,7 +648,7 @@ void Game::OnKeyDown(int key)
 		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
 		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
 		D3DXVECTOR3 look = target - pos;
-		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
+		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);
 		D3DXVECTOR3 right;
 		D3DXVec3Cross(&right, &up, &look);
 		D3DXVec3Normalize(&right, &right);
@@ -908,142 +785,7 @@ void Game::OnKeyDown(int key)
 
 #define USE_X_MODELS 0
 #define ADD_TEST_MESH 0
-#define TEST_MESH 0
 
-#if TEST_MESH
-void Game::InitializeMeshes()
-{	
-	hackRotation = 0.0f;
-
-	btDefaultCollisionConfiguration *cc;
-	cc = new btDefaultCollisionConfiguration();
-	btConstraintSolver *sl;
-	sl = new btSequentialImpulseConstraintSolver();
-
-	btVector3 worldAabbMin(-1000, -1000, -1000);
-	btVector3 worldAabbMax(1000, 1000, 1000);
-	const int maxProxies = 32766;
-	btBroadphaseInterface *bp;
-
-	bp = new btAxisSweep3(worldAabbMin, worldAabbMax, maxProxies);
-
-	btCollisionDispatcher *dp;
-	dp = new btCollisionDispatcher(cc);
-
-	m_physicsWorld = new btDiscreteDynamicsWorld(dp, bp, sl, cc);	
-
-
-	m_rigidBodiesSizes = new vector<btVector3*>;
-	m_rigidBodies = new vector<btRigidBody*>;		
-
-
-
-	m_cube = new Cube();
-	
-
-
-
-	IDirect3DTexture9 * t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_FONT_VERDANA_36_ID);
-	D3DImage *image = new D3DImage(t);		
-	m_font = new Font(	image,ResourceManager::GetInstance()->GetFontDescriptor(FONT_VERDANA_36_ID));
-
-	m_text = new Text("Loading Meshes...", m_font);
-	m_text->SetX(200);
-	m_text->SetY(150);
-	m_text->SetColor(0xff000000);
-	
-
-	m_testScene = new DefaultScene1();	
-	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
-										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);		
-	
-
-	
-	m_ground = new Ground();
-	
-
-	
-	D3DImage * characterTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SWIMMER_SKIN_ID));	
-	
-	vector<char*> *animations = new vector<char*>;
-
-
-	GameMesh *m_mesh = new GameMesh(MESH_BUFFER_LOW_HOUSE_1_GARAGE_ID,IMAGE_BENCH_ID);
-	
-	//LandscapeWall *m_mesh = new LandscapeWall(IMAGE_BRICKS_ID);
-
-	//Tree3 *m_mesh = new Tree3();
-
-
-	m_sceneTotalObjects = 1;
-	
-
-
-	m_skyBox = new Skybox(1000);	
-	
-
-	m_testScene->Initialize();
-
-	m_meshes = new vector<Mesh*>;
-	m_meshes->push_back(m_mesh);
-	m_meshes->push_back(m_ground);
-	m_meshes->push_back(m_skyBox);
-
-	m_sceneStaticObjectsList = (int*)malloc(sizeof(int));
-	m_sceneStaticObjectsTransforms = (C3DETransform**)malloc(sizeof(C3DETransform));
-
-	float scaleX = 0.5f;
-	float scaleY = 0.5f;
-	float scaleZ = 0.5f;
-
-	float offsetX = 5.0f;
-	float offsetY = 0.0f;
-	float offsetZ = 5.0f;
-
-	m_sceneStaticObjectsList[0] = 0;
-	C3DETransform *t_transform = new C3DETransform();
-	t_transform->Scale(scaleX, scaleY, scaleZ);
-	t_transform->Translate(offsetX, offsetY, offsetZ);
-	m_sceneStaticObjectsTransforms[0] = t_transform;
-
-	
-
-	D3DMesh *t_mesh = (D3DMesh*)m_mesh;
-	AABB *t_aabb = t_mesh->GetBoundingBox();
-	D3DXVECTOR3 t_sizeVector = (t_aabb->maxPoint - t_aabb->minPoint) * 0.5f;		
-
-	t_sizeVector.x *= scaleX;
-	t_sizeVector.y *= scaleY;
-	t_sizeVector.z *= scaleZ;
-
-	btQuaternion rotation(0.0f, 0.0f, 0.0f);
-	btVector3 position(offsetX, offsetY + t_sizeVector.y, offsetZ);
-	btTransform transform(rotation, position);
-	btMotionState * motionState = new btDefaultMotionState(transform);
-
-	btVector3 colliderSize(t_sizeVector.x, t_sizeVector.y,t_sizeVector.z);
-	btVector3 *t_size = new btVector3(t_sizeVector.x, t_sizeVector.y,t_sizeVector.z);
-
-	m_rigidBodiesSizes->push_back(t_size);
-	btCollisionShape *collisionShape = new btBoxShape(colliderSize);
-
-	float objectMass = 0.0f;
-	btVector3 objectLocalInertia(0,0,0);
-	btRigidBody *objectBody  = new btRigidBody(objectMass, motionState,collisionShape, objectLocalInertia);
-	m_physicsWorld->addRigidBody(objectBody);
-
-	m_rigidBodies->push_back(objectBody);
-
-	
-
-	
-	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
-
-	
-
-	
-}
-#else
 void Game::InitializeMeshes()
 {	
 
@@ -1537,7 +1279,7 @@ void Game::InitializeMeshes()
 	
 }
 
-#endif
+
 
 int Game::GetMeshIndex(Mesh*a_mesh)
 {

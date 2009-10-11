@@ -66,11 +66,7 @@ public:
 	void OnButtonDown(Button *button);
 	void OnButtonUp(Button *button);
 	void OnButtonOver(Button * button);
-	
-	int hx;
-	int hy;
 
-	
 private:
 
 	btDynamicsWorld *m_physicsWorld;
@@ -86,11 +82,9 @@ private:
 	void UpdateLoadingBar(int loadedObjects, int totalobjects);
 	Application * m_application;
 
-	D3DSprite *m_sprite;	
+	D3DSprite *m_sprite;
 
-	int m_speed;
-	int m_yspeed;
-
+	
 	float m_cameraRadius;
 	float m_cameraRotation;
 	float m_cameraHeight;
@@ -99,33 +93,7 @@ private:
 
 	int m_deltaTime;
 
-	//Renderer *m_renderer;
-
-	//testing
-	Cube *m_testMesh;
-
-	Cube *m_cube;
-
-
-	Plane *m_plane;
-
-	void UpdateInput(int deltaTime);
-	
-
-	Pivot *m_pivot;
-	Grid *m_grid;
-
-	PlanarMirror *m_mirror;
-
-	Wall *m_wall;
-
-	PlanarShadowSurface *m_shadowSurface;
-
-
-	Dwarf *m_dwarf;
-
-
-	Button *m_button;
+	void UpdateInput(int deltaTime);	
 
 	DirectInput *m_inputer;
 
@@ -133,26 +101,18 @@ private:
 	void InitializeMeshes();
 
 	DefaultScene1 *m_testScene;
-	//SkinnedCube *m_skinnedCube;
-
-	WomanMesh *m_skinMesh;
 
 	int GetMeshIndex(Mesh*);
-
-	
-	//Mesh * m_sceneStaticObjectsMeshes;
 
 	int *m_sceneStaticObjectsList;
 	C3DETransform **m_sceneStaticObjectsTransforms;
 	int m_sceneTotalObjects;
-	
-	float hackRotation;
 
-#if 1
 
 	Text * m_text;
 	Font *m_font;
-	LandscapeMesh *m_castle;
+	
+
 	float m_camX;
 	float m_camY;
 	float m_camZ;
@@ -165,41 +125,14 @@ private:
 	float m_camUpY;
 	float m_camUpZ;
 
-	float m_camRadius;
+	//float m_camRadius;
 
-	float m_camYRotation;
-	float m_camZRotation;
+	//float m_camYRotation;
+	//float m_camZRotation;
 
-	D3DXVECTOR3 m_dir;
-
-	Terrain* m_auei;
-
-	Billboard *m_videoMesh;
-
-	CubeMovie *m_cubeMovie;
-
-	float m_cubeX;
-	float m_cubeY;
-	float m_cubeZ;
-
-	WomanMesh *m_woman;
 
 	Ground *m_ground;
-	Skybox *m_skyBox;
-
-	D3DXVECTOR3 m_carDirection;
-
-	BillboardMesh * m_billboard;
-
-	int * m_hack;
-
-	int m_physPosX;
-	int m_physPosY;
-	int m_physSpeedX;
-	int m_physSpeedY;
-	int m_gAcc;
-
-	LandscapeMesh *t_house;
+	Skybox *m_skyBox;	
 
 	Renderer *m_renderer;
 
@@ -222,9 +155,21 @@ private:
 	C3DESkinnedMesh *m_ninjaMesh;
 	C3DESkinnedMeshContainer *m_ninjaContainer;
 
-	
+	float m_characterX;
+	float m_characterY;
+	float m_characterZ;
 
-	int hack;
-#endif	
+	float m_characterRotation;
+
+	static const float m_camDistanceToCharacter;
+
+	static const float m_camAngle;
+	float m_camAngleSin;
+	float m_camAngleCos;
+
+	static const float m_camYOffsetToCharacter;
+	static const float m_camZOffsetToCharacter;
+
 };
+
 #endif

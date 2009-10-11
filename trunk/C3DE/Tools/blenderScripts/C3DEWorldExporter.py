@@ -412,6 +412,8 @@ class xExport:
 			file.write("t_matrix->_43 = %ff;\n" % obj.matrixWorld[3][2])
 			file.write("t_matrix->_44 = %ff;\n" % obj.matrixWorld[3][3])
 			file.write("m_sceneStaticObjectsTransforms[iterator]->Set(t_matrix);\n")
+			
+			file.write("\nSIZE %ff %ff %ff %ff %ff %ff;\n" % (obj.SizeX, obj.SizeY, obj.SizeZ, obj.RotX, obj.RotY, obj.RotZ))
 			#file.write("m_sceneStaticObjectsTransforms[iterator]->Translate(%ff, %ff, %ff);\n" % (-obj.matrixWorld[3][0], obj.matrixWorld[3][1], obj.matrixWorld[3][2]))
 			file.write("iterator++;\n\n")
 			
@@ -423,8 +425,12 @@ class xExport:
 			data = struct.pack(format, obj.matrixWorld[0][0],obj.matrixWorld[0][1],obj.matrixWorld[0][2], obj.matrixWorld[0][3],obj.matrixWorld[1][0],obj.matrixWorld[1][1],obj.matrixWorld[1][2],obj.matrixWorld[1][3],obj.matrixWorld[2][0],obj.matrixWorld[2][1],obj.matrixWorld[2][2],obj.matrixWorld[2][3],-obj.matrixWorld[3][0],obj.matrixWorld[3][1],obj.matrixWorld[3][2],obj.matrixWorld[3][3]) # pack integer in a binary string		
 			file2.write(data) 
 		
-		
-		
+			format = "ffffff"                  
+			
+			data = struct.pack(format, obj.SizeX, obj.SizeY, obj.SizeZ, obj.RotX, obj.RotY, obj.RotZ) # pack integer in a binary string		
+			file2.write(data) 
+			
+			
 			
 			
 		

@@ -18,7 +18,7 @@
 #include "FireRingFX.h"
 
 #define REAL_HACK 0
-#define DRAW_BOUNDING_BOXES 1
+#define DRAW_BOUNDING_BOXES 0
 
 #define MAX_NUM_PARTICLES 50
 
@@ -1743,6 +1743,156 @@ void D3DRenderer::DrawAABB(D3DMesh * a_mesh)
 	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
 	
 	m_device->DrawPrimitive( D3DPT_LINELIST, 0, 12 );
+}
+
+void D3DRenderer::DrawBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, D3DXMATRIX a_matrix)
+{		
+	
+	VertexCol *v = 0;
+	HR(m_aabbBuffer->Lock(0,0,(void**)&v,0));
+
+	D3DXVECTOR3 minPoint;
+	minPoint.x = minX;
+	minPoint.y = minY;
+	minPoint.z = minZ;
+
+	D3DXVECTOR3 maxPoint;
+
+	maxPoint.x = maxX;
+	maxPoint.y = maxY;
+	maxPoint.z = maxZ;
+
+	D3DXVECTOR3 t_0 = minPoint;
+	D3DXVECTOR3 t_1 = D3DXVECTOR3(minPoint.x, minPoint.y, maxPoint.z);
+	D3DXVECTOR3 t_2 = D3DXVECTOR3(maxPoint.x, minPoint.y, maxPoint.z);
+	D3DXVECTOR3 t_3 = D3DXVECTOR3(maxPoint.x, minPoint.y, minPoint.z);
+
+	D3DXVECTOR3 t_4 = D3DXVECTOR3(minPoint.x, maxPoint.y, minPoint.z);
+	D3DXVECTOR3 t_5 = D3DXVECTOR3(minPoint.x, maxPoint.y, maxPoint.z);
+	D3DXVECTOR3 t_6 = maxPoint;
+	D3DXVECTOR3 t_7 = D3DXVECTOR3(maxPoint.x, maxPoint.y, minPoint.z);
+
+	
+	D3DXVECTOR4 t_quat0;
+	D3DXVECTOR4 t_quat1;
+	D3DXVECTOR4 t_quat2;
+	D3DXVECTOR4 t_quat3;
+	D3DXVECTOR4 t_quat4;
+	D3DXVECTOR4 t_quat5;
+	D3DXVECTOR4 t_quat6;
+	D3DXVECTOR4 t_quat7;
+	//D3DXMATRIX t_matrix = a_mesh->GetTransformMatrix();
+	D3DXMATRIX t_matrix = a_matrix;
+	D3DXVec3Transform(&t_quat0, &t_0, &t_matrix);
+	D3DXVec3Transform(&t_quat1, &t_1, &t_matrix);
+	D3DXVec3Transform(&t_quat2, &t_2, &t_matrix);
+	D3DXVec3Transform(&t_quat3, &t_3, &t_matrix);
+	D3DXVec3Transform(&t_quat4, &t_4, &t_matrix);
+	D3DXVec3Transform(&t_quat5, &t_5, &t_matrix);
+	D3DXVec3Transform(&t_quat6, &t_6, &t_matrix);
+	D3DXVec3Transform(&t_quat7, &t_7, &t_matrix);
+	
+	
+
+	t_0.x = t_quat0.x;
+	t_0.y = t_quat0.y;
+	t_0.z = t_quat0.z;
+
+	t_1.x = t_quat1.x;
+	t_1.y = t_quat1.y;
+	t_1.z = t_quat1.z;
+
+	t_2.x = t_quat2.x;
+	t_2.y = t_quat2.y;
+	t_2.z = t_quat2.z;
+
+	t_3.x = t_quat3.x;
+	t_3.y = t_quat3.y;
+	t_3.z = t_quat3.z;
+
+	t_4.x = t_quat4.x;
+	t_4.y = t_quat4.y;
+	t_4.z = t_quat4.z;
+
+	t_5.x = t_quat5.x;
+	t_5.y = t_quat5.y;
+	t_5.z = t_quat5.z;
+
+	t_6.x = t_quat6.x;
+	t_6.y = t_quat6.y;
+	t_6.z = t_quat6.z;
+	
+	t_7.x = t_quat7.x;
+	t_7.y = t_quat7.y;
+	t_7.z = t_quat7.z;
+
+
+	D3DXCOLOR t_color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+	
+	D3DXVECTOR3 t_vertices[8];
+	t_vertices[0] = t_0;
+	t_vertices[1] = t_1;
+	t_vertices[2] = t_2;
+	t_vertices[3] = t_3;
+	t_vertices[4] = t_4;
+	t_vertices[5] = t_5;
+	t_vertices[6] = t_6;
+	t_vertices[7] = t_7;
+
+	v[0] = VertexCol(t_vertices[0].x, t_vertices[0].y, t_vertices[0].z, t_color);
+	v[1] = VertexCol(t_vertices[1].x, t_vertices[1].y, t_vertices[1].z, t_color);
+
+	v[2] = VertexCol(t_vertices[1].x, t_vertices[1].y, t_vertices[1].z, t_color);
+	v[3] = VertexCol(t_vertices[2].x, t_vertices[2].y, t_vertices[2].z, t_color);
+
+	v[4] = VertexCol(t_vertices[2].x, t_vertices[2].y, t_vertices[2].z, t_color);
+	v[5] = VertexCol(t_vertices[3].x, t_vertices[3].y, t_vertices[3].z, t_color);
+
+	v[6] = VertexCol(t_vertices[3].x, t_vertices[3].y, t_vertices[3].z, t_color);
+	v[7] = VertexCol(t_vertices[0].x, t_vertices[0].y, t_vertices[0].z, t_color);
+
+	v[8] = VertexCol(t_vertices[4].x, t_vertices[4].y, t_vertices[4].z, t_color);
+	v[9] = VertexCol(t_vertices[5].x, t_vertices[5].y, t_vertices[5].z, t_color);
+
+	v[10] = VertexCol(t_vertices[5].x, t_vertices[5].y, t_vertices[5].z, t_color);
+	v[11] = VertexCol(t_vertices[6].x, t_vertices[6].y, t_vertices[6].z, t_color);
+
+	v[12] = VertexCol(t_vertices[6].x, t_vertices[6].y, t_vertices[6].z, t_color);
+	v[13] = VertexCol(t_vertices[7].x, t_vertices[7].y, t_vertices[7].z, t_color);
+
+	v[14] = VertexCol(t_vertices[7].x, t_vertices[7].y, t_vertices[7].z, t_color);
+	v[15] = VertexCol(t_vertices[4].x, t_vertices[4].y, t_vertices[4].z, t_color);
+
+	v[16] = VertexCol(t_vertices[0].x, t_vertices[0].y, t_vertices[0].z, t_color);
+	v[17] = VertexCol(t_vertices[4].x, t_vertices[4].y, t_vertices[4].z, t_color);
+
+	v[18] = VertexCol(t_vertices[1].x, t_vertices[1].y, t_vertices[1].z, t_color);
+	v[19] = VertexCol(t_vertices[5].x, t_vertices[5].y, t_vertices[5].z, t_color);
+
+	v[20] = VertexCol(t_vertices[2].x, t_vertices[2].y, t_vertices[2].z, t_color);
+	v[21] = VertexCol(t_vertices[6].x, t_vertices[6].y, t_vertices[6].z, t_color);
+
+	v[22] = VertexCol(t_vertices[3].x, t_vertices[3].y, t_vertices[3].z, t_color);
+	v[23] = VertexCol(t_vertices[7].x, t_vertices[7].y, t_vertices[7].z, t_color);
+	
+	
+	
+	HR(m_aabbBuffer->Unlock());
+	HR(m_device->SetStreamSource(0, m_aabbBuffer, 0, sizeof(VertexCol)));	
+	HR(m_device->SetVertexDeclaration(m_aabbDeclaration));
+
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	
+	D3DXMATRIX W;
+	D3DXMatrixIdentity(&W);
+	HR(m_device->SetTransform(D3DTS_WORLD, &W));
+	
+	HR(m_device->SetTransform(D3DTS_VIEW, &cam->GetMatrix()));
+	HR(m_device->SetTransform(D3DTS_PROJECTION, &m_proj));
+	HR(m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID));
+	
+	m_device->DrawPrimitive( D3DPT_LINELIST, 0, 12 );
+	
 }
 
 

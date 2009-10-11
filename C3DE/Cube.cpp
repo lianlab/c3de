@@ -2,7 +2,8 @@
 #include "D3DRenderer.h"
 #include "Cube.h"
 #include "ResourceManager.h"
-#include "SkinnedMeshFX.h"
+//#include "SkinnedMeshFX.h"
+#include "PerVertexLightingNoFog.h"
 
 #include "DebugMemory.h"
 
@@ -112,7 +113,7 @@ Cube::Cube()
 
 	CreateXMesh(D3DRenderer::GetDevice());
 
-	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_SKINNED_MESH_FX_ID);
+	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID);
 
 	
 	
@@ -122,7 +123,7 @@ void Cube::SetShaderHandlers()
 {
 	
 	
-	SkinnedMeshFX *t_effect = (SkinnedMeshFX *) m_effect;
+	PerVertexLightingNoFog *t_effect = (PerVertexLightingNoFog *) m_effect;
 	
 	t_effect->SetObjectMaterials(	m_currentMaterial->GetAmbient(), m_currentMaterial->GetDiffuse(),
 									m_currentMaterial->GetSpecular(), m_currentMaterial->GetSpecularPower());

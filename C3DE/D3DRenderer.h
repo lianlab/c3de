@@ -86,6 +86,7 @@ public:
 	void DrawRect(int x, int y, int w, int h, int color);
 	void DrawFillRect(int x, int y, int w, int h, int color);
 
+	void DrawBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, D3DXMATRIX transform);
 private:
 
 
@@ -100,6 +101,7 @@ private:
 	HWND m_mainWindow;
 
 	void DrawAABB(D3DMesh * a_mesh);
+	
 	void DrawOBB(D3DMesh * a_mesh, D3DXMATRIX a_matrix);
 	
 	ID3DXFont *m_font;

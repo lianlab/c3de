@@ -40,6 +40,7 @@ public:
 	virtual void DrawMesh(Mesh *mesh) = 0;
 	virtual void DrawScene(Scene *scene) = 0;
 	virtual void DrawScene2(Scene *scene) = 0;
+	virtual void DrawBox(float minX, float imnY, float inZ, float maxX, float maxY, float maxZ, D3DXMATRIX transform) = 0;
 	Camera * GetCamera(){return m_camera;}
 
 	virtual void EnableAlphaBlending(){}

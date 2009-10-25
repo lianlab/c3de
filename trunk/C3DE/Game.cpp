@@ -42,6 +42,18 @@ const float Game::m_camAngle = 0.18500003f;
 const float Game::m_camYOffsetToCharacter = 5.5700326f;
 const float Game::m_camZOffsetToCharacter = 0.0f;
 
+#define BIT(x) (1<<(x))
+enum collisiontypes 
+{
+	COL_NOTHING = 0, //<Collide with nothing
+	COL_CHARACTER = BIT(1), //<Collide with character
+	COL_OBJECTS = BIT(2), //<Collide with static objects
+	
+};
+int characterCollidesWith = COL_OBJECTS;
+int objectsCollidesWith = COL_NOTHING;
+
+
 Game::Game(Application * app)
 {
 
@@ -51,6 +63,8 @@ Game::Game(Application * app)
 	m_ninjaUpdateTime = 0;
 	int m_loadedObjects = 0;
 	int m_totalObjects = 145;
+
+	m_characterPhysicsTransform = new btTransform();
 
 	
 
@@ -102,27 +116,6 @@ Game::Game(Application * app)
 	r.top = 0;
 	r.bottom = 85;
 
-	
-	
-
-
-	
-#if 0
-	m_camX = 0.0f;
-	m_camY = 2.0f;
-	m_camZ = 5.0f;
-	
-
-	m_camTargetX = 0.0f;
-	m_camTargetY = 2.0f;
-	m_camTargetZ = 4.0f;
-	
-
-	m_camUpX = 0.0f;
-	m_camUpY = 1.0f;
-	m_camUpZ = 0.0f;
-
-#endif
 	m_camX = 0.0f;
 	m_camY = 10.0f;
 	m_camZ = -15.0f;
@@ -146,6 +139,7 @@ Game::Game(Application * app)
 	m_characterZ = 0.0f;
 
 	m_characterRotation = 0.0f;
+	m_characterPhysicsRotation = 0.0f;
 
 	//m_camDistanceToCharacter = 30.0f;
 
@@ -237,7 +231,6 @@ void Game::UpdateLoadingBar(int loadedObjects, int totalobjects)
 	t_renderer->EndRender();
 }
 
-int eita = 0;
 void Game::Update(int deltaTime)
 {		
 
@@ -275,186 +268,25 @@ void Game::Update(int deltaTime)
 
 }
 
-#if 0
-
-void Game::UpdateInput(int deltaTime)
-{
-	
-	//Mesh * t_target = (Mesh*)m_woman;
-	Mesh * t_target = (Mesh*)m_characterMesh;
-	//Mesh * t_target = (Mesh*)m_ground;
-
-	float f_deltaTime = deltaTime/1000.0f;
-
-	float step = 17.0f;
-	float t_fleps = 0.0f;
-
-	float t_angle = 0.0f;
-	const float angleStepNormal = 0.3f * f_deltaTime;
-	const float angleStepFast = angleStepNormal * 5.0f;
-
-
-
-	if(DirectInput::GetInstance()->IsKeyDown(1))
-	{
-		m_application->Quit();
-		return;
-		
-	}
-
-	bool isRunning = false;
-	if(DirectInput::GetInstance()->IsKeyDown(42))
-	{
-		step *= 5.0f;
-		isRunning = true;
-
-		
-		
-	}
-	
-	
-	//makes step a function of the deltaTime
-	step = step * f_deltaTime;
-
-	D3DXVECTOR3 newPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
-	bool upDown = false;
-	bool downDown = false;
-	bool leftDown = false;
-	bool rightDown = false;
-
-
-	if(DirectInput::GetInstance()->IsKeyDown(200))
-	//UP
-	{		
-		//m_cubeZ += step;
-		//newPos = step*m_carDirection;
-		upDown = true;
-
-		
-	}
-	if(DirectInput::GetInstance()->IsKeyDown(208))
-	{	
-	//DOWN	
-		
-		//m_cubeZ -= step;
-		//newPos = -step*m_carDirection;
-		downDown = true;
-
-		
-	}	
-	if(DirectInput::GetInstance()->IsKeyDown(205))
-	{
-		//RIGHT		
-		t_angle = (isRunning)?angleStepFast:angleStepNormal;	
-		leftDown = true;
-		//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + 0.1f, m_cube->GetRotationZ());
-		//t_house->Scale(t_house->GetXScale() - 0.1f, t_house->GetYScale() - 0.1f, t_house->GetZScale() - 0.1f);
-	}
-	if(DirectInput::GetInstance()->IsKeyDown(203))
-	{
-		//LEFT		
-		t_angle = (isRunning)?-angleStepFast:-angleStepNormal;
-		rightDown = true;
-		//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() - 0.1f, m_cube->GetRotationZ());
-		
-	}
-
-	
-
-	//if(!upDown && !downDown && !leftDown && !rightDown && m_woman->GetAnimation() != WomanMesh::ANIMATION_IDLE)
-	if(false)
-	{
-		//m_woman->SetAnimation(WomanMesh::ANIMATION_IDLE);
-	}
-	else
-	{
-		if(upDown)
-		{
-			if(isRunning)
-			{
-				//m_woman->SetAnimation(WomanMesh::ANIMATION_JOGGING);
-			}
-			else
-			{
-				//m_woman->SetAnimation(WomanMesh::ANIMATION_WALKING);
-			}
-		}
-	}
-
-
-
-	float t_dAngle = 57.29577951308232286465f * t_angle;
-	D3DXMATRIX R;
-	D3DXMatrixRotationY(&R, t_angle);
-	D3DXVec3TransformCoord(&m_carDirection, &m_carDirection, &R);
-	D3DXVec3Normalize(&m_carDirection, &m_carDirection);
-	
-	
-	t_target->Rotate(t_target->GetRotationX(), t_target->GetRotationY() + t_dAngle, t_target->GetRotationZ());
-
-	m_cubeX += newPos.x;
-	//m_cubeY += newPos.y;
-	m_cubeY = 0;
-	m_cubeZ += newPos.z;
-
-	hx = (int)m_cubeX ;
-	//hy = (int)m_auei->GetHeight(m_cubeX, m_cubeZ);	
-	hy = 0;	
-	
-	t_target->SetPosition(m_cubeX, m_cubeY, m_cubeZ);
-
-
-	D3DXVECTOR3 t_camLook = m_carDirection * -15.0f;
-	t_camLook.x = m_cubeX + t_camLook.x;
-	t_camLook.y = m_cubeY + t_camLook.y;
-	t_camLook.z = m_cubeZ + t_camLook.z;
-
-	//m_cubeY = m_auei->GetHeight(m_cubeX, m_cubeZ) + 1.5f;
-	m_cubeY = 1.5f;
-
-	m_camX = t_camLook.x;
-	m_camY = m_cubeY + 3.0f;
-	m_camZ = t_camLook.z;
-
-	D3DXVECTOR3 t_camTarget = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	t_camTarget.x = m_camX + (m_carDirection*2.0f).x;
-	t_camTarget.y = m_camY + (m_carDirection*2.0f).y;
-	t_camTarget.z = m_camZ + (m_carDirection*2.0f).z;
-	
-
-	m_camTargetX = t_camTarget.x;
-	m_camTargetY = t_camTarget.y;
-	m_camTargetZ = t_camTarget.z;
-
-
-
-
-}
-#else
-
 void Game::UpdateInput(int deltaTime)
 {
 
 	float t_time = deltaTime / 1000.0f;
 
-	float posMultiplier = 0.5f;
+	float posMultiplier = 1.0f;
 	float fastPosMultiplier = 5.0f;
 
 
 	float rotMultiplier = 0.5f;
 	float fastRotMultiplier = 2.0f;
 
-	float rotationRadians = m_characterRotation * (D3DX_PI * 2.0f);
-
-	float directionZ = cosf(rotationRadians);
-	float directionX = sinf(rotationRadians);
+	D3DXVECTOR3 t_walkDirectionVector(0.0f, 0.0f, 1.0f);
+	D3DXVECTOR3 t_walkVector(0.0f, 0.0f, 0.0f);	
 
 	if(DirectInput::GetInstance()->IsKeyDown(1))
 	{
 		m_application->Quit();
-		return;
-		
+		return;		
 	}
 
 	if(DirectInput::GetInstance()->IsKeyDown(42))
@@ -462,97 +294,74 @@ void Game::UpdateInput(int deltaTime)
 		//SHIFT
 		posMultiplier *= fastPosMultiplier;
 		rotMultiplier *= fastRotMultiplier;
-	}
-	
+	}				
 
-
-	if(DirectInput::GetInstance()->IsKeyDown(200))
-	//UP
-	{		
-		//m_characterZ += (deltaTime * posMultiplier);
-		m_characterZ += (directionZ) * posMultiplier;
-		m_characterX += (directionX) * posMultiplier;
-
+	if(DirectInput::GetInstance()->IsKeyDown(200))	
+	{	
+		//UP
+		t_walkVector += t_walkDirectionVector * posMultiplier;
 	}
 	if(DirectInput::GetInstance()->IsKeyDown(208))
 	{	
-	//DOWN	
-		//m_characterZ -= (deltaTime * posMultiplier);
-		m_characterZ -= (directionZ) * posMultiplier;
-		m_characterX -= (directionX) * posMultiplier;
-
+		//DOWN			
+		t_walkVector -= t_walkDirectionVector * posMultiplier;
 	}	
 	if(DirectInput::GetInstance()->IsKeyDown(205))
 	{
-		//RIGHT		
-		m_characterRotation += (rotMultiplier * t_time);
+		//RIGHT				
+		btMatrix3x3 orn = m_characterGhost->getWorldTransform().getBasis();
+		orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),(rotMultiplier * t_time)));
+		m_characterGhost->getWorldTransform ().setBasis(orn);
 		
 	}
 	if(DirectInput::GetInstance()->IsKeyDown(203))
 	{
-		//LEFT	
-		m_characterRotation -= (rotMultiplier * t_time);
+		//LEFT			
+		btMatrix3x3 orn = m_characterGhost->getWorldTransform().getBasis();
+		orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),-(rotMultiplier * t_time)));
+		m_characterGhost->getWorldTransform ().setBasis(orn);
 		
-	}
+	}	
 
-#define ADJUST_CAMERA 0
-#if ADJUST_CAMERA
-	//A
-	if(DirectInput::GetInstance()->IsKeyDown(30))
-	{
-		m_camAngle += 0.01f;
-		m_camAngleSin = sinf( m_camAngle  * (D3DX_PI * 2.0f));
-		m_camAngleCos = cosf( m_camAngle  * (D3DX_PI * 2.0f));
-	}
+	D3DXMATRIX t_characterTransform = BT2DX_MATRIX(m_characterGhost->getWorldTransform());
+	float t_characterPosX = t_characterTransform._41;
+	float t_characterPosY = t_characterTransform._42;
+	float t_characterPosZ = t_characterTransform._43;
 
-	//Z
-	if(DirectInput::GetInstance()->IsKeyDown(44))
-	{
-		m_camAngle -= 0.01f;
-		m_camAngleSin = sinf( m_camAngle  * (D3DX_PI * 2.0f));
-		m_camAngleCos = cosf( m_camAngle  * (D3DX_PI * 2.0f));
-	}
+	t_characterTransform._41 = 0.0f;
+	t_characterTransform._42 = 0.0f;
+	t_characterTransform._43 = 0.0f;
 
-	//s
-	if(DirectInput::GetInstance()->IsKeyDown(31))
-	{
-		m_camDistanceToCharacter += 0.1f;
-	}
+	D3DXVECTOR4 t_walkVector4;
+	D3DXVec3Transform(&t_walkVector4, &t_walkVector, &t_characterTransform);
 
-	//x
-	if(DirectInput::GetInstance()->IsKeyDown(45))
-	{
-		m_camDistanceToCharacter -= 0.1f;
-	}
+	D3DXVECTOR3 t_walkVector3(t_walkVector4.x, t_walkVector4.y, t_walkVector4.z);
 
-	//d
-	if(DirectInput::GetInstance()->IsKeyDown(32))
-	{
-		m_camYOffsetToCharacter += 0.01f;
-	}
+	btVector3 t_bulletVector(t_walkVector3.x, t_walkVector3.y, t_walkVector3.z);
 
-	//c
-	if(DirectInput::GetInstance()->IsKeyDown(46))
-	{
-		m_camYOffsetToCharacter -= 0.01f;
-	}
-#endif
-	
+	m_character->setWalkDirection(t_bulletVector);
 
-	m_camTargetX = m_characterX;
-	m_camTargetY = m_characterY + m_camYOffsetToCharacter;
-	m_camTargetZ = m_characterZ + m_camZOffsetToCharacter;
-
-	//m_camX = m_characterX;
-	m_camY = (m_characterY + m_camYOffsetToCharacter) + m_camAngleCos * m_camDistanceToCharacter;
-	//m_camZ = (m_characterZ + m_camZOffsetToCharacter) - m_camAngleSin * m_camDistanceToCharacter;
+	t_characterTransform._41 = t_characterPosX;
+	t_characterTransform._42 = t_characterPosY;
+	t_characterTransform._43 = t_characterPosZ;
 
 	float zLength = m_camZOffsetToCharacter + m_camAngleSin * m_camDistanceToCharacter;
 
-	m_camX = m_characterX - sinf(rotationRadians) * zLength;
-	m_camZ = m_characterZ - cosf(rotationRadians) * zLength;
+	D3DXVECTOR4 t_camVector4;
+	D3DXVECTOR3 t_camVector3(0.0f, 0.0f, -zLength);
+	D3DXVec3Transform(&t_camVector4, &t_camVector3, &t_characterTransform);
+
+	m_camTargetX = t_characterPosX;
+	m_camTargetY = t_characterPosY + m_camYOffsetToCharacter;
+	m_camTargetZ = t_characterPosZ + m_camZOffsetToCharacter;
+
+	m_camY = t_characterPosY + (m_camYOffsetToCharacter) + m_camAngleCos * m_camDistanceToCharacter;
+
+	m_camX = t_camVector4.x;
+	m_camZ = t_camVector4.z;
+
 }
-#endif
+
 
 
 void Game::Render(Renderer *renderer)
@@ -605,25 +414,44 @@ void Game::Render(Renderer *renderer)
 
 	int totalBodies = m_rigidBodies->size();
 	
-#if 0
+#if 1
 	for(int i = 0; i < totalBodies; i++)
 	{
-		Mesh *t_mesh = m_cube;
 		C3DETransform *t_transform = new C3DETransform();
 		btRigidBody *t_body = (*m_rigidBodies)[i];
 		btMotionState *t_motionState = t_body->getMotionState();		
 
 		D3DXMATRIX t_matrix = BT2DX_MATRIX(*t_motionState);		
 
-		btVector3 t_min;
-		btVector3 t_max;
-		t_body->getAabb(t_min, t_max);
+		
 
 		btVector3 *t_size = (*m_rigidBodiesSizes)[i];
 
 		
 		renderer->DrawBox(-t_size->getX(), -t_size->getY(), -t_size->getZ(), t_size->getX(), t_size->getY(), t_size->getZ(), t_matrix);
 	}
+
+	C3DETransform *t_transform = new C3DETransform();
+	btTransform t_transform2 = m_characterGhost->getWorldTransform();
+	
+	D3DXMATRIX t_matrix = BT2DX_MATRIX(t_transform2);		
+
+	//m_characterGhost->
+
+	//t_body->getAabb(t_min, t_max);
+
+	//btVector3 *t_size = (*m_rigidBodiesSizes)[i];
+
+#if 0
+	C3DETransform *t_cube = new C3DETransform();	
+	t_cube->Translate(0, 0, 0);
+	t_cube->Scale(100.0f, 100.0f, 100.0f);
+	SceneNode *t_cubeNode = new SceneNode(m_plyCube, t_cube);	
+	m_testScene->AddNode(t_cubeNode);
+#endif
+	
+	renderer->DrawBox(-5.0f, -5.0f, -5.0f, 5.0f, 5.0f, 5.0f, t_matrix);
+	
 #endif
 	renderer->DrawScene2(m_testScene);
 
@@ -696,173 +524,11 @@ void Game::OnMouseMove(int x, int y, int dx, int dy)
 
 }
 
-#if 0
-void Game::OnKeyDown(int key)
-{
-	//float step = 0.1f;
-	//Mesh * target = (Mesh*)m_cube;
-	//Mesh * t_target = (Mesh*)m_castle;
-	Mesh * t_target = (Mesh*)t_house;
-	//Mesh * target = (Mesh*)m_skinMesh;
-	float step = 0.1f;
-
-	if(key == 1)
-	{
-		m_application->Quit();
-	}
-
-	if(DirectInput::GetInstance()->IsKeyDown(42))
-	{
-		step = 0.01f;				
-	}	
-	
-	if(DirectInput::GetInstance()->IsKeyDown(200))
-	//UP
-	{		
-		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
-		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
-		D3DXVECTOR3 look = target - pos;
-		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);
-		D3DXVECTOR3 right;
-		D3DXVec3Cross(&right, &up, &look);
-		D3DXVec3Normalize(&right, &right);
-
-		m_dir = look*step;
-
-		m_camX += m_dir.x;
-		m_camY += m_dir.y;
-		m_camZ += m_dir.z;
-
-		m_camTargetX += m_dir.x;
-		m_camTargetY += m_dir.y;
-		m_camTargetZ += m_dir.z;
-	}
-	else if(DirectInput::GetInstance()->IsKeyDown(208))
-	{	
-	//DOWN	
-		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
-		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
-		D3DXVECTOR3 look = target - pos;
-		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
-		D3DXVECTOR3 right;
-		D3DXVec3Cross(&right, &up, &look);
-		D3DXVec3Normalize(&right, &right);
-
-		m_dir = -look*step;
-
-		m_camX += m_dir.x;
-		m_camY += m_dir.y;
-		m_camZ += m_dir.z;
-
-		m_camTargetX += m_dir.x;
-		m_camTargetY += m_dir.y;
-		m_camTargetZ += m_dir.z;
-		
-	}	
-	else if(DirectInput::GetInstance()->IsKeyDown(205))
-	{
-		//RIGHT
-		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
-		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
-		D3DXVECTOR3 look = target - pos;
-		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
-		D3DXVECTOR3 right;
-		D3DXVec3Cross(&right, &up, &look);
-		D3DXVec3Normalize(&right, &right);
-
-		m_dir = right*step;
-
-		m_camX += m_dir.x;
-		m_camY += m_dir.y;
-		m_camZ += m_dir.z;
-
-		m_camTargetX += m_dir.x;
-		m_camTargetY += m_dir.y;
-		m_camTargetZ += m_dir.z;
-	}
-	else if(DirectInput::GetInstance()->IsKeyDown(203))
-	{
-		//LEFT
-		m_dir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
-		D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
-		D3DXVECTOR3 look = target - pos;
-		D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
-		D3DXVECTOR3 right;
-		D3DXVec3Cross(&right, &up, &look);
-		D3DXVec3Normalize(&right, &right);
-
-		m_dir = -right*step;
-
-		m_camX += m_dir.x;
-		m_camY += m_dir.y;
-		m_camZ += m_dir.z;
-
-		m_camTargetX += m_dir.x;
-		m_camTargetY += m_dir.y;
-		m_camTargetZ += m_dir.z;
-		
-	}
-	else if(DirectInput::GetInstance()->IsKeyDown(17))
-	{
-		//W
-		t_target->SetPosition(t_target->GetX() , t_target->GetY(), t_target->GetZ() + step);
-
-	}
-	else if(DirectInput::GetInstance()->IsKeyDown(30))
-	{
-		//A
-		t_target->SetPosition(t_target->GetX() -step , t_target->GetY(), t_target->GetZ());
-
-	}
-	else if(DirectInput::GetInstance()->IsKeyDown(31))
-	{
-		//S
-		t_target->SetPosition(t_target->GetX() , t_target->GetY(), t_target->GetZ() -step);
-
-	}
-	else if(DirectInput::GetInstance()->IsKeyDown(32))
-	{
-		//D
-		t_target->SetPosition(t_target->GetX() +step , t_target->GetY(), t_target->GetZ());
-
-	}
-	else if(DirectInput::GetInstance()->IsKeyDown(44))
-	{
-		//Z
-		t_target->Scale(t_target->GetXScale() -step , t_target->GetYScale() - step, t_target->GetZScale() - step);
-
-	}
-
-	else if(DirectInput::GetInstance()->IsKeyDown(45))
-	{
-		//X
-		t_target->Scale(t_target->GetXScale() +step , t_target->GetYScale() + step, t_target->GetZScale() + step);
-
-	}
-	else if(DirectInput::GetInstance()->IsKeyDown(49))
-	{
-		//N
-		t_target->Rotate(t_target->GetRotationX(), t_target->GetRotationY() + step, t_target->GetRotationZ());
-
-	}
-	else if(DirectInput::GetInstance()->IsKeyDown(50))
-	{
-		//M
-		t_target->Rotate(t_target->GetRotationX(), t_target->GetRotationY() - step, t_target->GetRotationZ());
-
-	}
-
-}
-#else
 void Game::OnKeyDown(int key)
 {	
 	
 }
-#endif
+
 
 #define USE_X_MODELS 0
 #define ADD_TEST_MESH 0
@@ -870,6 +536,7 @@ void Game::OnKeyDown(int key)
 void Game::InitializeMeshes()
 {	
 
+	m_groundShape = new btStaticPlaneShape(btVector3(0,1,0),-0.5);
 
 
 	btDefaultCollisionConfiguration *cc;
@@ -889,6 +556,27 @@ void Game::InitializeMeshes()
 
 	m_physicsWorld = new btDiscreteDynamicsWorld(dp, bp, sl, cc);
 
+	//btTransform characterTransform;
+	//characterTransform.setIdentity ();
+	//characterTransform.setOrigin (btVector3(0.0, 0.0, 0.0));
+
+	btVector3 characterPos(0.0f, 20.0f, 0.0f);
+	btQuaternion characterRot(0.0f, 0.0f, 0.0f);
+	btTransform characterTransform(characterRot, characterPos);
+	
+
+	m_characterGhost = new btPairCachingGhostObject();
+	m_characterGhost->setWorldTransform(characterTransform);
+	bp->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+	btScalar characterHeight=1.75;
+	btScalar characterWidth =1.75;
+	btConvexShape* capsule = new btCapsuleShape(characterWidth,characterHeight);
+	m_characterGhost->setCollisionShape (capsule);
+	m_characterGhost->setCollisionFlags (btCollisionObject::CF_CHARACTER_OBJECT);
+
+	btScalar stepHeight = btScalar(0.35);
+	m_character = new btKinematicCharacterController (m_characterGhost,capsule,stepHeight);
+
 
 
 	btQuaternion q(0.0f, 0.0f, 0.0f);
@@ -899,12 +587,17 @@ void Game::InitializeMeshes()
 	btVector3 size(1.0f, 1.0f, 1.0f);
 	btCollisionShape *cs = new btBoxShape(size);
 
+	m_physicsWorld->addCollisionObject(m_characterGhost,btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter|btBroadphaseProxy::DefaultFilter);
+
+	m_physicsWorld->addAction(m_character);
+
+#if 0
 	float mass = 30.0f;
 	btVector3 localInertia;
 	cs->calculateLocalInertia(mass, localInertia);
 	btRigidBody *body  = new btRigidBody(mass, ms,cs, localInertia);
 	m_physicsWorld->addRigidBody(body);
-
+#endif
 	m_rigidBodiesSizes = new vector<btVector3*>;
 	m_rigidBodies = new vector<btRigidBody*>;
 	//m_rigidBodies->push_back(body);
@@ -912,8 +605,9 @@ void Game::InitializeMeshes()
 	btVector3 *t_size = new btVector3(1.0f, 1.0f, 1.0f);
 	//m_rigidBodiesSizes->push_back(t_size);
 
-	btRigidBody *floor = new btRigidBody(0.0f, new btDefaultMotionState(), new btStaticPlaneShape(btVector3(0,1,0),-0.5));
+	btRigidBody *floor = new btRigidBody(0.0f, new btDefaultMotionState(), m_groundShape);
 	m_physicsWorld->addRigidBody(floor);
+	//m_physicsWorld->addCollisionObject(floor, COL_OBJECTS, objectsCollidesWith );
 	//m_rigidBodies->push_back(floor);
 
 	btVector3 *t_size2 = new btVector3(1.0f, 1.0f, 1.0f);
@@ -1288,15 +982,6 @@ void Game::InitializeMeshes()
 		float rotZ = t_scene->ReadNextFloat();
 
 
-		if(m_sceneStaticObjectsList[i] == 8)
-		{
-			int gfhdsf = 97;
-		}
-
-		
-
-
-
 
 
 		D3DMesh *t_mesh = (D3DMesh*)(*m_meshes)[m_sceneStaticObjectsList[i]];
@@ -1327,8 +1012,16 @@ void Game::InitializeMeshes()
 
 		float objectMass = 0.0f;
 		btVector3 objectLocalInertia(0,0,0);
-		btRigidBody *objectBody  = new btRigidBody(objectMass, motionState,collisionShape, objectLocalInertia);
+		//btRigidBody *objectBody  = new btRigidBody(objectMass, motionState,collisionShape, objectLocalInertia);
+		btRigidBody::btRigidBodyConstructionInfo cInfo(objectMass,motionState,collisionShape,objectLocalInertia);
+		
+		btRigidBody *objectBody  = new btRigidBody(cInfo);
+		
+
+
 		m_physicsWorld->addRigidBody(objectBody);
+		//m_physicsWorld->addRigidBody(objectBody, COL_OBJECTS, objectsCollidesWith );
+		//m_physicsWorld->addCollisionObject(objectBody, COL_OBJECTS, objectsCollidesWith );
 
 		m_rigidBodies->push_back(objectBody);
 
@@ -1343,6 +1036,8 @@ void Game::InitializeMeshes()
 	m_sceneStaticObjectsList[m_sceneTotalObjects-1] = GetMeshIndex(m_test);
 	m_sceneStaticObjectsTransforms[m_sceneTotalObjects-1] = new C3DETransform();
 #endif
+
+	m_plyCube = new Cube();
 	
 	
 

@@ -392,7 +392,7 @@ void Game::Render(Renderer *renderer)
 
 	int totalBodies = m_rigidBodies->size();
 	
-#if 1
+#if 0
 	for(int i = 0; i < totalBodies; i++)
 	{
 		btRigidBody *t_body = (*m_rigidBodies)[i];

@@ -15,7 +15,9 @@ Tree1::Tree1()
 	
 
 	LoadFromXFile(	ResourceManager::GetInstance()->GetMeshFilenameByID(MESH_TREE_1_ID), 
-		D3DRenderer::GetDevice());
+		D3DRenderer::GetDevice(), false);
+	m_boundingBox = new AABB(D3DXVECTOR3(-4.099f, 0, -4.21f), D3DXVECTOR3(4.181f, 55.0f, 4.21f));
+	
 	
 }
 

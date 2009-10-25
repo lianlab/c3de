@@ -157,17 +157,17 @@ private:
 	C3DESkinnedMesh *m_ninjaMesh;
 	C3DESkinnedMeshContainer *m_ninjaContainer;
 
-	float m_characterX;
-	float m_characterY;
-	float m_characterZ;
 
-	float m_characterRotation;
-
-	float m_characterPhysicsRotation;
 
 	btTransform *m_characterPhysicsTransform;
 
-	Cube *m_plyCube;
+	float m_capsuleHeight;
+	float m_capsuleWidth;
+
+	D3DXVECTOR3 m_characterAABBMin;
+	D3DXVECTOR3 m_characterAABBMax;
+
+	
 
 	static const float m_camDistanceToCharacter;
 

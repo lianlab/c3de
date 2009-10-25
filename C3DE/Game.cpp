@@ -129,36 +129,13 @@ Game::Game(Application * app)
 	m_camUpX = 0.0f;
 	m_camUpY = 1.0f;
 	m_camUpZ = 0.0f;
-
-	//m_camYOffsetToCharacter = 0.0f;
-	//m_camZOffsetToCharacter = 0.0f;
-
-
-	m_characterX = 0.0f;
-	m_characterY = 0.0f;
-	m_characterZ = 0.0f;
-
-	m_characterRotation = 0.0f;
-	m_characterPhysicsRotation = 0.0f;
-
-	//m_camDistanceToCharacter = 30.0f;
-
-	//m_camAngle = 0.125f;
-
-	
-
-	
+		
 	m_camAngleSin = sinf( m_camAngle  * (D3DX_PI * 2.0f));
 	m_camAngleCos = cosf( m_camAngle  * (D3DX_PI * 2.0f));
-	
-	m_camTargetX = m_characterX;
-	m_camTargetY = m_characterX;
-	m_camTargetZ = m_characterX;
 
-	m_camX = m_characterX;
-	m_camY = m_characterY + m_camAngleCos * m_camDistanceToCharacter;
-	m_camZ = m_characterZ + m_camAngleSin * m_camDistanceToCharacter;
 
+	m_capsuleHeight = 1.75f;
+	m_capsuleWidth = 1.75f;
 
 	InitializeMeshes();
 
@@ -274,7 +251,7 @@ void Game::UpdateInput(int deltaTime)
 	float t_time = deltaTime / 1000.0f;
 
 	float posMultiplier = 1.0f;
-	float fastPosMultiplier = 5.0f;
+	float fastPosMultiplier = 2.0f;
 
 
 	float rotMultiplier = 0.5f;
@@ -356,7 +333,6 @@ void Game::UpdateInput(int deltaTime)
 	m_camTargetZ = t_characterPosZ + m_camZOffsetToCharacter;
 
 	m_camY = t_characterPosY + (m_camYOffsetToCharacter) + m_camAngleCos * m_camDistanceToCharacter;
-
 	m_camX = t_camVector4.x;
 	m_camZ = t_camVector4.z;
 
@@ -379,14 +355,16 @@ void Game::Render(Renderer *renderer)
 
 	C3DETransform *t0 = new C3DETransform();	
 	SceneNode *t_node0 = new SceneNode(m_ground, t0);	
-	m_testScene->AddNode(t_node0);			
+	m_testScene->AddNode(t_node0);	
 
-	C3DETransform *t2 = new C3DETransform();	
-	D3DXVECTOR3 yAxis = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	t2->Rotate(m_characterRotation, &yAxis);
-	t2->Translate(m_characterX, m_characterY, m_characterZ);
-	float tt = 1.0f;
-	t2->Scale(tt, tt, tt);
+
+
+	btTransform t_characterTransform = m_characterGhost->getWorldTransform();
+	D3DXMATRIX t_characterTransform2 = BT2DX_MATRIX(t_characterTransform);
+
+	C3DETransform *t2 = new C3DETransform();
+	t2->Set(&t_characterTransform2);
+	t2->Translate(0.0f, -m_capsuleHeight, 0.0f);
 	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2);
 	m_testScene->AddNode(t_node2);	
 
@@ -417,7 +395,6 @@ void Game::Render(Renderer *renderer)
 #if 1
 	for(int i = 0; i < totalBodies; i++)
 	{
-		C3DETransform *t_transform = new C3DETransform();
 		btRigidBody *t_body = (*m_rigidBodies)[i];
 		btMotionState *t_motionState = t_body->getMotionState();		
 
@@ -431,26 +408,18 @@ void Game::Render(Renderer *renderer)
 		renderer->DrawBox(-t_size->getX(), -t_size->getY(), -t_size->getZ(), t_size->getX(), t_size->getY(), t_size->getZ(), t_matrix);
 	}
 
-	C3DETransform *t_transform = new C3DETransform();
+	
 	btTransform t_transform2 = m_characterGhost->getWorldTransform();
 	
 	D3DXMATRIX t_matrix = BT2DX_MATRIX(t_transform2);		
 
-	//m_characterGhost->
-
-	//t_body->getAabb(t_min, t_max);
-
-	//btVector3 *t_size = (*m_rigidBodiesSizes)[i];
-
-#if 0
-	C3DETransform *t_cube = new C3DETransform();	
-	t_cube->Translate(0, 0, 0);
-	t_cube->Scale(100.0f, 100.0f, 100.0f);
-	SceneNode *t_cubeNode = new SceneNode(m_plyCube, t_cube);	
-	m_testScene->AddNode(t_cubeNode);
-#endif
 	
-	renderer->DrawBox(-5.0f, -5.0f, -5.0f, 5.0f, 5.0f, 5.0f, t_matrix);
+	renderer->DrawBox(	-1.75f / 2.0f, 
+						-1.75f / 2.0f, 
+						-1.75f / 2.0f, 
+						1.75f / 2.0f, 
+						1.75f / 2.0f, 
+						1.75f / 2.0f, t_matrix);
 	
 #endif
 	renderer->DrawScene2(m_testScene);
@@ -465,7 +434,7 @@ void Game::Render(Renderer *renderer)
 	//static_cast<D3DRenderer *>(renderer)->DrawText(m_text);
 	//static_cast<D3DRenderer *>(renderer)->DrawAxis();
 	
-	
+
 }
 
 void Game::OnMouseDown(int button, int x , int y)
@@ -482,45 +451,7 @@ void Game::OnMouseUp(int button, int x, int y)
 
 
 void Game::OnMouseMove(int x, int y, int dx, int dy)
-{		
-	return;
-	D3DXVECTOR3 pos = D3DXVECTOR3(m_camX, m_camY, m_camZ);
-	D3DXVECTOR3 target = D3DXVECTOR3(m_camTargetX, m_camTargetY, m_camTargetZ);
-	D3DXVECTOR3 look = target - pos;
-	D3DXVECTOR3 up = D3DXVECTOR3(m_camUpX, m_camUpY, m_camUpZ);;
-	D3DXVECTOR3 right;
-	D3DXVec3Cross(&right, &up, &look);
-	D3DXVec3Normalize(&right, &right);		
-
-	float yAngle = dx / 150.0f;
-	float t_angle = yAngle * 57.29577951308232286465f;
-
-	//m_cube->Rotate(m_cube->GetRotationX(), m_cube->GetRotationY() + t_angle, m_cube->GetRotationZ());
-	
-	// Rotate camera axes about the world's y-axis.
-	D3DXMATRIX R;
-	D3DXMatrixRotationY(&R, yAngle);
-	D3DXVec3TransformCoord(&right, &right, &R);
-	D3DXVec3TransformCoord(&up, &up, &R);
-	D3DXVec3TransformCoord(&look, &look, &R);
-
-	float pitch  = dy / 150.0f;
-	
-	
-	// Rotate camera axes about the world's y-axis.
-	
-	D3DXMatrixRotationAxis(&R, &right, pitch);
-	D3DXVec3TransformCoord(&look, &look, &R);
-	D3DXVec3TransformCoord(&up, &up, &R);
-
-	m_camTargetX = pos.x + look.x;
-	m_camTargetY = pos.y + look.y;
-	m_camTargetZ = pos.z + look.z;
-
-	m_camUpX = up.x;
-	m_camUpY = up.y;
-	m_camUpZ = up.z;
-
+{				
 
 }
 
@@ -556,65 +487,29 @@ void Game::InitializeMeshes()
 
 	m_physicsWorld = new btDiscreteDynamicsWorld(dp, bp, sl, cc);
 
-	//btTransform characterTransform;
-	//characterTransform.setIdentity ();
-	//characterTransform.setOrigin (btVector3(0.0, 0.0, 0.0));
 
-	btVector3 characterPos(0.0f, 20.0f, 0.0f);
-	btQuaternion characterRot(0.0f, 0.0f, 0.0f);
-	btTransform characterTransform(characterRot, characterPos);
+
+
+
+
+
 	
 
-	m_characterGhost = new btPairCachingGhostObject();
-	m_characterGhost->setWorldTransform(characterTransform);
-	bp->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
-	btScalar characterHeight=1.75;
-	btScalar characterWidth =1.75;
-	btConvexShape* capsule = new btCapsuleShape(characterWidth,characterHeight);
-	m_characterGhost->setCollisionShape (capsule);
-	m_characterGhost->setCollisionFlags (btCollisionObject::CF_CHARACTER_OBJECT);
-
-	btScalar stepHeight = btScalar(0.35);
-	m_character = new btKinematicCharacterController (m_characterGhost,capsule,stepHeight);
 
 
 
-	btQuaternion q(0.0f, 0.0f, 0.0f);
-	btVector3 p(0.0f, 30.0f, 10.0f);
-	btTransform startTrans(q,p);
-	btMotionState * ms = new btDefaultMotionState(startTrans);
 
-	btVector3 size(1.0f, 1.0f, 1.0f);
-	btCollisionShape *cs = new btBoxShape(size);
 
-	m_physicsWorld->addCollisionObject(m_characterGhost,btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter|btBroadphaseProxy::DefaultFilter);
 
-	m_physicsWorld->addAction(m_character);
-
-#if 0
-	float mass = 30.0f;
-	btVector3 localInertia;
-	cs->calculateLocalInertia(mass, localInertia);
-	btRigidBody *body  = new btRigidBody(mass, ms,cs, localInertia);
-	m_physicsWorld->addRigidBody(body);
-#endif
 	m_rigidBodiesSizes = new vector<btVector3*>;
 	m_rigidBodies = new vector<btRigidBody*>;
-	//m_rigidBodies->push_back(body);
 
 	btVector3 *t_size = new btVector3(1.0f, 1.0f, 1.0f);
-	//m_rigidBodiesSizes->push_back(t_size);
 
 	btRigidBody *floor = new btRigidBody(0.0f, new btDefaultMotionState(), m_groundShape);
 	m_physicsWorld->addRigidBody(floor);
-	//m_physicsWorld->addCollisionObject(floor, COL_OBJECTS, objectsCollidesWith );
-	//m_rigidBodies->push_back(floor);
 
 	btVector3 *t_size2 = new btVector3(1.0f, 1.0f, 1.0f);
-	//m_rigidBodiesSizes->push_back(t_size2);
-
-	
-
 
 	m_totalObjects = 38;
 	m_loadedObjects = 0;
@@ -659,6 +554,61 @@ void Game::InitializeMeshes()
 	m_characterMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_ID),
 											animations,
 											characterTexture, 33);
+
+	
+
+
+
+
+
+
+
+
+
+	btVector3 characterPos(0.0f, 0.0f, 0.0f);
+	btQuaternion characterRot(0.0f, 0.0f, 0.0f);
+	btTransform characterTransform(characterRot, characterPos);
+	
+
+	m_characterGhost = new btPairCachingGhostObject();
+	m_characterGhost->setWorldTransform(characterTransform);
+	bp->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+	//btScalar characterHeight= m_characterMesh->GetBoundingBox()->maxPoint.y - m_characterMesh->GetBoundingBox()->minPoint.y;
+	//btScalar characterWidth = m_characterMesh->GetBoundingBox()->maxPoint.x - m_characterMesh->GetBoundingBox()->minPoint.x;
+	btScalar characterHeight = m_capsuleHeight;
+	btScalar characterWidth = m_capsuleWidth;
+	btConvexShape* capsule = new btCapsuleShape(characterWidth,characterHeight);
+	m_characterGhost->setCollisionShape (capsule);
+	m_characterGhost->setCollisionFlags (btCollisionObject::CF_CHARACTER_OBJECT);
+
+	btScalar stepHeight = btScalar(0.35);
+	m_character = new btKinematicCharacterController (m_characterGhost,capsule,stepHeight);
+
+
+
+	btQuaternion q(0.0f, 0.0f, 0.0f);
+	btVector3 p(0.0f, 30.0f, 10.0f);
+	btTransform startTrans(q,p);
+	btMotionState * ms = new btDefaultMotionState(startTrans);
+
+	btVector3 size(1.0f, 1.0f, 1.0f);
+	btCollisionShape *cs = new btBoxShape(size);
+
+	m_physicsWorld->addCollisionObject(m_characterGhost,btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter|btBroadphaseProxy::DefaultFilter);
+
+	m_physicsWorld->addAction(m_character);
+
+
+
+
+
+
+
+
+
+
+
+
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
@@ -785,11 +735,11 @@ void Game::InitializeMeshes()
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 #else
-	GameMesh *m_streetLight02 = new GameMesh(MESH_BUFFER_STREET_LIGHT_02_ID,IMAGE_STREET_LIGHT_02_ID);
+	GameMesh *m_streetLight02 = new GameMesh(MESH_BUFFER_STREET_LIGHT_02_ID,IMAGE_STREET_LIGHT_02_ID, false);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 	
-	GameMesh *m_streetLight01 = new GameMesh(MESH_BUFFER_STREET_LIGHT_01_ID,IMAGE_STREET_LIGHT_01_ID);
+	GameMesh *m_streetLight01 = new GameMesh(MESH_BUFFER_STREET_LIGHT_01_ID,IMAGE_STREET_LIGHT_01_ID, false);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
@@ -853,7 +803,7 @@ void Game::InitializeMeshes()
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	GameMesh *m_cafeTable = new GameMesh(MESH_BUFFER_CAFE_TABLE_ID,IMAGE_CAFE_TABLE_ID);
+	GameMesh *m_cafeTable = new GameMesh(MESH_BUFFER_CAFE_TABLE_ID,IMAGE_CAFE_TABLE_ID, false);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
@@ -991,14 +941,7 @@ void Game::InitializeMeshes()
 		t_sizeVector.x *= scaleX;		
 		t_sizeVector.y *= scaleY;		
 		t_sizeVector.z *= scaleZ;
-		//t_sizeVector *= t_matrix->_11;
 
-		
-
-		
-
-		//btQuaternion rotation(0.0f, 0.0f, 0.0f);
-		//? x ? 
 		btQuaternion rotation(rotY, rotX, rotZ);
 		btVector3 position(t_matrix->_41, t_matrix->_42 + t_sizeVector.y, t_matrix->_43);
 		btTransform transform(rotation, position);
@@ -1016,19 +959,8 @@ void Game::InitializeMeshes()
 		btRigidBody::btRigidBodyConstructionInfo cInfo(objectMass,motionState,collisionShape,objectLocalInertia);
 		
 		btRigidBody *objectBody  = new btRigidBody(cInfo);
-		
-
-
 		m_physicsWorld->addRigidBody(objectBody);
-		//m_physicsWorld->addRigidBody(objectBody, COL_OBJECTS, objectsCollidesWith );
-		//m_physicsWorld->addCollisionObject(objectBody, COL_OBJECTS, objectsCollidesWith );
-
 		m_rigidBodies->push_back(objectBody);
-
-
-
-
-
 
 	}	
 
@@ -1037,7 +969,7 @@ void Game::InitializeMeshes()
 	m_sceneStaticObjectsTransforms[m_sceneTotalObjects-1] = new C3DETransform();
 #endif
 
-	m_plyCube = new Cube();
+	
 	
 	
 
@@ -1045,6 +977,7 @@ void Game::InitializeMeshes()
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
 
 	m_characterContainer0 = new C3DESkinnedMeshContainer(m_characterMesh);
+	
 	m_characterContainer0->SetCurrentAnimation(9);
 	m_spiderContainer = new C3DESkinnedMeshContainer(m_spiderMesh);
 	m_dogContainer = new C3DESkinnedMeshContainer(m_dogMesh);

@@ -1,5 +1,6 @@
 #include "D3DMesh.h"
 #include "ResourceManager.H"
+#include "BufferReader.h"
 //#include "DebugMemory.h"
 
 IDirect3DVertexDeclaration9* VertexPos::Decl = 0;
@@ -103,16 +104,11 @@ void D3DMesh::SetXMesh(ID3DXMesh *a_mesh)
 	m_xMesh = a_mesh;
 }
 
-void D3DMesh::LoadFromC3DEFile(char *meshBuffer)
+void D3DMesh::LoadFromC3DEFile(char *meshBuffer, bool a_calculateAABB)
 {
-	int *pTotalVertices = (int*)malloc(sizeof(int));
-	memcpy(pTotalVertices,meshBuffer,sizeof(int));
+	BufferReader * t_reader = new BufferReader(meshBuffer);
 
-	float *t_vertices = (float*)malloc(*pTotalVertices * sizeof(float) * 8);
-	memcpy(t_vertices,&meshBuffer[sizeof(int)],(*pTotalVertices * sizeof(float) * 8));
-
-	int *t_indices = (int*)malloc(*pTotalVertices * sizeof(int));
-	memcpy(t_indices,&meshBuffer[sizeof(int) + (*pTotalVertices * sizeof(float) * 8)],(*pTotalVertices * sizeof(int)));
+	int totalVertices = t_reader->ReadNextInt();
 
 	if(m_vertices)
 	{
@@ -131,29 +127,46 @@ void D3DMesh::LoadFromC3DEFile(char *meshBuffer)
 	m_vertices = new vector<VertexPos>;
 	m_indices = new vector<int>;
 
-	for(int i = 0 ; i < *pTotalVertices; i++)
+	for(int i = 0 ; i < totalVertices; i++)
 	{
-		m_vertices->push_back(VertexPos(t_vertices[8*i], t_vertices[(8*i) + 1], t_vertices[(8*i) + 2], t_vertices[(8*i) + 3], t_vertices[(8*i) + 4], t_vertices[(8*i) + 5], t_vertices[(8*i) + 6], t_vertices[(8*i) + 7]));
-		m_indices->push_back(t_indices[i]);
+		float posX = t_reader->ReadNextFloat();
+		float posY = t_reader->ReadNextFloat();
+		float posZ = t_reader->ReadNextFloat();
+
+		float normalX = t_reader->ReadNextFloat();
+		float normalY = t_reader->ReadNextFloat();
+		float normalZ = t_reader->ReadNextFloat();
+
+		float u = t_reader->ReadNextFloat();
+		float v = t_reader->ReadNextFloat();
+		m_vertices->push_back(VertexPos(posX, posY, posZ, normalX, normalY, normalZ, u, v));
+
 	}
 
+	for(int i = 0 ; i < totalVertices; i++)
+	{
+		m_indices->push_back(t_reader->ReadNextInt());
+	}
 
-	
-	free(pTotalVertices);
-	pTotalVertices = NULL;
+	if(!a_calculateAABB)
+	{
+		float minX = t_reader->ReadNextFloat();
+		float minY = t_reader->ReadNextFloat();
+		float minZ = t_reader->ReadNextFloat();
 
-	free(t_vertices);
-	t_vertices = NULL;
+		float maxX = t_reader->ReadNextFloat();
+		float maxY = t_reader->ReadNextFloat();
+		float maxZ = t_reader->ReadNextFloat();
+		m_boundingBox = new AABB(D3DXVECTOR3(minX, minY, minZ), D3DXVECTOR3(maxX, maxY, maxZ));
+	}
 
-	free(t_indices);
-	t_indices = NULL;
-
-
+	delete t_reader;
+	t_reader = NULL;
 	
 }
 
 
-void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
+void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device, bool a_calculateAABB)
 {
 
 	if(m_xMesh)
@@ -200,11 +213,15 @@ void D3DMesh::CreateXMesh(IDirect3DDevice9 *a_device)
 
 	
 
-	m_boundingBox = new AABB(t_min, t_max);
-	//SetCollisionPoints(t_min, t_max);
-	CalculateTopCollisionArea();
+	if(a_calculateAABB)
+	{
+		m_boundingBox = new AABB(t_min, t_max);
+		//SetCollisionPoints(t_min, t_max);
+		CalculateTopCollisionArea();
 
-	CalculateOBB(t_min, t_max);
+		CalculateOBB(t_min, t_max);
+	}
+	
 	
 	
 	m_xMesh->UnlockVertexBuffer();
@@ -276,7 +293,7 @@ void D3DMesh::FreeMaterials()
 	}
 }
 
-void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_device)
+void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_device, bool a_calculateAABB)
 {	
 	FreeMaterials();
 	FreeTextures();		
@@ -379,10 +396,14 @@ void D3DMesh::LoadFromXFile(const std::string &filename, IDirect3DDevice9* a_dev
 
 	m_xMesh->UnlockVertexBuffer();
 
-	m_boundingBox = new AABB(t_min, t_max);
-	//SetCollisionPoints(t_min, t_max);
-	CalculateTopCollisionArea();
+	if(a_calculateAABB)
+	{
+		m_boundingBox = new AABB(t_min, t_max);
+		CalculateTopCollisionArea();
 
+	}
+	//SetCollisionPoints(t_min, t_max);
+	
 	//m_obb = new OBB(t_min, t_max);
 	//m_boundingBox = new AABB();
 

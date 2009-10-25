@@ -43,6 +43,8 @@
 #include "C3DESkinnedMeshContainer.h"
 #include "GameMesh.h"
 #include "btBulletDynamicsCommon.h"
+#include "BulletCollision/CollisionDispatch/btGhostObject.h"
+#include "BulletDynamics/Character/btKinematicCharacterController.h"
 
 
 
@@ -161,6 +163,12 @@ private:
 
 	float m_characterRotation;
 
+	float m_characterPhysicsRotation;
+
+	btTransform *m_characterPhysicsTransform;
+
+	Cube *m_plyCube;
+
 	static const float m_camDistanceToCharacter;
 
 	static const float m_camAngle;
@@ -169,6 +177,12 @@ private:
 
 	static const float m_camYOffsetToCharacter;
 	static const float m_camZOffsetToCharacter;
+
+
+
+	btCollisionShape* m_groundShape;
+	btPairCachingGhostObject* m_characterGhost;
+	btKinematicCharacterController *m_character;
 
 };
 

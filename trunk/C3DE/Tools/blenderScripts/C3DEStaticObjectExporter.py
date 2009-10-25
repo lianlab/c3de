@@ -229,7 +229,7 @@ class xExport:
 		objs = self.analyzeScene()
 		iterator = 0
 		for obj in objs:
-			if obj.type == 'Mesh':
+			if obj.type == 'Mesh' and obj.name != 'collider':
 				mesh = obj.data
 				#self.writeTextures(obj, tex)		
 				self.writeMeshcoordArm(obj, None, iterator)
@@ -350,6 +350,34 @@ class xExport:
 			#self.file.write(data)
 			file.write(data)
 			
+	
+			
+		meCollider = Mesh.New()              # Create a new mesh
+		
+		meCollider.getFromObject("collider")    # Get the object's mesh data
+		
+		
+		maxX = -999999999;
+		maxY = -999999999;
+		maxZ = -999999999;
+		
+		minX = 999999999;
+		minY = 999999999;
+		minZ = 999999999;
+		
+		for vertice in meCollider.verts:
+			maxX = max(maxX, vertice.co[0])
+			maxY = max(maxY, vertice.co[1])
+			maxZ = max(maxZ, vertice.co[2])
+			
+			minX = min(minX, vertice.co[0])
+			minY = min(minY, vertice.co[1])
+			minZ = min(minZ, vertice.co[2])
+			
+			
+		format = "ffffff"                   # one integer
+		data = struct.pack(format, minX, minY, minZ, maxX, maxY, maxZ)
+		file.write(data)
 			
 		
 			

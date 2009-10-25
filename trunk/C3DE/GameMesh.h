@@ -8,7 +8,8 @@
 class GameMesh : public D3DMesh
 {
 public:
-	GameMesh(int a_meshId, int a_texId);
+	GameMesh(int a_meshId, int a_texId, bool a_calculateAABB = true);
+	
 	~GameMesh();
 	
 

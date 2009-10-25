@@ -6,7 +6,7 @@
 #include "D3DRenderer.h"
 #include "DebugMemory.h"
 
-GameMesh::GameMesh(int a_meshId, int a_texId)
+GameMesh::GameMesh(int a_meshId, int a_texId, bool a_calculateAABB)
 {
 	
 	
@@ -17,9 +17,9 @@ GameMesh::GameMesh(int a_meshId, int a_texId)
 
 	//LoadFromXFile(	ResourceManager::GetInstance()->GetMeshFilenameByID(a_meshId), 
 	//	D3DRenderer::GetDevice());
-	LoadFromC3DEFile(ResourceManager::GetInstance()->GetMeshBuffer(a_meshId));
+	LoadFromC3DEFile(ResourceManager::GetInstance()->GetMeshBuffer(a_meshId), a_calculateAABB);
 
-	CreateXMesh(D3DRenderer::GetDevice());
+	CreateXMesh(D3DRenderer::GetDevice(), a_calculateAABB);
 
 	AddMaterial(new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f));
@@ -30,6 +30,7 @@ GameMesh::GameMesh(int a_meshId, int a_texId)
 	AddTexture((Image*) t_image);
 	
 }
+
 
 void GameMesh::SetShaderHandlers()
 {		

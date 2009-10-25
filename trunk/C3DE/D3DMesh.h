@@ -177,9 +177,10 @@ public:
 
 	void SetTransformMatrix(D3DXMATRIX matrix);
 
-	void LoadFromXFile(	const std::string &filename, IDirect3DDevice9* a_device);
+	void LoadFromXFile(	const std::string &filename, IDirect3DDevice9* a_device, bool a_calculateAABB = true);
 
-	void LoadFromC3DEFile(char *meshBuffer);
+	void LoadFromC3DEFile(char *meshBuffer, bool a_calculateAABB = true);
+
 	int GetNumSubsets(){return m_numSubsets;}
 
 	ID3DXMesh * GetXMesh(){
@@ -188,7 +189,7 @@ public:
 
 	void SetXMesh(ID3DXMesh *a_mesh);
 
-	void CreateXMesh(IDirect3DDevice9 *a_device);
+	void CreateXMesh(IDirect3DDevice9 *a_device, bool a_calculateAABB = true);
 
 	AABB* GetBoundingBox();
 

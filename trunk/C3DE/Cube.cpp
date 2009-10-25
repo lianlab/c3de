@@ -5,6 +5,7 @@
 //#include "SkinnedMeshFX.h"
 #include "PerVertexLightingNoFog.h"
 
+
 #include "DebugMemory.h"
 
 Cube::Cube()
@@ -13,8 +14,27 @@ Cube::Cube()
 	m_vertices = new vector<VertexPos>;
 	m_indices = new vector<int>;
 
-	//vertices
+#if 0
+	std::auto_ptr<PLY_Model> t_plyModel = Read_PLY_Model("happy_vrip_res4.ply");
+	int faceCount = t_plyModel->Get_Face_Count();
+	int vertexCount = t_plyModel->Get_Vertex_Count();
 
+	int vertexSize = t_plyModel->m_face_data.size();
+
+	//vertices
+	for(int i = 0; i < vertexCount; i++)
+	{
+		float x = (t_plyModel->m_vertex_data)[i*3];
+		float y = (t_plyModel->m_vertex_data)[i*3+1];
+		float z = (t_plyModel->m_vertex_data)[i*3+2];
+		m_vertices->push_back(VertexPos(x, y, z, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f));
+	}
+
+	for(int i = 0; i < faceCount; i++)
+	{
+		m_indices->push_back((t_plyModel->m_face_data)[i]);
+	}
+#endif
 #if 1
 	m_vertices->push_back(VertexPos(-1.0f, -1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f));
 	m_vertices->push_back(VertexPos(-1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f));
@@ -51,14 +71,7 @@ Cube::Cube()
 	m_vertices->push_back(VertexPos( 1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f));
 	m_vertices->push_back(VertexPos( 1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f));
 	
-#endif
-	
-	//indices
-	//front face
-	
 
-
-#if 1
 	m_indices->push_back(0);
 	m_indices->push_back(1);
 	m_indices->push_back(2);

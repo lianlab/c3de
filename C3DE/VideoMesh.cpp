@@ -9,14 +9,8 @@ VideoMesh::VideoMesh(VideoStructure *a_video):D3DMesh()
 	
 	m_currentFrameTexture = NULL;
 	m_currentFrame = 0;
-	//m_vertices = new vector<VertexPos>;
-	//m_indices = new vector<int>;
+	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID);
 
-	//vertices
-
-	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
-	PerVertexLighting *t_effect = (PerVertexLighting *) m_effect;
-	t_effect->SetAlpha(1.0f);
 
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),
 										D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f), 16.0f);

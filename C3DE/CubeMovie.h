@@ -6,7 +6,7 @@
 class CubeMovie : public VideoMesh
 {
 public:
-	CubeMovie();
+	CubeMovie(int fleps = 0);
 	~CubeMovie();
 };
 

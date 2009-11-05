@@ -87,6 +87,8 @@ private:
 	//D3DSprite *m_sprite;
 
 	
+
+	
 	float m_cameraRadius;
 	float m_cameraRotation;
 	float m_cameraHeight;

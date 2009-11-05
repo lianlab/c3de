@@ -274,6 +274,7 @@ struct VideoStructure
 enum Videos
 {
 	VIDEO_FIRST_ID,
+	VIDEO_SECOND_ID,
 	TOTAL_VIDEOS
 };
 

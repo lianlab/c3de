@@ -238,8 +238,8 @@ void Game::Update(int deltaTime)
 	m_ninjaUpdateTime += (deltaTime);
 
 	
-	//int animationTime = m_characterContainer0->GetTotalAnimationTime();
-	//m_character0UpdateTime = m_character0UpdateTime % animationTime;
+	int animationTime = m_characterContainer0->GetTotalAnimationTime();
+	m_character0UpdateTime = m_character0UpdateTime % animationTime;
 
 #if 0
 	m_spiderUpdateTime = m_spiderUpdateTime % m_spiderContainer->GetTotalAnimationTime();
@@ -249,8 +249,8 @@ void Game::Update(int deltaTime)
 
 	
 
-	//m_characterContainer0->SetAnimationTime(m_character0UpdateTime);
-	m_characterContainer0->SetAnimationTime(0);
+	m_characterContainer0->SetAnimationTime(m_character0UpdateTime);
+	//m_characterContainer0->SetAnimationTime(0);
 	
 
 #if 0

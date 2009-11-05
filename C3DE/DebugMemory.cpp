@@ -7,6 +7,8 @@
 #include <unistd.h>
 #endif
 
+#define NO_LOGGING 1
+
 #define _MAX_FILE 128
 
 // Flag that controls the logging of all allocations if enabled by DumpMemoryLogAllAllocations()
@@ -232,6 +234,9 @@ void DumpMemoryLogAllAllocations(int bEnable)
 //------------------------------------------------------------------------
 void DebugMemoryLog(int bAlloc, LPALLOC_INFO pInfo)
 {
+#if NO_LOGGING
+	return;
+#endif
 		if (_g_bDebugMemoryLogAllAllocations != 1)
 				return;
 		if (pInfo != NULL)

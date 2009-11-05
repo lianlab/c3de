@@ -84,7 +84,7 @@ private:
 	void UpdateLoadingBar(int loadedObjects, int totalobjects);
 	Application * m_application;
 
-	D3DSprite *m_sprite;
+	//D3DSprite *m_sprite;
 
 	
 	float m_cameraRadius;

@@ -3,6 +3,7 @@
 #include "DebugMemory.h"
 
 
+
 Mesh::Mesh()
 {	
 	
@@ -24,6 +25,8 @@ Mesh::Mesh()
 	m_textures = new vector<Image *>;
 
 	m_alpha = 1.0f;
+
+	
 }
 
 Mesh::~Mesh()
@@ -42,6 +45,8 @@ Mesh::~Mesh()
 		delete m_textures;
 		m_textures = NULL;
 	}
+
+	
 
 
 }

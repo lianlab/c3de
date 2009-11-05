@@ -62,7 +62,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="d3dx9.lib dxguid.lib dsound.lib strmiids.lib dinput8.lib winmm.lib vfw32.lib d3d9.lib dxerr9.lib user32.lib libbulletdynamics.lib libbulletcollision.lib libbulletmath.lib"
-				OutputFile="./Runtime/Some3d_Debug.exe"
+				OutputFile="./Runtime/C3DE.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\BulletPhysics\libs\debug;..\BulletPhysics\libs\release"
 				GenerateDebugInformation="true"
@@ -139,7 +139,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="d3dx9.lib dxguid.lib dsound.lib strmiids.lib dinput8.lib winmm.lib vfw32.lib d3d9.lib dxerr9.lib user32.lib libbulletdynamics.lib libbulletcollision.lib libbulletmath.lib"
-				OutputFile="./Runtime/Some3d_Release.exe"
+				OutputFile="./Runtime/C3DE.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\BulletPhysics\libs\release"
 				GenerateDebugInformation="true"

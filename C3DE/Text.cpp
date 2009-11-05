@@ -1,6 +1,6 @@
 #include "Text.h"
 
-Text::Text(char *a_text, Font *a_font):D3DSprite(a_font->GetImage(), 0, 0, 0, 0, 0, 1000)
+Text::Text(char *a_text, Font *a_font):D3DSprite(a_font->GetImage(), 0, 0, 0, 0, 0, 1000) 
 {
 	m_text = a_text;
 	m_font = a_font;
@@ -11,7 +11,8 @@ Text::Text(char *a_text, Font *a_font):D3DSprite(a_font->GetImage(), 0, 0, 0, 0,
 
 	m_rectsIndices = new vector<int>;
 
-	m_frameRects = new vector<RECT>;
+	//m_frameRects = new vector<RECT>;
+	m_frameRects->clear();
 
 	int totalChars = m_font->GetCharsIndices()->size();
 	

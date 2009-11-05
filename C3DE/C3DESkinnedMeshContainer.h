@@ -8,7 +8,7 @@ class C3DESkinnedMeshContainer : public D3DMesh
 {
 public:
 	C3DESkinnedMeshContainer(C3DESkinnedMesh * a_mesh);
-	~C3DESkinnedMeshContainer();
+	virtual ~C3DESkinnedMeshContainer();
 
 	void SetCurrentAnimation(int animationIdx);
 

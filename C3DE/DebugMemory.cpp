@@ -1,4 +1,4 @@
-#if 0
+#if 1
 
 #ifdef DEBUG_MEMORY
 #define DEBUG_MEMORY_IMPLEMENTATION 1
@@ -10,23 +10,23 @@
 #define _MAX_FILE 128
 
 // Flag that controls the logging of all allocations if enabled by DumpMemoryLogAllAllocations()
-static BOOL _g_bDebugMemoryLogAllAllocations = FALSE;
+static int _g_bDebugMemoryLogAllAllocations = 0;
 
 // This is the data structure that holds an allocated block's information.
 typedef struct 
  {
 		void *address;
-	  DWORD	size;
+	  unsigned long	size;
 	  char	file[_MAX_FILE];
-	  DWORD	line;
+	  unsigned long	line;
  } ALLOC_INFO;      			
 typedef ALLOC_INFO* LPALLOC_INFO;      
 
 // Prototypes for Adding and Deleting the breadcrumb's or the memory trail.
-static void AddMemoryBreadcrumb(void *addr,  DWORD asize,  const char *fname, DWORD lnum);			
+static void AddMemoryBreadcrumb(void *addr,  unsigned long asize,  const char *fname, unsigned long lnum);			
 static void AddUnallocatedBreadcrumb(void *addr);
-static BOOL DelMemoryBreadcrumb(void *addr);
-static void DebugMemoryLog(BOOL bAlloc, LPALLOC_INFO pInfo);
+static int DelMemoryBreadcrumb(void *addr);
+static void DebugMemoryLog(int bAlloc, LPALLOC_INFO pInfo);
 
 //------------------------------------------------------------------------
 // new operator override.
@@ -114,7 +114,7 @@ void __cdecl _debug_free(void *p)
 		// if we did not find this address in our list, then somehow it is getting freed by
 		// us, but we did not allocate the block using one of the debug routines.  Make note
 		// of this case, but free the block anyhow to avoid a leak.
-	  if (DelMemoryBreadcrumb(p) == FALSE)
+	  if (DelMemoryBreadcrumb(p) == 0)
 				AddUnallocatedBreadcrumb(p);
 		free(p);
 }
@@ -124,8 +124,8 @@ void __cdecl _debug_free(void *p)
 // global memory block allocation list.
 LPALLOC_INFO allocList = NULL;
 // counters needed
-DWORD dwBlocksAvail = 0;
-DWORD dwBlocksUsed = 0;
+unsigned long dwBlocksAvail = 0;
+unsigned long dwBlocksUsed = 0;
 
 // If our list if full, make room for more.
 void ReallocMemoryBlockList()
@@ -141,11 +141,11 @@ void ReallocMemoryBlockList()
 
 //------------------------------------------------------------------------
 // Add a breadcrumb to the memory trail.
-void AddMemoryBreadcrumb(void *addr,  DWORD asize,  const char *fname, DWORD lnum)
+void AddMemoryBreadcrumb(void *addr,  unsigned long asize,  const char *fname, unsigned long lnum)
 {
 	  LPALLOC_INFO info = NULL;	 
-		BOOL bFound = FALSE;
-		DWORD ii;
+		int bFound = 0;
+		unsigned long ii;
 
 		// if we need to create the list or grow it, do that now.
 		if(!allocList || dwBlocksUsed >= dwBlocksAvail) {
@@ -158,11 +158,11 @@ void AddMemoryBreadcrumb(void *addr,  DWORD asize,  const char *fname, DWORD lnu
 				info = allocList+ii;
 		    if(info->address == 0)
 				{
-						bFound = TRUE;
+						bFound = 1;
 						break;
 				}
 		}
-		if (bFound == FALSE)
+		if (bFound == 0)
 		{
 				// didn't find an unused block, so use one at the end of
 				// the list.
@@ -182,7 +182,7 @@ void AddMemoryBreadcrumb(void *addr,  DWORD asize,  const char *fname, DWORD lnu
 				strcpy(info->file, fname);
 	  info->line = lnum;
 	  info->size = asize;
-		DebugMemoryLog(TRUE, info);
+		DebugMemoryLog(1, info);
  }
 
 
@@ -196,32 +196,32 @@ void AddUnallocatedBreadcrumb(void *addr)
 		
 //------------------------------------------------------------------------
 // Delete a breadcrumb from our trail.
-BOOL DelMemoryBreadcrumb(void *addr)
+int DelMemoryBreadcrumb(void *addr)
 {
-		DWORD ii;
+		unsigned long ii;
 		if(!allocList || dwBlocksAvail <= 0)
-		    return FALSE;
+		    return 0;
 		if (addr == 0)
-				return FALSE;
+				return 0;
 	  for(ii = 0; ii < dwBlocksUsed; ii++)
 	  {
 				LPALLOC_INFO info = allocList+ii;
 		    if(info->address == addr && info->line != 0 && info->size != 0)
 		    {
-						DebugMemoryLog(FALSE, info);
+						DebugMemoryLog(0, info);
 						info->address = 0;
 						memset(info->file, 0, _MAX_FILE);
 						info->line = 0;
 						info->size = 0;
-						return TRUE;
+						return 1;
 		    }
 	  }
-		return FALSE;
+		return 0;
  }
 
 
 //------------------------------------------------------------------------
-void DumpMemoryLogAllAllocations(BOOL bEnable)
+void DumpMemoryLogAllAllocations(int bEnable)
 {
 		_g_bDebugMemoryLogAllAllocations = bEnable;
 		if (bEnable)
@@ -230,9 +230,9 @@ void DumpMemoryLogAllAllocations(BOOL bEnable)
 
 
 //------------------------------------------------------------------------
-void DebugMemoryLog(BOOL bAlloc, LPALLOC_INFO pInfo)
+void DebugMemoryLog(int bAlloc, LPALLOC_INFO pInfo)
 {
-		if (_g_bDebugMemoryLogAllAllocations != TRUE)
+		if (_g_bDebugMemoryLogAllAllocations != 1)
 				return;
 		if (pInfo != NULL)
 		{
@@ -248,10 +248,10 @@ void DebugMemoryLog(BOOL bAlloc, LPALLOC_INFO pInfo)
 
 //------------------------------------------------------------------------
 // Write the memory leak report to memoryleak.txt
-void DumpUnfreed(BOOL bFreeList)
+void DumpUnfreed(int bFreeList)
 {
-	  DWORD totalSize = 0;
-		DWORD ii;
+	  unsigned long totalSize = 0;
+		unsigned long ii;
 	  char buf[1024];
 		FILE *fp = fopen("memoryleak.txt","w");
 		if(!allocList || !fp)

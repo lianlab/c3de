@@ -77,6 +77,20 @@ ResourceManager::~ResourceManager()
 		m_meshBuffers[i] = NULL;
 	}
 
+	for(int i = 0; i < TOTAL_SCENES; i++)
+	{
+		free(m_sceneBuffers[i]);
+		m_sceneBuffers[i] = NULL;
+	}
+
+	for(int i = 0; i < TOTAL_VIDEOS; i++)
+	{
+		delete m_videos[i];
+		m_videos[i] = NULL;
+	}
+
+	
+
 }
 
 void ResourceManager::SetDevice(IDirect3DDevice9 *device)
@@ -1434,7 +1448,7 @@ void ResourceManager::InitializeVideos()
 
 	if(AVIFileOpen(&t_aviFile, "Videos/intro.avi", OF_READ, NULL) != 0)
 	{
-		int error = 543543;
+		
 	}
 
 	PAVISTREAM *t_stream = new PAVISTREAM();

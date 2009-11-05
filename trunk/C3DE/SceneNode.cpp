@@ -1,4 +1,5 @@
 #include "SceneNode.h"
+#include "DebugMemory.h"
 
 SceneNode::SceneNode(Mesh * a_mesh, C3DETransform *a_transform)
 {

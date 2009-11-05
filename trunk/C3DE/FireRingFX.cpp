@@ -1,5 +1,6 @@
 #include "FireRingFX.h"
 
+
 FireRingFX::FireRingFX(ID3DXEffect * effect) : FX(effect)
 {
 

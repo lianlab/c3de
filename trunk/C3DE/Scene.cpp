@@ -21,6 +21,7 @@ Scene::Scene()
 
 Scene::~Scene()
 {
+	ClearAllNodes();
 	FreeMeshes();
 
 	FreeMirrors();
@@ -60,6 +61,8 @@ Scene::~Scene()
 		delete m_sceneNodes;
 		m_sceneNodes = NULL;
 	}
+
+	
 }
 
 void Scene::Update(int deltaTime)

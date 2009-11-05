@@ -129,8 +129,24 @@ void C3DESkinnedMeshContainer::SetAnimationTime(int time)
 
 void C3DESkinnedMeshContainer::Update(int deltaTime)
 {
-	//deltaTime *= 3;
-	//deltaTime = 0;
+#if 1
+
+	
+	int totalBones2 = m_mesh->GetTotalBones();
+	
+	D3DXMATRIX *t_fleps = (*m_mesh->GetPoseMatrices())[0];
+	
+	for(int i = 0 ; i < totalBones2; i++)
+	{		
+		D3DXMATRIX t_matrix;
+
+		D3DXMatrixIdentity(&t_matrix);
+
+		m_poseMatrix[i] = t_matrix;
+	}
+
+	return;
+#endif
 
 	
 	m_elapsedTime += deltaTime;

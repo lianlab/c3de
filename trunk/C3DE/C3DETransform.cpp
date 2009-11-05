@@ -1,4 +1,5 @@
 #include "C3DETransform.h"
+#include "DebugMemory.h"
 
 C3DETransform::C3DETransform()
 {
@@ -16,13 +17,15 @@ C3DETransform::~C3DETransform()
 
 void C3DETransform::Set(D3DXMATRIX *a_matrix)
 {
-	if(m_matrix != NULL)
-	{
-		delete m_matrix;
-		m_matrix =NULL;
-	}
+	//if(m_matrix != NULL)
+	//{
+	//	delete m_matrix;
+	//	m_matrix =NULL;
+	//}
 
-	m_matrix = new D3DXMATRIX();
+
+
+	//m_matrix = new D3DXMATRIX();
 	m_matrix->_11 = a_matrix->_11;
 	m_matrix->_12 = a_matrix->_12;
 	m_matrix->_13 = a_matrix->_13;

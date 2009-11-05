@@ -337,6 +337,13 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, vector<char *> *a_bonesBuff
 	
 	
 	Update(0);
+
+	FreeMaterials();
+	FreeTextures();
+
+	m_materials = new vector<Material *>;
+	m_textures = new vector<Image *>;
+
 	AddTexture((Image *) a_texture);
 
 	Material *t_material = new Material(	D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),D3DXCOLOR(1.0f, 1.0f, 1.0f,1.0f),

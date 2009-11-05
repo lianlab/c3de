@@ -12,6 +12,10 @@ C3DESkinnedMeshContainer::C3DESkinnedMeshContainer(C3DESkinnedMesh *a_mesh)
 
 	m_effect = a_mesh->GetEffect();
 
+	FreeMaterials();
+	FreeTextures();
+
+
 	m_materials = a_mesh->GetMaterials();
 
 	m_textures = a_mesh->GetTextures();

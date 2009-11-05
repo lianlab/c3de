@@ -195,6 +195,7 @@ Game::~Game()
 #endif
 
 	
+	
 
 	
 }
@@ -222,7 +223,7 @@ void Game::UpdateLoadingBar(int loadedObjects, int totalobjects)
 
 void Game::Update(int deltaTime)
 {		
-
+	
 	m_physicsWorld->stepSimulation(deltaTime);
 
 	m_character0UpdateTime += deltaTime;
@@ -394,11 +395,16 @@ void Game::Render(Renderer *renderer)
 	m_testScene->AddNode(t_node4);
 #endif
 
+
+
 	C3DETransform *t5 = new C3DETransform();	
 	t5->Translate(m_camX, m_camY, m_camZ);
 	SceneNode *t_node5 = new SceneNode(m_skyBox, t5);	
 	m_testScene->AddNode(t_node5);
 
+	
+
+#if 1
 	for(int i = 0; i< m_sceneTotalObjects; i++)	
 	{
 		Mesh * t_mesh = (*m_meshes)[m_sceneStaticObjectsList[i]];
@@ -409,6 +415,7 @@ void Game::Render(Renderer *renderer)
 		m_testScene->AddNode(t_node);
 		
 	}	
+#endif
 
 	int totalBodies = m_rigidBodies->size();
 	
@@ -622,7 +629,7 @@ void Game::InitializeMeshes()
 	m_physicsWorld->addAction(m_character);
 
 
-
+	
 
 
 

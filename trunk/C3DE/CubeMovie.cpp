@@ -1,9 +1,11 @@
 #include "CubeMovie.h"
 #include "ResourceManager.h"
+#include "D3DRenderer.h"
 #include "DebugMemory.h"
 
-CubeMovie::CubeMovie():VideoMesh(ResourceManager::GetInstance()->GetVideoByID(VIDEO_FIRST_ID))
+CubeMovie::CubeMovie(int fleps):VideoMesh(ResourceManager::GetInstance()->GetVideoByID(fleps))
 {
+
 	m_vertices = new vector<VertexPos>;
 	m_indices = new vector<int>;	
 
@@ -83,6 +85,13 @@ CubeMovie::CubeMovie():VideoMesh(ResourceManager::GetInstance()->GetVideoByID(VI
 	m_indices->push_back(20);
 	m_indices->push_back(22);
 	m_indices->push_back(23);
+
+
+	CreateXMesh(D3DRenderer::GetDevice());
+
+	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID);
+
+	
 
 }
 

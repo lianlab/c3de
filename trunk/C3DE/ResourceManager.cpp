@@ -85,6 +85,10 @@ ResourceManager::~ResourceManager()
 
 	for(int i = 0; i < TOTAL_VIDEOS; i++)
 	{
+		delete m_videos[i]->m_frames;
+		m_videos[i]->m_frames = NULL;
+		delete m_videos[i]->m_stream;
+		m_videos[i]->m_stream = NULL;
 		delete m_videos[i];
 		m_videos[i] = NULL;
 	}
@@ -1462,6 +1466,32 @@ void ResourceManager::InitializeVideos()
 	t_structure->m_totalTime = t_time;
 
 	m_videos[VIDEO_FIRST_ID] = t_structure;
+
+
+	m_videos[VIDEO_FIRST_ID] = t_structure;
+
+
+	AVIFileInit();
+	t_aviFile = NULL;
+
+	if(AVIFileOpen(&t_aviFile, "Videos/intro.avi", OF_READ, NULL) != 0)
+	{
+		
+	}
+
+	PAVISTREAM *t_stream2 = new PAVISTREAM();
+	PGETFRAME *t_getFrame2 = new PGETFRAME();
+	AVIFileGetStream(t_aviFile, t_stream2, streamtypeVIDEO, 0);
+	*t_getFrame2 = AVIStreamGetFrameOpen(*t_stream2, NULL);
+	t_time = AVIStreamEndTime(*t_stream2);
+	VideoStructure *t_structure2 = new VideoStructure();
+	t_structure2->m_frames = t_getFrame2;
+	t_structure2->m_stream = t_stream2;
+	t_structure2->m_totalTime = t_time;
+
+	
+
+	m_videos[VIDEO_SECOND_ID] = t_structure2;
 	//AVIFileExit();
 }
 

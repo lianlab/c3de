@@ -186,14 +186,20 @@ Game::~Game()
 		m_text = NULL;
 	}
 
-#if 1
+
 	if(m_characterContainer0)
 	{
 		delete m_characterContainer0;
 		m_characterContainer0 = 0;
 	}
-#endif
 
+
+
+	for(int i = 0; i < m_sceneTotalObjects; i++)
+	{
+		delete m_sceneStaticObjectsTransforms[i];
+		 m_sceneStaticObjectsTransforms[i] = NULL;
+	}
 	
 	
 
@@ -232,8 +238,8 @@ void Game::Update(int deltaTime)
 	m_ninjaUpdateTime += (deltaTime);
 
 	
-	int animationTime = m_characterContainer0->GetTotalAnimationTime();
-	m_character0UpdateTime = m_character0UpdateTime % animationTime;
+	//int animationTime = m_characterContainer0->GetTotalAnimationTime();
+	//m_character0UpdateTime = m_character0UpdateTime % animationTime;
 
 #if 0
 	m_spiderUpdateTime = m_spiderUpdateTime % m_spiderContainer->GetTotalAnimationTime();
@@ -243,7 +249,8 @@ void Game::Update(int deltaTime)
 
 	
 
-	m_characterContainer0->SetAnimationTime(m_character0UpdateTime);
+	//m_characterContainer0->SetAnimationTime(m_character0UpdateTime);
+	m_characterContainer0->SetAnimationTime(0);
 	
 
 #if 0
@@ -381,11 +388,13 @@ void Game::Render(Renderer *renderer)
 	btTransform t_characterTransform = m_characterGhost->getWorldTransform();
 	D3DXMATRIX t_characterTransform2 = BT2DX_MATRIX(t_characterTransform);
 
+	
 	C3DETransform *t2 = new C3DETransform();
 	t2->Set(&t_characterTransform2);
 	t2->Translate(0.0f, -m_capsuleHeight, 0.0f);
 	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2);
 	m_testScene->AddNode(t_node2);	
+	
 
 #if 0
 	C3DETransform *t4 = new C3DETransform();
@@ -566,6 +575,7 @@ void Game::InitializeMeshes()
 	
 	vector<char*> *animations = new vector<char*>;
 
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_COOL_ID));
 #if 0
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_CARRY_2_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_CARRY_ID));
@@ -578,8 +588,7 @@ void Game::InitializeMeshes()
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_WALK_BACKWARD_ID));
 #endif
 	
-	//animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_IDLE_ID));
-	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_COOL_ID));
+	
 
 	m_characterMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_ID),
 											animations,
@@ -998,11 +1007,7 @@ void Game::InitializeMeshes()
 #if ADD_TEST_MESH
 	m_sceneStaticObjectsList[m_sceneTotalObjects-1] = GetMeshIndex(m_test);
 	m_sceneStaticObjectsTransforms[m_sceneTotalObjects-1] = new C3DETransform();
-#endif
-
-	
-	
-	
+#endif			
 
 	
 	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);

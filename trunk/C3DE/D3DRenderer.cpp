@@ -5,15 +5,10 @@
 #include "D3DMesh.h"
 #include "D3DMirror.h"
 #include "FXManager.h"
-
-
 #include "ShadowFX.h"
 #include "D3DShadowSurface.h"
-//#include "DebugMemory.h"
 #include "SkinnedMeshBookFX.h"
-
 #include "VertexDeclarations.h"
-
 #include "Dwarf.h"
 #include "FireRingFX.h"
 

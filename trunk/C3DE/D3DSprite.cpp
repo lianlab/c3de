@@ -42,6 +42,7 @@ D3DSprite::~D3DSprite()
 	
 	if(m_frameRects)
 	{
+		m_frameRects->clear();
 		delete m_frameRects;
 		m_frameRects = NULL;
 	}

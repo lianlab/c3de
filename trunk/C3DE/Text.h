@@ -8,7 +8,7 @@ class Text : public D3DSprite
 {
 public:
 	Text(char *a_text, Font *a_font);
-	~Text();
+	virtual ~Text();
 
 	void SetText(char * a_text);
 	char * GetText();

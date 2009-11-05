@@ -39,6 +39,8 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, char *a_bonesBuffer, Image 
 
 	
 
+	
+
 	for(int i = 0; i < m_totalFrames; i++)
 	{
 		t_frameMatrices = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);
@@ -219,21 +221,29 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, vector<char *> *a_bonesBuff
 
 	m_totalFrames = 0;
 
-	D3DXMATRIX *t_frameMatrices;
+	D3DXMATRIX *t_frameMatrices = NULL;
 	D3DXMATRIX t_currentFrameMatrix;
+
+	
 
 	for(int i = 0; i < totalAnimationFiles; i++)
 	{
+		//each file
 		BufferReader *t_reader = new BufferReader((*a_bonesBuffer)[i]);
 		int t_totalFrames = t_reader->ReadNextInt();
 		m_totalFrames += t_totalFrames;
 		m_totalBones = t_reader->ReadNextInt();
 
+		
+
 		for(int i = 0; i < t_totalFrames; i++)
 		{
+			//each frame
 			t_frameMatrices = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * m_totalBones);
+			
 			for(int j = 0; j < m_totalBones; j++)
-			{											
+			{			
+				//each bone
 				D3DXMatrixIdentity(&t_currentFrameMatrix);
 
 				t_currentFrameMatrix._11 = t_reader->ReadNextFloat();
@@ -273,18 +283,28 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, vector<char *> *a_bonesBuff
 		delete t_reader;
 		t_reader = NULL;
 		
-	}							
+	}
+
+	
 
 	
 	BufferReader * t_reader = new BufferReader(a_meshBuffer);
 
 	int totalVertices = t_reader->ReadNextInt();
 	int totalIndices = t_reader->ReadNextInt();
+
+	float minX = FLT_MAX;
+	float minY = FLT_MAX;
+	float minZ = FLT_MAX;
+
+	float maxX = FLT_MIN;
+	float maxY = FLT_MIN;
+	float maxZ = FLT_MIN;
 	for(int i = 0; i < totalVertices; i++)
 	{
-		float posx = t_reader->ReadNextFloat();
-		float posy = t_reader->ReadNextFloat();
-		float posz = t_reader->ReadNextFloat();
+		float posX = t_reader->ReadNextFloat();
+		float posY = t_reader->ReadNextFloat();
+		float posZ = t_reader->ReadNextFloat();
 		float nx = t_reader->ReadNextFloat();
 		float ny = t_reader->ReadNextFloat();
 		float nz = t_reader->ReadNextFloat();
@@ -292,12 +312,22 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, vector<char *> *a_bonesBuff
 		float v = t_reader->ReadNextFloat();
 		float b0Weight = t_reader->ReadNextFloat();
 
+		maxX = max(maxX, posX);
+		maxY = max(maxY, posY);
+		maxZ = max(maxZ, posZ);
+
+		minX = min(minX, posX);
+		minY = min(minY, posY);
+		minZ = min(minZ, posZ);
+
 		
 		int b0 = t_reader->ReadNextInt();
 		int b1 = t_reader->ReadNextInt();
-		m_vertices3->push_back(VertexPosBones(	posx,posy, posz, nx, ny, nz, u, v, b0Weight, b0, b1));
+		m_vertices3->push_back(VertexPosBones(	posX,posY, posZ, nx, ny, nz, u, v, b0Weight, b0, b1));
 		m_indices->push_back(i);
 	}
+
+	m_boundingBox = new AABB(D3DXVECTOR3(minX, minY, minZ), D3DXVECTOR3(maxX, maxY, maxZ));
 	
 
 	delete t_reader;
@@ -356,15 +386,15 @@ C3DESkinnedMesh::C3DESkinnedMesh(char *a_meshBuffer, vector<char *> *a_bonesBuff
 		v[i] = m_vertices3->at(i);
 	}
 
-	D3DXVECTOR3 t_min;
-	D3DXVECTOR3 t_max;
+	//D3DXVECTOR3 t_min;
+	//D3DXVECTOR3 t_max;
 
-	HR(D3DXComputeBoundingBox((D3DXVECTOR3*)v, m_xMesh->GetNumVertices(), 
-		sizeof(VertexPosBones), &t_min, &t_max));
+	//HR(D3DXComputeBoundingBox((D3DXVECTOR3*)v, m_xMesh->GetNumVertices(), 
+	//	sizeof(VertexPosBones), &t_min, &t_max));
 
-	m_boundingBox = new AABB(t_min, t_max);
-	CalculateTopCollisionArea();
-	CalculateOBB(t_min, t_max);
+	//m_boundingBox = new AABB(t_min, t_max);
+	//CalculateTopCollisionArea();
+	//CalculateOBB(t_min, t_max);
 
 	
 	
@@ -402,6 +432,24 @@ C3DESkinnedMesh::~C3DESkinnedMesh()
 	FreeTextures();
 	//CRASH
 	FreeMaterials();
+
+	int totalPoseMatrices = m_poseMatrices->size();
+
+	for(int i = 0; i < totalPoseMatrices; i++)
+	{
+		free((*m_poseMatrices)[i]);
+	}	
+
+	delete m_animationFramesDuration;
+	delete m_animationsTotalFrames;
+	delete m_poseMatrices;	
+	delete m_vertices3;
+
+	m_animationFramesDuration = NULL;
+	m_animationsTotalFrames = NULL;
+	m_poseMatrices = NULL;	
+	m_vertices3 = NULL;
+	//delete m_indices;
 }
 
 void C3DESkinnedMesh::SetShaderHandlers()

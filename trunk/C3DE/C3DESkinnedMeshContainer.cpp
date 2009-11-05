@@ -1,6 +1,7 @@
 #if 1
 #include "C3DESkinnedMeshContainer.h"
 #include "C3DESkinnedMeshFX.h"
+#include "DebugMemory.h"
 
 C3DESkinnedMeshContainer::C3DESkinnedMeshContainer(C3DESkinnedMesh *a_mesh)
 {
@@ -20,11 +21,39 @@ C3DESkinnedMeshContainer::C3DESkinnedMeshContainer(C3DESkinnedMesh *a_mesh)
 	m_poseMatrix = NULL;
 
 	m_elapsedTime = 0;
+
+	if(m_poseMatrix != NULL)
+	{
+		free(m_poseMatrix);
+		m_poseMatrix = NULL;
+	}
+
+	
+	int totalBones = m_mesh->GetTotalBones();
+	m_poseMatrix = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * totalBones);
 }
 
 C3DESkinnedMeshContainer::~C3DESkinnedMeshContainer()
 {
-	
+
+	//since those pointers all came from the mesh itself, we just set them to NULL
+	//so the  base class destructor won't try to free an invalid pointer
+	m_xMesh = NULL;
+
+	m_effect = NULL;
+
+	m_materials = NULL;
+
+	m_textures = NULL;
+
+	m_boundingBox = NULL;
+
+	if(m_poseMatrix != NULL)
+	{
+		free(m_poseMatrix);
+		m_poseMatrix = NULL;
+	}
+
 }
 
 void C3DESkinnedMeshContainer::SetShaderHandlers()
@@ -149,23 +178,13 @@ void C3DESkinnedMeshContainer::Update(int deltaTime)
 
 	float frameTimeRatio = (float)remainingTime / (float)(*m_mesh->GetAnimationFramesDuration())[t_currentFrame];
 
-	if(t_currentFrame == 286)
-	{
-		int gkfd = 876;
-	}
+	
 	D3DXMATRIX *t_currentFrameMatrices = (*m_mesh->GetPoseMatrices())[t_currentFrame];
 	D3DXMATRIX *t_nextFrameMatrices = (*m_mesh->GetPoseMatrices())[nextFrame];
 	
-	if(m_poseMatrix != NULL)
-	{
-		free(m_poseMatrix);
-		m_poseMatrix = NULL;
-	}
-
 	
-	int totalBones = m_mesh->GetTotalBones();
-	m_poseMatrix = (D3DXMATRIX*)malloc(sizeof(D3DXMATRIX) * totalBones);
 
+	int totalBones = m_mesh->GetTotalBones();
 	
 
 	for(int i = 0 ; i < totalBones; i++)

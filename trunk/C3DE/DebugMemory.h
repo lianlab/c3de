@@ -1,4 +1,4 @@
-#if 0
+#if 1
 #ifdef DEBUG_MEMORY
 #ifndef _DEBUG_MEMORY_INCLUDED_
 #define _DEBUG_MEMORY_INCLUDED_
@@ -7,17 +7,17 @@
 #include <string.h>
 
 // Some datatypes we use.  Define them if they're not defined already.
-#ifndef BOOL
-#define BOOL int
-#endif
-#ifndef DWORD
-#define DWORD unsigned long
-#endif
-#ifndef WORD
-#define WORD unsigned int
-#endif
-#define TRUE 1
-#define FALSE 0
+//#ifndef BOOL
+//#define BOOL int
+//#endif
+//#ifndef DWORD
+//#define DWORD unsigned long
+//#endif
+//#ifndef WORD
+//#define WORD unsigned int
+//#endif
+//#define TRUE 1
+//#define FALSE 0
 
 #ifndef WIN32
 #define __cdecl __attribute__((__cdecl__))
@@ -50,9 +50,9 @@ void * __cdecl _debug_calloc(unsigned int nNum, unsigned int size, const char *f
 #endif 
 
 // Prototype to dump the unfreed list and display any leaks.
-void DumpUnfreed(BOOL bFreeList);
+void DumpUnfreed(int bFreeList);
 // Prototype to turn on the log file for all memory allocations and deallocations to trace them
-void DumpMemoryLogAllAllocations(BOOL bEnable);
+void DumpMemoryLogAllAllocations(int bEnable);
 
 #endif
 #endif

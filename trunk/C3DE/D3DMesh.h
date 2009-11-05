@@ -144,7 +144,7 @@ class D3DMesh : public Mesh
 {
 public:
 	D3DMesh();
-	~D3DMesh();
+	virtual ~D3DMesh();
 	IDirect3DVertexDeclaration9 * GetVertexDeclaration(){return m_vertexDeclaration;}
 	void SetVertexDeclaration(IDirect3DVertexDeclaration9 *vertexDeclaration){m_vertexDeclaration = vertexDeclaration;}
 	IDirect3DVertexBuffer9 * GetVertexBuffer();

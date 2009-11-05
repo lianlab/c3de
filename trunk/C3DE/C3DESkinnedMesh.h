@@ -10,7 +10,7 @@ class C3DESkinnedMesh : public D3DMesh
 public:
 	C3DESkinnedMesh(char * a_meshBuffer, char *a_bonesBuffer, Image *a_texture, int frameDuration);
 	C3DESkinnedMesh(char *a_meshBuffer, vector<char *> *a_bonesBuffer, Image *a_texture, int frameDuration);
-	~C3DESkinnedMesh();	
+	virtual ~C3DESkinnedMesh();	
 	
 	void SetShaderHandlers();	
 

@@ -12,7 +12,7 @@ WomanMesh::WomanMesh() : D3DSkinnedMesh()
 	//m_texture = (Image *) d3dImage;
 
 	AddTexture((Image *) d3dImage);
-	AddMaterial(Material::WHITE);
+	AddMaterial(new Material(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 16.0f));
 
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_SKINNED_MESH_BOOK_FX_ID);
 

@@ -76,10 +76,10 @@ Game::Game(Application * app)
 
 	t = ResourceManager::GetInstance()->GetTextureByID(IMAGE_BUTTON_ID);
 	D3DImage *image2 = new D3DImage(t);			
-	m_sprite = new D3DSprite(image, 64, 64, 30, 6, 5, 50);
+	//m_sprite = new D3DSprite(image, 64, 64, 30, 6, 5, 50);
 
-	m_sprite->SetX(50);
-	m_sprite->SetY(50);
+	//m_sprite->SetX(50);
+	//m_sprite->SetY(50);
 
 	
 
@@ -185,6 +185,18 @@ Game::~Game()
 		delete m_text;
 		m_text = NULL;
 	}
+
+#if 1
+	if(m_characterContainer0)
+	{
+		delete m_characterContainer0;
+		m_characterContainer0 = 0;
+	}
+#endif
+
+	
+
+	
 }
 
 void Game::UpdateLoadingBar(int loadedObjects, int totalobjects)
@@ -222,22 +234,28 @@ void Game::Update(int deltaTime)
 	int animationTime = m_characterContainer0->GetTotalAnimationTime();
 	m_character0UpdateTime = m_character0UpdateTime % animationTime;
 
+#if 0
 	m_spiderUpdateTime = m_spiderUpdateTime % m_spiderContainer->GetTotalAnimationTime();
 	m_dogUpdateTime = m_dogUpdateTime % m_dogContainer->GetTotalAnimationTime();
 	m_ninjaUpdateTime = m_ninjaUpdateTime % m_ninjaContainer->GetTotalAnimationTime();
+#endif
 
+	
 
 	m_characterContainer0->SetAnimationTime(m_character0UpdateTime);
+	
+
+#if 0
 	m_spiderContainer->SetAnimationTime(m_spiderUpdateTime);
 	m_dogContainer->SetAnimationTime(m_dogUpdateTime);
 	m_ninjaContainer->SetAnimationTime(m_ninjaUpdateTime);
-
+#endif
 
 	int totalObjects = m_testScene->GetMeshesVector()->size();
 		
 	UpdateInput(deltaTime);
 		
-	m_sprite->Update(deltaTime);
+	//m_sprite->Update(deltaTime);
 
 	m_deltaTime = deltaTime;
 
@@ -368,11 +386,13 @@ void Game::Render(Renderer *renderer)
 	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2);
 	m_testScene->AddNode(t_node2);	
 
+#if 0
 	C3DETransform *t4 = new C3DETransform();
 	t4->Rotate(3.1415 / 2.0f, &D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 	t4->Translate(25.0f, 0.0f, 25.0f);
 	SceneNode *t_node4 = new SceneNode(m_dogContainer, t4);	
 	m_testScene->AddNode(t_node4);
+#endif
 
 	C3DETransform *t5 = new C3DETransform();	
 	t5->Translate(m_camX, m_camY, m_camZ);
@@ -427,7 +447,7 @@ void Game::Render(Renderer *renderer)
 
 	//renderer->DrawScene(m_testScene);
 	//renderer->DrawSprite(m_button);
-	renderer->DrawSprite((Sprite *)m_sprite);
+	//renderer->DrawSprite((Sprite *)m_sprite);
 
 
 
@@ -539,7 +559,7 @@ void Game::InitializeMeshes()
 	
 	vector<char*> *animations = new vector<char*>;
 
-
+#if 0
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_CARRY_2_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_CARRY_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_COOL_ID));
@@ -549,7 +569,10 @@ void Game::InitializeMeshes()
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_MOONWALK_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_RUN_LOOP_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_WALK_BACKWARD_ID));
-	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_IDLE_ID));
+#endif
+	
+	//animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_IDLE_ID));
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_COOL_ID));
 
 	m_characterMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_ID),
 											animations,
@@ -603,11 +626,12 @@ void Game::InitializeMeshes()
 
 
 
+	
 
 
 
 
-
+#if 0
 
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
@@ -632,7 +656,7 @@ void Game::InitializeMeshes()
 										dogTexture, 33);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
-	
+#endif
 
 	Tree0 *m_tree0 = new Tree0();
 	m_loadedObjects++;
@@ -978,12 +1002,16 @@ void Game::InitializeMeshes()
 
 	m_characterContainer0 = new C3DESkinnedMeshContainer(m_characterMesh);
 	
-	m_characterContainer0->SetCurrentAnimation(9);
+	m_characterContainer0->SetCurrentAnimation(0);
+
+	
+#if 0
 	m_spiderContainer = new C3DESkinnedMeshContainer(m_spiderMesh);
 	m_dogContainer = new C3DESkinnedMeshContainer(m_dogMesh);
 	m_ninjaContainer = new C3DESkinnedMeshContainer(m_ninjaMesh);
 
 	m_ninjaContainer->SetCurrentAnimation(0);
+#endif
 	
 }
 

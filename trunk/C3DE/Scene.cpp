@@ -54,6 +54,12 @@ Scene::~Scene()
 		delete m_pointLight;
 		m_pointLight = NULL;
 	}
+
+	if(m_sceneNodes)
+	{
+		delete m_sceneNodes;
+		m_sceneNodes = NULL;
+	}
 }
 
 void Scene::Update(int deltaTime)

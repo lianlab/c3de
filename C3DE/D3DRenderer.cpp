@@ -11,6 +11,7 @@
 #include "VertexDeclarations.h"
 #include "Dwarf.h"
 #include "FireRingFX.h"
+#include "DebugMemory.h"
 
 #define REAL_HACK 0
 #define DRAW_BOUNDING_BOXES 0
@@ -28,6 +29,7 @@ D3DRenderer * D3DRenderer::m_instance = NULL;
 
 D3DRenderer * D3DRenderer::GetInstance()
 {
+	
 	if(!m_instance)
 	{
 		m_instance = new D3DRenderer();

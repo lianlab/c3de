@@ -1,4 +1,5 @@
 #include "Text.h"
+#include "DebugMemory.h"
 
 Text::Text(char *a_text, Font *a_font):D3DSprite(a_font->GetImage(), 0, 0, 0, 0, 0, 1000) 
 {
@@ -35,7 +36,11 @@ Text::Text(char *a_text, Font *a_font):D3DSprite(a_font->GetImage(), 0, 0, 0, 0,
 
 Text::~Text()
 {
-
+	if(m_rectsIndices)
+	{
+		delete m_rectsIndices;
+		m_rectsIndices = NULL;
+	}
 }
 
 void Text::BuildIndices()

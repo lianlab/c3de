@@ -1,4 +1,5 @@
 #include "OBB.h"
+#include "DebugMemory.h"
 
 OBB::OBB(D3DXVECTOR3 position, D3DXVECTOR3 size)
 {

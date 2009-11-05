@@ -1,4 +1,5 @@
 #include "TopCollisionArea.h"
+#include "DebugMemory.h"
 
 TopCollisionArea::TopCollisionArea(D3DXVECTOR3 upLeft, D3DXVECTOR3 upRight, D3DXVECTOR3 downLeft, D3DXVECTOR3 downRight)
 {

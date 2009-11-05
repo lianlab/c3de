@@ -129,7 +129,7 @@ void C3DESkinnedMeshContainer::SetAnimationTime(int time)
 
 void C3DESkinnedMeshContainer::Update(int deltaTime)
 {
-#if 1
+#if 0
 
 	
 	int totalBones2 = m_mesh->GetTotalBones();

@@ -22,6 +22,10 @@ public:
 
 	int GetCurrentAnimation();
 
+	C3DESkinnedMesh * GetMesh();
+
+	D3DXMATRIX * GetPoseMatrix();
+
 protected:
 
 	

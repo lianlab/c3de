@@ -36,6 +36,14 @@
 	};
 #endif
 
+enum
+{
+	EFFECT_PER_VERTEX_LIGHTING,
+	EFFECT_SKINNED_MESH,
+	EFFECT_WALL,
+	EFFECT_TREE,
+	TOTAL_EFFECTS
+};
 class D3DRenderer : public Renderer
 {
 public:
@@ -60,6 +68,7 @@ public:
 
 	void DrawScene(Scene *scene);
 	void DrawScene2(Scene *scene);
+	void DrawScene3(Scene *scene);
 
 	void SetScreenMode(int newScreenMode);
 
@@ -115,6 +124,9 @@ private:
 
 	void DrawXMesh(D3DMesh * a_xMesh);
 	void DrawXMesh2(D3DMesh * a_xMesh, D3DXMATRIX *a_matrix);
+	void DrawXMesh3(D3DMesh * a_xMesh, D3DXMATRIX *a_matrix,  int effect);
+
+	void ApplyEffect(int effect, D3DMesh * a_mesh, D3DXMATRIX *a_transform, int subset);
 
 	void CreateAxis();
 

@@ -11,6 +11,11 @@
 #include "VertexDeclarations.h"
 #include "Dwarf.h"
 #include "FireRingFX.h"
+#include "PerVertexLighting.h"
+#include "C3DESkinnedMeshFX.h"
+#include "C3DESkinnedMesh.h"
+#include "C3DESkinnedMeshContainer.h"
+#include "PerVertexLightingWallNoFog.h"
 #include "DebugMemory.h"
 
 #define REAL_HACK 0
@@ -838,6 +843,67 @@ void D3DRenderer::DrawScene2(Scene *scene)
 
 }
 
+void D3DRenderer::DrawScene3(Scene *scene)
+{	
+	this->hidden = 0;
+	this->shown = 0;
+	int totalNodes = scene->GetSceneNodes()->size();
+	
+	D3DScene *t_scene = static_cast<D3DScene *> (scene);						
+	D3DCamera *cam = (D3DCamera *) m_camera;
+	D3DXMATRIX t_view = cam->GetMatrix();	
+	
+	D3DXMATRIX t_projView = t_view*m_proj;	
+
+	CalculateFrustumPlanes();
+	
+
+	FXManager::GetInstance()->SetUpdateHandlers(cam->GetPosition(), t_projView);
+
+
+	UINT num = 0;						
+	
+
+	for(int i = 0; i < totalNodes; i++)
+	{				
+		
+		Mesh *mesh = (*scene->GetSceneNodes())[i]->GetMesh();
+		int nodeEffect = (*scene->GetSceneNodes())[i]->GetEffect();
+		D3DXMATRIX *t_matrix = (*scene->GetSceneNodes())[i]->GetTransform();
+		D3DMesh *d3dmesh = (D3DMesh *)mesh;	
+		
+		if(d3dmesh->GetXMesh())
+		{
+			AABB *t_boundingBox = d3dmesh->GetBoundingBox();
+			if(t_boundingBox != NULL)
+			{
+				if(IsMeshWithinView(d3dmesh, *t_matrix))
+				//if(true)
+				{
+					this->shown++;
+					#if DRAW_BOUNDING_BOXES
+					DrawOBB(d3dmesh, *t_matrix);
+					#endif
+					DrawXMesh3(d3dmesh, t_matrix, nodeEffect);
+				}
+				else
+				{
+					this->hidden++;
+				}
+			}
+			else
+			{
+				DrawXMesh3(d3dmesh, t_matrix, nodeEffect);
+			}
+
+
+		}
+			
+
+	}	
+
+}
+
 void D3DRenderer::DrawXMesh2(D3DMesh * a_mesh, D3DXMATRIX *a_transform)
 {	
 
@@ -877,6 +943,148 @@ void D3DRenderer::DrawXMesh2(D3DMesh * a_mesh, D3DXMATRIX *a_transform)
 	
 	FXManager::GetInstance()->End();
 
+}
+
+void D3DRenderer::DrawXMesh3(D3DMesh * a_mesh, D3DXMATRIX *a_transform, int effect)
+{	
+
+	//PerVertexLighting * t_auei = static_cast<PerVertexLighting *>(a_mesh->GetEffect());			
+	FXManager::GetInstance()->Begin(a_mesh->GetEffect());				
+
+	//int t_totalMaterials = a_mesh->GetMaterials()->size();
+	int t_totalMaterials = a_mesh->GetMaterials()->size();
+	ID3DXMesh *t_xMesh = a_mesh->GetXMesh();		
+	
+
+	for(int j = 0; j < t_totalMaterials; j++)
+	{				
+		
+		//a_mesh->SetCurrentMaterial(a_mesh->GetMaterials()->at(j));
+		a_mesh->SetCurrentMaterial((*a_mesh->GetMaterials())[j]);
+
+		
+		int t_totalTextures = a_mesh->GetTextures()->size();
+		
+		if(j < t_totalTextures)
+		{			
+			//Image *t_image = a_mesh->GetTextures()->at(j);			
+			Image *t_image = (*a_mesh->GetTextures())[j];			
+			a_mesh->SetCurrentTexture(t_image);
+		}
+
+#if 1
+
+		ApplyEffect(effect, a_mesh, a_transform, j);
+		
+#else
+		a_mesh->SetShaderHandlers();
+		FX * t_effect = a_mesh->GetEffect();
+		t_effect->SetTransformMatrix(*a_transform);
+		FXManager::GetInstance()->PreRender();	
+		a_mesh->PreRender((Renderer*)this);
+		HR(t_xMesh->DrawSubset(j));
+		a_mesh->PosRender((Renderer*)this);
+		FXManager::GetInstance()->PosRender();
+#endif
+	}		
+	
+	FXManager::GetInstance()->End();
+
+}
+
+void D3DRenderer::ApplyEffect(int effect, D3DMesh * a_mesh, D3DXMATRIX *a_transform, int subset)
+{
+	ID3DXMesh *t_xMesh = a_mesh->GetXMesh();	
+	PerVertexLighting *t_effect;
+	D3DImage *t_image;
+	C3DESkinnedMesh * t_mesh;
+	D3DImage *t_d3dText;
+	C3DESkinnedMeshFX *t_skinnedMeshEffect;
+	C3DESkinnedMeshContainer *t_skinnedMesh;
+	PerVertexLightingWallNoFog *t_wallEffect;
+
+	switch(effect)
+	{
+		case EFFECT_PER_VERTEX_LIGHTING:
+			t_effect = (PerVertexLighting *)ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID);
+			
+			t_effect->SetObjectMaterials(	a_mesh->GetCurrentMaterial()->GetAmbient(), a_mesh->GetCurrentMaterial()->GetDiffuse(),
+											a_mesh->GetCurrentMaterial()->GetSpecular(), a_mesh->GetCurrentMaterial()->GetSpecularPower());											
+			t_image = (D3DImage*) a_mesh->GetCurrentTexture();
+			t_effect->SetObjectTexture(t_image->GetTexture());
+			t_effect->SetTransformMatrix(*a_transform);
+			t_effect->SetAlpha(1.0f);
+
+			FXManager::GetInstance()->PreRender();	
+			HR(t_xMesh->DrawSubset(subset));
+			FXManager::GetInstance()->PosRender();
+
+			break;
+		case EFFECT_SKINNED_MESH:
+
+
+			t_skinnedMeshEffect = (C3DESkinnedMeshFX *) ShaderManager::GetInstance()->GetFXByID(SHADER_C3DE_SKINNED_MESH_FX_ID);
+			t_skinnedMeshEffect->SetObjectMaterials(	a_mesh->GetCurrentMaterial()->GetAmbient(), a_mesh->GetCurrentMaterial()->GetDiffuse(),
+											a_mesh->GetCurrentMaterial()->GetSpecular(), a_mesh->GetCurrentMaterial()->GetSpecularPower());
+			t_d3dText = (D3DImage *) a_mesh->GetCurrentTexture();
+			t_skinnedMeshEffect->SetObjectTexture(t_d3dText->GetTexture());
+			t_skinnedMeshEffect->SetTransformMatrix(*a_transform);
+			t_skinnedMesh = (C3DESkinnedMeshContainer*) a_mesh;
+			
+			t_mesh = t_skinnedMesh->GetMesh();
+			
+			t_skinnedMeshEffect->SetFrameRootMatrices(t_skinnedMesh->GetPoseMatrix(), t_mesh->GetTotalBones());
+
+
+			//a_mesh->SetShaderHandlers();
+			//FX * t_effect = a_mesh->GetEffect();
+			//t_effect->SetTransformMatrix(*a_transform);
+			FXManager::GetInstance()->PreRender();	
+			//a_mesh->PreRender((Renderer*)this);
+			HR(t_xMesh->DrawSubset(subset));
+			//a_mesh->PosRender((Renderer*)this);
+			FXManager::GetInstance()->PosRender();
+
+			break;
+		case EFFECT_WALL:
+
+
+			t_wallEffect = (PerVertexLightingWallNoFog *)ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG_ID);
+			
+			t_wallEffect->SetObjectMaterials(	a_mesh->GetCurrentMaterial()->GetAmbient(), a_mesh->GetCurrentMaterial()->GetDiffuse(),
+											a_mesh->GetCurrentMaterial()->GetSpecular(), a_mesh->GetCurrentMaterial()->GetSpecularPower());											
+			t_image = (D3DImage*) a_mesh->GetCurrentTexture();
+			t_wallEffect->SetObjectTexture(t_image->GetTexture());
+			t_wallEffect->SetTransformMatrix(*a_transform);
+			t_wallEffect->SetAlpha(1.0f);
+
+			FXManager::GetInstance()->PreRender();	
+			HR(t_xMesh->DrawSubset(subset));
+			FXManager::GetInstance()->PosRender();
+			break;
+		case EFFECT_TREE:
+
+			HR(D3DRenderer::GetDevice()->SetRenderState(D3DRS_ALPHATESTENABLE, true));
+			HR(D3DRenderer::GetDevice()->SetRenderState(D3DRS_ALPHAREF, 200));
+			HR(D3DRenderer::GetDevice()->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER));
+
+	
+			t_effect = (PerVertexLighting *)ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID);
+			
+			t_effect->SetObjectMaterials(	a_mesh->GetCurrentMaterial()->GetAmbient(), a_mesh->GetCurrentMaterial()->GetDiffuse(),
+											a_mesh->GetCurrentMaterial()->GetSpecular(), a_mesh->GetCurrentMaterial()->GetSpecularPower());											
+			t_image = (D3DImage*) a_mesh->GetCurrentTexture();
+			t_effect->SetObjectTexture(t_image->GetTexture());
+			t_effect->SetTransformMatrix(*a_transform);
+			t_effect->SetAlpha(1.0f);
+
+			FXManager::GetInstance()->PreRender();	
+			HR(t_xMesh->DrawSubset(subset));
+			FXManager::GetInstance()->PosRender();
+
+			HR(D3DRenderer::GetDevice()->SetRenderState(D3DRS_ALPHATESTENABLE, false));
+			break;
+	}
 }
 
 

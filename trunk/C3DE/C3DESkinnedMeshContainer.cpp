@@ -60,6 +60,11 @@ C3DESkinnedMeshContainer::~C3DESkinnedMeshContainer()
 
 }
 
+D3DXMATRIX * C3DESkinnedMeshContainer::GetPoseMatrix()
+{
+	return m_poseMatrix;
+}
+
 void C3DESkinnedMeshContainer::SetShaderHandlers()
 {
 	C3DESkinnedMeshFX *t_effect = (C3DESkinnedMeshFX *) m_effect;
@@ -79,6 +84,11 @@ void C3DESkinnedMeshContainer::SetShaderHandlers()
 int C3DESkinnedMeshContainer::GetCurrentAnimation()
 {
 	return m_currentAnimation;
+}
+
+C3DESkinnedMesh * C3DESkinnedMeshContainer::GetMesh()
+{
+	return m_mesh;
 }
 
 void C3DESkinnedMeshContainer::SetCurrentAnimation(int animationIdx)

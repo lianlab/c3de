@@ -7,13 +7,15 @@
 class SceneNode
 {
 public:
-	SceneNode(Mesh * a_mesh, C3DETransform *a_transform);
+	SceneNode(Mesh * a_mesh, C3DETransform *a_transform, int effect);
 	~SceneNode();
 
 	D3DXMATRIX * GetTransform();
 	Mesh* GetMesh();
+	int GetEffect();
 protected:
 	Mesh *m_mesh;
 	C3DETransform *m_transform;
+	int m_effect;
 };
 #endif

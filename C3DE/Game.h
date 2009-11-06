@@ -45,6 +45,11 @@
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision/CollisionDispatch/btGhostObject.h"
 #include "BulletDynamics/Character/btKinematicCharacterController.h"
+#include "LandscapeWall.h"
+#include "Tree0.h"
+#include "Tree1.h"
+#include "Tree2.h"
+#include "Tree3.h"
 
 
 
@@ -185,6 +190,15 @@ private:
 	btCollisionShape* m_groundShape;
 	btPairCachingGhostObject* m_characterGhost;
 	btKinematicCharacterController *m_character;
+
+	LandscapeWall *m_wall1;
+	LandscapeWall *m_wall2;
+	LandscapeWall *m_wall3;
+
+	Tree0 * m_tree0;
+	Tree1 * m_tree1;
+	Tree2 * m_tree2;
+	Tree3 * m_tree3;
 
 };
 

@@ -44,6 +44,8 @@ public:
 	void AddMaterial(Material *a_material){m_materials->push_back(a_material);}
 	void SetCurrentMaterial(Material *a_material){m_currentMaterial = a_material;}
 	void SetCurrentTexture(Image *a_texture){m_currentTexture = a_texture;}
+	Material * GetCurrentMaterial(){return m_currentMaterial;}
+	Image * GetCurrentTexture(){return m_currentTexture;}
 	//Material * GetMaterial(){return m_material;}
 
 	virtual void PreRender(Renderer *a_renderer){}

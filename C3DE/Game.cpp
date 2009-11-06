@@ -56,6 +56,14 @@ int objectsCollidesWith = COL_NOTHING;
 
 Game::Game(Application * app)
 {
+	m_tree0 = NULL;
+	m_tree1 = NULL;
+	m_tree2 = NULL;
+	m_tree3 = NULL;
+
+	m_wall1 = NULL;
+	m_wall2 = NULL;
+	m_wall2 = NULL;
 
 	m_character0UpdateTime = 0;
 	m_spiderUpdateTime = 0;
@@ -380,7 +388,7 @@ void Game::Render(Renderer *renderer)
 	m_testScene->ClearAllNodes();
 
 	C3DETransform *t0 = new C3DETransform();	
-	SceneNode *t_node0 = new SceneNode(m_ground, t0);	
+	SceneNode *t_node0 = new SceneNode(m_ground, t0, EFFECT_PER_VERTEX_LIGHTING);	
 	m_testScene->AddNode(t_node0);	
 
 
@@ -392,7 +400,7 @@ void Game::Render(Renderer *renderer)
 	C3DETransform *t2 = new C3DETransform();
 	t2->Set(&t_characterTransform2);
 	t2->Translate(0.0f, -m_capsuleHeight, 0.0f);
-	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2);
+	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2, EFFECT_SKINNED_MESH);
 	m_testScene->AddNode(t_node2);	
 	
 
@@ -408,7 +416,7 @@ void Game::Render(Renderer *renderer)
 
 	C3DETransform *t5 = new C3DETransform();	
 	t5->Translate(m_camX, m_camY, m_camZ);
-	SceneNode *t_node5 = new SceneNode(m_skyBox, t5);	
+	SceneNode *t_node5 = new SceneNode(m_skyBox, t5, EFFECT_PER_VERTEX_LIGHTING);	
 	m_testScene->AddNode(t_node5);
 
 	
@@ -420,7 +428,22 @@ void Game::Render(Renderer *renderer)
 		C3DETransform *t_transform = new C3DETransform();	
 		D3DXMATRIX *t_matrix = m_sceneStaticObjectsTransforms[i]->GetMatrix();		
 		t_transform->Set(t_matrix);
-		SceneNode *t_node = new SceneNode(t_mesh, t_transform);
+
+		int effect = EFFECT_PER_VERTEX_LIGHTING;
+
+		if(t_mesh == m_wall1 || t_mesh == m_wall2 || t_mesh == m_wall3)
+		{
+			effect = EFFECT_WALL;
+
+		}
+		else if(t_mesh == m_tree0 || t_mesh == m_tree1 || t_mesh == m_tree2 || t_mesh == m_tree3)
+		{
+			effect = EFFECT_TREE;
+
+		}
+
+
+		SceneNode *t_node = new SceneNode(t_mesh, t_transform, effect);
 		m_testScene->AddNode(t_node);
 		
 	}	
@@ -458,7 +481,8 @@ void Game::Render(Renderer *renderer)
 						1.75f / 2.0f, t_matrix);
 	
 #endif
-	renderer->DrawScene2(m_testScene);
+	//renderer->DrawScene2(m_testScene);
+	renderer->DrawScene3(m_testScene);
 
 
 	//renderer->DrawScene(m_testScene);
@@ -674,31 +698,31 @@ void Game::InitializeMeshes()
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 #endif
 
-	Tree0 *m_tree0 = new Tree0();
+	m_tree0 = new Tree0();
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	Tree1 *m_tree1 = new Tree1();
+	m_tree1 = new Tree1();
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	Tree2 *m_tree2 = new Tree2();
+	m_tree2 = new Tree2();
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	Tree3 *m_tree3 = new Tree3();
+	m_tree3 = new Tree3();
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeWall *m_wall1 = new LandscapeWall(IMAGE_BRICKS_ID);
+	m_wall1 = new LandscapeWall(IMAGE_BRICKS_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeWall *m_wall2 = new LandscapeWall(IMAGE_WALL_GRASS_ID);
+	m_wall2 = new LandscapeWall(IMAGE_WALL_GRASS_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
-	LandscapeWall *m_wall3 = new LandscapeWall(IMAGE_WALL_WOOD_ID);
+	m_wall3 = new LandscapeWall(IMAGE_WALL_WOOD_ID);
 	m_loadedObjects++;
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 

@@ -8,22 +8,9 @@ uniform extern float4x4 gWorld;
 uniform extern float4x4 gWorldInvTrans;
 uniform extern float4x4 gWVP;
 
-uniform extern float4 gAmbientMtrl;
-uniform extern float4 gAmbientLight;
-uniform extern float4 gDiffuseMtrl;
-uniform extern float4 gDiffuseLight;
-uniform extern float4 gSpecularMtrl;
-uniform extern float4 gSpecularLight;
-uniform extern float  gSpecularPower;
-uniform extern float3 gLightVecW;
-uniform extern float3 gEyePosW;
 uniform extern texture gTex;
 uniform extern float4x4 gTransformMatrix;
-uniform extern float gAlpha;
-
-static float3 gFogColor = (0.5f, 0.5f, 0.5f);
-static float gFogStart = 1.0f;
-static float gFogRange = 200.0f;
+//uniform extern float gAlpha;
 
 sampler TexS = sampler_state
 {
@@ -55,7 +42,6 @@ OutputVS TextureOnlyVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2
 	
 	// Transform to homogeneous clip space.
 	float4 newPos = mul(float4(posL, 1.0f), gTransformMatrix);
-	//outVS.posH = mul(float4(posL, 1.0f), gWVP);
 	outVS.posH = mul(newPos, gWVP);
 	
 	// Pass on texture coordinates to be interpolated in rasterization.

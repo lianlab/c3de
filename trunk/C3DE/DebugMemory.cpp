@@ -1,4 +1,4 @@
-#if 1
+
 
 #ifdef DEBUG_MEMORY
 #define DEBUG_MEMORY_IMPLEMENTATION 1
@@ -10,6 +10,8 @@
 #define NO_LOGGING 1
 
 #define _MAX_FILE 128
+
+#define IGNORE_ALL 1
 
 // Flag that controls the logging of all allocations if enabled by DumpMemoryLogAllAllocations()
 static int _g_bDebugMemoryLogAllAllocations = 0;
@@ -35,7 +37,11 @@ static void DebugMemoryLog(int bAlloc, LPALLOC_INFO pInfo);
 void* __cdecl operator new(unsigned int size, const char *file, int line)
 {
 	  void *ptr = (void *)malloc(size);
+#if IGNORE_ALL
+
+#else
 	  AddMemoryBreadcrumb(ptr, size, file, line);
+#endif
 	  return(ptr);
 }
   
@@ -46,8 +52,12 @@ void __cdecl operator delete(void *p, const char *file, int line)
 {
 		file;		// stop compiler complaint
 		line;
+#if IGNORE_ALL
+		free(p);
+#else
 	  if (DelMemoryBreadcrumb(p))
 				free(p);
+#endif
 }
 
 
@@ -55,8 +65,12 @@ void __cdecl operator delete(void *p, const char *file, int line)
 // delete operator override.
 void __cdecl operator delete(void *p)
 {
+#if IGNORE_ALL
+	free(p);
+#else
 	  if (DelMemoryBreadcrumb(p))
 				free(p);
+#endif
 }
 
 
@@ -65,7 +79,11 @@ void __cdecl operator delete(void *p)
 void * __cdecl operator new [](unsigned int size, const char *file, int line) 
 {
 	  void *ptr = (void *)malloc(size);
+#if IGNORE_ALL
+
+#else
 	  AddMemoryBreadcrumb(ptr, size, file, line);
+#endif
 	  return(ptr);
 }
 
@@ -76,8 +94,12 @@ void __cdecl operator delete [] (void *p, const char *file, int line)
 {
 		file;		// stop compiler complaint
 		line;
+#if IGNORE_ALL
+	free(p);
+#else
 	  if (DelMemoryBreadcrumb(p))
 				free(p);
+#endif
 }
 
 
@@ -85,16 +107,27 @@ void __cdecl operator delete [] (void *p, const char *file, int line)
 // delete [] operator override
 void __cdecl operator delete [] (void *p) 
 {
+#if IGNORE_ALL
+	free(p);
+#else
 	  if (DelMemoryBreadcrumb(p))
 				free(p);
+#endif
 }
 
 //------------------------------------------------------------------------
 // debug version of malloc
 void * __cdecl _debug_malloc(unsigned int size, const char *file, int line) 
 {
+
+
 	  void *ptr = (void *)malloc(size);
+
+#if IGNORE_ALL
+
+#else
 	  AddMemoryBreadcrumb(ptr, size, file, line);
+#endif
 	  return(ptr);
 }
 
@@ -104,7 +137,11 @@ void * __cdecl _debug_malloc(unsigned int size, const char *file, int line)
 void * __cdecl _debug_calloc(unsigned int nNum, unsigned int size, const char *file, int line)
 {
 	  void *ptr = (void *)calloc(nNum, size);
+#if IGNORE_ALL
+
+#else
 	  AddMemoryBreadcrumb(ptr, nNum*size, file, line);
+#endif
 	  return(ptr);
 }
 
@@ -113,12 +150,16 @@ void * __cdecl _debug_calloc(unsigned int nNum, unsigned int size, const char *f
 // debug version of free
 void __cdecl _debug_free(void *p) 
 {
+#if IGNORE_ALL
+	free(p);
+#else
 		// if we did not find this address in our list, then somehow it is getting freed by
 		// us, but we did not allocate the block using one of the debug routines.  Make note
 		// of this case, but free the block anyhow to avoid a leak.
 	  if (DelMemoryBreadcrumb(p) == 0)
 				AddUnallocatedBreadcrumb(p);
 		free(p);
+#endif
 }
 
 
@@ -296,4 +337,3 @@ void DumpUnfreed(int bFreeList)
 #endif
 
 
-#endif

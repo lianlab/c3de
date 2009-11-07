@@ -161,7 +161,12 @@ void FXManager::AddMeshesEffects(Scene *a_scene, vector<Mesh *> *meshes)
 	for(int i = 0; i < totalMeshes; i++)
 	{
 		D3DMesh *t_mesh = static_cast<D3DMesh *>((*meshes)[i]);
-		AddEffect(t_mesh->GetEffect());		
+
+		if(t_mesh != NULL)
+		{
+			AddEffect(t_mesh->GetEffect());		
+		}
+		
 	}	
 
 	D3DXCOLOR ambient = a_scene->GetAmbientLight()->GetColor();

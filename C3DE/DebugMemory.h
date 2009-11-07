@@ -1,4 +1,4 @@
-#if 1
+
 #ifdef DEBUG_MEMORY
 #ifndef _DEBUG_MEMORY_INCLUDED_
 #define _DEBUG_MEMORY_INCLUDED_
@@ -58,4 +58,4 @@ void DumpMemoryLogAllAllocations(int bEnable);
 #endif
 
 
-#endif
+

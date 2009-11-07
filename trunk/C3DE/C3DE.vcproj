@@ -735,6 +735,10 @@
 							RelativePath=".\SupernovaFX.cpp"
 							>
 						</File>
+						<File
+							RelativePath=".\TextureOnlyFX.cpp"
+							>
+						</File>
 					</Filter>
 				</Filter>
 			</Filter>
@@ -1351,6 +1355,10 @@
 						</File>
 						<File
 							RelativePath=".\SupernovaFX.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TextureOnlyFX.h"
 							>
 						</File>
 					</Filter>

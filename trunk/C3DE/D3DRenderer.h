@@ -42,6 +42,7 @@ enum
 	EFFECT_SKINNED_MESH,
 	EFFECT_WALL,
 	EFFECT_TREE,
+	EFFECT_TEXTURE_ONLY,
 	TOTAL_EFFECTS
 };
 class D3DRenderer : public Renderer

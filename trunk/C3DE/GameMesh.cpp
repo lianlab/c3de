@@ -2,6 +2,7 @@
 #include "GameMesh.h"
 #include "ResourceManager.h"
 #include "PerVertexLighting.h"
+#include "TextureOnlyFX.h"
 #include "ResourceManager.h"
 #include "D3DRenderer.h"
 #include "DebugMemory.h"
@@ -12,6 +13,7 @@ GameMesh::GameMesh(int a_meshId, int a_texId, bool a_calculateAABB)
 	
 	//m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_ID);
 	m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID);
+	//m_effect = ShaderManager::GetInstance()->GetFXByID(SHADER_TEXTURE_ONLY_ID);
 	
 	
 

@@ -443,7 +443,7 @@ void Game::Render(Renderer *renderer)
 		D3DXMATRIX *t_matrix = m_sceneStaticObjectsTransforms[i]->GetMatrix();		
 		t_transform->Set(t_matrix);
 
-		int effect = EFFECT_PER_VERTEX_LIGHTING;
+		int effect = EFFECT_TEXTURE_ONLY;
 
 		if(t_mesh == m_wall1 || t_mesh == m_wall2 || t_mesh == m_wall3)
 		{
@@ -1165,7 +1165,12 @@ void Game::InitializeMeshes()
 #endif			
 
 	
-	FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
+	//FXManager::GetInstance()->AddMeshesEffects(m_testScene, m_meshes);
+
+	FXManager::GetInstance()->AddEffect2(m_testScene, ShaderManager::GetInstance()->GetFXByID(SHADER_TEXTURE_ONLY_ID));
+	FXManager::GetInstance()->AddEffect2(m_testScene, ShaderManager::GetInstance()->GetFXByID(SHADER_C3DE_SKINNED_MESH_FX_ID));
+	FXManager::GetInstance()->AddEffect2(m_testScene, ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG_ID));
+	FXManager::GetInstance()->AddEffect2(m_testScene, ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID));
 
 	m_characterContainer0 = new C3DESkinnedMeshContainer(m_characterMesh);
 	

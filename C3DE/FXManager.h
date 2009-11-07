@@ -43,6 +43,7 @@ public:
 
 			
 	void AddEffect(FX *effect);
+	void AddEffect2(Scene *a_scene, FX *effect);
 private:
 	vector<FX *> *m_effects;
 

@@ -18,6 +18,7 @@
 #include "PerVertexLightingNoFog.h"
 #include "PerVertexLightingWallNoFog.h"
 #include "C3DESkinnedMeshFX.h"
+#include "TextureOnlyFX.h"
 #include "DebugMemory.h"
 
 
@@ -177,6 +178,13 @@ void ShaderManager::InitializeResources()
 	D3DXCreateEffectFromFile(m_device, "effects/C3DESkinnedMeshNoLights.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_C3DE_SKINNED_MESH_FX, &errors);	
 	m_effectResources[SHADER_C3DE_SKINNED_MESH_FX_ID] = SHADER_C3DE_SKINNED_MESH_FX;
 	
+	ID3DXEffect * SHADER_TEXTURE_ONLY;
+	errors = 0;	
+	D3DXCreateEffectFromFile(m_device, "effects/TextureOnly.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_TEXTURE_ONLY, &errors);	
+	if(errors)
+		MessageBox(0, (char*) errors->GetBufferPointer(), 0, 0);
+	m_effectResources[SHADER_TEXTURE_ONLY_ID] = SHADER_TEXTURE_ONLY;
+
 
 	if(errors)
 		MessageBox(0, (char*) errors->GetBufferPointer(), 0, 0);
@@ -198,6 +206,7 @@ void ShaderManager::InitializeResources()
 	m_effects[SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID] = new PerVertexLightingNoFog(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG);
 	m_effects[SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG_ID] = new PerVertexLightingWallNoFog(SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG);
 	m_effects[SHADER_C3DE_SKINNED_MESH_FX_ID] = new C3DESkinnedMeshFX(SHADER_C3DE_SKINNED_MESH_FX);
+	m_effects[SHADER_TEXTURE_ONLY_ID] = new TextureOnlyFX(SHADER_TEXTURE_ONLY);
 	
 }
 

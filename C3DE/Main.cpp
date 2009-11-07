@@ -1,3 +1,5 @@
+
+
 #include "CommonDefs.h"
 #include "ReplayDefs.h"
 #include "RandomDefs.h"
@@ -8,6 +10,8 @@
 #include <ctime>
 #include "Guicon.h"
 #include "DebugMemory.h"
+
+
 
 
 #define USE_DEBUG_CONSOLE 0
@@ -230,7 +234,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #endif
 	// Turn on the trace file 'dumpmemorylog.txt'
 
+#ifdef DEBUG_MEMORY
 	DumpMemoryLogAllAllocations(TRUE);
+#endif
 
     D3DApplication *app = new D3DApplication();
 
@@ -284,7 +290,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 	delete app;
 
 	// Dump a report of any unfreed blocks to 'memoryleak.txt', then free the breadcrumb list
+#ifdef DEBUG_MEMORY
 	DumpUnfreed(TRUE);
+#endif
 
     return msg.wParam;
 	

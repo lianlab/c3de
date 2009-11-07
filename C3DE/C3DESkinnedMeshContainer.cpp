@@ -5,6 +5,7 @@
 
 C3DESkinnedMeshContainer::C3DESkinnedMeshContainer(C3DESkinnedMesh *a_mesh)
 {
+	m_currentAnimation = -1;
 	m_mesh = a_mesh;
 	SetCurrentAnimation(0);
 
@@ -93,7 +94,10 @@ C3DESkinnedMesh * C3DESkinnedMeshContainer::GetMesh()
 
 void C3DESkinnedMeshContainer::SetCurrentAnimation(int animationIdx)
 {	
-	
+	if(animationIdx == m_currentAnimation)
+	{
+		return;
+	}
 	m_currentAnimation = animationIdx;
 	m_currentAnimationStartFrame = 0;
 	

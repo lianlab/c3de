@@ -5,14 +5,7 @@
 TextureOnlyFX::TextureOnlyFX(ID3DXEffect *effect):
 FX(effect)
 {
-	
-	
-	m_shaderObjectAmbientMaterial = m_effect->GetParameterByName(0, "gAmbientMtrl");
-	m_shaderObjectDiffuseMaterial = m_effect->GetParameterByName(0, "gDiffuseMtrl");
-	m_shaderObjectSpecularMaterial = m_effect->GetParameterByName(0, "gSpecularMtrl");
-	m_shaderSpecularLightPower = m_effect->GetParameterByName(0, "gSpecularPower");
-	m_shaderAlpha = m_effect->GetParameterByName(0, "gAlpha");
-	
+
 	m_hTex = m_effect->GetParameterByName(0, "gTex");
 
 	
@@ -33,13 +26,13 @@ void TextureOnlyFX::ResetHandlers()
 void TextureOnlyFX::SetObjectMaterials(D3DXCOLOR ambientMaterial, D3DXCOLOR diffuseMaterial,
 							D3DXCOLOR specularMaterial, float specularPower)
 {
+	
+}
 
-	
-	HR(m_effect->SetValue(m_shaderObjectAmbientMaterial, &ambientMaterial,sizeof(D3DXCOLOR)));
-	HR(m_effect->SetValue(m_shaderObjectDiffuseMaterial, &diffuseMaterial, sizeof(D3DXCOLOR)));
-	HR(m_effect->SetValue(m_shaderObjectSpecularMaterial, &specularMaterial, sizeof(D3DXCOLOR)));
-	HR(m_effect->SetFloat(m_shaderSpecularLightPower, specularPower));
-	
+void TextureOnlyFX::SetLightHandlers(	D3DXCOLOR ambientLightColor, D3DXCOLOR diffuseLightColor,
+							D3DXCOLOR specularLightColor, D3DXVECTOR3 lightVector)
+{
+
 }
 
 void TextureOnlyFX::SetObjectTexture(IDirect3DTexture9 *texture)
@@ -52,7 +45,25 @@ void TextureOnlyFX::SetObjectTexture(IDirect3DTexture9 *texture)
 	
 }
 
+void TextureOnlyFX::SetWorldHandlers(D3DXVECTOR3 cameraPosition, D3DXMATRIX worldViewProjection)
+{
+	
+	D3DXMATRIX W;		
+	D3DXMatrixIdentity(&W);			
+
+	D3DXMATRIX WIT;
+	D3DXMatrixInverse(&WIT, 0, &W);
+	D3DXMatrixTranspose(&WIT, &WIT);														
+	
+	
+	HR(m_effect->SetMatrix(m_shaderWorldMatrix, &W));	
+	HR(m_effect->SetMatrix(m_shaderViewMatrix, &worldViewProjection));	
+	HR(m_effect->SetMatrix(m_shaderWorldInverseTransposeMatrix, &WIT));												
+	//HR(m_effect->SetValue(m_shaderEyePosition, cameraPosition, sizeof(D3DXVECTOR3)));
+	
+}
+
 void TextureOnlyFX::SetAlpha(float alpha)
 {
-	HR(m_effect->SetFloat(m_shaderAlpha, alpha));
+	//HR(m_effect->SetFloat(m_shaderAlpha, alpha));
 }

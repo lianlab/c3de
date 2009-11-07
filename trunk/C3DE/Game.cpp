@@ -56,6 +56,7 @@ int objectsCollidesWith = COL_NOTHING;
 
 Game::Game(Application * app)
 {
+	m_characterCurrentRotation = 0.0f;
 	m_tree0 = NULL;
 	m_tree1 = NULL;
 	m_tree2 = NULL;
@@ -275,7 +276,7 @@ void Game::Update(int deltaTime)
 
 	m_deltaTime = deltaTime;
 
-	m_testScene->Update(deltaTime);
+	//m_testScene->Update(deltaTime);
 
 }
 
@@ -309,14 +310,22 @@ void Game::UpdateInput(int deltaTime)
 
 	if(DirectInput::GetInstance()->IsKeyDown(200))	
 	{	
+		m_characterCurrentRotation = 0.75f;
+		m_characterContainer0->SetCurrentAnimation(0);
 		//UP
 		t_walkVector += t_walkDirectionVector * posMultiplier;
 	}
-	if(DirectInput::GetInstance()->IsKeyDown(208))
+	else if(DirectInput::GetInstance()->IsKeyDown(208))
 	{	
+		m_characterContainer0->SetCurrentAnimation(8);
 		//DOWN			
 		t_walkVector -= t_walkDirectionVector * posMultiplier;
 	}	
+	else
+	{
+		m_characterCurrentRotation = 0.0f;
+		m_characterContainer0->SetCurrentAnimation(9);
+	}
 	if(DirectInput::GetInstance()->IsKeyDown(205))
 	{
 		//RIGHT				
@@ -373,13 +382,11 @@ void Game::UpdateInput(int deltaTime)
 }
 
 
-
+#if 1
 void Game::Render(Renderer *renderer)
-{
+{	
 	
 	D3DCamera * cam = (D3DCamera *)renderer->GetCamera();
-	//float x = m_cameraRadius * cosf(m_cameraRotation);
-	//float z =  m_cameraRadius * sinf(m_cameraRotation);
 
 	cam->SetPosition(m_camX, m_camY, m_camZ);
 	cam->SetUp(m_camUpX, m_camUpY, m_camUpZ);	
@@ -396,13 +403,134 @@ void Game::Render(Renderer *renderer)
 	btTransform t_characterTransform = m_characterGhost->getWorldTransform();
 	D3DXMATRIX t_characterTransform2 = BT2DX_MATRIX(t_characterTransform);
 
+
+	C3DETransform *t2 = new C3DETransform();
+	t2->Set(&t_characterTransform2);
+	//
+
+	D3DXMATRIX *t_matrix = t2->GetMatrix();
+	float tx = t_matrix->_41;
+	float ty = t_matrix->_42;
+	float tz = t_matrix->_43;
+
+	t_matrix->_41 = 0.0f;
+	t_matrix->_42 = 0.0f;
+	t_matrix->_43 = 0.0f;
+
+	t2->Rotate(m_characterCurrentRotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0));
+
+	t_matrix->_41 = tx;
+	t_matrix->_42 = ty;
+	t_matrix->_43 = tz;
+
+	t2->Translate(0.0f, -m_capsuleHeight, 0.0f);
+	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2, EFFECT_SKINNED_MESH);
+	m_testScene->AddNode(t_node2);	
+
+
+
+
+	C3DETransform *t5 = new C3DETransform();	
+	t5->Translate(m_camX, m_camY, m_camZ);
+	SceneNode *t_node5 = new SceneNode(m_skyBox, t5, EFFECT_PER_VERTEX_LIGHTING);	
+	m_testScene->AddNode(t_node5);
+
+
+	for(int i = 0; i< m_sceneTotalObjects; i++)	
+	{
+		Mesh * t_mesh = (*m_meshes)[m_sceneStaticObjectsList[i]];
+		C3DETransform *t_transform = new C3DETransform();	
+		D3DXMATRIX *t_matrix = m_sceneStaticObjectsTransforms[i]->GetMatrix();		
+		t_transform->Set(t_matrix);
+
+		int effect = EFFECT_PER_VERTEX_LIGHTING;
+
+		if(t_mesh == m_wall1 || t_mesh == m_wall2 || t_mesh == m_wall3)
+		{
+			effect = EFFECT_WALL;
+
+		}
+		else if(t_mesh == m_tree0 || t_mesh == m_tree1 || t_mesh == m_tree2 || t_mesh == m_tree3)
+		{
+			effect = EFFECT_TREE;
+
+		}
+
+
+		SceneNode *t_node = new SceneNode(t_mesh, t_transform, effect);
+		m_testScene->AddNode(t_node);
+		
+	}	
+
+		
+	int totalBodies = m_rigidBodies->size();
+#if 0
+	for(int i = 0; i < totalBodies; i++)
+	{
+		btRigidBody *t_body = (*m_rigidBodies)[i];
+		btMotionState *t_motionState = t_body->getMotionState();		
+
+		D3DXMATRIX t_matrix = BT2DX_MATRIX(*t_motionState);		
+
+		
+
+		btVector3 *t_size = (*m_rigidBodiesSizes)[i];
+
+		
+		renderer->DrawBox(-t_size->getX(), -t_size->getY(), -t_size->getZ(), t_size->getX(), t_size->getY(), t_size->getZ(), t_matrix);
+	}
+
 	
+	btTransform t_transform2 = m_characterGhost->getWorldTransform();
+	
+	D3DXMATRIX t_matrix2 = BT2DX_MATRIX(t_transform2);		
+
+	
+	renderer->DrawBox(	-1.75f / 2.0f, 
+						-1.75f / 2.0f, 
+						-1.75f / 2.0f, 
+						1.75f / 2.0f, 
+						1.75f / 2.0f, 
+						1.75f / 2.0f, t_matrix2);
+	
+#endif
+
+
+	
+	renderer->DrawScene3(m_testScene);
+
+
+
+}
+#else
+void Game::Render(Renderer *renderer)
+{
+	
+
+	D3DCamera * cam = (D3DCamera *)renderer->GetCamera();
+
+	cam->SetPosition(m_camX, m_camY, m_camZ);
+	cam->SetUp(m_camUpX, m_camUpY, m_camUpZ);	
+	cam->SetTarget(m_camTargetX, m_camTargetY, m_camTargetZ);
+	
+	m_testScene->ClearAllNodes();
+
+	C3DETransform *t0 = new C3DETransform();	
+	SceneNode *t_node0 = new SceneNode(m_ground, t0, EFFECT_PER_VERTEX_LIGHTING);	
+	m_testScene->AddNode(t_node0);	
+
+
+
+	btTransform t_characterTransform = m_characterGhost->getWorldTransform();
+	D3DXMATRIX t_characterTransform2 = BT2DX_MATRIX(t_characterTransform);
+
+#if 1
 	C3DETransform *t2 = new C3DETransform();
 	t2->Set(&t_characterTransform2);
 	t2->Translate(0.0f, -m_capsuleHeight, 0.0f);
 	SceneNode *t_node2 = new SceneNode(m_characterContainer0, t2, EFFECT_SKINNED_MESH);
 	m_testScene->AddNode(t_node2);	
-	
+#endif
 
 #if 0
 	C3DETransform *t4 = new C3DETransform();
@@ -496,7 +624,7 @@ void Game::Render(Renderer *renderer)
 	
 
 }
-
+#endif
 void Game::OnMouseDown(int button, int x , int y)
 {
 
@@ -595,25 +723,25 @@ void Game::InitializeMeshes()
 	UpdateLoadingBar(m_loadedObjects, m_totalObjects);
 
 	
+
+	
 	D3DImage * characterTexture = new D3DImage(ResourceManager::GetInstance()->GetTextureByID(IMAGE_SWIMMER_SKIN_ID));	
 	
 	vector<char*> *animations = new vector<char*>;
 
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_COOL_ID));
-#if 0
+#if 1
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_CARRY_2_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_CARRY_ID));
-	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_COOL_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_FAST_WALK_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_JUMP_KICK_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_KNEE_KICK_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_MOONWALK_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_RUN_LOOP_ID));
 	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_WALK_BACKWARD_ID));
-#endif
-	
-	
+	animations->push_back(ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_BONES_IDLE_ID));
 
+#endif
 	m_characterMesh = new C3DESkinnedMesh(	ResourceManager::GetInstance()->GetMeshBuffer(MESH_BUFFER_SWIMMER_ID),
 											animations,
 											characterTexture, 33);
@@ -626,6 +754,8 @@ void Game::InitializeMeshes()
 
 
 
+	delete animations;
+	animations = NULL;
 
 
 	btVector3 characterPos(0.0f, 0.0f, 0.0f);
@@ -910,6 +1040,7 @@ void Game::InitializeMeshes()
 
 	m_meshes = new vector<Mesh*>;
 	m_meshes->push_back(m_characterMesh);
+	//m_meshes->push_back(NULL);
 	m_meshes->push_back(m_ground);
 	m_meshes->push_back(m_skyBox);
 	m_meshes->push_back(m_tree0);
@@ -1038,7 +1169,7 @@ void Game::InitializeMeshes()
 
 	m_characterContainer0 = new C3DESkinnedMeshContainer(m_characterMesh);
 	
-	m_characterContainer0->SetCurrentAnimation(0);
+	m_characterContainer0->SetCurrentAnimation(9);
 
 	
 #if 0

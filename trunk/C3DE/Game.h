@@ -200,6 +200,8 @@ private:
 	Tree2 * m_tree2;
 	Tree3 * m_tree3;
 
+	float m_characterCurrentRotation;
+
 };
 
 #endif

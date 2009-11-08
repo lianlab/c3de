@@ -977,7 +977,8 @@ void D3DRenderer::DrawXMesh3(D3DMesh * a_mesh, D3DXMATRIX *a_transform, int effe
 			break;
 
 		case EFFECT_TREE:
-			t_targetFX = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID);
+			//t_targetFX = ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID);
+			t_targetFX = ShaderManager::GetInstance()->GetFXByID(SHADER_TEXTURE_ONLY_ID);
 			break;
 
 		case EFFECT_WALL:
@@ -1150,45 +1151,27 @@ void D3DRenderer::ApplyEffect(int effect, D3DMesh * a_mesh, D3DXMATRIX *a_transf
 			HR(D3DRenderer::GetDevice()->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER));
 
 	
-			t_effect = (PerVertexLighting *)ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID);
-			
-			if(a_material == NULL)
-			{
-				t_effect->SetObjectMaterials(	a_mesh->GetCurrentMaterial()->GetAmbient(), a_mesh->GetCurrentMaterial()->GetDiffuse(),
-											a_mesh->GetCurrentMaterial()->GetSpecular(), a_mesh->GetCurrentMaterial()->GetSpecularPower());											
-			}
-			else
-			{
-				t_effect->SetObjectMaterials(	a_material->GetAmbient(), a_material->GetDiffuse(),
-												a_material->GetSpecular(), a_material->GetSpecularPower());											
-			}
-
-			
+			t_textureOnlyEffect = (TextureOnlyFX *)ShaderManager::GetInstance()->GetFXByID(SHADER_TEXTURE_ONLY_ID);
+									
 			t_image = (D3DImage*) a_mesh->GetCurrentTexture();
-			t_effect->SetObjectTexture(t_image->GetTexture());
-			t_effect->SetTransformMatrix(*a_transform);
-			t_effect->SetAlpha(1.0f);
+			t_textureOnlyEffect->SetObjectTexture(t_image->GetTexture());
+			t_textureOnlyEffect->SetTransformMatrix(*a_transform);
+			t_textureOnlyEffect->SetAlpha(1.0f);
 
 			FXManager::GetInstance()->PreRender();	
 			HR(t_xMesh->DrawSubset(subset));
 			FXManager::GetInstance()->PosRender();
 
 			HR(D3DRenderer::GetDevice()->SetRenderState(D3DRS_ALPHATESTENABLE, false));
+			
+
 			break;
 		case EFFECT_TEXTURE_ONLY:
 
 			t_textureOnlyEffect = (TextureOnlyFX *)ShaderManager::GetInstance()->GetFXByID(SHADER_TEXTURE_ONLY_ID);
 			
-			if(a_material == NULL)
-			{
-				t_textureOnlyEffect->SetObjectMaterials(	a_mesh->GetCurrentMaterial()->GetAmbient(), a_mesh->GetCurrentMaterial()->GetDiffuse(),
-											a_mesh->GetCurrentMaterial()->GetSpecular(), a_mesh->GetCurrentMaterial()->GetSpecularPower());											
-			}
-			else
-			{
-				t_textureOnlyEffect->SetObjectMaterials(	a_material->GetAmbient(), a_material->GetDiffuse(),
-												a_material->GetSpecular(), a_material->GetSpecularPower());											
-			}
+			
+
 
 			
 			t_image = (D3DImage*) a_mesh->GetCurrentTexture();

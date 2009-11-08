@@ -56,6 +56,7 @@ int objectsCollidesWith = COL_NOTHING;
 
 Game::Game(Application * app)
 {
+	m_cube = NULL;
 	m_characterCurrentRotation = 0.0f;
 	m_tree0 = NULL;
 	m_tree1 = NULL;
@@ -282,10 +283,11 @@ void Game::Update(int deltaTime)
 
 void Game::UpdateInput(int deltaTime)
 {
-
+	
 	float t_time = deltaTime / 1000.0f;
 
 	float posMultiplier = 1.0f;
+	//float posMultiplier = 0.001f;
 	float fastPosMultiplier = 2.0f;
 
 
@@ -381,10 +383,30 @@ void Game::UpdateInput(int deltaTime)
 
 }
 
+void Game::RenderTest(Renderer *renderer)
+{
+	D3DCamera * cam = (D3DCamera *)renderer->GetCamera();
+
+	cam->SetPosition(m_camX, m_camY, m_camZ);
+	cam->SetUp(m_camUpX, m_camUpY, m_camUpZ);	
+	cam->SetTarget(m_camTargetX, m_camTargetY, m_camTargetZ);
+	
+	m_testScene->ClearAllNodes();
+
+	C3DETransform *t0 = new C3DETransform();	
+	SceneNode *t_node0 = new SceneNode(m_cube, t0, EFFECT_DIFFUSE_STATIC_LIGHT);	
+	m_testScene->AddNode(t_node0);	
+
+	renderer->DrawScene3(m_testScene);
+}
+
 
 #if 1
 void Game::Render(Renderer *renderer)
 {	
+
+	//RenderTest(renderer);
+	//return;
 	
 	D3DCamera * cam = (D3DCamera *)renderer->GetCamera();
 
@@ -395,7 +417,7 @@ void Game::Render(Renderer *renderer)
 	m_testScene->ClearAllNodes();
 
 	C3DETransform *t0 = new C3DETransform();	
-	SceneNode *t_node0 = new SceneNode(m_ground, t0, EFFECT_PER_VERTEX_LIGHTING);	
+	SceneNode *t_node0 = new SceneNode(m_ground, t0, EFFECT_TEXTURE_ONLY);	
 	m_testScene->AddNode(t_node0);	
 
 
@@ -432,7 +454,7 @@ void Game::Render(Renderer *renderer)
 
 	C3DETransform *t5 = new C3DETransform();	
 	t5->Translate(m_camX, m_camY, m_camZ);
-	SceneNode *t_node5 = new SceneNode(m_skyBox, t5, EFFECT_PER_VERTEX_LIGHTING);	
+	SceneNode *t_node5 = new SceneNode(m_skyBox, t5, EFFECT_TEXTURE_ONLY);	
 	m_testScene->AddNode(t_node5);
 
 
@@ -443,7 +465,7 @@ void Game::Render(Renderer *renderer)
 		D3DXMATRIX *t_matrix = m_sceneStaticObjectsTransforms[i]->GetMatrix();		
 		t_transform->Set(t_matrix);
 
-		int effect = EFFECT_TEXTURE_ONLY;
+		int effect = EFFECT_SPECULAR_LIGHT;
 
 		if(t_mesh == m_wall1 || t_mesh == m_wall2 || t_mesh == m_wall3)
 		{
@@ -455,6 +477,7 @@ void Game::Render(Renderer *renderer)
 			effect = EFFECT_TREE;
 
 		}
+		
 
 
 		SceneNode *t_node = new SceneNode(t_mesh, t_transform, effect);
@@ -1171,6 +1194,22 @@ void Game::InitializeMeshes()
 	FXManager::GetInstance()->AddEffect2(m_testScene, ShaderManager::GetInstance()->GetFXByID(SHADER_C3DE_SKINNED_MESH_FX_ID));
 	FXManager::GetInstance()->AddEffect2(m_testScene, ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG_ID));
 	FXManager::GetInstance()->AddEffect2(m_testScene, ShaderManager::GetInstance()->GetFXByID(SHADER_LIGHTS_PER_VERTEX_TEXTURES_NO_FOG_ID));
+	FXManager::GetInstance()->AddEffect2(m_testScene, ShaderManager::GetInstance()->GetFXByID(SHADER_DIFFUSE_STATIC_LIGHT_ID));
+	FXManager::GetInstance()->AddEffect2(m_testScene, ShaderManager::GetInstance()->GetFXByID(SHADER_AMBIENT_LIGHT_ID));
+	FXManager::GetInstance()->AddEffect2(m_testScene, ShaderManager::GetInstance()->GetFXByID(SHADER_SPECULAR_LIGHT_ID));
+
+
+	ShaderManager::GetInstance()->GetFXByID(
+		SHADER_DIFFUSE_STATIC_LIGHT_ID)->SetLightHandlers(	D3DXCOLOR(1,1,1,1), D3DXCOLOR(1,1,1,1),
+															D3DXCOLOR(1,1,1,1), D3DXVECTOR3(0,1,0));
+
+	ShaderManager::GetInstance()->GetFXByID(
+		SHADER_AMBIENT_LIGHT_ID)->SetLightHandlers(	D3DXCOLOR(1.0f,1.0f,1,1), D3DXCOLOR(1,1,1,1),
+															D3DXCOLOR(1,1,1,1), D3DXVECTOR3(0,1,0));
+
+	ShaderManager::GetInstance()->GetFXByID(
+		SHADER_SPECULAR_LIGHT_ID)->SetLightHandlers(	D3DXCOLOR(1.0f,1.0f,1,1), D3DXCOLOR(1,1,1,1),
+															D3DXCOLOR(1,1,1,1), D3DXVECTOR3(0,1,0));
 
 	m_characterContainer0 = new C3DESkinnedMeshContainer(m_characterMesh);
 	
@@ -1184,6 +1223,8 @@ void Game::InitializeMeshes()
 
 	m_ninjaContainer->SetCurrentAnimation(0);
 #endif
+
+	m_cube = new Cube();
 	
 }
 

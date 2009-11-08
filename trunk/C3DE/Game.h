@@ -185,6 +185,10 @@ private:
 	static const float m_camYOffsetToCharacter;
 	static const float m_camZOffsetToCharacter;
 
+	void RenderTest(Renderer *renderer);
+
+	Cube * m_cube;
+
 
 
 	btCollisionShape* m_groundShape;

@@ -43,6 +43,10 @@ enum
 	EFFECT_WALL,
 	EFFECT_TREE,
 	EFFECT_TEXTURE_ONLY,
+	EFFECT_MOVING_LIGHT,
+	EFFECT_DIFFUSE_STATIC_LIGHT,
+	EFFECT_AMBIENT_LIGHT,
+	EFFECT_SPECULAR_LIGHT,
 	TOTAL_EFFECTS
 };
 class D3DRenderer : public Renderer
@@ -125,9 +129,9 @@ private:
 
 	void DrawXMesh(D3DMesh * a_xMesh);
 	void DrawXMesh2(D3DMesh * a_xMesh, D3DXMATRIX *a_matrix);
-	void DrawXMesh3(D3DMesh * a_xMesh, D3DXMATRIX *a_matrix,  int effect);
+	void DrawXMesh3(D3DMesh * a_xMesh, D3DXMATRIX *a_matrix,  int effect, Material * a_material);
 
-	void ApplyEffect(int effect, D3DMesh * a_mesh, D3DXMATRIX *a_transform, int subset);
+	void ApplyEffect(int effect, D3DMesh * a_mesh, D3DXMATRIX *a_transform, int subset, Material * a_material);
 
 	void CreateAxis();
 

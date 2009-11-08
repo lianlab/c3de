@@ -19,6 +19,9 @@
 #include "PerVertexLightingWallNoFog.h"
 #include "C3DESkinnedMeshFX.h"
 #include "TextureOnlyFX.h"
+#include "DiffuseStaticLight.h"
+#include "AmbientLightFX.h"
+#include "SpecularLightFX.h"
 #include "DebugMemory.h"
 
 
@@ -185,6 +188,28 @@ void ShaderManager::InitializeResources()
 		MessageBox(0, (char*) errors->GetBufferPointer(), 0, 0);
 	m_effectResources[SHADER_TEXTURE_ONLY_ID] = SHADER_TEXTURE_ONLY;
 
+	ID3DXEffect * SHADER_DIFFUSE_STATIC_LIGHT;
+	errors = 0;	
+	D3DXCreateEffectFromFile(m_device, "effects/DiffuseStaticLight.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_DIFFUSE_STATIC_LIGHT, &errors);	
+	if(errors)
+		MessageBox(0, (char*) errors->GetBufferPointer(), 0, 0);
+	m_effectResources[SHADER_DIFFUSE_STATIC_LIGHT_ID] = SHADER_DIFFUSE_STATIC_LIGHT;
+
+	ID3DXEffect * SHADER_AMBIENT_LIGHT;
+	errors = 0;	
+	D3DXCreateEffectFromFile(m_device, "effects/AmbientLight.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_AMBIENT_LIGHT, &errors);	
+	if(errors)
+		MessageBox(0, (char*) errors->GetBufferPointer(), 0, 0);
+	m_effectResources[SHADER_AMBIENT_LIGHT_ID] = SHADER_AMBIENT_LIGHT;
+
+
+	ID3DXEffect * SHADER_SPECULAR_LIGHT;
+	errors = 0;	
+	D3DXCreateEffectFromFile(m_device, "effects/SpecularLight.fx", 0, 0, D3DXSHADER_DEBUG, 0, &SHADER_SPECULAR_LIGHT, &errors);	
+	if(errors)
+		MessageBox(0, (char*) errors->GetBufferPointer(), 0, 0);
+	m_effectResources[SHADER_SPECULAR_LIGHT_ID] = SHADER_SPECULAR_LIGHT;
+
 
 	if(errors)
 		MessageBox(0, (char*) errors->GetBufferPointer(), 0, 0);
@@ -207,6 +232,9 @@ void ShaderManager::InitializeResources()
 	m_effects[SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG_ID] = new PerVertexLightingWallNoFog(SHADER_LIGHTS_PER_VERTEX_TEXTURES_WALL_NO_FOG);
 	m_effects[SHADER_C3DE_SKINNED_MESH_FX_ID] = new C3DESkinnedMeshFX(SHADER_C3DE_SKINNED_MESH_FX);
 	m_effects[SHADER_TEXTURE_ONLY_ID] = new TextureOnlyFX(SHADER_TEXTURE_ONLY);
+	m_effects[SHADER_DIFFUSE_STATIC_LIGHT_ID] = new DiffuseStaticLight(SHADER_DIFFUSE_STATIC_LIGHT);
+	m_effects[SHADER_AMBIENT_LIGHT_ID] = new AmbientLightFX(SHADER_AMBIENT_LIGHT);
+	m_effects[SHADER_SPECULAR_LIGHT_ID] = new SpecularLightFX(SHADER_SPECULAR_LIGHT);
 	
 }
 

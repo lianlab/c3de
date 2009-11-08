@@ -54,11 +54,18 @@ OutputVS SpecularLightVS(float3 posL : POSITION0, float3 normalL : NORMAL0, floa
 	float3 posW  = mul(float4(posL, 1.0f), gWorld).xyz;
 	posW = mul(posW,gTransformMatrix);
 	//=======================================================
+	
+	float3 toEye = normalize(gEyePosW - posW);
+	float3 r = reflect(-gLightVecW, normalW);
+	
+	float t = pow(max(dot(r, toEye), 0.0f), gSpecularPower);
+	
+	float4 spec = t*(gSpecularMtrl*gSpecularLight);
 
 
 	
 	
-	outVS.specular = (gSpecularMtrl*gSpecularLight);
+	outVS.specular = spec;
 	//=======================================================
 	
 	// Transform to homogeneous clip space.

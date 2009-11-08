@@ -204,6 +204,8 @@ private:
 	Tree2 * m_tree2;
 	Tree3 * m_tree3;
 
+	Material * m_materialGameObjects;
+
 	float m_characterCurrentRotation;
 
 };

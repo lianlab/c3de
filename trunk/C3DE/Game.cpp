@@ -480,7 +480,7 @@ void Game::Render(Renderer *renderer)
 		
 
 
-		SceneNode *t_node = new SceneNode(t_mesh, t_transform, effect);
+		SceneNode *t_node = new SceneNode(t_mesh, t_transform, effect, m_materialGameObjects);
 		m_testScene->AddNode(t_node);
 		
 	}	
@@ -1214,6 +1214,8 @@ void Game::InitializeMeshes()
 	m_characterContainer0 = new C3DESkinnedMeshContainer(m_characterMesh);
 	
 	m_characterContainer0->SetCurrentAnimation(9);
+
+	m_materialGameObjects = new Material(D3DXCOLOR(1,1,1,1), D3DXCOLOR(1,1,1,1), D3DXCOLOR(1,1,1,1), 8);
 
 	
 #if 0

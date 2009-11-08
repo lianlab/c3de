@@ -8,13 +8,13 @@ uniform extern float4x4 gWorld;
 uniform extern float4x4 gWorldInvTrans;
 uniform extern float4x4 gWVP;
 
-uniform extern float4 gAmbientMtrl;
-uniform extern float4 gAmbientLight;
+//uniform extern float4 gAmbientMtrl;
+//uniform extern float4 gAmbientLight;
 //uniform extern float4 gDiffuseMtrl;
 //uniform extern float4 gDiffuseLight;
-//uniform extern float4 gSpecularMtrl;
-//uniform extern float4 gSpecularLight;
-//uniform extern float  gSpecularPower;
+uniform extern float4 gSpecularMtrl;
+uniform extern float4 gSpecularLight;
+uniform extern float  gSpecularPower;
 uniform extern float3 gLightVecW;
 uniform extern float3 gEyePosW;
 uniform extern texture gTex;
@@ -36,12 +36,12 @@ sampler TexS = sampler_state
 struct OutputVS
 {
     float4 posH    : POSITION0;
-    float4 ambient : COLOR0;
+    float4 specular : COLOR0;
     //float4 spec    : COLOR1;
     float2 tex0    : TEXCOORD0;
 };
 
-OutputVS DiffuseStaticLightVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0: TEXCOORD0)
+OutputVS SpecularLightVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0: TEXCOORD0)
 {
     // Zero out our output.
 	OutputVS outVS = (OutputVS)0;
@@ -58,7 +58,7 @@ OutputVS DiffuseStaticLightVS(float3 posL : POSITION0, float3 normalL : NORMAL0,
 
 	
 	
-	outVS.ambient = (gAmbientMtrl*gAmbientLight);
+	outVS.specular = (gSpecularMtrl*gSpecularLight);
 	//=======================================================
 	
 	// Transform to homogeneous clip space.
@@ -73,19 +73,14 @@ OutputVS DiffuseStaticLightVS(float3 posL : POSITION0, float3 normalL : NORMAL0,
 }
 
 //float4 DiffuseStaticLightPS(float4 c : COLOR0, float4 spec : COLOR1, float2 tex0 : TEXCOORD0) : COLOR
-float4 DiffuseStaticLightPS(float4 c : COLOR0, float2 tex0 : TEXCOORD0) : COLOR
+float4 SpecularLightPS(float4 c : COLOR0, float2 tex0 : TEXCOORD0) : COLOR
 {
 	
 	
 	float4 texColor4 = tex2D(TexS, tex0);
 	
-    //return float4(diffuse + spec.rgb, texColor4.a*c.a); 
-    //return float4(diffuse, texColor4.a*c.a); 
     return float4(c * texColor4); 
     
-   // return float4(texColor, texColor4.a*c.a); 
-    //return float4(final, texColor4.a*c.a); 
-    //return float4(diffuse + spec.rgb, gAlpha); 
     
 }
 
@@ -94,8 +89,9 @@ technique ShaderTech
     pass P0
     {
         // Specify the vertex and pixel shader associated with this pass.
-        vertexShader = compile vs_2_0 DiffuseStaticLightVS();
-        pixelShader  = compile ps_2_0 DiffuseStaticLightPS();
+        vertexShader = compile vs_2_0 SpecularLightVS();
+        pixelShader  = compile ps_2_0 SpecularLightPS();
+        
        
     }
 }

@@ -41,7 +41,7 @@ struct OutputVS
     float2 tex0    : TEXCOORD0;
 };
 
-OutputVS DiffuseStaticLightVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0: TEXCOORD0)
+OutputVS AmbientLightVS(float3 posL : POSITION0, float3 normalL : NORMAL0, float2 tex0: TEXCOORD0)
 {
     // Zero out our output.
 	OutputVS outVS = (OutputVS)0;
@@ -73,7 +73,7 @@ OutputVS DiffuseStaticLightVS(float3 posL : POSITION0, float3 normalL : NORMAL0,
 }
 
 //float4 DiffuseStaticLightPS(float4 c : COLOR0, float4 spec : COLOR1, float2 tex0 : TEXCOORD0) : COLOR
-float4 DiffuseStaticLightPS(float4 c : COLOR0, float2 tex0 : TEXCOORD0) : COLOR
+float4 AmbientLightPS(float4 c : COLOR0, float2 tex0 : TEXCOORD0) : COLOR
 {
 	
 	
@@ -94,8 +94,8 @@ technique ShaderTech
     pass P0
     {
         // Specify the vertex and pixel shader associated with this pass.
-        vertexShader = compile vs_2_0 DiffuseStaticLightVS();
-        pixelShader  = compile ps_2_0 DiffuseStaticLightPS();
+        vertexShader = compile vs_2_0 AmbientLightVS();
+        pixelShader  = compile ps_2_0 AmbientLightPS();
        
     }
 }

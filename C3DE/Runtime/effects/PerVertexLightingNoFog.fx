@@ -21,11 +21,6 @@ uniform extern texture gTex;
 uniform extern float4x4 gTransformMatrix;
 uniform extern float gAlpha;
 
-//static float3 gFogColor = (0.5f, 0.5f, 0.5f);
-//static float gFogStart = 1.0f;
-//static float gFogRange = 200.0f;
-
-
 
 sampler TexS = sampler_state
 {
@@ -106,10 +101,10 @@ float4 DirLightTexPS(float4 c : COLOR0, float4 spec : COLOR1, float2 tex0 : TEXC
 	float3 texColor = tex2D(TexS, tex0).rgb;
 	float4 texColor4 = tex2D(TexS, tex0);
 	float3 diffuse = c.rgb * texColor;
-    //return float4(diffuse + spec.rgb, texColor4.a*c.a); 
+    return float4(diffuse + spec.rgb, texColor4.a*c.a); 
     float3 final = texColor;
    // return float4(texColor, texColor4.a*c.a); 
-    return float4(final, texColor4.a*c.a); 
+    //return float4(final, texColor4.a*c.a); 
     //return float4(diffuse + spec.rgb, gAlpha); 
     
 }

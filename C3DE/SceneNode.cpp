@@ -1,11 +1,17 @@
 #include "SceneNode.h"
 #include "DebugMemory.h"
 
-SceneNode::SceneNode(Mesh * a_mesh, C3DETransform *a_transform, int effect)
+SceneNode::SceneNode(Mesh * a_mesh, C3DETransform *a_transform, int effect, Material * a_material)
 {
 	m_mesh = a_mesh;
 	m_transform = a_transform;
 	m_effect = effect;
+	m_material = a_material;
+}
+
+Material * SceneNode::GetMaterial()
+{
+	return m_material;
 }
 
 int SceneNode::GetEffect()

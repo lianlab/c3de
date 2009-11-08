@@ -664,6 +664,10 @@
 						Name="Effects"
 						>
 						<File
+							RelativePath=".\AmbientLightFX.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\BillboardFX.cpp"
 							>
 						</File>
@@ -673,6 +677,10 @@
 						</File>
 						<File
 							RelativePath=".\C3DESkinnedMeshFX.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\DiffuseStaticLight.cpp"
 							>
 						</File>
 						<File
@@ -729,6 +737,10 @@
 						</File>
 						<File
 							RelativePath=".\SkinnedMeshFX.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\SpecularLightFX.cpp"
 							>
 						</File>
 						<File
@@ -1286,6 +1298,10 @@
 						Name="Effects"
 						>
 						<File
+							RelativePath=".\AmbientLightFX.h"
+							>
+						</File>
+						<File
 							RelativePath=".\BillboardFX.h"
 							>
 						</File>
@@ -1295,6 +1311,10 @@
 						</File>
 						<File
 							RelativePath=".\C3DESkinnedMeshFX.h"
+							>
+						</File>
+						<File
+							RelativePath=".\DiffuseStaticLight.h"
 							>
 						</File>
 						<File
@@ -1351,6 +1371,10 @@
 						</File>
 						<File
 							RelativePath=".\SkinnedMeshFX.h"
+							>
+						</File>
+						<File
+							RelativePath=".\SpecularLightFX.h"
 							>
 						</File>
 						<File

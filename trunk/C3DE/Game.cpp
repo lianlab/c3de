@@ -237,9 +237,12 @@ void Game::UpdateLoadingBar(int loadedObjects, int totalobjects)
 	t_renderer->EndRender();
 }
 
+
 void Game::Update(int deltaTime)
 {		
-	
+
+
+
 	m_physicsWorld->stepSimulation(deltaTime);
 
 	m_character0UpdateTime += deltaTime;
@@ -465,7 +468,7 @@ void Game::Render(Renderer *renderer)
 		D3DXMATRIX *t_matrix = m_sceneStaticObjectsTransforms[i]->GetMatrix();		
 		t_transform->Set(t_matrix);
 
-		int effect = EFFECT_SPECULAR_LIGHT;
+		int effect = EFFECT_TEXTURE_ONLY;
 
 		if(t_mesh == m_wall1 || t_mesh == m_wall2 || t_mesh == m_wall3)
 		{
